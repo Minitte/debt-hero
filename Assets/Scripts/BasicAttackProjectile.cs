@@ -22,12 +22,20 @@ public class BasicAttackProjectile : MonoBehaviour {
     private Vector3 _direction;
 
     /// <summary>
+    /// The damage properties of the projectile.
+    /// </summary>
+    private float _physAtkdamage, _magicAtkdamage;
+
+    /// <summary>
     /// Instantiates the projectile, and starts its movement.
     /// </summary>
     /// <param name="direction">The direction to travel</param>
     /// <param name="speed">The speed of the projectile</param>
-    public void Instantiate(Vector3 direction, float speed = 5f) {
+    public void Instantiate(Vector3 direction, float physAtkdamage, float magicAtkdamage, float speed = 5f) {
         _direction = direction;
+        _physAtkdamage = physAtkdamage;
+        _magicAtkdamage = magicAtkdamage;
+
         this.speed = speed;
 
         // Start the attack
@@ -49,8 +57,11 @@ public class BasicAttackProjectile : MonoBehaviour {
     /// </summary>
     /// <param name="other">The collision object collided with</param>
     private void OnTriggerEnter(Collider other) {
-        if (other.gameObject.name == "TestEnemy") {
+        if (other.tag == "Enemy") {
             Debug.Log("Hit");
+            
+            // Apply damage to the enemy
+            other.GetComponent<CharacterStats>().TakeDamage(_physAtkdamage, _magicAtkdamage);
             Destroy(gameObject);
         }
     }

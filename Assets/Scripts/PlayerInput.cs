@@ -42,7 +42,10 @@ public class PlayerInput : MonoBehaviour {
         projectile.GetComponent<BoxCollider>().isTrigger = true;
         projectile.AddComponent<Rigidbody>().isKinematic = true;
         projectile.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
-        projectile.AddComponent<BasicAttackProjectile>().Instantiate(attackPoint - transform.position);
+
+        // Get the player's damage
+        CharacterStats characterInfo = gameObject.GetComponent<CharacterStats>();
+        projectile.AddComponent<BasicAttackProjectile>().Instantiate(attackPoint - transform.position, characterInfo.physAtk, characterInfo.magicAtk);
 
     }
 }

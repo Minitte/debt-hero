@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour {
     // Use this for initialization
     private void Start() {
         _agent = GetComponent<NavMeshAgent>();
-        gameObject.GetComponent<Renderer>().material.color = Color.blue;
+        gameObject.GetComponent<Renderer>().material.color = Color.blue; // For testing purposes
 
         // Make sure that this gameobject has a NavMeshAgent
         if (_agent == null) {
