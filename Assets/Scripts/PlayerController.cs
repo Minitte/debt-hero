@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour {
     private NavMeshAgent _agent;
 
     // Use this for initialization
-    void Start() {
+    private void Start() {
         _agent = GetComponent<NavMeshAgent>();
 
         // Make sure that this gameobject has a NavMeshAgent
@@ -23,9 +23,9 @@ public class PlayerController : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update() {
+    private void Update() {
 
-        // Right mouse button held down
+        // If the right mouse button is held down
         if (Input.GetMouseButton(1)) {
 
             // Ray from camera to the clicked position in world space
@@ -37,6 +37,18 @@ public class PlayerController : MonoBehaviour {
                 // Attempt to move to the collision point
                 _agent.destination = hit.point;
             }
+        }
+
+        // If there is a controller plugged in
+        if (Input.GetJoystickNames().Length > 0) {
+
+            // Horizontal and vertical input values of the joystick
+            float horizontal = Input.GetAxis("HorizontalAnalog");
+            float vertical = Input.GetAxis("VerticalAnalog");
+
+            // Move in the direction of the joystick
+            Vector3 goal = gameObject.transform.position + new Vector3(horizontal, gameObject.transform.position.y, vertical).normalized;
+            _agent.destination = goal;
         }
     }
 }
