@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour {
     // Use this for initialization
     private void Start() {
         _agent = GetComponent<NavMeshAgent>();
+        gameObject.GetComponent<Renderer>().material.color = Color.blue;
 
         // Make sure that this gameobject has a NavMeshAgent
         if (_agent == null) {
@@ -32,7 +33,7 @@ public class PlayerController : MonoBehaviour {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            // Check if the ray collided with any rigid bodies
+            // Check if the ray collided with anything
             if (Physics.Raycast(ray, out hit, 100)) {
                 // Attempt to move to the collision point
                 _agent.destination = hit.point;
