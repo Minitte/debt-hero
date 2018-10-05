@@ -71,6 +71,38 @@ public class XZCoordinate {
     }
 
     /// <summary>
+    /// create a XZCoordinate with z + 1
+    /// </summary>
+    /// <returns></returns>
+    public XZCoordinate up() {
+        return new XZCoordinate(x, z + 1);
+    }
+
+    /// <summary>
+    /// create a XZCoordinate with z - 1
+    /// </summary>
+    /// <returns></returns>
+    public XZCoordinate down() {
+        return new XZCoordinate(x, z - 1);
+    }
+
+    /// <summary>
+    /// create a XZCoordinate with x - 1
+    /// </summary>
+    /// <returns></returns>
+    public XZCoordinate left() {
+        return new XZCoordinate(x - 1, z);
+    }
+
+    /// <summary>
+    /// create a XZCoordinate with x + 1
+    /// </summary>
+    /// <returns></returns>
+    public XZCoordinate right() {
+        return new XZCoordinate(x + 1, z);
+    }
+
+    /// <summary>
     /// Creates a new Vector2 with x = x and y = z
     /// </summary>
     /// <returns></returns>
