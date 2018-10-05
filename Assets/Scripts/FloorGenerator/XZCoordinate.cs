@@ -38,10 +38,43 @@ public class XZCoordinate {
     }
 
     /// <summary>
+    /// Constructor for an XZCoordinate
+    /// </summary>
+    /// <param name="x">float value rounded down</param>
+    /// <param name="z">float value rounded down</param>
+    public XZCoordinate(float x, float z) {
+        this.x = (int) x;
+        this.z = (int) z;
+    }
+
+    /// <summary>
+    /// Copy constructor
+    /// </summary>
+    /// <param name="other"></param>
+    public XZCoordinate(XZCoordinate other) {
+        x = other.x;
+        z = other.z;
+    }
+
+    /// <summary>
+    /// Calulates the block distance. Sum of differences in x and z
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns></returns>
+    public int blockDistance(XZCoordinate other) {
+        int blockDist = 0;
+        
+        blockDist += Math.Abs(x - other.x);
+        blockDist += Math.Abs(z - other.z);
+
+        return blockDist;
+    }
+
+    /// <summary>
     /// Creates a new Vector2 with x = x and y = z
     /// </summary>
     /// <returns></returns>
-    public Vector2 ToVector2() {
+    public Vector2 toVector2() {
         return new Vector2(x ,z);
     }
 
@@ -49,7 +82,7 @@ public class XZCoordinate {
     /// Creates a new Vector3 with x = x, y = 0 and z = z
     /// </summary>
     /// <returns></returns>
-    public Vector3 ToVector3() {
+    public Vector3 toVector3() {
         return new Vector3(x, 0, z);
     }
 
@@ -93,6 +126,26 @@ public class XZCoordinate {
     /// <returns></returns>
     public static XZCoordinate operator*(XZCoordinate lhs, float rhs) {
         return new XZCoordinate((int) (lhs.x * rhs), (int) (lhs.z * rhs));
+    }
+
+    /// <summary>
+    /// checks if the x and z of both lhs and rhs are equal
+    /// </summary>
+    /// <param name="lhs"></param>
+    /// <param name="rhs"></param>
+    /// <returns></returns>
+    public static bool operator==(XZCoordinate lhs, XZCoordinate rhs) {
+        return lhs.x == rhs.x && lhs.z == rhs.z;
+    }
+
+    /// <summary>
+    /// checks if the x and z of both lhs and rhs are not equal
+    /// </summary>
+    /// <param name="lhs"></param>
+    /// <param name="rhs"></param>
+    /// <returns></returns>
+    public static bool operator!=(XZCoordinate lhs, XZCoordinate rhs) {
+        return lhs.x != rhs.x || lhs.z != rhs.z;
     }
 
     #endregion
