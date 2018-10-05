@@ -60,16 +60,6 @@ public class FloorGenerator : MonoBehaviour {
 	private Dictionary<XZCoordinate, RoomEntry> _roomDict;
 
 	/// <summary>
-	/// entrance 
-	/// </summary>
-	private RoomEntry _entrance;
-
-	/// <summary>
-	/// exit
-	/// </summary>
-	private RoomEntry _exit;
-
-	/// <summary>
 	/// Random object
 	/// </summary>
 	private System.Random _rand;
@@ -92,25 +82,17 @@ public class FloorGenerator : MonoBehaviour {
 	/// </summary>
 	/// <returns></returns>
 	private IEnumerator CoroutineGenerateFloor() {
-		GenerateRoomExitEntrance();
-
 		yield return GenerateRoomEntries(13);
 
-		yield return generatePath(_entrance.coordinate, _exit.coordinate);
+		RoomEntry entrance = getRandomRoomEntry();
+		entrance.type = RoomEntry.RoomType.ENTRANCE;
+		entrance.gameObject.name = "Entrance Room Entry";
+
+		RoomEntry exit = getRandomRoomEntry();
+		exit.type = RoomEntry.RoomType.EXIT;
+		exit.gameObject.name = "Exit Room Entry";
 
 		yield return createRoomPieces();
-	}
-
-	/// <summary>
-	/// Generates the entry for exit and entrance
-	/// </summary>
-	private void GenerateRoomExitEntrance() {
-		// generate entrance
-		_entrance = createRoomEntry(XZCoordinate.zero);
-		_entrance.type = RoomEntry.RoomType.ENTRANCE;
-
-		_exit = GenerateRandomRoomEntry(_entrance.coordinate, minExitDistance, maxExitDistance);
-		_exit.type = RoomEntry.RoomType.EXIT;
 	}
 
 	/// <summary>
@@ -161,11 +143,11 @@ public class FloorGenerator : MonoBehaviour {
 	/// <param name="maxDistance">max distance from the entrance</param>
 	/// <returns></returns>
 	private IEnumerator	GenerateRoomEntries(int maxDistance) {
-		XZCoordinate[] nodes = new XZCoordinate[15];
+		XZCoordinate[] nodes = new XZCoordinate[6];
 
 		// create nodes
 		for (int i = 0; i < nodes.Length; i++) {
-			nodes[i] = generateRandomCord(_entrance.coordinate, 8, maxDistance);
+			nodes[i] = generateRandomCord(XZCoordinate.zero, 5, maxDistance);
 
 			// nodes[0] = new Vector2(5, 3);
 
@@ -173,15 +155,22 @@ public class FloorGenerator : MonoBehaviour {
 		}
 
 		// connect nodes to the entrance
-		for (int i = 0; i < nodes.Length; i++) { 
-			yield return generatePath(_entrance.coordinate, nodes[i]);
-		}
+		// for (int i = 0; i < nodes.Length; i++) { 
+		// 	yield return generatePath(_entrance.coordinate, nodes[i]);
+		// }
 
 		// connects the nodes to nearby nodes
-		for (int i = 0; i < nodes.Length; i++) {
-			XZCoordinate closest = findClosestCord(nodes[i], nodes);
+		// for (int i = 0; i < nodes.Length; i++) {
+		// 	XZCoordinate closest = findClosestCord(nodes[i], nodes);
 
-			yield return generatePath(closest, nodes[i]);
+		// 	yield return generatePath(closest, nodes[i]);
+		// }
+
+		// connect node to others
+		for (int i = 0; i < nodes.Length; i++) {
+			for (int j = i; j < nodes.Length; j++) {
+				yield return generatePath(nodes[i], nodes[j]);
+			}
 		}
 	}
 
@@ -232,6 +221,14 @@ public class FloorGenerator : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Gets a random room entry 
+	/// </summary>
+	/// <returns></returns>
+	public RoomEntry getRandomRoomEntry() {
+		return _roomList[_rand.Next(_roomList.Count)];
+	}
+
+	/// <summary>
 	/// Generates a random cord around the point
 	/// </summary>
 	/// <param name="point">center point</param>
@@ -279,6 +276,4 @@ public class FloorGenerator : MonoBehaviour {
 
 		return closest;
 	}
-	
-
 }
