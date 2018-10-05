@@ -43,11 +43,6 @@ public class FloorGenerator : MonoBehaviour {
 	public RoomEntry roomEntryPrefab;
 
 	#endregion
-
-	/// <summary>
-	/// Room layout array
-	/// </summary>
-	private RoomEntry[,] _roomLayout;
 	
 	/// <summary>
 	/// List of room entries generated
