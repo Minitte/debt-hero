@@ -19,6 +19,16 @@ public class AIController : MonoBehaviour {
     private bool follow = false;
     private float timeSinceAggro;
 
+    /// <summary>
+    /// Preset contaning a canvas, image, text.
+    /// </summary>
+    public EnemyHealthBar enemyHealthbar;
+
+    /// <summary>
+    /// Instance to the preset.
+    /// </summary>
+    private EnemyHealthBar enemyHealthbarinstance;
+
 
     // Use this for initialization
     void Start () {
@@ -33,6 +43,13 @@ public class AIController : MonoBehaviour {
         follow = false;
         timeSinceAggro = 0;
         spotlight.spotAngle = detectionAngle;
+
+        //Instantiates the instance to the enemyHealthbar prefab.
+        enemyHealthbarinstance = Instantiate(enemyHealthbar) as EnemyHealthBar;
+
+        //For test purposes its known as enemy. Can change later.
+        enemyHealthbarinstance.BarGenerateName("Enemy");
+
     }
 	
 	// Update is called once per frame
@@ -86,6 +103,10 @@ public class AIController : MonoBehaviour {
         {
             playerDetected = false;
         }
+
+        //Moves the Hp bar to following the Ai.
+        enemyHealthbarinstance.BarPosition(GameObject.FindGameObjectWithTag("AI").transform.position);
+       
 
     }
 
