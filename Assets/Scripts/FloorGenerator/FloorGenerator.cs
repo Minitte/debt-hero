@@ -25,15 +25,7 @@ public class FloorGenerator : MonoBehaviour {
 	/// </summary>
 	public float roomSize;
 
-	/// <summary>
-	/// The min distance for exit
-	/// </summary>
-	public int minExitDistance;
-
-	/// <summary>
-	/// The max distance for exit
-	/// </summary>
-	public int maxExitDistance; 
+	public int maxFloorRadius = 13; 
 
 	[Header("Others")]
 
@@ -77,7 +69,7 @@ public class FloorGenerator : MonoBehaviour {
 	/// </summary>
 	/// <returns></returns>
 	private IEnumerator CoroutineGenerateFloor() {
-		yield return GenerateRoomEntries(13);
+		yield return GenerateRoomEntries(maxFloorRadius);
 
 		RoomEntry entrance = getRandomRoomEntry();
 		entrance.type = RoomEntry.RoomType.ENTRANCE;
