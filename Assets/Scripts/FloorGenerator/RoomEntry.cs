@@ -19,23 +19,7 @@ public class RoomEntry : MonoBehaviour {
 	public RoomType type;
 
 	/// <summary>
-	/// x cordinate
+	/// coordinate of the room entry
 	/// </summary>
-	public int xCord;
-
-	/// <summary>
-	/// z cordinate
-	/// </summary>
-	public int zCord;
-
-	/// <summary>
-	/// Combines x and z into a Vector2 object.
-	/// Vector2's x = x while Vector2's y = z
-	/// </summary>
-	/// <value></value>
-	public Vector2 cordV2 {
-		get {
-			return new Vector2(xCord, zCord);
-		}
-	}
+	public XZCoordinate coordinate;
 }
