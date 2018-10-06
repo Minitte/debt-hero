@@ -22,12 +22,12 @@ public class AIController : MonoBehaviour {
     /// <summary>
     /// Preset contaning a canvas, image, text.
     /// </summary>
-    public EnemyHealthBar enemyHealthbar;
+    public HealthBar healthbar;
 
     /// <summary>
     /// Instance to the preset.
     /// </summary>
-    private EnemyHealthBar enemyHealthbarinstance;
+    private HealthBar Healthbarinstance;
 
 
     // Use this for initialization
@@ -44,11 +44,14 @@ public class AIController : MonoBehaviour {
         timeSinceAggro = 0;
         spotlight.spotAngle = detectionAngle;
 
-        //Instantiates the instance to the enemyHealthbar prefab.
-        enemyHealthbarinstance = Instantiate(enemyHealthbar) as EnemyHealthBar;
+        //Instantiates the instance to the Healthbar prefab.
+        Healthbarinstance = Instantiate(healthbar) as HealthBar;
 
         //For test purposes its known as enemy. Can change later.
-        enemyHealthbarinstance.BarGenerateName("Enemy");
+        Healthbarinstance.BarGenerateName("Enemy");
+
+        //Setting a red color.
+        Healthbarinstance.BarColor(176, 25, 5, 255);
 
     }
 	
@@ -105,7 +108,7 @@ public class AIController : MonoBehaviour {
         }
 
         //Moves the Hp bar to following the Ai.
-        enemyHealthbarinstance.BarPosition(GameObject.FindGameObjectWithTag("AI").transform.position);
+        Healthbarinstance.BarPosition(GameObject.FindGameObjectWithTag("AI").transform.position);
        
 
     }

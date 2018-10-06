@@ -11,6 +11,16 @@ public class PlayerController : MonoBehaviour {
     /// </summary>
     private NavMeshAgent _agent;
 
+    /// <summary>
+    /// Preset contaning a canvas, image, text.
+    /// </summary>
+    public HealthBar healthbar;
+
+    /// <summary>
+    /// Instance to the preset.
+    /// </summary>
+    private HealthBar Healthbarinstance;
+
     // Use this for initialization
     private void Start() {
         _agent = GetComponent<NavMeshAgent>();
@@ -20,6 +30,16 @@ public class PlayerController : MonoBehaviour {
             Debug.Log("Attempted to run PlayerController script without a NavMeshAgent.");
             Destroy(this);
         }
+
+
+        //Instantiates the instance to the Healthbar prefab.
+        Healthbarinstance = Instantiate(healthbar) as HealthBar;
+
+        //For test purposes its known as Player. Can change later.
+        Healthbarinstance.BarGenerateName("Player");
+
+        //Setting a red color.
+        Healthbarinstance.BarColor(86, 163, 65, 255);
     }
 
     // Update is called once per frame
@@ -50,5 +70,6 @@ public class PlayerController : MonoBehaviour {
             Vector3 goal = gameObject.transform.position + new Vector3(horizontal, gameObject.transform.position.y, vertical).normalized;
             _agent.destination = goal;
         }
+        Healthbarinstance.BarPosition(GameObject.FindGameObjectWithTag("Player").transform.position);
     }
 }
