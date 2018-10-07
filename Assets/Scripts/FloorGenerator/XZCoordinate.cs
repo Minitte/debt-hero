@@ -126,6 +126,29 @@ public class XZCoordinate {
         return "x:" + x + " z:" + z;
     }
 
+    /// <summary>
+    /// Overrided object.Equals.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public override bool Equals(object obj) {
+        if (!(obj is XZCoordinate)) {
+            return false;
+        }
+
+        XZCoordinate other = (XZCoordinate) obj;
+
+        return this == other;
+    }
+
+    /// <summary>
+    /// Override object.GetHashCode
+    /// </summary>
+    /// <returns></returns>
+    public override int GetHashCode() {
+        return ToString().GetHashCode();
+    }
+
     #region operators
 
     /// <summary>
