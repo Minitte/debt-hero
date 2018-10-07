@@ -118,6 +118,14 @@ public class XZCoordinate {
         return new Vector3(x, 0, z);
     }
 
+    /// <summary>
+    /// returns the coordinate as a string
+    /// </summary>
+    /// <returns></returns>
+    public override string ToString() {
+        return "x:" + x + " z:" + z;
+    }
+
     #region operators
 
     /// <summary>

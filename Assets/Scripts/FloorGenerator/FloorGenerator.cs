@@ -13,11 +13,6 @@ public class FloorGenerator : MonoBehaviour {
 	/// </summary>
 	public FloorPieceSet pieceSet;
 
-	/// <summary>
-	/// TEST
-	/// </summary>
-	public GameObject TestPrefab; // TODO remove after testing
-
 	[Header("Room Spec")]
 
 	/// <summary>
@@ -44,7 +39,7 @@ public class FloorGenerator : MonoBehaviour {
 	/// <summary>
 	/// A dictionary containing room entries
 	/// </summary>
-	private Dictionary<XZCoordinate, RoomEntry> _roomDict;
+	private Dictionary<string, RoomEntry> _roomDict;
 
 	/// <summary>
 	/// Random object
@@ -57,7 +52,7 @@ public class FloorGenerator : MonoBehaviour {
 	void Awake() {
 		_roomList = new List<RoomEntry>();
 
-		_roomDict = new Dictionary<XZCoordinate, RoomEntry>();
+		_roomDict = new Dictionary<string, RoomEntry>();
 
 		_rand = new System.Random();
 
@@ -106,7 +101,7 @@ public class FloorGenerator : MonoBehaviour {
 	/// <returns>The created room entry. If room already exist on the cord, null is returned</returns>
 	private RoomEntry createRoomEntry(XZCoordinate coord) {
 		
-		if (_roomDict.ContainsKey(coord)) {
+		if (_roomDict.ContainsKey(coord.ToString())) {
 			return null;
 		}
 
@@ -119,7 +114,7 @@ public class FloorGenerator : MonoBehaviour {
 
 		// add to room collections
 		_roomList.Add(entry);
-		_roomDict.Add(entry.coordinate, entry);
+		_roomDict.Add(entry.coordinate.ToString(), entry);
 
 		return entry;
 	}
@@ -199,12 +194,128 @@ public class FloorGenerator : MonoBehaviour {
 	/// </summary>
 	private IEnumerator createRoomPieces() {
 		foreach (RoomEntry entry in _roomList) {
-			GameObject testRoom = Instantiate(TestPrefab);
 
-			testRoom.transform.SetParent(entry.transform, false);
+			int numNeigbors = 0;
+
+			bool[] neighbors = getNeighborBools(entry, out numNeigbors);
+
+			GameObject piecePrefab;
+
+			GameObject piece;
+
+			switch (numNeigbors) {
+				// dead end
+				case 1:
+					// get a random piece from the set
+					piecePrefab = pieceSet.GetRandomDeadEndPrefab(_rand);
+
+					// instantiate and set parent to the entry
+					piece = Instantiate(piecePrefab, entry.transform);
+
+					// set the rotation based on neighbor orientation
+					piece.transform.rotation = pieceSet.deadEndRotation(neighbors);
+
+					break;
+
+				// corner or hall
+				case 2:
+					// check if hallway
+					if ((neighbors[0] && neighbors[2]) || (neighbors[1] && neighbors[3])) {
+						// get a random piece from the set
+						piecePrefab = pieceSet.GetRandomHallWayPrefab(_rand);
+
+						// instantiate and set parent to the entry
+						piece = Instantiate(piecePrefab, entry.transform);
+
+						// set the rotation based on neighbor orientation
+						piece.transform.rotation = pieceSet.hallwayRotation(neighbors);
+					} else {
+						// get a random piece from the set
+						piecePrefab = pieceSet.GetRandomCornerPrefab(_rand);
+
+						// instantiate and set parent to the entry
+						piece = Instantiate(piecePrefab, entry.transform);
+
+						// set the rotation based on neighbor orientation
+						piece.transform.rotation = pieceSet.cornerRotation(neighbors);
+					}
+				
+					break;
+
+				// T 
+				case 3:
+					// get a random piece from the set
+					piecePrefab = pieceSet.GetRandomThreeWayPrefab(_rand);
+
+					// instantiate and set parent to the entry
+					piece = Instantiate(piecePrefab, entry.transform);
+
+					// set the rotation based on neighbor orientation
+					piece.transform.rotation = pieceSet.threeWayRotation(neighbors);
+
+					break;
+
+				// cross
+				case 4:
+					// get a random piece from the set
+					piecePrefab = pieceSet.GetRandomFourWayPrefab(_rand);
+
+					// instantiate and set parent to the entry
+					piece = Instantiate(piecePrefab, entry.transform);
+
+					// set the rotation based on neighbor orientation
+					piece.transform.rotation = pieceSet.fourWayRotation(neighbors);
+					break;
+
+				case 0:
+					break;
+
+				default:
+					XZCoordinate coord = entry.coordinate;
+					Debug.LogError("x:" + coord.x + " z:" + coord.z + " supposely has " + numNeigbors + " neighbors?");
+					break;
+			}
 
 			yield return new WaitForEndOfFrame();
 		}
+	}
+
+	/// <summary>
+	/// Creates an array of bool to show wether there is a neighbor.
+	/// Clockwise
+	/// </summary>
+	/// <param name="entry"></param>
+	/// <returns></returns>
+	private bool[] getNeighborBools(RoomEntry entry, out int numNeigbors) {
+		bool[] n = new bool[4];
+
+		int num = 0;
+
+		XZCoordinate cord = entry.coordinate;
+
+		if (_roomDict.ContainsKey(cord.up().ToString())) {
+			num++;
+			n[0] = true;
+		}
+
+		if (_roomDict.ContainsKey(cord.right().ToString())) {
+			num++;
+			n[1] = true;
+		}
+
+		if (_roomDict.ContainsKey(cord.down().ToString())) {
+			num++;
+			n[2] = true;
+		}
+
+		if (_roomDict.ContainsKey(cord.left().ToString())) {
+			num++;
+			n[3] = true;
+		}
+
+		numNeigbors = num;
+
+		return n;
 	}
 
 	/// <summary>
