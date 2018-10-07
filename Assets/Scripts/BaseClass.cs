@@ -7,34 +7,34 @@ public abstract class BaseClass : MonoBehaviour {
     /// <summary>
     /// Initial stats for selecting the class
     /// </summary>
-    private float _bonusHP;
-    private float _bonusMP;
-    private float _bonusPhysAtt;
-    private float _bonusMagAtt;
-    private float _bonusPhysDef;
-    private float _bonusMagDef;
-    private float _bonusCrit;
-    private float _bonusCritDmg;
+    public float bonusHP;
+    public float bonusMP;
+    public float bonusPhysAtt;
+    public float bonusMagAtt;
+    public float bonusPhysDef;
+    public float bonusMagDef;
+    public float bonusCrit;
+    public float bonusCritDmg;
 
     /// <summary>
     /// Stat increases per level for the class
     /// </summary>
-    private float _perLevelHP;
-    private float _perLevelMP;
-    private float _perLevelPhysAtt;
-    private float _perLevelMagAtt;
-    private float _perLevelPhysDef;
-    private float _perLevelMagDef;
-    private float _perLevelCrit;
-    private float _perLevelCritDmg;
+    public float perLevelHP;
+    public float perLevelMP;
+    public float perLevelPhysAtt;
+    public float perLevelMagAtt;
+    public float perLevelPhysDef;
+    public float perLevelMagDef;
+    public float perLevelCrit;
+    public float perLevelCritDmg;
 
     /// <summary>
     /// Skills
     /// </summary>
-    private Skill _skill1;
-    private Skill _skill2;
-    private Skill _skill3;
-    private Skill _skill4;
+    public Skill skill1;
+    public Skill skill2;
+    public Skill skill3;
+    public Skill skill4;
 
     /// <summary>
     /// Not implemented yet
