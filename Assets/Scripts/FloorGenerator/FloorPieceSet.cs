@@ -30,6 +30,103 @@ public class FloorPieceSet {
     public GameObject[] deadEndPrefabs;
 
     /// <summary>
+    /// Creates a Quaternion rotation for a 4 way piece based on the orintenation of the neighbors
+    /// </summary>
+    /// <param name="neighbors"></param>
+    /// <returns></returns>
+    public Quaternion fourWayRotation(bool[] neighbors) {
+        return Quaternion.identity;
+    }
+
+    /// <summary>
+    /// Creates a Quaternion rotation for a 3 way piece based on the orintenation of the neighbors
+    /// </summary>
+    /// <param name="neighbors"></param>
+    /// <returns></returns>
+    public Quaternion threeWayRotation(bool[] neighbors) {
+        if (neighbors[0] && neighbors[1] && neighbors[2]) {
+            return Quaternion.AngleAxis(-90f, Vector3.up);
+        }
+
+        if (neighbors[1] && neighbors[2] && neighbors[3]) {
+            return Quaternion.AngleAxis(0f, Vector3.up);
+        }
+
+        if (neighbors[2] && neighbors[3] && neighbors[0]) {
+            return Quaternion.AngleAxis(90f, Vector3.up);
+        }
+
+        if (neighbors[3] && neighbors[0] && neighbors[1]) {
+            return Quaternion.AngleAxis(180f, Vector3.up);
+        }
+
+        return Quaternion.identity;
+    }
+
+    /// <summary>
+    /// Creates a Quaternion rotation for a hallway piece based on the orintenation of the neighbors
+    /// </summary>
+    /// <param name="neighbors"></param>
+    /// <returns></returns>
+    public Quaternion hallwayRotation(bool[] neighbors) {
+        if (neighbors[1]) {
+            return Quaternion.AngleAxis(90f, Vector3.up);
+        }
+
+        return Quaternion.identity;
+    }
+
+    /// <summary>
+    /// Creates a Quaternion rotation for a corner piece based on the orintenation of the neighbors
+    /// </summary>
+    /// <param name="neighbors"></param>
+    /// <returns></returns>
+    public Quaternion cornerRotation(bool[] neighbors) {
+        if (neighbors[0] && neighbors[1]) {
+            return Quaternion.AngleAxis(180f, Vector3.up);
+        }
+
+        if (neighbors[1] && neighbors[2]) {
+            return Quaternion.AngleAxis(-90f, Vector3.up);
+        }
+
+        if (neighbors[2] && neighbors[3]) {
+            return Quaternion.AngleAxis(0, Vector3.up);
+        }
+
+        if (neighbors[3] && neighbors[0]) {
+            return Quaternion.AngleAxis(90f, Vector3.up);
+        }
+
+        return Quaternion.identity;
+    }
+
+    /// <summary>
+    /// Creates a Quaternion rotation for a dead end piece based on the orintenation of the neighbors
+    /// </summary>
+    /// <param name="neighbors"></param>
+    /// <returns></returns>
+    public Quaternion deadEndRotation(bool[] neighbors) {
+        if (neighbors[0]) {
+            return Quaternion.AngleAxis(180f, Vector3.up);
+        }
+
+        if (neighbors[1]) {
+            return Quaternion.AngleAxis(-90f, Vector3.up);
+        }
+
+        if (neighbors[2]) {
+            return Quaternion.AngleAxis(0, Vector3.up);
+        }
+
+        if (neighbors[3]) {
+            return Quaternion.AngleAxis(90f, Vector3.up);
+        }
+
+        return Quaternion.identity;
+    }
+
+    /// <summary>
     /// returns a random 4 way room piece
     /// </summary>
     /// <param name="rand">system default random object</param>
