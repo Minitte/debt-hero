@@ -21,6 +21,11 @@ public class PlayerController : MonoBehaviour {
     /// </summary>
     private HealthBar Healthbarinstance;
 
+    public StationaryResourcesUI stationaryResourcesUI;
+
+    private StationaryResourcesUI stationaryResourcesUIinstance;
+
+
     // Use this for initialization
     private void Start() {
         _agent = GetComponent<NavMeshAgent>();
@@ -40,6 +45,9 @@ public class PlayerController : MonoBehaviour {
 
         //Setting a red color.
         Healthbarinstance.BarColor(86, 163, 65, 255);
+
+        //For test purposes instantiating a Stationary UI object.
+        stationaryResourcesUIinstance = Instantiate(stationaryResourcesUI) as StationaryResourcesUI;
     }
 
     // Update is called once per frame
