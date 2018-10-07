@@ -50,7 +50,15 @@ public class FloorGenerator : MonoBehaviour {
 	/// Awake is called when the script instance is being loaded.
 	/// </summary>
 	void Awake() {
-		_rand = new System.Random();
+		GenerateNewFloor(new System.Random().Next(0, 999999));
+	}
+
+	/// <summary>
+	/// Generates and replaces the current floor with a new one based on the seed
+	/// </summary>
+	/// <param name="floorSeed"></param>
+	public void GenerateNewFloor(int floorSeed) {
+		_rand = new System.Random(floorSeed);
 
 		StartCoroutine(CoroutineGenerateFloor());
 	}
