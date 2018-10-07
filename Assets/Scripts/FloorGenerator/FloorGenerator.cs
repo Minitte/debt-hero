@@ -20,9 +20,17 @@ public class FloorGenerator : MonoBehaviour {
 	/// </summary>
 	public float roomSize = 25f;
 
+	/// <summary>
+	/// Max range from zero
+	/// </summary>
 	public int maxFloorRadius = 13; 
 
-	[Header("Others")]
+	/// <summary>
+	/// Seed to be used in generating the floor
+	/// </summary>
+	public int floorSeed;
+
+	[Header("Game Objects and Prefabs")]
 
 	/// <summary>
 	/// Prefab of a room entry for marking it's position
@@ -50,7 +58,7 @@ public class FloorGenerator : MonoBehaviour {
 	/// Awake is called when the script instance is being loaded.
 	/// </summary>
 	void Awake() {
-		GenerateNewFloor(new System.Random().Next(0, 999999));
+		GenerateNewFloor(floorSeed);
 	}
 
 	/// <summary>
