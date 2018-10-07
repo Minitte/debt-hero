@@ -18,7 +18,7 @@ public class FloorGenerator : MonoBehaviour {
 	/// <summary>
 	/// Size of the room
 	/// </summary>
-	public float roomSize;
+	public float roomSize = 25f;
 
 	public int maxFloorRadius = 13; 
 
@@ -29,17 +29,17 @@ public class FloorGenerator : MonoBehaviour {
 	/// </summary>
 	public RoomEntry roomEntryPrefab;
 
-	#endregion
-	
 	/// <summary>
-	/// List of room entries generated
+	/// Prefab of a floor parent
 	/// </summary>
-	private List<RoomEntry> _roomList;
+	public Floor floorParentPrefab;
 
 	/// <summary>
-	/// A dictionary containing room entries
+	/// Current floor parent
 	/// </summary>
-	private Dictionary<string, RoomEntry> _roomDict;
+	public Floor currentFloorParent;
+
+	#endregion
 
 	/// <summary>
 	/// Random object
@@ -50,10 +50,6 @@ public class FloorGenerator : MonoBehaviour {
 	/// Awake is called when the script instance is being loaded.
 	/// </summary>
 	void Awake() {
-		_roomList = new List<RoomEntry>();
-
-		_roomDict = new Dictionary<string, RoomEntry>();
-
 		_rand = new System.Random();
 
 		StartCoroutine(CoroutineGenerateFloor());
@@ -64,6 +60,8 @@ public class FloorGenerator : MonoBehaviour {
 	/// </summary>
 	/// <returns></returns>
 	private IEnumerator CoroutineGenerateFloor() {
+		currentFloorParent = Instantiate(floorParentPrefab.gameObject).GetComponent<Floor>();
+
 		yield return GenerateRoomEntries(maxFloorRadius);
 
 		RoomEntry entrance = getRandomRoomEntry();
@@ -101,20 +99,23 @@ public class FloorGenerator : MonoBehaviour {
 	/// <returns>The created room entry. If room already exist on the cord, null is returned</returns>
 	private RoomEntry createRoomEntry(XZCoordinate coord) {
 		
-		if (_roomDict.ContainsKey(coord.ToString())) {
+		if (currentFloorParent.roomDict.ContainsKey(coord.ToString())) {
 			return null;
 		}
 
 		// ini room entry and set cords
 		RoomEntry entry = Instantiate(roomEntryPrefab.gameObject).GetComponent<RoomEntry>();
+
+		entry.transform.SetParent(currentFloorParent.transform, false);
+
 		entry.coordinate = new XZCoordinate(coord);
 
 		Vector3 pos = coord.toVector3();
 		entry.transform.position = pos * roomSize;
 
 		// add to room collections
-		_roomList.Add(entry);
-		_roomDict.Add(entry.coordinate.ToString(), entry);
+		currentFloorParent.roomList.Add(entry);
+		currentFloorParent.roomDict.Add(entry.coordinate.ToString(), entry);
 
 		return entry;
 	}
@@ -193,7 +194,7 @@ public class FloorGenerator : MonoBehaviour {
 	/// Creates room pieces
 	/// </summary>
 	private IEnumerator createRoomPieces() {
-		foreach (RoomEntry entry in _roomList) {
+		foreach (RoomEntry entry in currentFloorParent.roomList) {
 
 			int numNeigbors = 0;
 
@@ -210,7 +211,7 @@ public class FloorGenerator : MonoBehaviour {
 					piecePrefab = pieceSet.GetRandomDeadEndPrefab(_rand);
 
 					// instantiate and set parent to the entry
-					piece = Instantiate(piecePrefab, entry.transform);
+					piece = Instantiate(piecePrefab, currentFloorParent.transform);
 
 					// set the rotation based on neighbor orientation
 					piece.transform.rotation = pieceSet.deadEndRotation(neighbors);
@@ -293,22 +294,22 @@ public class FloorGenerator : MonoBehaviour {
 
 		XZCoordinate cord = entry.coordinate;
 
-		if (_roomDict.ContainsKey(cord.up().ToString())) {
+		if (currentFloorParent.roomDict.ContainsKey(cord.up().ToString())) {
 			num++;
 			n[0] = true;
 		}
 
-		if (_roomDict.ContainsKey(cord.right().ToString())) {
+		if (currentFloorParent.roomDict.ContainsKey(cord.right().ToString())) {
 			num++;
 			n[1] = true;
 		}
 
-		if (_roomDict.ContainsKey(cord.down().ToString())) {
+		if (currentFloorParent.roomDict.ContainsKey(cord.down().ToString())) {
 			num++;
 			n[2] = true;
 		}
 
-		if (_roomDict.ContainsKey(cord.left().ToString())) {
+		if (currentFloorParent.roomDict.ContainsKey(cord.left().ToString())) {
 			num++;
 			n[3] = true;
 		}
@@ -323,7 +324,7 @@ public class FloorGenerator : MonoBehaviour {
 	/// </summary>
 	/// <returns></returns>
 	public RoomEntry getRandomRoomEntry() {
-		return _roomList[_rand.Next(_roomList.Count)];
+		return currentFloorParent.roomList[_rand.Next(currentFloorParent.roomList.Count)];
 	}
 
 	/// <summary>
