@@ -131,7 +131,7 @@ public class FloorPieceSet {
     /// </summary>
     /// <param name="rand">system default random object</param>
     /// <returns>a 4 way room piece prefab</returns>
-    public GameObject GetRandomFourWayPrefab(System.Random rand) {
+    public GameObject getRandomFourWayPrefab(System.Random rand) {
         return fourWayPrefabs[rand.Next(fourWayPrefabs.Length)];
     }
 
@@ -140,7 +140,7 @@ public class FloorPieceSet {
     /// </summary>
     /// <param name="rand">system default random object</param>
     /// <returns>a 3 way room piece prefab</returns>
-    public GameObject GetRandomThreeWayPrefab(System.Random rand) {
+    public GameObject getRandomThreeWayPrefab(System.Random rand) {
         return threeWayPrefabs[rand.Next(threeWayPrefabs.Length)];
     }
 
@@ -149,7 +149,7 @@ public class FloorPieceSet {
     /// </summary>
     /// <param name="rand">system default random object</param>
     /// <returns>a hall way room piece prefab</returns>
-    public GameObject GetRandomHallWayPrefab(System.Random rand) {
+    public GameObject getRandomHallWayPrefab(System.Random rand) {
         return hallWayPrefabs[rand.Next(hallWayPrefabs.Length)];
     }
     
@@ -158,7 +158,7 @@ public class FloorPieceSet {
     /// </summary>
     /// <param name="rand">system default random object</param>
     /// <returns>a corner room piece prefab</returns>
-    public GameObject GetRandomCornerPrefab(System.Random rand) {
+    public GameObject getRandomCornerPrefab(System.Random rand) {
         return cornerPrefabs[rand.Next(cornerPrefabs.Length)];
     }
 
@@ -167,7 +167,7 @@ public class FloorPieceSet {
     /// </summary>
     /// <param name="rand">system default random object</param>
     /// <returns>a dead end room piece prefab</returns>
-    public GameObject GetRandomDeadEndPrefab(System.Random rand) {
+    public GameObject getRandomDeadEndPrefab(System.Random rand) {
         return deadEndPrefabs[rand.Next(deadEndPrefabs.Length)];
     }
 }

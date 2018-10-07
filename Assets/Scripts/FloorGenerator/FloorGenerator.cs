@@ -224,7 +224,7 @@ public class FloorGenerator : MonoBehaviour {
 				// dead end
 				case 1:
 					// get a random piece from the set
-					piecePrefab = pieceSet.GetRandomDeadEndPrefab(_rand);
+					piecePrefab = pieceSet.getRandomDeadEndPrefab(_rand);
 
 					// instantiate and set parent to the entry
 					piece = Instantiate(piecePrefab, currentFloorParent.transform);
@@ -239,7 +239,7 @@ public class FloorGenerator : MonoBehaviour {
 					// check if hallway
 					if ((neighbors[0] && neighbors[2]) || (neighbors[1] && neighbors[3])) {
 						// get a random piece from the set
-						piecePrefab = pieceSet.GetRandomHallWayPrefab(_rand);
+						piecePrefab = pieceSet.getRandomHallWayPrefab(_rand);
 
 						// instantiate and set parent to the entry
 						piece = Instantiate(piecePrefab, entry.transform);
@@ -248,7 +248,7 @@ public class FloorGenerator : MonoBehaviour {
 						piece.transform.rotation = pieceSet.hallwayRotation(neighbors);
 					} else {
 						// get a random piece from the set
-						piecePrefab = pieceSet.GetRandomCornerPrefab(_rand);
+						piecePrefab = pieceSet.getRandomCornerPrefab(_rand);
 
 						// instantiate and set parent to the entry
 						piece = Instantiate(piecePrefab, entry.transform);
@@ -262,7 +262,7 @@ public class FloorGenerator : MonoBehaviour {
 				// T 
 				case 3:
 					// get a random piece from the set
-					piecePrefab = pieceSet.GetRandomThreeWayPrefab(_rand);
+					piecePrefab = pieceSet.getRandomThreeWayPrefab(_rand);
 
 					// instantiate and set parent to the entry
 					piece = Instantiate(piecePrefab, entry.transform);
@@ -275,7 +275,7 @@ public class FloorGenerator : MonoBehaviour {
 				// cross
 				case 4:
 					// get a random piece from the set
-					piecePrefab = pieceSet.GetRandomFourWayPrefab(_rand);
+					piecePrefab = pieceSet.getRandomFourWayPrefab(_rand);
 
 					// instantiate and set parent to the entry
 					piece = Instantiate(piecePrefab, entry.transform);
