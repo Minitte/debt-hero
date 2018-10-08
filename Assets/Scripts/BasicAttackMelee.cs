@@ -44,7 +44,7 @@ public class BasicAttackMelee : MonoBehaviour {
     /// </summary>
     /// <param name="other">The collision object collided with</param>
     private void OnTriggerEnter(Collider other) {
-        if (other.tag == "AI") {
+        if (other.tag == "AI" || other.tag == "Player") {
             Debug.Log("Melee hit");
 
             // Apply damage to the enemy

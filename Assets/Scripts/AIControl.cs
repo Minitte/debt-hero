@@ -15,7 +15,7 @@ public class AIControl : MonoBehaviour {
     /// For filtering out all layers except the player's.
     /// </summary>
     private static readonly int PLAYER_MASK = 1 << 10;
-    
+
     /// <summary>
     /// How frequently the AI should check for aggro.
     /// </summary>
@@ -33,41 +33,49 @@ public class AIControl : MonoBehaviour {
     /// </summary>
     private NavMeshAgent _agent;
 
-    /// <summary>
-    /// The currently targeted player.
-    /// </summary>
-    private Transform _target;
-
     // Use this for initialization
     private void Start() {
         _agent = GetComponent<NavMeshAgent>();
-        _target = transform;
-
-        // Periodically check for nearby players
-        InvokeRepeating("CheckAggro", 0f, AGGRO_CHECK_FREQUENCY);
     }
 
     // Update is called once per frame
-    private void Update() {
-        // Look towards the target as if it were on the same elevation.
-        transform.LookAt(new Vector3(_target.position.x, transform.position.y, _target.position.z));
+    private void FixedUpdate() {
+        Transform target;
+
+        // If there is a player in aggro radius, it will be assigned to target
+        if (CheckAggro(out target)) {
+            // Move to the player
+            _agent.destination = target.position;
+
+            // If in melee range
+            if (Vector3.Distance(target.position, transform.position) <= _agent.stoppingDistance) {
+                // Basic melee attack
+                transform.Find("TestSword").GetComponent<BasicAttackMelee>().Attack();
+
+                // Keep facing the target
+                transform.LookAt(new Vector3(target.position.x, transform.position.y, target.position.z));
+            }
+        }
     }
-    
+
     /// <summary>
-    /// Handles players that move within the aggro radius.
+    /// Checks if any players are within the aggro radius.
     /// </summary>
-    private void CheckAggro() {
+    /// <param name="target">A transform to output to</param>
+    /// <returns>Whether a player is within the aggro radius</returns>
+    private bool CheckAggro(out Transform target) {
         // Check all colliders within the aggro radius that match the player mask
         Collider[] withinAggroColliders = Physics.OverlapSphere(transform.position, aggroRadius, PLAYER_MASK);
 
-        // Length greater than zero means at least one player is within the aggro radius
+        // Array length greater than zero means at least one player is within the aggro radius
         if (withinAggroColliders.Length > 0) {
-            // Move to the player
-            _target = withinAggroColliders[0].transform;
-            _agent.destination = _target.position;
+            // Return the player's transform
+            target = withinAggroColliders[0].transform;
+            return true;
         } else {
             // Default target value
-            _target = transform;
+            target = transform;
+            return false;
         }
     }
 
