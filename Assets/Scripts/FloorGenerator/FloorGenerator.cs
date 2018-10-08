@@ -5,6 +5,22 @@ using UnityEngine;
 
 public class FloorGenerator : MonoBehaviour {
 
+	// EVENT STUFF
+	#region events
+
+	/// <summary>
+	/// Floor related event delegate/template
+	/// </summary>
+	/// <param name="floor">Floor that is related to the event trigger</param>
+	public delegate void FloorEvent(Floor floor);
+
+	/// <summary>
+	/// FloorEvent that is triggered when the floor is done generating
+	/// </summary>
+	public event FloorEvent onFloorGenerated;
+
+	#endregion
+
 	#region public vars
 	[Header("Floor Pieces")]
 
@@ -97,6 +113,11 @@ public class FloorGenerator : MonoBehaviour {
 		exit.gameObject.name = "Exit Room Entry";
 
 		yield return createRoomPieces();
+
+		// trigger event if anything is listening to it
+		if (onFloorGenerated != null) {
+			onFloorGenerated(currentFloorParent);
+		}
 	}
 
 	/// <summary>
