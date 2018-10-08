@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class FloorGenerator : MonoBehaviour {
 
@@ -123,6 +124,8 @@ public class FloorGenerator : MonoBehaviour {
 		Instantiate(exitPrefab, exit.transform);
 
 		yield return createRoomPieces();
+
+		currentFloorParent.GetComponent<NavMeshSurface>().BuildNavMesh();
 
 		// trigger event if anything is listening to it
 		if (onFloorGenerated != null) {
