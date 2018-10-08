@@ -57,7 +57,7 @@ public class BasicAttackProjectile : MonoBehaviour {
     /// </summary>
     /// <param name="other">The collision object collided with</param>
     private void OnTriggerEnter(Collider other) {
-        if (other.tag == "Enemy") {
+        if (other.tag == "AI") {
             Debug.Log("Ranged hit");
             
             // Apply damage to the enemy
