@@ -4,6 +4,7 @@ using UnityEngine.AI;
 /// <summary>
 /// Class for player movement.
 /// </summary>
+[RequireComponent(typeof(NavMeshAgent))]
 public class PlayerController : MonoBehaviour {
 
     /// <summary>
@@ -26,8 +27,8 @@ public class PlayerController : MonoBehaviour {
             _joystick = true;
         }
 
-        // Make sure that this gameobject has a NavMeshAgent
-        if (_agent == null) {
+        // Make sure that this gameobject has an enabled NavMeshAgent
+        if (_agent == null || _agent.enabled == false) {
             Debug.Log("Attempted to run PlayerController script without a NavMeshAgent.");
             Destroy(this);
         }

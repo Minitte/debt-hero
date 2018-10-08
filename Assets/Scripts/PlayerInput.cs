@@ -3,6 +3,10 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.AI;
 
+/// <summary>
+/// Class for handling player input and keybindings.
+/// </summary>
+[RequireComponent(typeof(NavMeshAgent))]
 public class PlayerInput : MonoBehaviour {
 
     /// <summary>
@@ -16,7 +20,7 @@ public class PlayerInput : MonoBehaviour {
     private Dictionary<string, KeyCode> _keybinds;
 
     // Use this for initialization
-    void Start() {
+    private void Start() {
         _keybinds = new Dictionary<string, KeyCode>();
 
         // Check if there are existing keybind settings
@@ -31,7 +35,7 @@ public class PlayerInput : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update() {
+    private void Update() {
         // Check if the player pressed or is holding the attack button
         if (Input.GetKeyDown(_keybinds["Attack"])) {
             // Ray from camera to the clicked position in world space
@@ -67,7 +71,7 @@ public class PlayerInput : MonoBehaviour {
         // Clear the keybinds map before loading from file
         _keybinds.Clear();
 
-        using (StreamReader file = new StreamReader(KEYBINDS_PATH + ".txt")) {
+        using (StreamReader file = new StreamReader(KEYBINDS_PATH)) {
             // Grab all the lines into a string array
             string[] lines = file.ReadToEnd().Split('\n');
 
@@ -93,10 +97,14 @@ public class PlayerInput : MonoBehaviour {
         Vector3 lookPos = attackPoint;
         lookPos.y = transform.position.y;
 
-        // Face towards the attack point
+        // Face towards the attack point and stop movement
         transform.LookAt(lookPos);
+        GetComponent<NavMeshAgent>().destination = transform.position;
+
+        transform.Find("TestSword").GetComponent<Animator>().SetTrigger("Attack");
 
         // Generate a test projectile object
+        /*
         GameObject projectile = GameObject.CreatePrimitive(PrimitiveType.Cube);
         projectile.transform.position = gameObject.transform.position;
         projectile.GetComponent<BoxCollider>().isTrigger = true;
@@ -106,6 +114,9 @@ public class PlayerInput : MonoBehaviour {
         // Get the player's damage
         CharacterStats characterInfo = gameObject.GetComponent<CharacterStats>();
         projectile.AddComponent<BasicAttackProjectile>().Instantiate(attackPoint - transform.position, characterInfo.physAtk, characterInfo.magicAtk);
+        */
+  
+        
 
     }
 }

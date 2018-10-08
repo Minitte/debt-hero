@@ -58,7 +58,7 @@ public class BasicAttackProjectile : MonoBehaviour {
     /// <param name="other">The collision object collided with</param>
     private void OnTriggerEnter(Collider other) {
         if (other.tag == "Enemy") {
-            Debug.Log("Hit");
+            Debug.Log("Ranged hit");
             
             // Apply damage to the enemy
             other.GetComponent<CharacterStats>().TakeDamage(_physAtkdamage, _magicAtkdamage);
