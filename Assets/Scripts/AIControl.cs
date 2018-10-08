@@ -9,19 +9,10 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class AIControl : MonoBehaviour {
 
-    #region Statics
-
     /// <summary>
     /// For filtering out all layers except the player's.
     /// </summary>
     private static readonly int PLAYER_MASK = 1 << 10;
-
-    /// <summary>
-    /// How frequently the AI should check for aggro.
-    /// </summary>
-    private static readonly float AGGRO_CHECK_FREQUENCY = 0.5f;
-
-    #endregion
 
     /// <summary>
     /// The aggro radius.
@@ -69,8 +60,17 @@ public class AIControl : MonoBehaviour {
 
         // Array length greater than zero means at least one player is within the aggro radius
         if (withinAggroColliders.Length > 0) {
-            // Return the player's transform
+            // Target is the player's transform
             target = withinAggroColliders[0].transform;
+
+            // Check if the target is behind a wall
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, target.position - transform.position, out hit)) {
+                if (hit.collider.tag == "Wall") {
+                    return false; // Player is behind wall, don't aggro
+                }
+            }
+
             return true;
         } else {
             // Default target value
