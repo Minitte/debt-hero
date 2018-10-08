@@ -59,6 +59,11 @@ public class FloorGenerator : MonoBehaviour {
 	public Floor floorParentPrefab;
 
 	/// <summary>
+	/// Prefab of the floor's exit
+	/// </summary>
+	public GameObject exitPrefab;
+
+	/// <summary>
 	/// Current floor parent
 	/// </summary>
 	public Floor currentFloorParent;
@@ -107,10 +112,15 @@ public class FloorGenerator : MonoBehaviour {
 		RoomEntry entrance = getRandomRoomEntry();
 		entrance.type = RoomEntry.RoomType.ENTRANCE;
 		entrance.gameObject.name = "Entrance Room Entry";
+		currentFloorParent.entrance = entrance;
 
 		RoomEntry exit = getRandomRoomEntry();
 		exit.type = RoomEntry.RoomType.EXIT;
 		exit.gameObject.name = "Exit Room Entry";
+		currentFloorParent.exit = exit;
+
+		// place exit stairs
+		GameObject exitStairs = Instantiate(exitPrefab, exit.transform);
 
 		yield return createRoomPieces();
 
