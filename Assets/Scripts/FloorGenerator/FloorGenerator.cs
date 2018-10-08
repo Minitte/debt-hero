@@ -58,15 +58,23 @@ public class FloorGenerator : MonoBehaviour {
 	/// Awake is called when the script instance is being loaded.
 	/// </summary>
 	void Awake() {
-		GenerateNewFloor(floorSeed);
+		GenerateNewFloor(floorSeed, false);
 	}
 
 	/// <summary>
 	/// Generates and replaces the current floor with a new one based on the seed
 	/// </summary>
 	/// <param name="floorSeed"></param>
-	public void GenerateNewFloor(int floorSeed) {
+	/// <param name="destoryOldFloor">flag to destory the old floor</param>
+	public void GenerateNewFloor(int floorSeed, bool destoryOldFloor) {
 		_rand = new System.Random(floorSeed);
+
+		if (destoryOldFloor) {
+			if (currentFloorParent != null) {
+				Destroy(currentFloorParent.gameObject);
+				currentFloorParent = null;
+			}
+		}
 
 		StartCoroutine(CoroutineGenerateFloor());
 	}
