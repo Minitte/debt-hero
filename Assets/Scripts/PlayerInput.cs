@@ -67,7 +67,6 @@ public class PlayerInput : MonoBehaviour {
     /// Loads all the keybinds from a file.
     /// </summary>
     public void LoadKeybinds() {
-
         // Clear the keybinds map before loading from file
         _keybinds.Clear();
 
@@ -101,6 +100,7 @@ public class PlayerInput : MonoBehaviour {
         transform.LookAt(lookPos);
         GetComponent<NavMeshAgent>().destination = transform.position;
 
+        // Attack
         transform.Find("TestSword").GetComponent<BasicAttackMelee>().Attack();
 
         // Generate a test projectile object
@@ -115,8 +115,5 @@ public class PlayerInput : MonoBehaviour {
         CharacterStats characterInfo = gameObject.GetComponent<CharacterStats>();
         projectile.AddComponent<BasicAttackProjectile>().Instantiate(attackPoint - transform.position, characterInfo.physAtk, characterInfo.magicAtk);
         */
-  
-        
-
     }
 }
