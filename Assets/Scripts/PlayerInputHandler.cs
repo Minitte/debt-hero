@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
 /// <summary>
-/// Class for handling mouse/keyboard input and keybindings.
+/// Class for handling input and keybindings.
 /// </summary>
 [RequireComponent(typeof(NavMeshAgent))]
-public class PlayerInputKeyboard : MonoBehaviour {
+public class PlayerInputHandler : MonoBehaviour {
 
     /// <summary>
     /// Path to the keybinds text file.
@@ -34,8 +35,10 @@ public class PlayerInputKeyboard : MonoBehaviour {
             LoadKeybinds();
         } else {
             // Default keybinds
-            _keybinds.Add("Attack", KeyCode.Mouse0);
-            _keybinds.Add("Move", KeyCode.Mouse1);
+            _keybinds.Add("AttackKeyboard", KeyCode.Mouse0);
+            _keybinds.Add("MoveKeyboard", KeyCode.Mouse1);
+
+            _keybinds.Add("AttackController", KeyCode.JoystickButton2);
 
             //SaveKeybinds();
         }
@@ -47,14 +50,14 @@ public class PlayerInputKeyboard : MonoBehaviour {
         Vector3 clickedPoint;
 
         // Check if the player pressed the attack key
-        if (Input.GetKeyDown(_keybinds["Attack"])) {
+        if (Input.GetKeyDown(_keybinds["AttackKeyboard"])) {
             if (GetClickedPoint(out clickedPoint)) {
                 BasicAttack(clickedPoint);
             }
         }
 
         // Check if the player pressed or is holding the move key
-        if (Input.GetKey(_keybinds["Move"])) {
+        if (Input.GetKey(_keybinds["MoveKeyboard"])) {
 
             if (GetClickedPoint(out clickedPoint)) {
                 _agent.destination = clickedPoint;
@@ -67,6 +70,27 @@ public class PlayerInputKeyboard : MonoBehaviour {
             // Face towards the destination
             transform.LookAt(lookPos);
         }
+
+        // If a controller is plugged in
+        if (Input.GetJoystickNames().Length > 0) {
+            // Check if the player pressed or is holding the controller attack key
+            if (Input.GetKeyDown(_keybinds["AttackController"])) {
+                // Attack in front of the player
+                BasicAttack(transform.position + transform.forward.normalized);
+            }
+
+            // Horizontal and vertical input values of the joystick
+            float horizontal = Input.GetAxis("HorizontalAnalog");
+            float vertical = Input.GetAxis("VerticalAnalog");
+
+            // Check if the player is moving the joystick
+            if (horizontal != 0f || vertical != 0f) {
+                // Move in the direction of the joystick
+                Vector3 goal = gameObject.transform.position + new Vector3(horizontal, gameObject.transform.position.y, vertical).normalized;
+                _agent.destination = goal;
+            }
+        }
+
     }
 
     /// <summary>
@@ -81,10 +105,12 @@ public class PlayerInputKeyboard : MonoBehaviour {
 
         // Check if the ray collided with anything
         if (Physics.Raycast(ray, out hit, 100)) {
-            // Attempt to move to the collision point
+            // Return the collision point
             clickedPoint = hit.point;
             return true;
         }
+
+        // No collision point
         clickedPoint = Vector3.zero;
         return false;
     }
@@ -128,7 +154,7 @@ public class PlayerInputKeyboard : MonoBehaviour {
     /// <summary>
     /// Perform a basic attack.
     /// </summary>
-    /// <param name="enemy">The enemy gameobject to attack</param>
+    /// <param name="attackPoint">The point to attack</param>
     public void BasicAttack(Vector3 attackPoint) {
         // Position to look towards
         Vector3 lookPos = attackPoint;
@@ -141,6 +167,7 @@ public class PlayerInputKeyboard : MonoBehaviour {
         // Basic melee attack
         transform.Find("TestSword").GetComponent<BasicAttackMelee>().Attack();
 
+        /*
         // Generate a test projectile object
         GameObject projectile = GameObject.CreatePrimitive(PrimitiveType.Cube);
         projectile.transform.position = gameObject.transform.position;
@@ -151,6 +178,6 @@ public class PlayerInputKeyboard : MonoBehaviour {
         // Get the player's damage
         CharacterStats characterInfo = gameObject.GetComponent<CharacterStats>();
         projectile.AddComponent<BasicAttackProjectile>().Instantiate(attackPoint - transform.position, characterInfo.physAtk, characterInfo.magicAtk);
-        
+        */
     }
 }
