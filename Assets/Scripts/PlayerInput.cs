@@ -101,7 +101,7 @@ public class PlayerInput : MonoBehaviour {
         transform.LookAt(lookPos);
         GetComponent<NavMeshAgent>().destination = transform.position;
 
-        transform.Find("TestSword").GetComponent<Animator>().SetTrigger("Attack");
+        transform.Find("TestSword").GetComponent<BasicAttackMelee>().Attack();
 
         // Generate a test projectile object
         /*

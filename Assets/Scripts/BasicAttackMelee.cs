@@ -6,6 +6,11 @@ using UnityEngine;
 public class BasicAttackMelee : MonoBehaviour {
 
     /// <summary>
+    /// Speed of the attack animation modified by the character's attack speed.
+    /// </summary>
+    public float attackSpeed;
+
+    /// <summary>
     /// Reference to this gameobject's animator.
     /// </summary>
     private Animator _animator;
@@ -25,8 +30,12 @@ public class BasicAttackMelee : MonoBehaviour {
         _magicAtkdamage = characterInfo.magicAtk;
     }
 
+    /// <summary>
+    /// Starts the attack animation.
+    /// </summary>
     public void Attack() {
         // Play the animation
+        _animator.SetFloat("Speed", attackSpeed);
         _animator.SetTrigger("Attack");
     }
 
