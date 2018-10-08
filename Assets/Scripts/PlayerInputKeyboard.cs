@@ -4,10 +4,10 @@ using UnityEngine;
 using UnityEngine.AI;
 
 /// <summary>
-/// Class for handling player input and keybindings.
+/// Class for handling mouse/keyboard input and keybindings.
 /// </summary>
 [RequireComponent(typeof(NavMeshAgent))]
-public class PlayerInput : MonoBehaviour {
+public class PlayerInputKeyboard : MonoBehaviour {
 
     /// <summary>
     /// Path to the keybinds text file.
@@ -19,9 +19,15 @@ public class PlayerInput : MonoBehaviour {
     /// </summary>
     private Dictionary<string, KeyCode> _keybinds;
 
+    /// <summary>
+    /// The NavMeshAgent associated with this gameobject.
+    /// </summary>
+    private NavMeshAgent _agent;
+
     // Use this for initialization
     private void Start() {
         _keybinds = new Dictionary<string, KeyCode>();
+        _agent = GetComponent<NavMeshAgent>();
 
         // Check if there are existing keybind settings
         if (File.Exists(KEYBINDS_PATH)) {
@@ -29,6 +35,7 @@ public class PlayerInput : MonoBehaviour {
         } else {
             // Default keybinds
             _keybinds.Add("Attack", KeyCode.Mouse0);
+            _keybinds.Add("Move", KeyCode.Mouse1);
 
             //SaveKeybinds();
         }
@@ -36,19 +43,50 @@ public class PlayerInput : MonoBehaviour {
 
     // Update is called once per frame
     private void Update() {
-        // Check if the player pressed or is holding the attack button
+        // Used for inputs that involve the mouse position
+        Vector3 clickedPoint;
+
+        // Check if the player pressed the attack key
         if (Input.GetKeyDown(_keybinds["Attack"])) {
-            // Ray from camera to the clicked position in world space
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            // Check if the ray collided with a gameobject
-            if (Physics.Raycast(ray, out hit, 100)) {
-
-                // Attack the selected point
-                BasicAttack(hit.point);
+            if (GetClickedPoint(out clickedPoint)) {
+                BasicAttack(clickedPoint);
             }
         }
+
+        // Check if the player pressed or is holding the move key
+        if (Input.GetKey(_keybinds["Move"])) {
+
+            if (GetClickedPoint(out clickedPoint)) {
+                _agent.destination = clickedPoint;
+            }
+
+            // Position to look towards
+            Vector3 lookPos = _agent.destination;
+            lookPos.y = transform.position.y; // Prevents gameobject from looking up or down
+
+            // Face towards the destination
+            transform.LookAt(lookPos);
+        }
+    }
+
+    /// <summary>
+    /// Checks if the mouse position is colliding with any gameobject's colliders.
+    /// </summary>
+    /// <param name="clickedPoint">A Vector3 to output to</param>
+    /// <returns>Whether a collider was found or not</returns>
+    private bool GetClickedPoint(out Vector3 clickedPoint) {
+        // Ray from camera to the clicked position in world space
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        // Check if the ray collided with anything
+        if (Physics.Raycast(ray, out hit, 100)) {
+            // Attempt to move to the collision point
+            clickedPoint = hit.point;
+            return true;
+        }
+        clickedPoint = Vector3.zero;
+        return false;
     }
 
     /// <summary>
@@ -100,11 +138,10 @@ public class PlayerInput : MonoBehaviour {
         transform.LookAt(lookPos);
         GetComponent<NavMeshAgent>().destination = transform.position;
 
-        // Attack
+        // Basic melee attack
         transform.Find("TestSword").GetComponent<BasicAttackMelee>().Attack();
 
         // Generate a test projectile object
-        /*
         GameObject projectile = GameObject.CreatePrimitive(PrimitiveType.Cube);
         projectile.transform.position = gameObject.transform.position;
         projectile.GetComponent<BoxCollider>().isTrigger = true;
@@ -114,6 +151,6 @@ public class PlayerInput : MonoBehaviour {
         // Get the player's damage
         CharacterStats characterInfo = gameObject.GetComponent<CharacterStats>();
         projectile.AddComponent<BasicAttackProjectile>().Instantiate(attackPoint - transform.position, characterInfo.physAtk, characterInfo.magicAtk);
-        */
+        
     }
 }
