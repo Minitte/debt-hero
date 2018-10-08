@@ -120,7 +120,7 @@ public class FloorGenerator : MonoBehaviour {
 		currentFloorParent.exit = exit;
 
 		// place exit stairs
-		GameObject exitStairs = Instantiate(exitPrefab, exit.transform);
+		Instantiate(exitPrefab, exit.transform);
 
 		yield return createRoomPieces();
 
