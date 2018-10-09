@@ -16,6 +16,16 @@ public class Floor : MonoBehaviour {
 	public Dictionary<string, RoomEntry> roomDict;
 
 	/// <summary>
+	/// A room that act as the floor's entrance
+	/// </summary>
+	public RoomEntry entrance;
+
+	/// <summary>
+	/// A room that act as the floor's exit
+	/// </summary>
+	public RoomEntry exit;
+
+	/// <summary>
 	/// Awake is called when the script instance is being loaded.
 	/// </summary>
 	void Awake() {

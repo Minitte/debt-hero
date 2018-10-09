@@ -2,8 +2,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class FloorGenerator : MonoBehaviour {
+
+	// EVENT STUFF
+	#region events
+
+	/// <summary>
+	/// Floor related event delegate/template
+	/// </summary>
+	/// <param name="floor">Floor that is related to the event trigger</param>
+	public delegate void FloorEvent(Floor floor);
+
+	/// <summary>
+	/// FloorEvent that is triggered when a floor begins to generate
+	/// </summary>
+	public static event FloorEvent onBeginGeneration;
+
+	/// <summary>
+	/// FloorEvent that is triggered when the floor is done generating
+	/// </summary>
+	public static event FloorEvent onFloorGenerated;
+
+	#endregion
 
 	#region public vars
 	[Header("Floor Pieces")]
@@ -43,6 +65,11 @@ public class FloorGenerator : MonoBehaviour {
 	public Floor floorParentPrefab;
 
 	/// <summary>
+	/// Prefab of the floor's exit
+	/// </summary>
+	public GameObject exitPrefab;
+
+	/// <summary>
 	/// Current floor parent
 	/// </summary>
 	public Floor currentFloorParent;
@@ -58,15 +85,23 @@ public class FloorGenerator : MonoBehaviour {
 	/// Awake is called when the script instance is being loaded.
 	/// </summary>
 	void Awake() {
-		GenerateNewFloor(floorSeed);
+		GenerateNewFloor(floorSeed, false);
 	}
 
 	/// <summary>
 	/// Generates and replaces the current floor with a new one based on the seed
 	/// </summary>
 	/// <param name="floorSeed"></param>
-	public void GenerateNewFloor(int floorSeed) {
+	/// <param name="destoryOldFloor">flag to destory the old floor</param>
+	public void GenerateNewFloor(int floorSeed, bool destoryOldFloor) {
 		_rand = new System.Random(floorSeed);
+
+		if (destoryOldFloor) {
+			if (currentFloorParent != null) {
+				Destroy(currentFloorParent.gameObject);
+				currentFloorParent = null;
+			}
+		}
 
 		StartCoroutine(CoroutineGenerateFloor());
 	}
@@ -78,17 +113,35 @@ public class FloorGenerator : MonoBehaviour {
 	private IEnumerator CoroutineGenerateFloor() {
 		currentFloorParent = Instantiate(floorParentPrefab.gameObject).GetComponent<Floor>();
 
+		if (onBeginGeneration != null) {
+			onBeginGeneration(currentFloorParent);
+		}
+
 		yield return GenerateRoomEntries(maxFloorRadius);
 
 		RoomEntry entrance = getRandomRoomEntry();
 		entrance.type = RoomEntry.RoomType.ENTRANCE;
 		entrance.gameObject.name = "Entrance Room Entry";
+		currentFloorParent.entrance = entrance;
 
 		RoomEntry exit = getRandomRoomEntry();
 		exit.type = RoomEntry.RoomType.EXIT;
 		exit.gameObject.name = "Exit Room Entry";
+		currentFloorParent.exit = exit;
+
+		// place exit stairs
+		FloorExitTrigger fet = Instantiate(exitPrefab, exit.transform).GetComponent<FloorExitTrigger>();
+
+		fet.TargetGenerator = this;
 
 		yield return createRoomPieces();
+
+		currentFloorParent.GetComponent<NavMeshSurface>().BuildNavMesh();
+
+		// trigger event if anything is listening to it
+		if (onFloorGenerated != null) {
+			onFloorGenerated(currentFloorParent);
+		}
 	}
 
 	/// <summary>
