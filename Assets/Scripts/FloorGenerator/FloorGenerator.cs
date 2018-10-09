@@ -16,9 +16,14 @@ public class FloorGenerator : MonoBehaviour {
 	public delegate void FloorEvent(Floor floor);
 
 	/// <summary>
+	/// FloorEvent that is triggered when a floor begins to generate
+	/// </summary>
+	public static event FloorEvent onBeginGeneration;
+
+	/// <summary>
 	/// FloorEvent that is triggered when the floor is done generating
 	/// </summary>
-	public event FloorEvent onFloorGenerated;
+	public static event FloorEvent onFloorGenerated;
 
 	#endregion
 
@@ -108,6 +113,10 @@ public class FloorGenerator : MonoBehaviour {
 	private IEnumerator CoroutineGenerateFloor() {
 		currentFloorParent = Instantiate(floorParentPrefab.gameObject).GetComponent<Floor>();
 
+		if (onBeginGeneration != null) {
+			onBeginGeneration(currentFloorParent);
+		}
+
 		yield return GenerateRoomEntries(maxFloorRadius);
 
 		RoomEntry entrance = getRandomRoomEntry();
@@ -121,7 +130,9 @@ public class FloorGenerator : MonoBehaviour {
 		currentFloorParent.exit = exit;
 
 		// place exit stairs
-		Instantiate(exitPrefab, exit.transform);
+		FloorExitTrigger fet = Instantiate(exitPrefab, exit.transform).GetComponent<FloorExitTrigger>();
+
+		fet.TargetGenerator = this;
 
 		yield return createRoomPieces();
 
