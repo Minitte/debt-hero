@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 /// <summary>
@@ -11,14 +8,9 @@ using UnityEngine.AI;
 public class PlayerInputHandler : MonoBehaviour {
 
     /// <summary>
-    /// Path to the keybinds text file.
-    /// </summary>
-    private static readonly string KEYBINDS_PATH = "keybinds.txt";
-
-    /// <summary>
     /// Map for keybinds.
     /// </summary>
-    private Dictionary<string, KeyCode> _keybinds;
+    private Keybinds _keybinds;
 
     /// <summary>
     /// The NavMeshAgent associated with this gameobject.
@@ -27,21 +19,8 @@ public class PlayerInputHandler : MonoBehaviour {
 
     // Use this for initialization
     private void Start() {
-        _keybinds = new Dictionary<string, KeyCode>();
+        _keybinds = new Keybinds();
         _agent = GetComponent<NavMeshAgent>();
-
-        // Check if there are existing keybind settings
-        if (File.Exists(KEYBINDS_PATH)) {
-            LoadKeybinds();
-        } else {
-            // Default keybinds
-            _keybinds.Add("AttackKeyboard", KeyCode.Mouse0);
-            _keybinds.Add("MoveKeyboard", KeyCode.Mouse1);
-
-            _keybinds.Add("AttackController", KeyCode.JoystickButton2);
-
-            //SaveKeybinds();
-        }
     }
 
     // Update is called once per frame
@@ -113,42 +92,6 @@ public class PlayerInputHandler : MonoBehaviour {
         // No collision point
         clickedPoint = Vector3.zero;
         return false;
-    }
-
-    /// <summary>
-    /// Saves all the keybinds to a file.
-    /// Format is: "action=keycode".
-    /// </summary>
-    public void SaveKeybinds() {
-        using (StreamWriter file = new StreamWriter(KEYBINDS_PATH)) {
-            foreach (string action in _keybinds.Keys) {
-                file.WriteLine(action + "=" + _keybinds[action].ToString());
-            }
-        }
-    }
-
-    /// <summary>
-    /// Loads all the keybinds from a file.
-    /// </summary>
-    public void LoadKeybinds() {
-        // Clear the keybinds map before loading from file
-        _keybinds.Clear();
-
-        using (StreamReader file = new StreamReader(KEYBINDS_PATH)) {
-            // Grab all the lines into a string array
-            string[] lines = file.ReadToEnd().Split('\n');
-
-            // Iterate through each line except the last line which will be empty
-            for (int i = 0; i < lines.Length - 1; i++) {
-                // Split into action and keycode
-                string[] split = lines[i].Split('=');
-                string action = split[0];
-                KeyCode keyCode = (KeyCode)System.Enum.Parse(typeof(KeyCode), split[1]);
-
-                // Add to the keybinds map
-                _keybinds.Add(action, keyCode);
-            }
-        }
     }
 
     /// <summary>
