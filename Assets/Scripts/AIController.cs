@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-
+using UnityEngine.Events;
 public class AIController : MonoBehaviour {
 
     /// <summary>
@@ -19,6 +19,20 @@ public class AIController : MonoBehaviour {
     private bool follow = false;
     private float timeSinceAggro;
 
+    public UnityEvent unityEvent;
+
+    /// <summary>
+    /// Preset contaning a canvas, image, text.
+    /// </summary>
+    public HealthBar healthbar;
+
+    /// <summary>
+    /// Instance to the preset.
+    /// </summary>
+    private HealthBar Healthbarinstance;
+
+    
+
 
     // Use this for initialization
     void Start () {
@@ -33,10 +47,31 @@ public class AIController : MonoBehaviour {
         follow = false;
         timeSinceAggro = 0;
         spotlight.spotAngle = detectionAngle;
+
+        //Instantiates the instance to the Healthbar prefab.
+        HealthBar hp = Healthbarinstance = Instantiate(healthbar) as HealthBar;
+        hp.gameObject.transform.parent = transform;
+
+        //For test purposes its known as enemy. Can change later.
+        Healthbarinstance.BarGenerateName("Enemy");
+
+        //Setting a red color.
+        Healthbarinstance.BarColor(176, 25, 5, 255);
+
+        unityEvent = new UnityEvent();
+        //unityEvent.AddListener(ch)
+
+        gameObject.GetComponent<CharacterStats>().OnDeath += Example;
+
     }
 	
 	// Update is called once per frame
 	void Update () {
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            gameObject.GetComponent<CharacterStats>().TakeDamage(5, 0);
+        }
 
         /// <summary>
         /// If player is detected, set aggro timer to 0
@@ -87,6 +122,10 @@ public class AIController : MonoBehaviour {
             playerDetected = false;
         }
 
+        //Moves the Hp bar to following the Ai.
+        Healthbarinstance.BarPosition(GameObject.FindGameObjectWithTag("AI").transform.position);
+       
+
     }
 
     /// <summary>
@@ -109,5 +148,12 @@ public class AIController : MonoBehaviour {
         float playerDistance = Vector3.Distance(transform.position, playerPos);
         return playerDistance;
     }
+
+    public void Example()
+    {
+        Debug.Log("AI DIED");
+    }
+
+
 
 }

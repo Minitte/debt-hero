@@ -12,9 +12,20 @@ public class CharacterStats : MonoBehaviour {
     public delegate void DamageEvent(float physAtkdamge, float magicAtkdamage);
 
     /// <summary>
+    /// Death event template.
+    /// </summary>
+    /// <param name="isAlive">Boolean to determine if alive or dead.</param>
+    public delegate void DeathEvent();
+
+    /// <summary>
     /// This damage event is called after the character has taken damage.
     /// </summary>
     public event DamageEvent OnDamageTaken;
+
+    /// <summary>
+    /// This death event is called when the character dies.
+    /// </summary>
+    public event DeathEvent OnDeath;
 
     /// <summary>
     /// The character's current health point.
@@ -73,6 +84,7 @@ public class CharacterStats : MonoBehaviour {
 
     private void Start() {
         OnDamageTaken += ShowDamageText;
+        OnDeath += Die;
     }
 
     /// <summary>
@@ -94,6 +106,7 @@ public class CharacterStats : MonoBehaviour {
             isAlive = true;
         } else {
             isAlive = false;
+            OnDeath();
         }
 
         // if damage was taken, trigger OnDamageTaken event
@@ -119,8 +132,14 @@ public class CharacterStats : MonoBehaviour {
         if (magicDef < magicAtkDamage) {
             netDamageTaken += magicAtkDamage - magicDef;
         }
-
+      
         // Show the damage text
         FloatingTextController.instance.CreateDamageNumber(netDamageTaken, gameObject);
     }
+  
+    public void Die() {
+        Destroy(GetComponent<AIController>());
+        Destroy(gameObject); // Get rid of the gameobject
+    }
+
 }
