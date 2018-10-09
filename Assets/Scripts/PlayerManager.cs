@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour {
 
+	[Header("Player")]
 	/// <summary>
 	/// Player prefab
 	/// </summary>
@@ -13,6 +14,12 @@ public class PlayerManager : MonoBehaviour {
 	/// The current local player gameobject instance
 	/// </summary>
 	public GameObject localPlayer;
+
+	[Header("Camera")]
+	/// <summary>
+	/// the following camera
+	/// </summary>
+	public CopyTargetPosition followingCamera;
 
 	/// <summary>
 	/// Player's stats
@@ -63,6 +70,7 @@ public class PlayerManager : MonoBehaviour {
 		
 		if (localPlayer == null) {
 			localPlayer = Instantiate(playerPrefab, position, Quaternion.identity);
+			followingCamera.target = localPlayer.transform;
 		}
 	}
 
