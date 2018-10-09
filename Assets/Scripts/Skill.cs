@@ -5,7 +5,7 @@ using UnityEngine;
 public class Skill : MonoBehaviour {
 
     public string skillName;
-    public float coolDown;
+    public float cooldown;
     public string stat;
     public float duration;
     public float amount;
@@ -14,7 +14,7 @@ public class Skill : MonoBehaviour {
     public Skill()
     {
         skillName = "";
-        coolDown = 0;
+        cooldown = 0;
         stat = "";
         amount = 0;
         duration = 0;
@@ -37,13 +37,14 @@ public class Skill : MonoBehaviour {
                 skill.name = "Power Strike";
                 skill.amount = 20;
                 skill.type = 4;
-                skill.coolDown = 20;
+                skill.cooldown = 20;
                 break;
             case 1:
                 skill.name = "Healing";
+                skill.stat = "hp";
                 skill.amount = 20;
                 skill.type = 1;
-                skill.coolDown = 30;
+                skill.cooldown = 30;
                 break;
         }
 
@@ -58,7 +59,9 @@ public class Skill : MonoBehaviour {
     /// </summary>
     public static void Gain(string stat, float amount)
     {
-
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        player.GetComponent<Animator>().SetBool("skillcast", true);
+        player.GetComponent<CharacterStats>().TakeDamage(-amount, 0);
     }
     /// <summary>
     /// Skill Type 2
@@ -83,9 +86,9 @@ public class Skill : MonoBehaviour {
     /// Skill Type 4
     /// To use a melee skill that does damage
     /// </summary>
-    public static void Melee(float damage)
+    public static void Melee(float damage, Collider enemy)
     {
-
+        enemy.GetComponent<CharacterStats>().TakeDamage(damage, 0);
     }
 
     /// <summary>

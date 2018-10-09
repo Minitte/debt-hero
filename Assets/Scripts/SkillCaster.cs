@@ -11,25 +11,21 @@ public class SkillCaster : MonoBehaviour {
     // Skill 1 Cooldown
     public int skill1ID;
     private float timeStamp1;
-    public float coolDown1;
     public bool canCast1;
 
     // Skill 2 Cooldown
     public int skill2ID;
     private float timeStamp2;
-    public float coolDown2;
     public bool canCast2;
 
     // Skill 3 Cooldown
     public int skill3ID;
     private float timeStamp3;
-    public float coolDown3;
     public bool canCast3;
 
     // Skill 4 Cooldown
     public int skill4ID;
     private float timeStamp4;
-    public float coolDown4;
     public bool canCast4;
 
     // Use this for initialization
@@ -109,10 +105,53 @@ public class SkillCaster : MonoBehaviour {
         }
         if(cast)
         {
-            if (Skill.GetInfo(skillID).type != -1)
+            Skill currentSkill = Skill.GetInfo(skillID);
+            if (currentSkill.type != -1)
             {
-                GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().SetBool("skill"+skillNum, true);
+                switch (Skill.GetInfo(skillID).type)
+                {
+                    case 1:
+                        Skill.Gain(currentSkill.stat, currentSkill.amount);
+                        UpdateCooldown(skillNum, currentSkill.cooldown);
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                }
             }
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "AI") {
+            Debug.Log("Melee skill hit");
+
+            // Apply damage to the enemy
+            Skill.Melee(0, other);
+        }
+    }
+
+    private void UpdateCooldown(int skillNum, float cooldown)
+    {
+        switch (skillNum)
+        {
+            case 1:
+                timeStamp1 += cooldown;
+                break;
+            case 2:
+                timeStamp2 += cooldown;
+                break;
+            case 3:
+                timeStamp3 += cooldown;
+                break;
+            case 4:
+                timeStamp4 += cooldown;
+                break;
         }
     }
 
