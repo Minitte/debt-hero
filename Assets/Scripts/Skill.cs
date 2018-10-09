@@ -3,16 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Skill : MonoBehaviour {
-    /// <summary>
-    /// Empty class for making skills
-    /// </summary>
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    public string skillName;
+    public float coolDown;
+    public string stat;
+    public float duration;
+    public float amount;
+    public int type;
+
+    public Skill()
+    {
+        skillName = "";
+        coolDown = 0;
+        stat = "";
+        amount = 0;
+        duration = 0;
+        type = -1;
+    }
 }
