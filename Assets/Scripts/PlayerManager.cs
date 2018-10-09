@@ -9,6 +9,11 @@ public class PlayerManager : MonoBehaviour {
 	/// </summary>
 	public GameObject playerPrefab;
 
+    /// <summary>
+    /// Reference to the health bar prefab.
+    /// </summary>
+    public GameObject healthBarPrefab;
+
 	/// <summary>
 	/// The current local player gameobject instance
 	/// </summary>
@@ -24,6 +29,8 @@ public class PlayerManager : MonoBehaviour {
 	/// </summary>
 	private BaseClass _class;
 
+    private StationaryResourcesUI _healthbar;
+
 	/// <summary>
 	/// Awake is called when the script instance is being loaded.
 	/// </summary>
@@ -31,6 +38,8 @@ public class PlayerManager : MonoBehaviour {
 		//localPlayer = Instantiate(playerPrefab);
 
 		_stats = GetComponent<CharacterStats>();
+
+        Instantiate(healthBarPrefab, transform);
 
 		// _class = GetComponent<BaseClass>();
 

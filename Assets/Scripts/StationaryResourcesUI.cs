@@ -25,7 +25,6 @@ public class StationaryResourcesUI : MonoBehaviour
     /// </summary>
     public Image mpBar;
 
-
     /// <summary>
     /// HP Text portion of the Image.
     /// </summary>
@@ -36,23 +35,18 @@ public class StationaryResourcesUI : MonoBehaviour
     /// </summary>
     public Text mpValue;
 
-
-
-
     // Use this for initialization
     void Start()
     {
-        characterStatsIntance = Instantiate(characterStats) as CharacterStats;
+        characterStats = transform.parent.GetComponent<CharacterStats>();
         BarColor(255, 25, 5, 255, hpBar);
         BarColor(107, 114, 255, 255, mpBar);
-        //this.transform.Rotate(50,0,0, Space.Self);
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        DrawBar(characterStatsIntance);
+        DrawBar(characterStats);
         BarPosition(GameObject.FindGameObjectWithTag("MainCamera").transform.position);
     }
 
