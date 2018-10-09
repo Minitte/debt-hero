@@ -17,11 +17,6 @@ public class CharacterStats : MonoBehaviour {
     public event DamageEvent OnDamageTaken;
 
     /// <summary>
-    /// Reference to a text prefab to show damage numbers with.
-    /// </summary>
-    public GameObject damageText;
-
-    /// <summary>
     /// The character's current health point.
     /// </summary>
     public float currentHp;
@@ -110,14 +105,11 @@ public class CharacterStats : MonoBehaviour {
     }
 
     /// <summary>
-    /// Shows the damage taken as a floating text object.
+    /// Shows the damage taken as a floating text object on the canvas.
     /// </summary>
     /// <param name="physAtkDamage">The raw amount of physical damage taken</param>
     /// <param name="magicAtkDamage">The raw amount of magical damage taken</param>
     private void ShowDamageText(float physAtkDamage, float magicAtkDamage) {
-        // Instantiate the damage text gameobject
-        GameObject text = Instantiate(damageText, transform.position, Quaternion.identity, transform);
-
         float netDamageTaken = 0f;
 
         // Calculate net damage taken
@@ -128,11 +120,7 @@ public class CharacterStats : MonoBehaviour {
             netDamageTaken += magicAtkDamage - magicDef;
         }
 
-        // Show damage text
-        if (netDamageTaken == 0f) {
-            text.GetComponent<TextMesh>().text = "DEFENDED";
-        } else {
-            text.GetComponent<TextMesh>().text = netDamageTaken.ToString();
-        }
+        // Show the damage text
+        FloatingTextController.instance.CreateDamageNumber(netDamageTaken, gameObject);
     }
 }

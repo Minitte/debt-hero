@@ -10,8 +10,11 @@ public class DamageText : MonoBehaviour {
     /// </summary>
     public float aliveTime = 2f;
 
-	// Use this for initialization
-	private void Start () {
-        Destroy(gameObject, aliveTime); // Destroy this gameobject after 2 seconds.
-	}
+    private void Start() {
+        Destroy(gameObject, aliveTime);
+    }
+
+    private void Update() {
+        //transform.rotation = Quaternion.identity;
+    }
 }
