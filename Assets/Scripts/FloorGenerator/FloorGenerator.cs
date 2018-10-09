@@ -74,6 +74,20 @@ public class FloorGenerator : MonoBehaviour {
 	/// </summary>
 	public Floor currentFloorParent;
 
+	[Header("Loading Variables")]
+
+	/// <summary>
+	/// Number of entries generated per frame at max
+	/// </summary>
+	[Range(1, 1000)]
+	public int entriesPerFrame = 3;
+
+	/// <summary>
+	/// Number of pieces generated per frame at max
+	/// </summary>
+	[Range(1, 1000)]
+	public int piecesPerFrame = 4;
+
 	#endregion
 
 	/// <summary>
@@ -236,6 +250,8 @@ public class FloorGenerator : MonoBehaviour {
 		int xSign = (int) end.x > cur.x ? 1 : -1;
 		int zSign = (int) end.z > cur.z ? 1 : -1;
 
+		int entriesGenerated = 0;
+
 		// move towards the end cord
 		while (cur != end) {
 			// decide on which axis to move
@@ -253,7 +269,11 @@ public class FloorGenerator : MonoBehaviour {
 				}
 			}
 
-			yield return new WaitForEndOfFrame();
+			entriesGenerated++;
+
+			if (entriesGenerated % entriesPerFrame == 0) {
+				yield return new WaitForEndOfFrame();
+			}
 
 			createRoomEntry(cur);
 		}
@@ -263,6 +283,8 @@ public class FloorGenerator : MonoBehaviour {
 	/// Creates room pieces
 	/// </summary>
 	private IEnumerator CreateRoomPieces() {
+		int piecesGenerated = 0;
+
 		foreach (RoomEntry entry in currentFloorParent.roomList) {
 
 			int numNeigbors = 0;
@@ -346,7 +368,11 @@ public class FloorGenerator : MonoBehaviour {
 					break;
 			}
 
-			yield return new WaitForEndOfFrame();
+			piecesGenerated++;
+
+			if (piecesGenerated % piecesPerFrame == 0) {
+				yield return new WaitForEndOfFrame();
+			}
 		}
 	}
 
