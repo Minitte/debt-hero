@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class BaseClass : MonoBehaviour {
-
+    /// <summary>
+    /// The ID of the class, for other scripts
+    /// </summary>
+    public int classID;
     /// <summary>
     /// Initial stats for selecting the class
     /// </summary>
