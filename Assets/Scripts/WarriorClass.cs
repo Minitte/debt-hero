@@ -32,5 +32,13 @@ public class WarriorClass : BaseClass {
         perLevelMagDef = 0;
         perLevelCrit = 0;
         perLevelCritDmg = 0;
+
+        /// <summary>
+        /// Skill IDs for Warrior
+        /// </summary>
+        skill1 = 0;
+        skill2 = 1;
+        skill3 = 2;
+        skill4 = 3;
     }
 }

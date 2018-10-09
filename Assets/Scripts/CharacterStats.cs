@@ -22,6 +22,19 @@ public class CharacterStats : MonoBehaviour {
     /// </summary>
     public event DamageEvent OnDamageTaken;
 
+    public enum StatType {
+        NONE,
+        CURRENT_HP,
+        MAX_HP,
+        CURRENT_MP,
+        MAX_MP,
+        PHY_ATK,
+        MAG_ATK,
+        PHY_DEF,
+        MAG_DEF,
+        EXP
+    }
+
     /// <summary>
     /// This death event is called when the character dies.
     /// </summary>
@@ -114,6 +127,54 @@ public class CharacterStats : MonoBehaviour {
             if (OnDamageTaken != null) {
                 OnDamageTaken(physAtkDamage, magicAtkDamage);
             }
+        }
+    }
+
+    /// <summary>
+    /// Looks up a stat and adds to it
+    /// </summary>
+    /// <param name="targetStat">Stat to look up</param>
+    /// <param name="amt"></param>
+    public void AddToStat(StatType targetStat, float amt) {
+        switch (targetStat) {
+            case StatType.CURRENT_HP:
+                currentHp += amt;
+                break;
+
+            case StatType.MAX_HP:
+                maxHp += amt;
+                break;
+                
+            case StatType.CURRENT_MP:
+                currentMp += amt;
+                break;
+                
+            case StatType.MAX_MP:
+                maxMp += amt;
+                break;
+                
+            case StatType.PHY_ATK:
+                physAtk += amt;
+                break;
+                
+            case StatType.MAG_ATK:
+                magicAtk += amt;
+                break;
+                
+            case StatType.PHY_DEF:
+                physDef += amt;
+                break;
+                
+            case StatType.MAG_DEF:
+                magicDef += amt;
+                break;
+                
+            case StatType.EXP:
+                exp += amt;
+                break;
+
+            default:
+                break;
         }
     }
 
