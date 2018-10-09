@@ -18,12 +18,12 @@ public class FloorGenerator : MonoBehaviour {
 	/// <summary>
 	/// FloorEvent that is triggered when a floor begins to generate
 	/// </summary>
-	public static event FloorEvent onBeginGeneration;
+	public static event FloorEvent OnBeginGeneration;
 
 	/// <summary>
 	/// FloorEvent that is triggered when the floor is done generating
 	/// </summary>
-	public static event FloorEvent onFloorGenerated;
+	public static event FloorEvent OnFloorGenerated;
 
 	#endregion
 
@@ -113,18 +113,18 @@ public class FloorGenerator : MonoBehaviour {
 	private IEnumerator CoroutineGenerateFloor() {
 		currentFloorParent = Instantiate(floorParentPrefab.gameObject).GetComponent<Floor>();
 
-		if (onBeginGeneration != null) {
-			onBeginGeneration(currentFloorParent);
+		if (OnBeginGeneration != null) {
+			OnBeginGeneration(currentFloorParent);
 		}
 
 		yield return GenerateRoomEntries(maxFloorRadius);
 
-		RoomEntry entrance = getRandomRoomEntry();
+		RoomEntry entrance = GetRandomRoomEntry();
 		entrance.type = RoomEntry.RoomType.ENTRANCE;
 		entrance.gameObject.name = "Entrance Room Entry";
 		currentFloorParent.entrance = entrance;
 
-		RoomEntry exit = getRandomRoomEntry();
+		RoomEntry exit = GetRandomRoomEntry();
 		exit.type = RoomEntry.RoomType.EXIT;
 		exit.gameObject.name = "Exit Room Entry";
 		currentFloorParent.exit = exit;
@@ -134,13 +134,13 @@ public class FloorGenerator : MonoBehaviour {
 
 		fet.TargetGenerator = this;
 
-		yield return createRoomPieces();
+		yield return CreateRoomPieces();
 
 		currentFloorParent.GetComponent<NavMeshSurface>().BuildNavMesh();
 
 		// trigger event if anything is listening to it
-		if (onFloorGenerated != null) {
-			onFloorGenerated(currentFloorParent);
+		if (OnFloorGenerated != null) {
+			OnFloorGenerated(currentFloorParent);
 		}
 	}
 
@@ -179,7 +179,7 @@ public class FloorGenerator : MonoBehaviour {
 
 		entry.coordinate = new XZCoordinate(coord);
 
-		Vector3 pos = coord.toVector3();
+		Vector3 pos = coord.ToVector3();
 		entry.transform.position = pos * roomSize;
 
 		// add to room collections
@@ -221,7 +221,7 @@ public class FloorGenerator : MonoBehaviour {
 		// connect node to others
 		for (int i = 0; i < nodes.Length; i++) {
 			for (int j = i; j < nodes.Length; j++) {
-				yield return generatePath(nodes[i], nodes[j]);
+				yield return GeneratePath(nodes[i], nodes[j]);
 			}
 		}
 	}
@@ -229,7 +229,7 @@ public class FloorGenerator : MonoBehaviour {
 	/// <summary>
 	/// Generates a path from start to end
 	/// </summary>
-	private IEnumerator generatePath(XZCoordinate start, XZCoordinate end) {
+	private IEnumerator GeneratePath(XZCoordinate start, XZCoordinate end) {
 		XZCoordinate cur = new XZCoordinate(start);
 
 		// directional sign
@@ -262,12 +262,12 @@ public class FloorGenerator : MonoBehaviour {
 	/// <summary>
 	/// Creates room pieces
 	/// </summary>
-	private IEnumerator createRoomPieces() {
+	private IEnumerator CreateRoomPieces() {
 		foreach (RoomEntry entry in currentFloorParent.roomList) {
 
 			int numNeigbors = 0;
 
-			bool[] neighbors = getNeighborBools(entry, out numNeigbors);
+			bool[] neighbors = GetNeighborBools(entry, out numNeigbors);
 
 			GameObject piecePrefab;
 
@@ -277,13 +277,13 @@ public class FloorGenerator : MonoBehaviour {
 				// dead end
 				case 1:
 					// get a random piece from the set
-					piecePrefab = pieceSet.getRandomDeadEndPrefab(_rand);
+					piecePrefab = pieceSet.GetRandomDeadEndPrefab(_rand);
 
 					// instantiate and set parent to the entry
 					piece = Instantiate(piecePrefab, currentFloorParent.transform);
 
 					// set the rotation based on neighbor orientation
-					piece.transform.rotation = pieceSet.deadEndRotation(neighbors);
+					piece.transform.rotation = pieceSet.DeadEndRotation(neighbors);
 
 					break;
 
@@ -292,22 +292,22 @@ public class FloorGenerator : MonoBehaviour {
 					// check if hallway
 					if ((neighbors[0] && neighbors[2]) || (neighbors[1] && neighbors[3])) {
 						// get a random piece from the set
-						piecePrefab = pieceSet.getRandomHallWayPrefab(_rand);
+						piecePrefab = pieceSet.GetRandomHallWayPrefab(_rand);
 
 						// instantiate and set parent to the entry
 						piece = Instantiate(piecePrefab, entry.transform);
 
 						// set the rotation based on neighbor orientation
-						piece.transform.rotation = pieceSet.hallwayRotation(neighbors);
+						piece.transform.rotation = pieceSet.HallwayRotation(neighbors);
 					} else {
 						// get a random piece from the set
-						piecePrefab = pieceSet.getRandomCornerPrefab(_rand);
+						piecePrefab = pieceSet.GetRandomCornerPrefab(_rand);
 
 						// instantiate and set parent to the entry
 						piece = Instantiate(piecePrefab, entry.transform);
 
 						// set the rotation based on neighbor orientation
-						piece.transform.rotation = pieceSet.cornerRotation(neighbors);
+						piece.transform.rotation = pieceSet.CornerRotation(neighbors);
 					}
 				
 					break;
@@ -315,26 +315,26 @@ public class FloorGenerator : MonoBehaviour {
 				// T 
 				case 3:
 					// get a random piece from the set
-					piecePrefab = pieceSet.getRandomThreeWayPrefab(_rand);
+					piecePrefab = pieceSet.GetRandomThreeWayPrefab(_rand);
 
 					// instantiate and set parent to the entry
 					piece = Instantiate(piecePrefab, entry.transform);
 
 					// set the rotation based on neighbor orientation
-					piece.transform.rotation = pieceSet.threeWayRotation(neighbors);
+					piece.transform.rotation = pieceSet.ThreeWayRotation(neighbors);
 
 					break;
 
 				// cross
 				case 4:
 					// get a random piece from the set
-					piecePrefab = pieceSet.getRandomFourWayPrefab(_rand);
+					piecePrefab = pieceSet.GetRandomFourWayPrefab(_rand);
 
 					// instantiate and set parent to the entry
 					piece = Instantiate(piecePrefab, entry.transform);
 
 					// set the rotation based on neighbor orientation
-					piece.transform.rotation = pieceSet.fourWayRotation(neighbors);
+					piece.transform.rotation = pieceSet.FourWayRotation(neighbors);
 					break;
 
 				case 0:
@@ -356,29 +356,29 @@ public class FloorGenerator : MonoBehaviour {
 	/// </summary>
 	/// <param name="entry"></param>
 	/// <returns></returns>
-	private bool[] getNeighborBools(RoomEntry entry, out int numNeigbors) {
+	private bool[] GetNeighborBools(RoomEntry entry, out int numNeigbors) {
 		bool[] n = new bool[4];
 
 		int num = 0;
 
 		XZCoordinate cord = entry.coordinate;
 
-		if (currentFloorParent.roomDict.ContainsKey(cord.up().ToString())) {
+		if (currentFloorParent.roomDict.ContainsKey(cord.UpCoordinate().ToString())) {
 			num++;
 			n[0] = true;
 		}
 
-		if (currentFloorParent.roomDict.ContainsKey(cord.right().ToString())) {
+		if (currentFloorParent.roomDict.ContainsKey(cord.RightCoordinate().ToString())) {
 			num++;
 			n[1] = true;
 		}
 
-		if (currentFloorParent.roomDict.ContainsKey(cord.down().ToString())) {
+		if (currentFloorParent.roomDict.ContainsKey(cord.DownCoordinate().ToString())) {
 			num++;
 			n[2] = true;
 		}
 
-		if (currentFloorParent.roomDict.ContainsKey(cord.left().ToString())) {
+		if (currentFloorParent.roomDict.ContainsKey(cord.LeftCoordinate().ToString())) {
 			num++;
 			n[3] = true;
 		}
@@ -392,7 +392,7 @@ public class FloorGenerator : MonoBehaviour {
 	/// Gets a random room entry 
 	/// </summary>
 	/// <returns></returns>
-	public RoomEntry getRandomRoomEntry() {
+	public RoomEntry GetRandomRoomEntry() {
 		return currentFloorParent.roomList[_rand.Next(currentFloorParent.roomList.Count)];
 	}
 
@@ -422,7 +422,7 @@ public class FloorGenerator : MonoBehaviour {
 	/// <param name="goal"></param>
 	/// <param name="list"></param>
 	/// <returns></returns>
-	private XZCoordinate findClosestCord(XZCoordinate goal, params XZCoordinate[] list) {
+	private XZCoordinate FindClosestCord(XZCoordinate goal, params XZCoordinate[] list) {
 		XZCoordinate closest = goal;
 		int minDist = int.MaxValue;
 
@@ -433,7 +433,7 @@ public class FloorGenerator : MonoBehaviour {
 			}
 
 			// distance
-			int dist = list[i].blockDistance(goal);
+			int dist = list[i].BlockDistance(goal);
 			
 			// compare
 			if (dist < minDist) {

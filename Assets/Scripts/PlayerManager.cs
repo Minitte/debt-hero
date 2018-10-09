@@ -34,16 +34,16 @@ public class PlayerManager : MonoBehaviour {
 
 		// _class = GetComponent<BaseClass>();
 
-		FloorGenerator.onFloorGenerated += movePlayerToEntrance;
+		FloorGenerator.OnFloorGenerated += MovePlayerToEntrance;
 
-		FloorGenerator.onBeginGeneration += removePlayerOnNewFloor;
+		FloorGenerator.OnBeginGeneration += RemovePlayerOnNewFloor;
 	}
 
 	/// <summary>
 	/// removes player on floor generation
 	/// </summary>
 	/// <param name="floor"></param>
-	private void removePlayerOnNewFloor(Floor floor) {
+	private void RemovePlayerOnNewFloor(Floor floor) {
 		if (localPlayer != null) {
 			Destroy(localPlayer);
 			localPlayer = null;
@@ -55,7 +55,7 @@ public class PlayerManager : MonoBehaviour {
 	/// </summary>
 	/// <param name="destoryExisting"></param>
 	/// <param name="position"></param>
-	private void createPlayer(bool destoryExisting, Vector3 position) {
+	private void CreatePlayer(bool destoryExisting, Vector3 position) {
 		if (localPlayer != null && destoryExisting) {
 			Destroy(localPlayer);
 			localPlayer = null;
@@ -69,7 +69,7 @@ public class PlayerManager : MonoBehaviour {
 	/// <summary>
 	/// moves the player to the entrance of the floor
 	/// </summary>
-	private void movePlayerToEntrance(Floor currentFloor) {
+	private void MovePlayerToEntrance(Floor currentFloor) {
 		if (localPlayer == null) {
 			Vector3 entrancePos = currentFloor.entrance.transform.position;
 
@@ -77,7 +77,7 @@ public class PlayerManager : MonoBehaviour {
 
 			//localPlayer.transform.position = entrancePos;
 
-			createPlayer(false, entrancePos);
+			CreatePlayer(false, entrancePos);
 		}
 	}
 }
