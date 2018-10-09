@@ -8,10 +8,10 @@ public class DamageText : MonoBehaviour {
     /// <summary>
     /// How long to display the damage text for.
     /// </summary>
-    public float aliveTime = 2f;
+    public float aliveTime;
 
     private void Start() {
-        Destroy(gameObject, aliveTime);
+        Destroy(transform.parent.gameObject, aliveTime);
     }
 
     private void Update() {

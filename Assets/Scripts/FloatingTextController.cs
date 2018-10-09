@@ -16,7 +16,7 @@ public class FloatingTextController : MonoBehaviour {
     /// <summary>
     /// An offset to the damage text's position.
     /// </summary>
-    public Vector3 textOffset = new Vector3(0f, 0f, 0f);
+    public Vector3 textOffset;
 
     /// <summary>
     /// Reference to the game's camera.
@@ -41,9 +41,19 @@ public class FloatingTextController : MonoBehaviour {
     /// <param name="netDamage">The net amount of damage taken</param>
     /// <param name="victim">The gameobject that took damage</param>
     public void CreateDamageNumber(float netDamage, GameObject victim) {
+        // Create the text object and move it onto the canvas
         GameObject textObject = Instantiate(damageText, transform);
         textObject.transform.position = _camera.WorldToScreenPoint(victim.transform.position + textOffset);
 
-        textObject.GetComponent<Text>().text = netDamage.ToString();
+        // Get the actual text field
+        Text text = textObject.transform.Find("DamageText").GetComponent<Text>();
+        text.text = netDamage.ToString(); // Change the text to the net damage taken
+
+        // Change the text color depending on if its a player or mob that took damage
+        if (victim.tag == "Player") {
+            text.color = Color.red; // Player took damage
+        } else {
+            text.color = Color.yellow; // Mob took damage
+        }
     }
 }
