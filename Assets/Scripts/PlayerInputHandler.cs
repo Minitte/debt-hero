@@ -54,8 +54,7 @@ public class PlayerInputHandler : MonoBehaviour {
         if (Input.GetJoystickNames().Length > 0) {
             // Check if the player pressed or is holding the controller attack key
             if (Input.GetKeyDown(_keybinds["AttackController"])) {
-                // Attack in front of the player
-                BasicAttack(transform.position + transform.forward.normalized);
+                BasicAttack(transform.position + transform.forward.normalized); // Attack in front of the player
             }
 
             // Horizontal and vertical input values of the joystick

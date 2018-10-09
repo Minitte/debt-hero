@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Class for basic melee attacks.
+/// </summary>
 [RequireComponent(typeof(Animator))]
 public class BasicAttackMelee : MonoBehaviour {
 
@@ -42,8 +45,8 @@ public class BasicAttackMelee : MonoBehaviour {
     /// </summary>
     /// <param name="other">The collision object collided with</param>
     private void OnTriggerEnter(Collider other) {
-        if (other.tag == "AI" || other.tag == "Player") {
-            Debug.Log("Melee hit");
+        // Only deal damage to Player or AI tags, and no friendly fire
+        if (other.tag == "AI" || other.tag == "Player" && other.tag != tag) {
 
             // Apply damage to the enemy
             other.GetComponent<CharacterStats>().TakeDamage(_physAtkdamage, _magicAtkdamage);

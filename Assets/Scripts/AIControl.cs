@@ -33,8 +33,7 @@ public class AIControl : MonoBehaviour {
 
         // If there is a player in aggro radius, it will be assigned to target
         if (CheckAggro(out target)) {
-            // Move to the player
-            _agent.destination = target.position;
+            _agent.destination = target.position; // Move to the player
 
             // If in melee range
             if (Vector3.Distance(target.position, transform.position) <= _agent.stoppingDistance) {
@@ -58,8 +57,7 @@ public class AIControl : MonoBehaviour {
 
         // Array length greater than zero means at least one player is within the aggro radius
         if (withinAggroColliders.Length > 0) {
-            // Target is the player's transform
-            target = withinAggroColliders[0].transform;
+            target = withinAggroColliders[0].transform; // Target is the player's transform
 
             // Check if the target is behind a wall
             RaycastHit hit;
@@ -71,8 +69,7 @@ public class AIControl : MonoBehaviour {
 
             return true;
         } else {
-            // Default target value
-            target = transform;
+            target = transform; // Default target value
             return false;
         }
     }
