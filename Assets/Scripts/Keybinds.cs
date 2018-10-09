@@ -30,6 +30,7 @@ public class Keybinds {
             // Default keybinds
             _keybinds.Add("AttackKeyboard", KeyCode.Mouse0);
             _keybinds.Add("MoveKeyboard", KeyCode.Mouse1);
+            _keybinds.Add("Skill1", KeyCode.Alpha1);
 
             _keybinds.Add("AttackController", KeyCode.JoystickButton2);
         }

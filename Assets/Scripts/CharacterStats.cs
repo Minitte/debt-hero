@@ -17,6 +17,7 @@ public class CharacterStats : MonoBehaviour {
     public event DamageEvent OnDamageTaken;
 
     public enum StatType {
+        NONE,
         CURRENT_HP,
         MAX_HP,
         CURRENT_MP,
@@ -121,7 +122,7 @@ public class CharacterStats : MonoBehaviour {
     /// </summary>
     /// <param name="targetStat">Stat to look up</param>
     /// <param name="amt"></param>
-    public void AddToStat(StatType targetStat, int amt) {
+    public void AddToStat(StatType targetStat, float amt) {
         switch (targetStat) {
             case StatType.CURRENT_HP:
                 currentHp += amt;

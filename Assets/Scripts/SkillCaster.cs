@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SkillCaster : MonoBehaviour {
     /// <summary>
-    /// For casting skills, has all the information on what each skill does
+    /// For casting skills
     /// Also manages skill cooldowns
     /// </summary>
 
@@ -36,7 +36,8 @@ public class SkillCaster : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+        //Debug.Log("Cooldown Skill1: "+ (timeStamp1-Time.time));
+        canCast1 = canCast2 = canCast3 = canCast4 = false;
         /// <summary>
         /// If skill time is less than current time, skill1 can be casted again
         /// </summary>
@@ -111,7 +112,7 @@ public class SkillCaster : MonoBehaviour {
                 switch (Skill.GetInfo(skillID).type)
                 {
                     case 1:
-                        Skill.Gain(currentSkill.stat, currentSkill.amount);
+                        Skill.Gain(GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterStats>(), currentSkill.stat, currentSkill.amount);
                         UpdateCooldown(skillNum, currentSkill.cooldown);
                         break;
                     case 2:
@@ -126,7 +127,7 @@ public class SkillCaster : MonoBehaviour {
             }
         }
     }
-    private void OnTriggerEnter(Collider other)
+    /*private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "AI") {
             Debug.Log("Melee skill hit");
@@ -134,8 +135,12 @@ public class SkillCaster : MonoBehaviour {
             // Apply damage to the enemy
             Skill.Melee(0, other);
         }
-    }
+    }*/
 
+
+    /// <summary>
+    /// For updating the cooldowns
+    /// </summary>
     private void UpdateCooldown(int skillNum, float cooldown)
     {
         switch (skillNum)

@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Skill : MonoBehaviour {
+public class Skill {
 
-    public string skillName;
+    public string name;
     public float cooldown;
-    public string stat;
+    public CharacterStats.StatType stat;
     public float duration;
     public float amount;
     public int type;
 
     public Skill()
     {
-        skillName = "";
+        name = "";
         cooldown = 0;
-        stat = "";
+        stat = CharacterStats.StatType.NONE;
         amount = 0;
         duration = 0;
         type = -1;
@@ -41,7 +41,7 @@ public class Skill : MonoBehaviour {
                 break;
             case 1:
                 skill.name = "Healing";
-                skill.stat = "hp";
+                skill.stat = CharacterStats.StatType.CURRENT_HP;
                 skill.amount = 20;
                 skill.type = 1;
                 skill.cooldown = 30;
@@ -57,11 +57,10 @@ public class Skill : MonoBehaviour {
     /// (i.e.) Gain("hp", 10); gain 10 hp
     /// Should only be used for HP and MP
     /// </summary>
-    public static void Gain(string stat, float amount)
+    public static void Gain(CharacterStats target, CharacterStats.StatType stat, float amount)
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        player.GetComponent<Animator>().SetBool("skillcast", true);
-        player.GetComponent<CharacterStats>().TakeDamage(-amount, 0);
+        //target.GetComponent<Animator>().SetBool("skillcast", true);
+        target.AddToStat(stat, amount);
     }
     /// <summary>
     /// Skill Type 2
