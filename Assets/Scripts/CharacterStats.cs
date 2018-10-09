@@ -17,6 +17,11 @@ public class CharacterStats : MonoBehaviour {
     public event DamageEvent OnDamageTaken;
 
     /// <summary>
+    /// Reference to a text prefab to show damage numbers with.
+    /// </summary>
+    public GameObject damageText;
+
+    /// <summary>
     /// The character's current health point.
     /// </summary>
     public float currentHp;
@@ -31,7 +36,6 @@ public class CharacterStats : MonoBehaviour {
     /// </summary>
     public float currentMp;
 
-
     /// <summary>
     /// The character's maximum mana point.
     /// </summary>
@@ -41,7 +45,6 @@ public class CharacterStats : MonoBehaviour {
     /// The character's physical attack stat.
     /// </summary>
     public float physAtk;
-
 
     /// <summary>
     /// The character's magic attack stat.
@@ -73,20 +76,23 @@ public class CharacterStats : MonoBehaviour {
     /// </summary>
     public bool isAlive;
 
+    private void Start() {
+        OnDamageTaken += ShowDamageText;
+    }
 
     /// <summary>
     /// Basic damage calculation function.
     /// </summary>
-    /// <param name="physAtkdamge">The amount of physical damage to take.</param>
-    /// <param name="magicAtkdamage">The amount of magical damage to take.</param>
-    public void TakeDamage(float physAtkdamge, float magicAtkdamage) {
+    /// <param name="physAtkDamage">The amount of physical damage to take.</param>
+    /// <param name="magicAtkDamage">The amount of magical damage to take.</param>
+    public void TakeDamage(float physAtkDamage, float magicAtkDamage) {
 
-        if (physDef < physAtkdamge) {
-            currentHp = currentHp - (physAtkdamge - physDef);
+        if (physDef < physAtkDamage) {
+            currentHp = currentHp - (physAtkDamage - physDef);
         }
 
-        if (magicDef < magicAtkdamage) {
-            currentHp = currentHp - (magicAtkdamage - magicDef);
+        if (magicDef < magicAtkDamage) {
+            currentHp = currentHp - (magicAtkDamage - magicDef);
         }
 
         if (currentHp > 0) {
@@ -96,13 +102,37 @@ public class CharacterStats : MonoBehaviour {
         }
 
         // if damage was taken, trigger OnDamageTaken event
-        if (physDef < physAtkdamge || magicDef < magicAtkdamage) {
+        if (physDef < physAtkDamage || magicDef < magicAtkDamage) {
             if (OnDamageTaken != null) {
-                OnDamageTaken(physAtkdamge, magicAtkdamage);
+                OnDamageTaken(physAtkDamage, magicAtkDamage);
             }
         }
     }
 
+    /// <summary>
+    /// Shows the damage taken as a floating text object.
+    /// </summary>
+    /// <param name="physAtkDamage">The raw amount of physical damage taken</param>
+    /// <param name="magicAtkDamage">The raw amount of magical damage taken</param>
+    private void ShowDamageText(float physAtkDamage, float magicAtkDamage) {
+        // Instantiate the damage text gameobject
+        GameObject text = Instantiate(damageText, transform.position, Quaternion.identity, transform);
 
+        float netDamageTaken = 0f;
 
+        // Calculate net damage taken
+        if (physDef < physAtkDamage) {
+            netDamageTaken += physAtkDamage - physDef;
+        }
+        if (magicDef < magicAtkDamage) {
+            netDamageTaken += magicAtkDamage - magicDef;
+        }
+
+        // Show damage text
+        if (netDamageTaken == 0f) {
+            text.GetComponent<TextMesh>().text = "DEFENDED";
+        } else {
+            text.GetComponent<TextMesh>().text = netDamageTaken.ToString();
+        }
+    }
 }
