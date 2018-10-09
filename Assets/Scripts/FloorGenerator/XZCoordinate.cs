@@ -61,7 +61,7 @@ public class XZCoordinate {
     /// </summary>
     /// <param name="other"></param>
     /// <returns></returns>
-    public int blockDistance(XZCoordinate other) {
+    public int BlockDistance(XZCoordinate other) {
         int blockDist = 0;
         
         blockDist += Math.Abs(x - other.x);
@@ -74,7 +74,7 @@ public class XZCoordinate {
     /// create a XZCoordinate with z + 1
     /// </summary>
     /// <returns></returns>
-    public XZCoordinate up() {
+    public XZCoordinate UpCoordinate() {
         return new XZCoordinate(x, z + 1);
     }
 
@@ -82,7 +82,7 @@ public class XZCoordinate {
     /// create a XZCoordinate with z - 1
     /// </summary>
     /// <returns></returns>
-    public XZCoordinate down() {
+    public XZCoordinate DownCoordinate() {
         return new XZCoordinate(x, z - 1);
     }
 
@@ -90,7 +90,7 @@ public class XZCoordinate {
     /// create a XZCoordinate with x - 1
     /// </summary>
     /// <returns></returns>
-    public XZCoordinate left() {
+    public XZCoordinate LeftCoordinate() {
         return new XZCoordinate(x - 1, z);
     }
 
@@ -98,7 +98,7 @@ public class XZCoordinate {
     /// create a XZCoordinate with x + 1
     /// </summary>
     /// <returns></returns>
-    public XZCoordinate right() {
+    public XZCoordinate RightCoordinate() {
         return new XZCoordinate(x + 1, z);
     }
 
@@ -106,7 +106,7 @@ public class XZCoordinate {
     /// Creates a new Vector2 with x = x and y = z
     /// </summary>
     /// <returns></returns>
-    public Vector2 toVector2() {
+    public Vector2 ToVector2() {
         return new Vector2(x ,z);
     }
 
@@ -114,7 +114,7 @@ public class XZCoordinate {
     /// Creates a new Vector3 with x = x, y = 0 and z = z
     /// </summary>
     /// <returns></returns>
-    public Vector3 toVector3() {
+    public Vector3 ToVector3() {
         return new Vector3(x, 0, z);
     }
 

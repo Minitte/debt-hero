@@ -34,7 +34,7 @@ public class FloorPieceSet {
     /// </summary>
     /// <param name="neighbors"></param>
     /// <returns></returns>
-    public Quaternion fourWayRotation(bool[] neighbors) {
+    public Quaternion FourWayRotation(bool[] neighbors) {
         return Quaternion.identity;
     }
 
@@ -43,7 +43,7 @@ public class FloorPieceSet {
     /// </summary>
     /// <param name="neighbors"></param>
     /// <returns></returns>
-    public Quaternion threeWayRotation(bool[] neighbors) {
+    public Quaternion ThreeWayRotation(bool[] neighbors) {
         if (neighbors[0] && neighbors[1] && neighbors[2]) {
             return Quaternion.AngleAxis(-90f, Vector3.up);
         }
@@ -68,7 +68,7 @@ public class FloorPieceSet {
     /// </summary>
     /// <param name="neighbors"></param>
     /// <returns></returns>
-    public Quaternion hallwayRotation(bool[] neighbors) {
+    public Quaternion HallwayRotation(bool[] neighbors) {
         if (neighbors[1]) {
             return Quaternion.AngleAxis(90f, Vector3.up);
         }
@@ -81,7 +81,7 @@ public class FloorPieceSet {
     /// </summary>
     /// <param name="neighbors"></param>
     /// <returns></returns>
-    public Quaternion cornerRotation(bool[] neighbors) {
+    public Quaternion CornerRotation(bool[] neighbors) {
         if (neighbors[0] && neighbors[1]) {
             return Quaternion.AngleAxis(180f, Vector3.up);
         }
@@ -106,7 +106,7 @@ public class FloorPieceSet {
     /// </summary>
     /// <param name="neighbors"></param>
     /// <returns></returns>
-    public Quaternion deadEndRotation(bool[] neighbors) {
+    public Quaternion DeadEndRotation(bool[] neighbors) {
         if (neighbors[0]) {
             return Quaternion.AngleAxis(180f, Vector3.up);
         }
@@ -131,7 +131,7 @@ public class FloorPieceSet {
     /// </summary>
     /// <param name="rand">system default random object</param>
     /// <returns>a 4 way room piece prefab</returns>
-    public GameObject getRandomFourWayPrefab(System.Random rand) {
+    public GameObject GetRandomFourWayPrefab(System.Random rand) {
         return fourWayPrefabs[rand.Next(fourWayPrefabs.Length)];
     }
 
@@ -140,7 +140,7 @@ public class FloorPieceSet {
     /// </summary>
     /// <param name="rand">system default random object</param>
     /// <returns>a 3 way room piece prefab</returns>
-    public GameObject getRandomThreeWayPrefab(System.Random rand) {
+    public GameObject GetRandomThreeWayPrefab(System.Random rand) {
         return threeWayPrefabs[rand.Next(threeWayPrefabs.Length)];
     }
 
@@ -149,7 +149,7 @@ public class FloorPieceSet {
     /// </summary>
     /// <param name="rand">system default random object</param>
     /// <returns>a hall way room piece prefab</returns>
-    public GameObject getRandomHallWayPrefab(System.Random rand) {
+    public GameObject GetRandomHallWayPrefab(System.Random rand) {
         return hallWayPrefabs[rand.Next(hallWayPrefabs.Length)];
     }
     
@@ -158,7 +158,7 @@ public class FloorPieceSet {
     /// </summary>
     /// <param name="rand">system default random object</param>
     /// <returns>a corner room piece prefab</returns>
-    public GameObject getRandomCornerPrefab(System.Random rand) {
+    public GameObject GetRandomCornerPrefab(System.Random rand) {
         return cornerPrefabs[rand.Next(cornerPrefabs.Length)];
     }
 
@@ -167,7 +167,7 @@ public class FloorPieceSet {
     /// </summary>
     /// <param name="rand">system default random object</param>
     /// <returns>a dead end room piece prefab</returns>
-    public GameObject getRandomDeadEndPrefab(System.Random rand) {
+    public GameObject GetRandomDeadEndPrefab(System.Random rand) {
         return deadEndPrefabs[rand.Next(deadEndPrefabs.Length)];
     }
 }
