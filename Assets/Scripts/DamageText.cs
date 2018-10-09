@@ -10,11 +10,20 @@ public class DamageText : MonoBehaviour {
     /// </summary>
     public float aliveTime;
 
+    /// <summary>
+    /// Reference to this gameobject's CanvasRenderer.
+    /// </summary>
+    private CanvasRenderer _canvasRenderer;
+
     private void Start() {
+        _canvasRenderer = GetComponent<CanvasRenderer>();
+
+        // Destroy the gameobject after aliveTime seconds
         Destroy(transform.parent.gameObject, aliveTime);
     }
 
     private void Update() {
-        //transform.rotation = Quaternion.identity;
+        // Fade out effect
+        _canvasRenderer.SetAlpha(_canvasRenderer.GetAlpha() - Time.deltaTime / aliveTime);
     }
 }

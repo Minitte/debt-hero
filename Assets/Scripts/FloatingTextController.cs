@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Class for handling damage numbers.
+/// </summary>
 public class FloatingTextController : MonoBehaviour {
 
     /// <summary>
@@ -23,16 +26,10 @@ public class FloatingTextController : MonoBehaviour {
     /// </summary>
     private Camera _camera;
 
-    /// <summary>
-    /// Reference to the game's UI canvas.
-    /// </summary>
-    private GameObject _canvas;
-
     // Use this for initialization
     private void Start() {
         instance = this;
         _camera = GameObject.Find("Main Camera").GetComponent<Camera>();
-        _canvas = GameObject.Find("Canvas");
     }
 
     /// <summary>
