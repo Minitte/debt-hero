@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
@@ -23,38 +21,19 @@ public class HealthBar : MonoBehaviour
     public Text value;
 
     /// <summary>
-    /// The owner of the health bar.
+    /// An offset for the health bar.
     /// </summary>
-    private GameObject _owner;
+    public Vector3 offset;
 
     /// <summary>
     /// An offset for the health bar.
     /// </summary>
     private Vector3 _offset;
 
-    /// <summary>
-    /// Whether the health bar is ready or not
-    /// </summary>
-    private bool ready;
-
-    /// <summary>
-    /// Initializes the health bar.
-    /// </summary>
-    /// <param name="owner">The owner of the health bar</param>
-    /// <param name="offset">An offset for the position of the health bar</param>
-    public void Initialize(GameObject owner, Vector3 offset) {
-        _owner = owner;
-        _offset = offset;
-        ready = true;
-    }
-
     private void Update()
     {
-        if (ready)
-        {
-            transform.position = FloatingTextController.instance.Convert3DTo2D(_owner.transform.position + _offset);
-        }
-
+        // Stay next to the character
+        transform.Find("HealthBarColor").position = Camera.main.WorldToScreenPoint(transform.parent.position + offset);
     }
 
     /// <summary>

@@ -10,11 +10,6 @@ public class PlayerManager : MonoBehaviour {
 	/// </summary>
 	public GameObject playerPrefab;
 
-    /// <summary>
-    /// Reference to the health bar prefab.
-    /// </summary>
-    public GameObject healthBarPrefab;
-
 	/// <summary>
 	/// The current local player gameobject instance
 	/// </summary>
@@ -45,8 +40,6 @@ public class PlayerManager : MonoBehaviour {
 		//localPlayer = Instantiate(playerPrefab);
 
 		_stats = GetComponent<CharacterStats>();
-
-        Instantiate(healthBarPrefab, transform);
 
 		// _class = GetComponent<BaseClass>();
 

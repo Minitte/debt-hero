@@ -22,15 +22,9 @@ public class AIControl : MonoBehaviour {
     /// </summary>
     private NavMeshAgent _agent;
 
-    /// <summary>
-    /// Reference to the health bar.
-    /// </summary>
-    private HealthBar _healthBar;
-
     // Use this for initialization
     private void Start() {
         _agent = GetComponent<NavMeshAgent>();
-        InvokeRepeating("DrawHealthBar", 0f, 0.5f); // Try to generate a healthbar
     }
 
     // Update is called once per frame
@@ -81,33 +75,10 @@ public class AIControl : MonoBehaviour {
     }
 
     /// <summary>
-    /// Draws the healthbar.
-    /// </summary>
-    private void DrawHealthBar()
-    {
-        // Attempt to draw the healthbar
-        if (FloatingTextController.instance != null)
-        {
-            _healthBar = FloatingTextController.instance.CreateHealthBar(gameObject);
-            CancelInvoke();
-            Debug.Log("DONE");
-        } else
-        {
-            Debug.Log("FloatingTextController wasn't ready");
-        }
-
-    }
-
-    /// <summary>
     /// Draws a red sphere to indicate the aggro radius in the editor.
     /// </summary>
     private void OnDrawGizmosSelected() {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, aggroRadius);
-    }
-
-    private void OnDestroy()
-    {
-        Destroy(_healthBar.gameObject); // Destroy the health bar too
     }
 }

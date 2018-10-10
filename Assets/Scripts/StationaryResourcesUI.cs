@@ -47,7 +47,6 @@ public class StationaryResourcesUI : MonoBehaviour
     void Update()
     {
         DrawBar(characterStats);
-        BarPosition(GameObject.FindGameObjectWithTag("MainCamera").transform.position);
     }
 
     /// <summary>
@@ -74,11 +73,12 @@ public class StationaryResourcesUI : MonoBehaviour
     }
 
     /// <summary>
-    /// Setting the position of the bar.
+    /// Setting the position of the bars.
     /// </summary>
     /// <param name="position"> A vector use to set the location of the stationary ui object.</param>
     public void BarPosition(Vector3 position)
     {
+        
         this.transform.position = new Vector3(position.x, position.y - 2.5f, position.z + 1f);
     }
 }
