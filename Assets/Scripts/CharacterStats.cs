@@ -104,7 +104,10 @@ public class CharacterStats : MonoBehaviour {
         OnDamageTaken += ShowDamageText;
         OnDeath += Die;
 
-        DrawHealthBar();
+        // Mini health bar for AI
+        if (tag != "Player") {
+            DrawHealthBar();
+        }
     }
 
     /// <summary>
@@ -217,7 +220,9 @@ public class CharacterStats : MonoBehaviour {
         hpObject.GetComponent<HealthBar>().BarColor(176, 25, 5, 255);
     }
 
-
+    /// <summary>
+    /// Called when the gameobject dies.
+    /// </summary>
     public void Die() {
         Destroy(gameObject); // Get rid of the gameobject
     }

@@ -12,11 +12,6 @@ public class FloatingTextController : MonoBehaviour {
     public static FloatingTextController instance;
 
     /// <summary>
-    /// Reference to the healthbar prefab.
-    /// </summary>
-    public GameObject healthBar;
-
-    /// <summary>
     /// Reference to the damage text prefab.
     /// </summary>
     public GameObject damageText;
@@ -26,20 +21,9 @@ public class FloatingTextController : MonoBehaviour {
     /// </summary>
     public Vector3 textOffset;
 
-    /// <summary>
-    /// An offset to the health bar's position.
-    /// </summary>
-    public Vector3 healthBarOffset;
-
-    /// <summary>
-    /// Reference to the game's camera.
-    /// </summary>
-    private Camera _camera;
-
     // Use this for initialization
     private void Start() {
         instance = this;
-        _camera = GameObject.Find("Main Camera").GetComponent<Camera>();
     }
 
     /// <summary>
@@ -50,7 +34,7 @@ public class FloatingTextController : MonoBehaviour {
     public void CreateDamageNumber(float netDamage, GameObject victim) {
         // Create the text object and move it onto the canvas
         GameObject textObject = Instantiate(damageText, transform);
-        textObject.transform.position = _camera.WorldToScreenPoint(victim.transform.position + textOffset);
+        textObject.transform.position = Camera.main.WorldToScreenPoint(victim.transform.position + textOffset);
 
         // Get the actual text field
         Text text = textObject.transform.Find("DamageText").GetComponent<Text>();
