@@ -112,20 +112,10 @@ public class PlayerInputHandler : MonoBehaviour {
         transform.LookAt(lookPos);
         GetComponent<NavMeshAgent>().destination = transform.position;
 
-        // Basic melee attack
-        transform.Find("TestSword").GetComponent<BasicAttackMelee>().Attack();
+        // Start the attack animation
+        GetComponent<Animator>().SetTrigger("Attack");
 
-        /*
-        // Generate a test projectile object
-        GameObject projectile = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        projectile.transform.position = gameObject.transform.position;
-        projectile.GetComponent<BoxCollider>().isTrigger = true;
-        projectile.AddComponent<Rigidbody>().isKinematic = true;
-        projectile.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
-
-        // Get the player's damage
-        CharacterStats characterInfo = gameObject.GetComponent<CharacterStats>();
-        projectile.AddComponent<BasicAttackProjectile>().Instantiate(attackPoint - transform.position, characterInfo.physAtk, characterInfo.magicAtk);
-        */
+        // Cast a basic attack
+        GetComponent<SkillCaster>().Cast(0, 0);
     }
 }

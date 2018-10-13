@@ -38,7 +38,7 @@ public class AIControl : MonoBehaviour {
             // If in melee range
             if (Vector3.Distance(target.position, transform.position) <= _agent.stoppingDistance) {
                 // Basic melee attack
-                transform.Find("TestSword").GetComponent<BasicAttackMelee>().Attack();
+                GetComponent<SkillCaster>().Cast(0, 0);
 
                 // Keep facing the target
                 transform.LookAt(new Vector3(target.position.x, transform.position.y, target.position.z));

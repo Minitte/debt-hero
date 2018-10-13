@@ -132,6 +132,9 @@ public class CharacterStats : MonoBehaviour {
             OnDeath();
         }
 
+        // Start the take damage animation
+        //GetComponent<Animator>().SetTrigger("TakeDamage");
+
         // if damage was taken, trigger OnDamageTaken event
         if (physDef < physAtkDamage || magicDef < magicAtkDamage) {
             if (OnDamageTaken != null) {
