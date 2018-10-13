@@ -39,7 +39,8 @@ public class PlayerInputHandler : MonoBehaviour {
 
     // Update is called once per frame
     private void Update() {
-        if (!_characterStats.isAttacking) {
+        // Don't accept input if the character is casting something
+        if (!_skillCaster.isCasting) {
             // Used for inputs that involve the mouse position
             Vector3 clickedPoint;
 

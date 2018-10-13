@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// This is a class that deals damage to gameobjects collided with.
@@ -16,10 +15,35 @@ public class Attack : MonoBehaviour {
     /// </summary>
     private float _magicAtkdamage;
 
+    /// <summary>
+    /// Reference to the SkillCaster component.
+    /// </summary>
+    private SkillCaster _skillCaster;
+
+    /// <summary>
+    /// Reference to this gameobject's Collider component.
+    /// </summary>
+    private Collider _collider;
+
     // Use this for initialization
-    void Start () {
+    private void Start () {
         _physAtkdamage = transform.parent.GetComponent<CharacterStats>().physAtk;
         _magicAtkdamage = transform.parent.GetComponent<CharacterStats>().magicAtk;
+        _skillCaster = transform.parent.GetComponent<SkillCaster>();
+        _collider = GetComponent<Collider>();
+    }
+
+    // Update is called once per frame
+    private void Update() {
+        // Only deal damage within the damage window of the animation
+        if (_skillCaster.canDealDamage) {
+            _collider.enabled = true;
+        } else {
+            // Check if the damage window is over
+            if (_collider.enabled) {
+                Destroy(gameObject);
+            }
+        }
     }
 
     /// <summary>

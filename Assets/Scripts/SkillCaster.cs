@@ -2,11 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// For casting skills
+/// Also manages skill cooldowns
+/// </summary>
 public class SkillCaster : MonoBehaviour {
+
     /// <summary>
-    /// For casting skills
-    /// Also manages skill cooldowns
+    /// Whether the gameobject can deal damage or not.
+    /// Used by the animator to make damage windows.
     /// </summary>
+    public bool canDealDamage;
+
+    /// <summary>
+    /// Represents if the character is attacking.
+    /// </summary>
+    public bool isCasting;
 
     /// <summary>
     /// Reference to skill0's prefab.
@@ -37,6 +48,7 @@ public class SkillCaster : MonoBehaviour {
     public int skill4ID;
     private float timeStamp4;
     public bool canCast4;
+
 
     // Use this for initialization
     void Start() {

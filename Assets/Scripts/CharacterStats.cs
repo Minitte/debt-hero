@@ -96,11 +96,6 @@ public class CharacterStats : MonoBehaviour {
     public float exp;
 
     /// <summary>
-    /// Boolean to represent if the character is attacking.
-    /// </summary>
-    public bool isAttacking;
-
-    /// <summary>
     /// Boolean to represent if a character is alive.
     /// </summary>
     public bool isAlive;
