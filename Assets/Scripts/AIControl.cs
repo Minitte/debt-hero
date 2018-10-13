@@ -22,26 +22,35 @@ public class AIControl : MonoBehaviour {
     /// </summary>
     private NavMeshAgent _agent;
 
+    /// <summary>
+    /// Reference to the SkillCaster.
+    /// </summary>
+    private SkillCaster _skillCaster;
+
     // Use this for initialization
     private void Start() {
         _agent = GetComponent<NavMeshAgent>();
+        _skillCaster = GetComponent<SkillCaster>();
     }
 
     // Update is called once per frame
     private void FixedUpdate() {
-        Transform target;
+        // Don't do anything if already attacking
+        if (!_skillCaster.isCasting) {
+            Transform target;
 
-        // If there is a player in aggro radius, it will be assigned to target
-        if (CheckAggro(out target)) {
-            _agent.destination = target.position; // Move to the player
+            // If there is a player in aggro radius, it will be assigned to target
+            if (CheckAggro(out target)) {
+                _agent.destination = target.position; // Move to the player
 
-            // If in melee range
-            if (Vector3.Distance(target.position, transform.position) <= _agent.stoppingDistance) {
-                // Basic melee attack
-                GetComponent<SkillCaster>().Cast(0, 0);
+                // If in melee range
+                if (Vector3.Distance(target.position, transform.position) <= _agent.stoppingDistance) {
+                    // Basic melee attack
+                    GetComponent<SkillCaster>().Cast(0, 0);
 
-                // Keep facing the target
-                transform.LookAt(new Vector3(target.position.x, transform.position.y, target.position.z));
+                    // Keep facing the target
+                    transform.LookAt(new Vector3(target.position.x, transform.position.y, target.position.z));
+                }
             }
         }
     }

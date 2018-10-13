@@ -19,11 +19,6 @@ public class PlayerInputHandler : MonoBehaviour {
     private NavMeshAgent _agent;
 
     /// <summary>
-    /// Reference to the character stats.
-    /// </summary>
-    private CharacterStats _characterStats;
-
-    /// <summary>
     /// Reference to the gameobject's animator.
     /// </summary>
     private SkillCaster _skillCaster;
@@ -33,7 +28,6 @@ public class PlayerInputHandler : MonoBehaviour {
     private void Start() {
         _keybinds = new Keybinds();
         _agent = GetComponent<NavMeshAgent>();
-        _characterStats = GetComponent<CharacterStats>();
         _skillCaster = GetComponent<SkillCaster>();
     }
 
@@ -47,7 +41,7 @@ public class PlayerInputHandler : MonoBehaviour {
             // Check if the player pressed the attack key
             if (Input.GetKeyDown(_keybinds["AttackKeyboard"])) {
                 if (GetClickedPoint(out clickedPoint)) {
-                    LookAtPoint(clickedPoint);
+                    transform.LookAt(new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z));
                     _agent.destination = transform.position; //Stop movement 
                     _skillCaster.Cast(0, 0);
                 }
@@ -56,7 +50,7 @@ public class PlayerInputHandler : MonoBehaviour {
             // Check if the player pressed or is holding the move key
             if (Input.GetKey(_keybinds["MoveKeyboard"])) {
                 if (GetClickedPoint(out clickedPoint)) {
-                    LookAtPoint(clickedPoint);
+                    transform.LookAt(new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z));
                     _agent.destination = clickedPoint;
                 }
             }
@@ -108,18 +102,5 @@ public class PlayerInputHandler : MonoBehaviour {
         // No collision point
         clickedPoint = Vector3.zero;
         return false;
-    }
-
-    /// <summary>
-    /// Makes the gameobject look toward a specified point.
-    /// Ignores the Y position of the point.
-    /// </summary>
-    public void LookAtPoint(Vector3 point) {
-        // Position to look towards
-        Vector3 lookPos = point;
-        lookPos.y = transform.position.y;
-
-        // Face towards the attack point and stop movement
-        transform.LookAt(lookPos);
     }
 }
