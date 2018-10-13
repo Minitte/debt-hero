@@ -25,6 +25,9 @@ public class FloorGenerator : MonoBehaviour {
 	/// </summary>
 	public static event FloorEvent OnFloorGenerated;
 
+    public delegate void SpawnEvent(Floor floor, System.Random random);
+    public static event SpawnEvent OnEnemySpawn; 
+
 	#endregion
 
 	#region public vars
@@ -100,14 +103,14 @@ public class FloorGenerator : MonoBehaviour {
 	/// </summary>
 	void Awake() {
 		GenerateNewFloor(floorSeed, false);
-	}
+    }
 
-	/// <summary>
-	/// Generates and replaces the current floor with a new one based on the seed
-	/// </summary>
-	/// <param name="floorSeed"></param>
-	/// <param name="destoryOldFloor">flag to destory the old floor</param>
-	public void GenerateNewFloor(int floorSeed, bool destoryOldFloor) {
+    /// <summary>
+    /// Generates and replaces the current floor with a new one based on the seed
+    /// </summary>
+    /// <param name="floorSeed"></param>
+    /// <param name="destoryOldFloor">flag to destory the old floor</param>
+    public void GenerateNewFloor(int floorSeed, bool destoryOldFloor) {
 		_rand = new System.Random(floorSeed);
 
 		if (destoryOldFloor) {
@@ -143,19 +146,23 @@ public class FloorGenerator : MonoBehaviour {
 		exit.gameObject.name = "Exit Room Entry";
 		currentFloorParent.exit = exit;
 
-		// place exit stairs
-		FloorExitTrigger fet = Instantiate(exitPrefab, exit.transform).GetComponent<FloorExitTrigger>();
+        // place exit stairs
+        FloorExitTrigger fet = Instantiate(exitPrefab, exit.transform).GetComponent<FloorExitTrigger>();
 
 		fet.TargetGenerator = this;
-
-		yield return CreateRoomPieces();
+        yield return CreateRoomPieces();
 
 		currentFloorParent.GetComponent<NavMeshSurface>().BuildNavMesh();
 
 		// trigger event if anything is listening to it
 		if (OnFloorGenerated != null) {
 			OnFloorGenerated(currentFloorParent);
+            OnEnemySpawn(currentFloorParent, _rand);
+           
 		}
+
+       
+       
 	}
 
 	/// <summary>
