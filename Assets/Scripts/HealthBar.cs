@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
@@ -22,16 +20,20 @@ public class HealthBar : MonoBehaviour
     /// 
     public Text value;
 
+    /// <summary>
+    /// An offset for the health bar.
+    /// </summary>
+    public Vector3 offset;
 
-    void Start()
+    /// <summary>
+    /// An offset for the health bar.
+    /// </summary>
+    private Vector3 _offset;
+
+    private void Update()
     {
-
-    }
-
-
-    void Update()
-    {
-
+        // Stay next to the character
+        transform.Find("HealthBarColor").position = Camera.main.WorldToScreenPoint(transform.parent.position + offset);
     }
 
     /// <summary>

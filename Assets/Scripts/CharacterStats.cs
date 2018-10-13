@@ -14,7 +14,7 @@ public class CharacterStats : MonoBehaviour {
     /// <summary>
     /// Death event template.
     /// </summary>
-    /// <param name="isAlive">Boolean to determine if alive or dead.</param>
+   
     public delegate void DeathEvent();
 
     /// <summary>
@@ -22,10 +22,28 @@ public class CharacterStats : MonoBehaviour {
     /// </summary>
     public event DamageEvent OnDamageTaken;
 
+    public enum StatType {
+        NONE,
+        CURRENT_HP,
+        MAX_HP,
+        CURRENT_MP,
+        MAX_MP,
+        PHY_ATK,
+        MAG_ATK,
+        PHY_DEF,
+        MAG_DEF,
+        EXP
+    }
+
     /// <summary>
     /// This death event is called when the character dies.
     /// </summary>
     public event DeathEvent OnDeath;
+
+    /// <summary>
+    /// Reference to the health bar prefab.
+    /// </summary>
+    public GameObject healthBar;
 
     /// <summary>
     /// The character's current health point.
@@ -85,6 +103,11 @@ public class CharacterStats : MonoBehaviour {
     private void Start() {
         OnDamageTaken += ShowDamageText;
         OnDeath += Die;
+
+        // Mini health bar for AI
+        if (tag != "Player") {
+            DrawHealthBar();
+        }
     }
 
     /// <summary>
@@ -118,6 +141,54 @@ public class CharacterStats : MonoBehaviour {
     }
 
     /// <summary>
+    /// Looks up a stat and adds to it
+    /// </summary>
+    /// <param name="targetStat">Stat to look up</param>
+    /// <param name="amt"></param>
+    public void AddToStat(StatType targetStat, float amt) {
+        switch (targetStat) {
+            case StatType.CURRENT_HP:
+                currentHp += amt;
+                break;
+
+            case StatType.MAX_HP:
+                maxHp += amt;
+                break;
+                
+            case StatType.CURRENT_MP:
+                currentMp += amt;
+                break;
+                
+            case StatType.MAX_MP:
+                maxMp += amt;
+                break;
+                
+            case StatType.PHY_ATK:
+                physAtk += amt;
+                break;
+                
+            case StatType.MAG_ATK:
+                magicAtk += amt;
+                break;
+                
+            case StatType.PHY_DEF:
+                physDef += amt;
+                break;
+                
+            case StatType.MAG_DEF:
+                magicDef += amt;
+                break;
+                
+            case StatType.EXP:
+                exp += amt;
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    /// <summary>
     /// Shows the damage taken as a floating text object on the canvas.
     /// </summary>
     /// <param name="physAtkDamage">The raw amount of physical damage taken</param>
@@ -136,9 +207,23 @@ public class CharacterStats : MonoBehaviour {
         // Show the damage text
         FloatingTextController.instance.CreateDamageNumber(netDamageTaken, gameObject);
     }
-  
+
+    /// <summary>
+    /// Draws the healthbar.
+    /// </summary>
+    private void DrawHealthBar() {
+        // Create the health bar object as a child
+        GameObject hpObject = Instantiate(healthBar, transform);
+        hpObject.transform.position = Camera.main.WorldToScreenPoint(transform.position);
+
+        // Set the colour to red
+        hpObject.GetComponent<HealthBar>().BarColor(176, 25, 5, 255);
+    }
+
+    /// <summary>
+    /// Called when the gameobject dies.
+    /// </summary>
     public void Die() {
-        Destroy(GetComponent<AIController>());
         Destroy(gameObject); // Get rid of the gameobject
     }
 

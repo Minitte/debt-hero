@@ -34,10 +34,10 @@ public abstract class BaseClass : MonoBehaviour {
     /// <summary>
     /// Skills
     /// </summary>
-    public Skill skill1;
-    public Skill skill2;
-    public Skill skill3;
-    public Skill skill4;
+    public int skill1;
+    public int skill2;
+    public int skill3;
+    public int skill4;
 
     /// <summary>
     /// Not implemented yet
