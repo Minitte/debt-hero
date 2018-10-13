@@ -56,6 +56,13 @@ public class CharacterStatsPanel : MonoBehaviour {
 	public CharacterStats stats;
 
 	/// <summary>
+	/// Awake is called when the script instance is being loaded.
+	/// </summary>
+	void Awake() {
+		UpdateTextValues();
+	}
+
+	/// <summary>
 	/// This function is called when the object becomes enabled and active.
 	/// </summary>
 	void OnEnable() {
