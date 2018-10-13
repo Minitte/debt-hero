@@ -25,7 +25,16 @@ public class FloorGenerator : MonoBehaviour {
 	/// </summary>
 	public static event FloorEvent OnFloorGenerated;
 
+    /// <summary>
+    /// An event relating to spawnning.
+    /// </summary>
+    /// <param name="floor">Floor that is related to the event</param>
+    /// <param name="random">Random uses to randomize rooms.</param>
     public delegate void SpawnEvent(Floor floor, System.Random random);
+
+    /// <summary>
+    /// SpawnEvent that is triggered when the floor is done generating.
+    /// </summary>
     public static event SpawnEvent OnEnemySpawn; 
 
 	#endregion

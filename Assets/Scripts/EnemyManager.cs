@@ -21,6 +21,11 @@ public class EnemyManager : MonoBehaviour {
         FloorGenerator.OnEnemySpawn += SpawnEnemies;
     }
 
+    /// <summary>
+    /// Spawn Enemies in a room.
+    /// </summary>
+    /// <param name="currentFloor">A floor that contains a room</param>
+    /// <param name="rand"> Random used to determine which room to use.</param>
     void SpawnEnemies(Floor currentFloor, System.Random rand) {
         Debug.Log("Event Fired");
         int roomSize = currentFloor.roomList.Count;
