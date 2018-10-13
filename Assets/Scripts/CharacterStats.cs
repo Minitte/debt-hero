@@ -14,7 +14,7 @@ public class CharacterStats : MonoBehaviour {
     /// <summary>
     /// Death event template.
     /// </summary>
-    /// <param name="isAlive">Boolean to determine if alive or dead.</param>
+   
     public delegate void DeathEvent();
 
     /// <summary>
