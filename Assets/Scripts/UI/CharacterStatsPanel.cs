@@ -56,6 +56,13 @@ public class CharacterStatsPanel : MonoBehaviour {
 	public CharacterStats stats;
 
 	/// <summary>
+	/// This function is called when the object becomes enabled and active.
+	/// </summary>
+	void OnEnable() {
+		UpdateTextValues();
+	}
+
+	/// <summary>
 	/// Updates the text values with the corresponding values in stats
 	/// </summary>
 	public void UpdateTextValues() {
