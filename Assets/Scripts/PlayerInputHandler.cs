@@ -28,6 +28,7 @@ public class PlayerInputHandler : MonoBehaviour {
     /// </summary>
     private SkillCaster _skillCaster;
 
+
     // Use this for initialization
     private void Start() {
         _keybinds = new Keybinds();
@@ -38,51 +39,52 @@ public class PlayerInputHandler : MonoBehaviour {
 
     // Update is called once per frame
     private void Update() {
-        // Used for inputs that involve the mouse position
-        Vector3 clickedPoint;
+        if (!_characterStats.isAttacking) {
+            // Used for inputs that involve the mouse position
+            Vector3 clickedPoint;
 
-        // Check if the player pressed the attack key
-        if (Input.GetKeyDown(_keybinds["AttackKeyboard"])) {
-            if (GetClickedPoint(out clickedPoint)) {
-                LookAtPoint(clickedPoint);
-                _agent.destination = transform.position; //Stop movement 
-                _skillCaster.Cast(0, 0);
-            }
-        }
-
-        // Check if the player pressed or is holding the move key
-        if (Input.GetKey(_keybinds["MoveKeyboard"])) {
-            if (GetClickedPoint(out clickedPoint)) {
-                LookAtPoint(clickedPoint);
-                _agent.destination = clickedPoint;
-            }
-        }
-
-        // Check if the player pressed or is holding the move key
-        if (Input.GetKey(_keybinds["Skill1"])) {
-            _skillCaster.Cast(1, 1);
-        }
-
-        // If a controller is plugged in
-        if (Input.GetJoystickNames().Length > 0) {
-            // Check if the player pressed or is holding the controller attack key
-            if (Input.GetKeyDown(_keybinds["AttackController"])) {
-                _agent.destination = transform.position; //Stop movement 
-                _skillCaster.Cast(0, 0);
+            // Check if the player pressed the attack key
+            if (Input.GetKeyDown(_keybinds["AttackKeyboard"])) {
+                if (GetClickedPoint(out clickedPoint)) {
+                    LookAtPoint(clickedPoint);
+                    _agent.destination = transform.position; //Stop movement 
+                    _skillCaster.Cast(0, 0);
+                }
             }
 
-            // Horizontal and vertical input values of the joystick
-            float horizontal = Input.GetAxis("HorizontalAnalog");
-            float vertical = Input.GetAxis("VerticalAnalog");
+            // Check if the player pressed or is holding the move key
+            if (Input.GetKey(_keybinds["MoveKeyboard"])) {
+                if (GetClickedPoint(out clickedPoint)) {
+                    LookAtPoint(clickedPoint);
+                    _agent.destination = clickedPoint;
+                }
+            }
 
-            // Check if the player is moving the joystick
-            if (horizontal != 0f || vertical != 0f) {
-                // Move in the direction of the joystick
-                Vector3 goal = gameObject.transform.position + new Vector3(horizontal, gameObject.transform.position.y, vertical).normalized;
-                _agent.destination = goal;
+            // Check if the player pressed or is holding the move key
+            if (Input.GetKey(_keybinds["Skill1"])) {
+                _skillCaster.Cast(1, 1);
+            }
+
+            // If a controller is plugged in
+            if (Input.GetJoystickNames().Length > 0) {
+                // Check if the player pressed or is holding the controller attack key
+                if (Input.GetKeyDown(_keybinds["AttackController"])) {
+                    _agent.destination = transform.position; //Stop movement 
+                    _skillCaster.Cast(0, 0);
+                }
+
+                // Horizontal and vertical input values of the joystick
+                float horizontal = Input.GetAxis("HorizontalAnalog");
+                float vertical = Input.GetAxis("VerticalAnalog");
+
+                // Check if the player is moving the joystick
+                if (horizontal != 0f || vertical != 0f) {
+                    // Move in the direction of the joystick
+                    Vector3 goal = gameObject.transform.position + new Vector3(horizontal, gameObject.transform.position.y, vertical).normalized;
+                    _agent.destination = goal;
+                }
             }
         }
-
     }
 
     /// <summary>

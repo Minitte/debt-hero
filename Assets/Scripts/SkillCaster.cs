@@ -9,11 +9,11 @@ public class SkillCaster : MonoBehaviour {
     /// </summary>
 
     /// <summary>
-    /// Reference to the basic attack script.
+    /// Reference to skill0's prefab.
     /// </summary>
-    public GameObject basicAttack;
+    public GameObject skill0;
 
-    // Skill 1 Cooldown
+    // Skill 0 Cooldown
     public int skill0ID;
     private float timeStamp0;
     public bool canCast0;
@@ -121,7 +121,8 @@ public class SkillCaster : MonoBehaviour {
             if (currentSkill.type != -1) {
                 switch (Skill.GetInfo(skillID).type) {
                     case 0:
-                        Instantiate(basicAttack, transform); // Create the basic attack hitbox
+                        GetComponent<Animator>().SetTrigger("Attack");
+                        Instantiate(skill0, transform); // Create the basic attack hitbox
                         break;
                     case 1:
                         Skill.Gain(GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterStats>(), currentSkill.stat, currentSkill.amount);
