@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.AI;
 
 /// <summary>
@@ -17,10 +18,22 @@ public class PlayerInputHandler : MonoBehaviour {
     /// </summary>
     private NavMeshAgent _agent;
 
+    /// <summary>
+    /// Reference to the character stats.
+    /// </summary>
+    private CharacterStats _characterStats;
+
+    /// <summary>
+    /// Reference to the gameobject's animator.
+    /// </summary>
+    private SkillCaster _skillCaster;
+
     // Use this for initialization
     private void Start() {
         _keybinds = new Keybinds();
         _agent = GetComponent<NavMeshAgent>();
+        _characterStats = GetComponent<CharacterStats>();
+        _skillCaster = GetComponent<SkillCaster>();
     }
 
     // Update is called once per frame
@@ -31,36 +44,31 @@ public class PlayerInputHandler : MonoBehaviour {
         // Check if the player pressed the attack key
         if (Input.GetKeyDown(_keybinds["AttackKeyboard"])) {
             if (GetClickedPoint(out clickedPoint)) {
-                BasicAttack(clickedPoint);
+                LookAtPoint(clickedPoint);
+                _agent.destination = transform.position; //Stop movement 
+                _skillCaster.Cast(0, 0);
             }
         }
 
         // Check if the player pressed or is holding the move key
         if (Input.GetKey(_keybinds["MoveKeyboard"])) {
-
             if (GetClickedPoint(out clickedPoint)) {
+                LookAtPoint(clickedPoint);
                 _agent.destination = clickedPoint;
             }
-
-            // Position to look towards
-            Vector3 lookPos = _agent.destination;
-            lookPos.y = transform.position.y; // Prevents gameobject from looking up or down
-
-            // Face towards the destination
-            transform.LookAt(lookPos);
         }
 
         // Check if the player pressed or is holding the move key
-        if (Input.GetKey(_keybinds["Skill1"]))
-        {
-            transform.Find("TestSword").GetComponent<SkillCaster>().Cast(1,1);
+        if (Input.GetKey(_keybinds["Skill1"])) {
+            _skillCaster.Cast(1, 1);
         }
 
         // If a controller is plugged in
         if (Input.GetJoystickNames().Length > 0) {
             // Check if the player pressed or is holding the controller attack key
             if (Input.GetKeyDown(_keybinds["AttackController"])) {
-                BasicAttack(transform.position + transform.forward.normalized); // Attack in front of the player
+                _agent.destination = transform.position; //Stop movement 
+                _skillCaster.Cast(0, 0);
             }
 
             // Horizontal and vertical input values of the joystick
@@ -100,22 +108,15 @@ public class PlayerInputHandler : MonoBehaviour {
     }
 
     /// <summary>
-    /// Perform a basic attack.
+    /// Makes the gameobject look toward a specified point.
+    /// Ignores the Y position of the point.
     /// </summary>
-    /// <param name="attackPoint">The point to attack</param>
-    public void BasicAttack(Vector3 attackPoint) {
+    public void LookAtPoint(Vector3 point) {
         // Position to look towards
-        Vector3 lookPos = attackPoint;
+        Vector3 lookPos = point;
         lookPos.y = transform.position.y;
 
         // Face towards the attack point and stop movement
         transform.LookAt(lookPos);
-        GetComponent<NavMeshAgent>().destination = transform.position;
-
-        // Start the attack animation
-        GetComponent<Animator>().SetTrigger("Attack");
-
-        // Cast a basic attack
-        GetComponent<SkillCaster>().Cast(0, 0);
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This is a class that deals damage to gameobjects collided with.
+/// </summary>
 public class Attack : MonoBehaviour {
 
     /// <summary>
@@ -18,7 +20,6 @@ public class Attack : MonoBehaviour {
     void Start () {
         _physAtkdamage = transform.parent.GetComponent<CharacterStats>().physAtk;
         _magicAtkdamage = transform.parent.GetComponent<CharacterStats>().magicAtk;
-        Destroy(gameObject, 0.5f);
     }
 
     /// <summary>
@@ -27,7 +28,7 @@ public class Attack : MonoBehaviour {
     /// <param name="other">The collision object collided with</param>
     private void OnTriggerEnter(Collider other) {
         // Only deal damage to Player or AI tags, and no friendly fire
-        if ((other.tag == "AI" || other.tag == "Player") && other.tag != tag) {
+        if ((other.tag == "AI" || other.tag == "Player") && other.tag != transform.parent.tag) {
 
             // Apply damage to the enemy
             other.GetComponent<CharacterStats>().TakeDamage(_physAtkdamage, _magicAtkdamage);
