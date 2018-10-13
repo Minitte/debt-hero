@@ -50,6 +50,12 @@ public class PlayerInputHandler : MonoBehaviour {
             transform.LookAt(lookPos);
         }
 
+        // Check if the player pressed or is holding the move key
+        if (Input.GetKey(_keybinds["Skill1"]))
+        {
+            transform.Find("TestSword").GetComponent<SkillCaster>().Cast(1,1);
+        }
+
         // If a controller is plugged in
         if (Input.GetJoystickNames().Length > 0) {
             // Check if the player pressed or is holding the controller attack key
