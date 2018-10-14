@@ -27,7 +27,7 @@ public class EnemyManager : MonoBehaviour {
     /// <param name="currentFloor">A floor that contains a room</param>
     /// <param name="rand"> Random used to determine which room to use.</param>
     void SpawnEnemies(Floor currentFloor, System.Random rand) {
-        Debug.Log("Event Fired");
+        //Debug.Log("Event Fired");
         int roomSize = currentFloor.roomList.Count;
         
         Vector3 roomyPos = currentFloor.roomList[rand.Next(0, roomSize)].transform.position;
