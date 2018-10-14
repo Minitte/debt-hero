@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.AI;
 
 /// <summary>
@@ -17,64 +18,68 @@ public class PlayerInputHandler : MonoBehaviour {
     /// </summary>
     private NavMeshAgent _agent;
 
+    /// <summary>
+    /// Reference to the gameobject's animator.
+    /// </summary>
+    private SkillCaster _skillCaster;
+
+
     // Use this for initialization
     private void Start() {
         _keybinds = new Keybinds();
         _agent = GetComponent<NavMeshAgent>();
+        _skillCaster = GetComponent<SkillCaster>();
     }
 
     // Update is called once per frame
     private void Update() {
-        // Used for inputs that involve the mouse position
-        Vector3 clickedPoint;
+        // Don't accept input if the character is casting something
+        if (!_skillCaster.isCasting) {
+            // Used for inputs that involve the mouse position
+            Vector3 clickedPoint;
 
-        // Check if the player pressed the attack key
-        if (Input.GetKeyDown(_keybinds["AttackKeyboard"])) {
-            if (GetClickedPoint(out clickedPoint)) {
-                BasicAttack(clickedPoint);
-            }
-        }
-
-        // Check if the player pressed or is holding the move key
-        if (Input.GetKey(_keybinds["MoveKeyboard"])) {
-
-            if (GetClickedPoint(out clickedPoint)) {
-                _agent.destination = clickedPoint;
+            // Check if the player pressed the attack key
+            if (Input.GetKeyDown(_keybinds["AttackKeyboard"])) {
+                if (GetClickedPoint(out clickedPoint)) {
+                    transform.LookAt(new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z));
+                    _agent.destination = transform.position; //Stop movement 
+                    _skillCaster.Cast(0, 0);
+                }
             }
 
-            // Position to look towards
-            Vector3 lookPos = _agent.destination;
-            lookPos.y = transform.position.y; // Prevents gameobject from looking up or down
-
-            // Face towards the destination
-            transform.LookAt(lookPos);
-        }
-
-        // Check if the player pressed or is holding the move key
-        if (Input.GetKey(_keybinds["Skill1"]))
-        {
-            transform.Find("TestSword").GetComponent<SkillCaster>().Cast(1,1);
-        }
-
-        // If a controller is plugged in
-        if (Input.GetJoystickNames().Length > 0) {
-            // Check if the player pressed or is holding the controller attack key
-            if (Input.GetKeyDown(_keybinds["AttackController"])) {
-                BasicAttack(transform.position + transform.forward.normalized); // Attack in front of the player
+            // Check if the player pressed or is holding the move key
+            if (Input.GetKey(_keybinds["MoveKeyboard"])) {
+                if (GetClickedPoint(out clickedPoint)) {
+                    transform.LookAt(new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z));
+                    _agent.destination = clickedPoint;
+                }
             }
 
-            // Horizontal and vertical input values of the joystick
-            float horizontal = Input.GetAxis("HorizontalAnalog");
-            float vertical = Input.GetAxis("VerticalAnalog");
+            // Check if the player pressed or is holding the move key
+            if (Input.GetKey(_keybinds["Skill1"])) {
+                _skillCaster.Cast(1, 1);
+            }
 
-            // Check if the player is moving the joystick
-            if (horizontal != 0f || vertical != 0f) {
-                // Move in the direction of the joystick
-                Vector3 goal = gameObject.transform.position + new Vector3(horizontal, gameObject.transform.position.y, vertical).normalized;
-                _agent.destination = goal;
+            // If a controller is plugged in
+            if (Input.GetJoystickNames().Length > 0) {
+                // Check if the player pressed or is holding the controller attack key
+                if (Input.GetKeyDown(_keybinds["AttackController"])) {
+                    _agent.destination = transform.position; //Stop movement 
+                    _skillCaster.Cast(0, 0);
+                }
+
+                // Horizontal and vertical input values of the joystick
+                float horizontal = Input.GetAxis("HorizontalAnalog");
+                float vertical = Input.GetAxis("VerticalAnalog");
+
+                // Check if the player is moving the joystick
+                if (horizontal != 0f || vertical != 0f) {
+                    // Move in the direction of the joystick
+                    Vector3 goal = gameObject.transform.position + new Vector3(horizontal, gameObject.transform.position.y, vertical).normalized;
+                    _agent.destination = goal;
+                }
             }
         }
-
     }
 
     /// <summary>
@@ -97,35 +102,5 @@ public class PlayerInputHandler : MonoBehaviour {
         // No collision point
         clickedPoint = Vector3.zero;
         return false;
-    }
-
-    /// <summary>
-    /// Perform a basic attack.
-    /// </summary>
-    /// <param name="attackPoint">The point to attack</param>
-    public void BasicAttack(Vector3 attackPoint) {
-        // Position to look towards
-        Vector3 lookPos = attackPoint;
-        lookPos.y = transform.position.y;
-
-        // Face towards the attack point and stop movement
-        transform.LookAt(lookPos);
-        GetComponent<NavMeshAgent>().destination = transform.position;
-
-        // Basic melee attack
-        transform.Find("TestSword").GetComponent<BasicAttackMelee>().Attack();
-
-        /*
-        // Generate a test projectile object
-        GameObject projectile = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        projectile.transform.position = gameObject.transform.position;
-        projectile.GetComponent<BoxCollider>().isTrigger = true;
-        projectile.AddComponent<Rigidbody>().isKinematic = true;
-        projectile.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
-
-        // Get the player's damage
-        CharacterStats characterInfo = gameObject.GetComponent<CharacterStats>();
-        projectile.AddComponent<BasicAttackProjectile>().Instantiate(attackPoint - transform.position, characterInfo.physAtk, characterInfo.magicAtk);
-        */
     }
 }

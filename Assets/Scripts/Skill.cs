@@ -34,10 +34,10 @@ public class Skill {
         switch (skillID)
         {
             case 0:
-                skill.name = "Power Strike";
-                skill.amount = 20;
-                skill.type = 4;
-                skill.cooldown = 20;
+                skill.name = "Basic Attack";
+                skill.amount = 5;
+                skill.type = 0;
+                skill.cooldown = 1;
                 break;
             case 1:
                 skill.name = "Healing";
@@ -87,6 +87,7 @@ public class Skill {
     /// </summary>
     public static void Melee(float damage, Collider enemy)
     {
+        
         enemy.GetComponent<CharacterStats>().TakeDamage(damage, 0);
     }
 
