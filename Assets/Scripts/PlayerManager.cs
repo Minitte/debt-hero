@@ -22,6 +22,10 @@ public class PlayerManager : MonoBehaviour {
 	/// </summary>
 	public CopyTargetPosition followingCamera;
 
+	[Header("Others")]
+
+	public int floorReached;
+
 	/// <summary>
 	/// Player's stats
 	/// </summary>
@@ -65,7 +69,7 @@ public class PlayerManager : MonoBehaviour {
 	/// </summary>
 	/// <param name="destoryExisting"></param>
 	/// <param name="position"></param>
-	private void CreatePlayer(bool destoryExisting) {
+	public void CreatePlayer(bool destoryExisting) {
 		if (localPlayer != null && destoryExisting) {
 			Destroy(localPlayer);
 			localPlayer = null;
