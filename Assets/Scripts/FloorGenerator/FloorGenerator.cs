@@ -13,7 +13,8 @@ public class FloorGenerator : MonoBehaviour {
 	/// Floor related event delegate/template
 	/// </summary>
 	/// <param name="floor">Floor that is related to the event trigger</param>
-	public delegate void FloorEvent(Floor floor);
+	/// /// <param name="random">Random uses to randomize rooms. Has the same seed</param>
+	public delegate void FloorEvent(Floor floor, System.Random random);
 
 	/// <summary>
 	/// FloorEvent that is triggered when a floor begins to generate
@@ -24,18 +25,6 @@ public class FloorGenerator : MonoBehaviour {
 	/// FloorEvent that is triggered when the floor is done generating
 	/// </summary>
 	public static event FloorEvent OnFloorGenerated;
-
-    /// <summary>
-    /// An event relating to spawnning.
-    /// </summary>
-    /// <param name="floor">Floor that is related to the event</param>
-    /// <param name="random">Random uses to randomize rooms.</param>
-    public delegate void SpawnEvent(Floor floor, System.Random random);
-
-    /// <summary>
-    /// SpawnEvent that is triggered when the floor is done generating.
-    /// </summary>
-    public static event SpawnEvent OnEnemySpawn; 
 
 	#endregion
 
@@ -140,7 +129,7 @@ public class FloorGenerator : MonoBehaviour {
 		currentFloorParent = Instantiate(floorParentPrefab.gameObject).GetComponent<Floor>();
 
 		if (OnBeginGeneration != null) {
-			OnBeginGeneration(currentFloorParent);
+			OnBeginGeneration(currentFloorParent, _rand);
 		}
 
 		yield return GenerateRoomEntries(maxFloorRadius);
@@ -165,13 +154,8 @@ public class FloorGenerator : MonoBehaviour {
 
 		// trigger event if anything is listening to it
 		if (OnFloorGenerated != null) {
-			OnFloorGenerated(currentFloorParent);
-            OnEnemySpawn(currentFloorParent, _rand);
-           
+			OnFloorGenerated(currentFloorParent, _rand);           
 		}
-
-       
-       
 	}
 
 	/// <summary>

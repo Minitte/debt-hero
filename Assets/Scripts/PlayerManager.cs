@@ -52,7 +52,7 @@ public class PlayerManager : MonoBehaviour {
 	/// removes player on floor generation
 	/// </summary>
 	/// <param name="floor"></param>
-	private void RemovePlayerOnNewFloor(Floor floor) {
+	private void RemovePlayerOnNewFloor(Floor floor, System.Random rand) {
 		if (localPlayer != null) {
 			Destroy(localPlayer);
 			localPlayer = null;
@@ -79,7 +79,7 @@ public class PlayerManager : MonoBehaviour {
 	/// <summary>
 	/// moves the player to the entrance of the floor
 	/// </summary>
-	private void MovePlayerToEntrance(Floor currentFloor) {
+	private void MovePlayerToEntrance(Floor currentFloor, System.Random rand) {
 		if (localPlayer == null) {
 			Vector3 entrancePos = currentFloor.entrance.transform.position;
 
