@@ -61,11 +61,6 @@ public class FloorGenerator : MonoBehaviour {
 	/// </summary>
 	public string floorSeed;
 
-	/// <summary>
-	/// Floor number. Also used in the seed number generation
-	/// </summary>
-	public int floorNumber;
-
 	[Header("Game Objects and Prefabs")]
 
 	/// <summary>
@@ -120,9 +115,13 @@ public class FloorGenerator : MonoBehaviour {
 	/// Increments the floor number and generates a new floor
 	/// </summary>
 	public void NextFloor() {
-		floorNumber++;
+		GameState.currentFloor++;
 
-		if (floorNumber % 3 == 0) {
+		if (GameState.currentFloor > GameState.floorReached) {
+			GameState.floorReached = GameState.currentFloor;
+		}
+
+		if (GameState.currentFloor % 3 == 0) {
 			StartCoroutine(GenerateSafeZone());
 		} else {
 			GenerateNewFloor(true);
@@ -139,6 +138,7 @@ public class FloorGenerator : MonoBehaviour {
 			}
 
 		currentFloorParent = Instantiate(floorParentPrefab.gameObject).GetComponent<Floor>();
+		currentFloorParent.floorNumber = GameState.currentFloor;
 
 		if (OnBeginGeneration != null) {
 			OnBeginGeneration(currentFloorParent, _rand);
@@ -168,7 +168,7 @@ public class FloorGenerator : MonoBehaviour {
     /// <param name="floorSeedNumber"></param>
     /// <param name="destoryOldFloor">flag to destory the old floor</param>
     private void GenerateNewFloor(bool destoryOldFloor) {
-		_rand = new System.Random(GenerateSeedNumber(floorSeed, floorNumber));
+		_rand = new System.Random(GenerateSeedNumber(floorSeed, GameState.currentFloor));
 
 		if (destoryOldFloor) {
 			if (currentFloorParent != null) {
@@ -186,6 +186,8 @@ public class FloorGenerator : MonoBehaviour {
 	/// <returns></returns>
 	private IEnumerator CoroutineGenerateFloor() {
 		currentFloorParent = Instantiate(floorParentPrefab.gameObject).GetComponent<Floor>();
+
+		currentFloorParent.floorNumber = GameState.currentFloor;
 
 		if (OnBeginGeneration != null) {
 			OnBeginGeneration(currentFloorParent, _rand);

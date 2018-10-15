@@ -8,14 +8,15 @@ public class FloorTeleportMenuController : MonoBehaviour {
 
 	public int[] floorDestinations;
 
-	public PlayerManager playerManager;
+	private PlayerManager _playerManager;
 
 	/// <summary>
 	/// Start is called on the frame when a script is enabled just before
 	/// any of the Update methods is called the first time.
 	/// </summary>
 	void Start() {
-		playerManager = GameObject.Find("Player Manager").GetComponent<PlayerManager>();
+		_playerManager = PlayerManager.instance;
+		
 		updateButtons();
 	}
 
@@ -36,14 +37,15 @@ public class FloorTeleportMenuController : MonoBehaviour {
 	/// </summary>
 	private void updateButtons() {
 		for (int i = 0; i < floorButtons.Length; i++) {
-			floorButtons[i].interactable = floorDestinations[i] <= playerManager.floorReached;
+			floorButtons[i].interactable = floorDestinations[i] <= GameState.floorReached;
 		}
 	}
 
 	/// <summary>
 	/// Changes the scene to tower
 	/// </summary>
-	public void ChangeSceneToTower() {
+	public void ChangeSceneToTower(int floor) {
+		GameState.currentFloor = floor;
 		SceneManager.LoadScene("Tower");
 	}
 	
@@ -51,6 +53,7 @@ public class FloorTeleportMenuController : MonoBehaviour {
 	/// Changes the scene to town
 	/// </summary>
 	public void ChangeSceneToTown() {
+		GameState.currentFloor = 0;
 		SceneManager.LoadScene("Town");
 	}
 }

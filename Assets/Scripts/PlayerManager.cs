@@ -5,6 +5,8 @@ using UnityEngine.AI;
 
 public class PlayerManager : MonoBehaviour {
 
+	public static PlayerManager instance;
+
 	[Header("Player")]
 	/// <summary>
 	/// Player prefab
@@ -15,11 +17,7 @@ public class PlayerManager : MonoBehaviour {
 	/// The current local player gameobject instance
 	/// </summary>
 	public GameObject localPlayer;
-
-	[Header("Others")]
-
-	public int floorReached;
-
+	
 	/// <summary>
 	/// Player's stats
 	/// </summary>
@@ -33,15 +31,17 @@ public class PlayerManager : MonoBehaviour {
     private StationaryResourcesUI _healthbar;
 
 	/// <summary>
-	/// the following camera
-	/// </summary>
-	private CopyTargetPosition _followingCamera;
-
-	/// <summary>
 	/// Awake is called when the script instance is being loaded.
 	/// </summary>
 	void Awake() {
-		_followingCamera = Camera.main.GetComponent<CopyTargetPosition>();
+
+		if (instance == null) {
+			instance = this;
+		} else {
+			Debug.Log("Found two PlayerManager Instances.. Destorying new one");
+			Destroy(this.gameObject);
+			return;
+		}
 
 		//localPlayer = Instantiate(playerPrefab);
 
@@ -52,6 +52,8 @@ public class PlayerManager : MonoBehaviour {
 		FloorGenerator.OnFloorGenerated += MovePlayerToEntrance;
 
 		FloorGenerator.OnBeginGeneration += RemovePlayerOnNewFloor;
+
+		DontDestroyOnLoad(this.gameObject);
 	}
 
 	/// <summary>
@@ -78,7 +80,7 @@ public class PlayerManager : MonoBehaviour {
 		
 		if (localPlayer == null) {
 			localPlayer = Instantiate(playerPrefab);
-			_followingCamera.target = localPlayer.transform;
+			Camera.main.GetComponent<CopyTargetPosition>().target = localPlayer.transform;
 		}
 	}
 
