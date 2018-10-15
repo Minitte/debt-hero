@@ -6,6 +6,7 @@ using UnityEngine.AI;
 /// Class for the controlling AI behaviour.
 /// </summary>
 [RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(SkillCaster))]
 public class AIControl : MonoBehaviour {
 
     /// <summary>
@@ -36,12 +37,12 @@ public class AIControl : MonoBehaviour {
     /// <summary>
     /// A queue of actions for the AI.
     /// </summary>
-    private Queue<IAIAction> _actionQueue;
+    private Queue<AIAction> _actionQueue;
 
     /// <summary>
     /// Property variable for the action queue.
     /// </summary>
-    public Queue<IAIAction> ActionQueue {
+    public Queue<AIAction> ActionQueue {
         get { return _actionQueue; }
     }
 
@@ -49,7 +50,7 @@ public class AIControl : MonoBehaviour {
     private void Start() {
         _agent = GetComponent<NavMeshAgent>();
         _skillCaster = GetComponent<SkillCaster>();
-        _actionQueue = new Queue<IAIAction>();
+        _actionQueue = new Queue<AIAction>();
     }
 
     // Update is called once per frame
