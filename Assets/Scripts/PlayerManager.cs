@@ -16,12 +16,6 @@ public class PlayerManager : MonoBehaviour {
 	/// </summary>
 	public GameObject localPlayer;
 
-	[Header("Camera")]
-	/// <summary>
-	/// the following camera
-	/// </summary>
-	public CopyTargetPosition followingCamera;
-
 	[Header("Others")]
 
 	public int floorReached;
@@ -39,9 +33,16 @@ public class PlayerManager : MonoBehaviour {
     private StationaryResourcesUI _healthbar;
 
 	/// <summary>
+	/// the following camera
+	/// </summary>
+	private CopyTargetPosition _followingCamera;
+
+	/// <summary>
 	/// Awake is called when the script instance is being loaded.
 	/// </summary>
 	void Awake() {
+		_followingCamera = Camera.main.GetComponent<CopyTargetPosition>();
+
 		//localPlayer = Instantiate(playerPrefab);
 
 		_stats = GetComponent<CharacterStats>();
@@ -77,7 +78,7 @@ public class PlayerManager : MonoBehaviour {
 		
 		if (localPlayer == null) {
 			localPlayer = Instantiate(playerPrefab);
-			followingCamera.target = localPlayer.transform;
+			_followingCamera.target = localPlayer.transform;
 		}
 	}
 

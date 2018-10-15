@@ -20,6 +20,18 @@ public class FloorTeleportMenuController : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Update is called every frame, if the MonoBehaviour is enabled.
+	/// </summary>
+	void Update()
+	{
+		float cancel = Input.GetAxis("Cancel");
+
+		if (cancel != 0) {
+			this.gameObject.SetActive(false);
+		}
+	}
+
+	/// <summary>
 	/// Updates button visability based on the floor reached
 	/// </summary>
 	private void updateButtons() {
