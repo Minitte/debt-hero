@@ -40,5 +40,7 @@ public class WarriorClass : BaseClass {
         skill2 = 1;
         skill3 = 2;
         skill4 = 3;
+
+        InitiateClass();
     }
 }
