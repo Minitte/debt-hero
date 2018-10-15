@@ -51,7 +51,12 @@ public class FloorGenerator : MonoBehaviour {
 	/// <summary>
 	/// Seed to be used in generating the floor
 	/// </summary>
-	public int floorSeed;
+	public string floorSeed;
+
+	/// <summary>
+	/// Floor number. Also used in the seed number generation
+	/// </summary>
+	public int floorNumber;
 
 	[Header("Game Objects and Prefabs")]
 
@@ -100,16 +105,16 @@ public class FloorGenerator : MonoBehaviour {
 	/// Awake is called when the script instance is being loaded.
 	/// </summary>
 	void Awake() {
-		GenerateNewFloor(floorSeed, false);
+		GenerateNewFloor(GenerateSeedNumber(floorSeed, floorNumber), false);
     }
 
     /// <summary>
     /// Generates and replaces the current floor with a new one based on the seed
     /// </summary>
-    /// <param name="floorSeed"></param>
+    /// <param name="floorSeedNumber"></param>
     /// <param name="destoryOldFloor">flag to destory the old floor</param>
-    public void GenerateNewFloor(int floorSeed, bool destoryOldFloor) {
-		_rand = new System.Random(floorSeed);
+    public void GenerateNewFloor(int floorSeedNumber, bool destoryOldFloor) {
+		_rand = new System.Random(floorSeedNumber);
 
 		if (destoryOldFloor) {
 			if (currentFloorParent != null) {
@@ -134,11 +139,13 @@ public class FloorGenerator : MonoBehaviour {
 
 		yield return GenerateRoomEntries(maxFloorRadius);
 
+		// pick a room to be the entrance
 		RoomEntry entrance = GetRandomRoomEntry();
 		entrance.type = RoomEntry.RoomType.ENTRANCE;
 		entrance.gameObject.name = "Entrance Room Entry";
 		currentFloorParent.entrance = entrance;
 
+		// pick a room to be the exit
 		RoomEntry exit = GetRandomRoomEntry();
 		exit.type = RoomEntry.RoomType.EXIT;
 		exit.gameObject.name = "Exit Room Entry";
@@ -167,7 +174,7 @@ public class FloorGenerator : MonoBehaviour {
 	/// <returns>A randomly generated room entry</returns>
 	private RoomEntry GenerateRandomRoomEntry(XZCoordinate point, int minDist, int maxDist) {
 		// generate random cord
-		XZCoordinate coord = generateRandomCord(point, minDist, maxDist);
+		XZCoordinate coord = GenerateRandomCord(point, minDist, maxDist);
 		
 		RoomEntry room = createRoomEntry(coord);
 
@@ -213,24 +220,12 @@ public class FloorGenerator : MonoBehaviour {
 
 		// create nodes
 		for (int i = 0; i < nodes.Length; i++) {
-			nodes[i] = generateRandomCord(XZCoordinate.zero, 5, maxDistance);
+			nodes[i] = GenerateRandomCord(XZCoordinate.zero, 5, maxDistance);
 
 			// nodes[0] = new Vector2(5, 3);
 
 			createRoomEntry(nodes[i]);
 		}
-
-		// connect nodes to the entrance
-		// for (int i = 0; i < nodes.Length; i++) { 
-		// 	yield return generatePath(_entrance.coordinate, nodes[i]);
-		// }
-
-		// connects the nodes to nearby nodes
-		// for (int i = 0; i < nodes.Length; i++) {
-		// 	XZCoordinate closest = findClosestCord(nodes[i], nodes);
-
-		// 	yield return generatePath(closest, nodes[i]);
-		// }
 
 		// connect node to others
 		for (int i = 0; i < nodes.Length; i++) {
@@ -429,7 +424,7 @@ public class FloorGenerator : MonoBehaviour {
 	/// <param name="minDist">min distance from the center point</param>
 	/// <param name="maxDist">max distance from the center point</param>
 	/// <returns></returns>
-	private XZCoordinate generateRandomCord(XZCoordinate point, int minDist, int maxDist) {
+	private XZCoordinate GenerateRandomCord(XZCoordinate point, int minDist, int maxDist) {
 		// random distance
 		int dist = _rand.Next(minDist, maxDist);
 		
@@ -469,5 +464,15 @@ public class FloorGenerator : MonoBehaviour {
 		}
 
 		return closest;
+	}
+
+	/// <summary>
+	/// Generates a seed number based on seed string and floor
+	/// </summary>
+	/// <param name="seed">seed string</param>
+	/// <param name="floor">floor number</param>
+	/// <returns></returns>
+	private int GenerateSeedNumber(string seed, int floor) {
+		return (seed + "f:" + floor).GetHashCode();
 	}
 }

@@ -5,6 +5,8 @@ using UnityEngine;
 [Serializable]
 public class Floor : MonoBehaviour {
 
+	[Header("Room")]
+
 	/// <summary>
 	/// List of room entries generated
 	/// </summary>
@@ -24,6 +26,10 @@ public class Floor : MonoBehaviour {
 	/// A room that act as the floor's exit
 	/// </summary>
 	public RoomEntry exit;
+
+	[Header("Others")]
+
+	public int floorNumber;
 
 	/// <summary>
 	/// Awake is called when the script instance is being loaded.
