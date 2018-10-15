@@ -13,7 +13,8 @@ public class FloorGenerator : MonoBehaviour {
 	/// Floor related event delegate/template
 	/// </summary>
 	/// <param name="floor">Floor that is related to the event trigger</param>
-	public delegate void FloorEvent(Floor floor);
+	/// /// <param name="random">Random uses to randomize rooms. Has the same seed</param>
+	public delegate void FloorEvent(Floor floor, System.Random random);
 
 	/// <summary>
 	/// FloorEvent that is triggered when a floor begins to generate
@@ -24,18 +25,6 @@ public class FloorGenerator : MonoBehaviour {
 	/// FloorEvent that is triggered when the floor is done generating
 	/// </summary>
 	public static event FloorEvent OnFloorGenerated;
-
-    /// <summary>
-    /// An event relating to spawnning.
-    /// </summary>
-    /// <param name="floor">Floor that is related to the event</param>
-    /// <param name="random">Random uses to randomize rooms.</param>
-    public delegate void SpawnEvent(Floor floor, System.Random random);
-
-    /// <summary>
-    /// SpawnEvent that is triggered when the floor is done generating.
-    /// </summary>
-    public static event SpawnEvent OnEnemySpawn; 
 
 	#endregion
 
@@ -59,10 +48,18 @@ public class FloorGenerator : MonoBehaviour {
 	/// </summary>
 	public int maxFloorRadius = 13; 
 
+	[Header("Generation Variables")]
+
+	/// <summary>
+	/// Number of node rooms in generating the floor
+	/// </summary>
+	[Range(2, 10)]
+	public int numberOfNodes;
+
 	/// <summary>
 	/// Seed to be used in generating the floor
 	/// </summary>
-	public int floorSeed;
+	public string floorSeed;
 
 	[Header("Game Objects and Prefabs")]
 
@@ -111,16 +108,67 @@ public class FloorGenerator : MonoBehaviour {
 	/// Awake is called when the script instance is being loaded.
 	/// </summary>
 	void Awake() {
-		GenerateNewFloor(floorSeed, false);
+		GenerateNewFloor(false);
     }
+	
+	/// <summary>
+	/// Increments the floor number and generates a new floor
+	/// </summary>
+	public void NextFloor() {
+		GameState.currentFloor++;
+
+		if (GameState.currentFloor > GameState.floorReached) {
+			GameState.floorReached = GameState.currentFloor;
+		}
+
+		if (GameState.currentFloor % 3 == 0) {
+			StartCoroutine(GenerateSafeZone());
+		} else {
+			GenerateNewFloor(true);
+		}
+	}
+
+	/// <summary>
+	/// Generates a safezone
+	/// </summary>
+	private IEnumerator GenerateSafeZone() {
+			if (currentFloorParent != null) {
+				Destroy(currentFloorParent.gameObject);
+				currentFloorParent = null;
+			}
+
+		currentFloorParent = Instantiate(floorParentPrefab.gameObject).GetComponent<Floor>();
+		currentFloorParent.floorNumber = GameState.currentFloor;
+
+		if (OnBeginGeneration != null) {
+			OnBeginGeneration(currentFloorParent, _rand);
+		}
+
+		RoomEntry entry = createRoomEntry(XZCoordinate.zero);
+
+		currentFloorParent.entrance = entry;
+
+		GameObject safeZone = Instantiate(pieceSet.GetRandomSafeZonePrefab(_rand), entry.transform);
+
+		safeZone.GetComponentInChildren<FloorExitTrigger>().TargetGenerator = this;
+
+		yield return new WaitForEndOfFrame();
+
+		currentFloorParent.GetComponent<NavMeshSurface>().BuildNavMesh();
+
+		// trigger event if anything is listening to it
+		if (OnFloorGenerated != null) {
+			OnFloorGenerated(currentFloorParent, _rand);           
+		}
+	}
 
     /// <summary>
     /// Generates and replaces the current floor with a new one based on the seed
     /// </summary>
-    /// <param name="floorSeed"></param>
+    /// <param name="floorSeedNumber"></param>
     /// <param name="destoryOldFloor">flag to destory the old floor</param>
-    public void GenerateNewFloor(int floorSeed, bool destoryOldFloor) {
-		_rand = new System.Random(floorSeed);
+    private void GenerateNewFloor(bool destoryOldFloor) {
+		_rand = new System.Random(GenerateSeedNumber(floorSeed, GameState.currentFloor));
 
 		if (destoryOldFloor) {
 			if (currentFloorParent != null) {
@@ -139,17 +187,21 @@ public class FloorGenerator : MonoBehaviour {
 	private IEnumerator CoroutineGenerateFloor() {
 		currentFloorParent = Instantiate(floorParentPrefab.gameObject).GetComponent<Floor>();
 
+		currentFloorParent.floorNumber = GameState.currentFloor;
+
 		if (OnBeginGeneration != null) {
-			OnBeginGeneration(currentFloorParent);
+			OnBeginGeneration(currentFloorParent, _rand);
 		}
 
 		yield return GenerateRoomEntries(maxFloorRadius);
 
+		// pick a room to be the entrance
 		RoomEntry entrance = GetRandomRoomEntry();
 		entrance.type = RoomEntry.RoomType.ENTRANCE;
 		entrance.gameObject.name = "Entrance Room Entry";
 		currentFloorParent.entrance = entrance;
 
+		// pick a room to be the exit
 		RoomEntry exit = GetRandomRoomEntry();
 		exit.type = RoomEntry.RoomType.EXIT;
 		exit.gameObject.name = "Exit Room Entry";
@@ -165,13 +217,8 @@ public class FloorGenerator : MonoBehaviour {
 
 		// trigger event if anything is listening to it
 		if (OnFloorGenerated != null) {
-			OnFloorGenerated(currentFloorParent);
-            OnEnemySpawn(currentFloorParent, _rand);
-           
+			OnFloorGenerated(currentFloorParent, _rand);           
 		}
-
-       
-       
 	}
 
 	/// <summary>
@@ -183,7 +230,7 @@ public class FloorGenerator : MonoBehaviour {
 	/// <returns>A randomly generated room entry</returns>
 	private RoomEntry GenerateRandomRoomEntry(XZCoordinate point, int minDist, int maxDist) {
 		// generate random cord
-		XZCoordinate coord = generateRandomCord(point, minDist, maxDist);
+		XZCoordinate coord = GenerateRandomCord(point, minDist, maxDist);
 		
 		RoomEntry room = createRoomEntry(coord);
 
@@ -225,28 +272,16 @@ public class FloorGenerator : MonoBehaviour {
 	/// <param name="maxDistance">max distance from the entrance</param>
 	/// <returns></returns>
 	private IEnumerator	GenerateRoomEntries(int maxDistance) {
-		XZCoordinate[] nodes = new XZCoordinate[6];
+		XZCoordinate[] nodes = new XZCoordinate[numberOfNodes];
 
 		// create nodes
 		for (int i = 0; i < nodes.Length; i++) {
-			nodes[i] = generateRandomCord(XZCoordinate.zero, 5, maxDistance);
+			nodes[i] = GenerateRandomCord(XZCoordinate.zero, 5, maxDistance);
 
 			// nodes[0] = new Vector2(5, 3);
 
 			createRoomEntry(nodes[i]);
 		}
-
-		// connect nodes to the entrance
-		// for (int i = 0; i < nodes.Length; i++) { 
-		// 	yield return generatePath(_entrance.coordinate, nodes[i]);
-		// }
-
-		// connects the nodes to nearby nodes
-		// for (int i = 0; i < nodes.Length; i++) {
-		// 	XZCoordinate closest = findClosestCord(nodes[i], nodes);
-
-		// 	yield return generatePath(closest, nodes[i]);
-		// }
 
 		// connect node to others
 		for (int i = 0; i < nodes.Length; i++) {
@@ -318,7 +353,7 @@ public class FloorGenerator : MonoBehaviour {
 					piecePrefab = pieceSet.GetRandomDeadEndPrefab(_rand);
 
 					// instantiate and set parent to the entry
-					piece = Instantiate(piecePrefab, currentFloorParent.transform);
+					piece = Instantiate(piecePrefab, entry.transform);
 
 					// set the rotation based on neighbor orientation
 					piece.transform.rotation = pieceSet.DeadEndRotation(neighbors);
@@ -445,7 +480,7 @@ public class FloorGenerator : MonoBehaviour {
 	/// <param name="minDist">min distance from the center point</param>
 	/// <param name="maxDist">max distance from the center point</param>
 	/// <returns></returns>
-	private XZCoordinate generateRandomCord(XZCoordinate point, int minDist, int maxDist) {
+	private XZCoordinate GenerateRandomCord(XZCoordinate point, int minDist, int maxDist) {
 		// random distance
 		int dist = _rand.Next(minDist, maxDist);
 		
@@ -485,5 +520,15 @@ public class FloorGenerator : MonoBehaviour {
 		}
 
 		return closest;
+	}
+
+	/// <summary>
+	/// Generates a seed number based on seed string and floor
+	/// </summary>
+	/// <param name="seed">seed string</param>
+	/// <param name="floor">floor number</param>
+	/// <returns></returns>
+	private int GenerateSeedNumber(string seed, int floor) {
+		return (seed + "f:" + floor).GetHashCode();
 	}
 }

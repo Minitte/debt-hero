@@ -18,7 +18,7 @@ public class EnemyManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        FloorGenerator.OnEnemySpawn += SpawnEnemies;
+        FloorGenerator.OnFloorGenerated += SpawnEnemies;
     }
 
     /// <summary>

@@ -1,8 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PlayerManager : MonoBehaviour {
+
+	public static PlayerManager instance;
 
 	[Header("Player")]
 	/// <summary>
@@ -14,13 +17,7 @@ public class PlayerManager : MonoBehaviour {
 	/// The current local player gameobject instance
 	/// </summary>
 	public GameObject localPlayer;
-
-	[Header("Camera")]
-	/// <summary>
-	/// the following camera
-	/// </summary>
-	public CopyTargetPosition followingCamera;
-
+	
 	/// <summary>
 	/// Player's stats
 	/// </summary>
@@ -37,6 +34,15 @@ public class PlayerManager : MonoBehaviour {
 	/// Awake is called when the script instance is being loaded.
 	/// </summary>
 	void Awake() {
+
+		if (instance == null) {
+			instance = this;
+		} else {
+			Debug.Log("Found two PlayerManager Instances.. Destorying new one");
+			Destroy(this.gameObject);
+			return;
+		}
+
 		//localPlayer = Instantiate(playerPrefab);
 
 		_stats = GetComponent<CharacterStats>();
@@ -46,13 +52,15 @@ public class PlayerManager : MonoBehaviour {
 		FloorGenerator.OnFloorGenerated += MovePlayerToEntrance;
 
 		FloorGenerator.OnBeginGeneration += RemovePlayerOnNewFloor;
+
+		DontDestroyOnLoad(this.gameObject);
 	}
 
 	/// <summary>
 	/// removes player on floor generation
 	/// </summary>
 	/// <param name="floor"></param>
-	private void RemovePlayerOnNewFloor(Floor floor) {
+	private void RemovePlayerOnNewFloor(Floor floor, System.Random rand) {
 		if (localPlayer != null) {
 			Destroy(localPlayer);
 			localPlayer = null;
@@ -64,30 +72,30 @@ public class PlayerManager : MonoBehaviour {
 	/// </summary>
 	/// <param name="destoryExisting"></param>
 	/// <param name="position"></param>
-	private void CreatePlayer(bool destoryExisting, Vector3 position) {
+	public void CreatePlayer(bool destoryExisting) {
 		if (localPlayer != null && destoryExisting) {
 			Destroy(localPlayer);
 			localPlayer = null;
 		}
 		
 		if (localPlayer == null) {
-			localPlayer = Instantiate(playerPrefab, position, Quaternion.identity);
-			followingCamera.target = localPlayer.transform;
+			localPlayer = Instantiate(playerPrefab);
+			Camera.main.GetComponent<CopyTargetPosition>().target = localPlayer.transform;
 		}
 	}
 
 	/// <summary>
 	/// moves the player to the entrance of the floor
 	/// </summary>
-	private void MovePlayerToEntrance(Floor currentFloor) {
+	private void MovePlayerToEntrance(Floor currentFloor, System.Random rand) {
 		if (localPlayer == null) {
 			Vector3 entrancePos = currentFloor.entrance.transform.position;
 
 			entrancePos.y += 5f;
 
-			//localPlayer.transform.position = entrancePos;
+			CreatePlayer(true);
 
-			CreatePlayer(false, entrancePos);
+			localPlayer.GetComponent<NavMeshAgent>().Warp(entrancePos);
 		}
 	}
 }
