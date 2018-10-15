@@ -4,6 +4,8 @@ using UnityEngine.AI;
 /// <summary>
 /// This is an abstract class for AI Actions.
 /// </summary>
+[RequireComponent(typeof(AIControl))]
+[RequireComponent(typeof(CharacterStats))]
 public abstract class AIAction : MonoBehaviour {
 
     /// <summary>
@@ -26,11 +28,17 @@ public abstract class AIAction : MonoBehaviour {
     /// </summary>
     protected AIControl _AIControl;
 
+    /// <summary>
+    /// Reference to the character stats
+    /// </summary>
+    protected CharacterStats _characterStats;
+
     // Use this for initialization
     private void Start() {
         _agent = GetComponent<NavMeshAgent>();
         _skillCaster = GetComponent<SkillCaster>();
         _AIControl = GetComponent<AIControl>();
+        _characterStats = GetComponent<CharacterStats>();
         InvokeRepeating("Check", 0f, checkFrequency);
     }
 
@@ -38,7 +46,11 @@ public abstract class AIAction : MonoBehaviour {
     /// Checks for action conditions and adds them to the action queue if met.
     /// Does not add duplicates of this action to the queue.
     /// </summary>
-    public abstract void Check();
+    public void Check() {
+        if (!_AIControl.ActionQueue.Contains(this) && Precondition()) {
+            _AIControl.ActionQueue.Enqueue(this); // Add to action queue
+        }
+    }
 
     /// <summary>
     /// Checks for conditions that must be true before this script's action can be done.
