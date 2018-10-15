@@ -40,11 +40,28 @@ public abstract class BaseClass : MonoBehaviour {
     public int skill4;
 
     /// <summary>
-    /// Not implemented yet
-    /// Will be used for leveling
+    /// Used for leveling
     /// </summary>
     public void GainStats()
     {
-        
+        CharacterStats player = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterStats>();
+        player.maxHp += perLevelHP;
+        player.maxMp += perLevelMP;
+        player.physAtk += perLevelPhysAtt;
+        player.physDef += perLevelPhysDef;
+    }
+
+    /// <summary>
+    /// Used for leveling
+    /// </summary>
+    public void InitiateClass()
+    {
+        CharacterStats player = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterStats>();
+        player.maxHp += bonusHP;
+        player.maxMp += bonusMP;
+        player.physAtk += bonusPhysAtt;
+        player.magicAtk += bonusMagAtt;
+        player.physDef += bonusPhysDef;
+        player.magicDef += bonusMagDef;
     }
 }
