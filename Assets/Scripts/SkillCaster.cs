@@ -137,7 +137,7 @@ public class SkillCaster : MonoBehaviour {
                         Instantiate(skill0, transform); // Create the basic attack hitbox
                         break;
                     case 1:
-                        Skill.Gain(GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterStats>(), currentSkill.stat, currentSkill.amount);
+                        Skill.Gain(GetComponent<CharacterStats>(), currentSkill.stat, currentSkill.amount);
                         break;
                     case 2:
                         break;

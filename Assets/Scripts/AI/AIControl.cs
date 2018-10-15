@@ -12,6 +12,8 @@ public class AIControl : MonoBehaviour {
     /// </summary>
     private static readonly int PLAYER_MASK = 1 << 10;
 
+    public Transform target;
+
     /// <summary>
     /// The aggro radius.
     /// </summary>
@@ -37,19 +39,18 @@ public class AIControl : MonoBehaviour {
     private void FixedUpdate() {
         // Don't do anything if already attacking
         if (!_skillCaster.isCasting) {
-            Transform target;
 
             // If there is a player in aggro radius, it will be assigned to target
-            if (CheckAggro(out target)) {
-                _agent.destination = target.position; // Move to the player
+            if (CheckAggro()) {
+                _agent.destination = target.position; // Move to the target
+
+                // Keep facing the target
+                transform.LookAt(new Vector3(target.position.x, transform.position.y, target.position.z));
 
                 // If in melee range
                 if (Vector3.Distance(target.position, transform.position) <= _agent.stoppingDistance) {
                     // Basic melee attack
                     GetComponent<SkillCaster>().Cast(0, 0);
-
-                    // Keep facing the target
-                    transform.LookAt(new Vector3(target.position.x, transform.position.y, target.position.z));
                 }
             }
         }
@@ -60,25 +61,26 @@ public class AIControl : MonoBehaviour {
     /// </summary>
     /// <param name="target">A transform to output to</param>
     /// <returns>Whether a player is within the aggro radius</returns>
-    private bool CheckAggro(out Transform target) {
+    private bool CheckAggro() {
         // Check all colliders within the aggro radius that match the player mask
         Collider[] withinAggroColliders = Physics.OverlapSphere(transform.position, aggroRadius, PLAYER_MASK);
 
         // Array length greater than zero means at least one player is within the aggro radius
         if (withinAggroColliders.Length > 0) {
-            target = withinAggroColliders[0].transform; // Target is the player's transform
+            Transform aggroedTarget = withinAggroColliders[0].transform; // Target is the player's transform
 
             // Check if the target is behind a wall
             RaycastHit hit;
-            if (Physics.Raycast(transform.position, target.position - transform.position, out hit)) {
+            if (Physics.Raycast(transform.position, aggroedTarget.position - transform.position, out hit)) {
                 if (hit.collider.tag == "Wall") {
                     return false; // Player is behind wall, don't aggro
                 }
             }
 
+            target = aggroedTarget;
             return true;
         } else {
-            target = transform; // Default target value
+            target = null; // No targets in aggro range
             return false;
         }
     }
