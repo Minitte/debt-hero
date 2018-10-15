@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.AI;
 
 /// <summary>
@@ -12,6 +13,9 @@ public class AIControl : MonoBehaviour {
     /// </summary>
     private static readonly int PLAYER_MASK = 1 << 10;
 
+    /// <summary>
+    /// The currently targeted gameobject.
+    /// </summary>
     public Transform target;
 
     /// <summary>
@@ -29,10 +33,23 @@ public class AIControl : MonoBehaviour {
     /// </summary>
     private SkillCaster _skillCaster;
 
+    /// <summary>
+    /// A queue of actions for the AI.
+    /// </summary>
+    private Queue<IAIAction> _actionQueue;
+
+    /// <summary>
+    /// Property variable for the action queue.
+    /// </summary>
+    public Queue<IAIAction> ActionQueue {
+        get { return _actionQueue; }
+    }
+
     // Use this for initialization
     private void Start() {
         _agent = GetComponent<NavMeshAgent>();
         _skillCaster = GetComponent<SkillCaster>();
+        _actionQueue = new Queue<IAIAction>();
     }
 
     // Update is called once per frame
@@ -46,12 +63,11 @@ public class AIControl : MonoBehaviour {
 
                 // Keep facing the target
                 transform.LookAt(new Vector3(target.position.x, transform.position.y, target.position.z));
+            }
 
-                // If in melee range
-                if (Vector3.Distance(target.position, transform.position) <= _agent.stoppingDistance) {
-                    // Basic melee attack
-                    GetComponent<SkillCaster>().Cast(0, 0);
-                }
+            // If there are actions in the queue, perform them
+            if (_actionQueue.Count > 0) {
+                _actionQueue.Dequeue().Action();
             }
         }
     }
