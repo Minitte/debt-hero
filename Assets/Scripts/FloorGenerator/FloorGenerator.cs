@@ -48,6 +48,14 @@ public class FloorGenerator : MonoBehaviour {
 	/// </summary>
 	public int maxFloorRadius = 13; 
 
+	[Header("Generation Variables")]
+
+	/// <summary>
+	/// Number of node rooms in generating the floor
+	/// </summary>
+	[Range(2, 10)]
+	public int numberOfNodes;
+
 	/// <summary>
 	/// Seed to be used in generating the floor
 	/// </summary>
@@ -216,7 +224,7 @@ public class FloorGenerator : MonoBehaviour {
 	/// <param name="maxDistance">max distance from the entrance</param>
 	/// <returns></returns>
 	private IEnumerator	GenerateRoomEntries(int maxDistance) {
-		XZCoordinate[] nodes = new XZCoordinate[6];
+		XZCoordinate[] nodes = new XZCoordinate[numberOfNodes];
 
 		// create nodes
 		for (int i = 0; i < nodes.Length; i++) {
