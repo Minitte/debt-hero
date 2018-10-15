@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PlayerManager : MonoBehaviour {
 
@@ -64,14 +65,14 @@ public class PlayerManager : MonoBehaviour {
 	/// </summary>
 	/// <param name="destoryExisting"></param>
 	/// <param name="position"></param>
-	private void CreatePlayer(bool destoryExisting, Vector3 position) {
+	private void CreatePlayer(bool destoryExisting) {
 		if (localPlayer != null && destoryExisting) {
 			Destroy(localPlayer);
 			localPlayer = null;
 		}
 		
 		if (localPlayer == null) {
-			localPlayer = Instantiate(playerPrefab, position, Quaternion.identity);
+			localPlayer = Instantiate(playerPrefab);
 			followingCamera.target = localPlayer.transform;
 		}
 	}
@@ -85,9 +86,9 @@ public class PlayerManager : MonoBehaviour {
 
 			entrancePos.y += 5f;
 
-			//localPlayer.transform.position = entrancePos;
+			CreatePlayer(true);
 
-			CreatePlayer(false, entrancePos);
+			localPlayer.GetComponent<NavMeshAgent>().Warp(entrancePos);
 		}
 	}
 }
