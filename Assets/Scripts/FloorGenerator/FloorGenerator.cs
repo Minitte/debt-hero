@@ -113,16 +113,62 @@ public class FloorGenerator : MonoBehaviour {
 	/// Awake is called when the script instance is being loaded.
 	/// </summary>
 	void Awake() {
-		GenerateNewFloor(GenerateSeedNumber(floorSeed, floorNumber), false);
+		GenerateNewFloor(false);
     }
+	
+	/// <summary>
+	/// Increments the floor number and generates a new floor
+	/// </summary>
+	public void NextFloor() {
+		floorNumber++;
+
+		if (floorNumber % 3 == 0) {
+			StartCoroutine(GenerateSafeZone());
+		} else {
+			GenerateNewFloor(true);
+		}
+	}
+
+	/// <summary>
+	/// Generates a safezone
+	/// </summary>
+	private IEnumerator GenerateSafeZone() {
+			if (currentFloorParent != null) {
+				Destroy(currentFloorParent.gameObject);
+				currentFloorParent = null;
+			}
+
+		currentFloorParent = Instantiate(floorParentPrefab.gameObject).GetComponent<Floor>();
+
+		if (OnBeginGeneration != null) {
+			OnBeginGeneration(currentFloorParent, _rand);
+		}
+
+		RoomEntry entry = createRoomEntry(XZCoordinate.zero);
+
+		currentFloorParent.entrance = entry;
+
+		GameObject safeZone = Instantiate(pieceSet.GetRandomSafeZonePrefab(_rand), entry.transform);
+
+		safeZone.GetComponentInChildren<FloorExitTrigger>().TargetGenerator = this;
+
+		yield return new WaitForEndOfFrame();
+
+		currentFloorParent.GetComponent<NavMeshSurface>().BuildNavMesh();
+
+		// trigger event if anything is listening to it
+		if (OnFloorGenerated != null) {
+			OnFloorGenerated(currentFloorParent, _rand);           
+		}
+	}
 
     /// <summary>
     /// Generates and replaces the current floor with a new one based on the seed
     /// </summary>
     /// <param name="floorSeedNumber"></param>
     /// <param name="destoryOldFloor">flag to destory the old floor</param>
-    public void GenerateNewFloor(int floorSeedNumber, bool destoryOldFloor) {
-		_rand = new System.Random(floorSeedNumber);
+    private void GenerateNewFloor(bool destoryOldFloor) {
+		_rand = new System.Random(GenerateSeedNumber(floorSeed, floorNumber));
 
 		if (destoryOldFloor) {
 			if (currentFloorParent != null) {
@@ -305,7 +351,7 @@ public class FloorGenerator : MonoBehaviour {
 					piecePrefab = pieceSet.GetRandomDeadEndPrefab(_rand);
 
 					// instantiate and set parent to the entry
-					piece = Instantiate(piecePrefab, currentFloorParent.transform);
+					piece = Instantiate(piecePrefab, entry.transform);
 
 					// set the rotation based on neighbor orientation
 					piece.transform.rotation = pieceSet.DeadEndRotation(neighbors);

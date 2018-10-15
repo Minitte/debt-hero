@@ -29,6 +29,8 @@ public class FloorPieceSet {
     /// </summary>
     public GameObject[] deadEndPrefabs;
 
+    public GameObject[] safeZonePrefabs;
+
     /// <summary>
     /// Creates a Quaternion rotation for a 4 way piece based on the orintenation of the neighbors
     /// </summary>
@@ -169,5 +171,14 @@ public class FloorPieceSet {
     /// <returns>a dead end room piece prefab</returns>
     public GameObject GetRandomDeadEndPrefab(System.Random rand) {
         return deadEndPrefabs[rand.Next(deadEndPrefabs.Length)];
+    }
+
+    /// <summary>
+    /// returns a safezone room piece
+    /// </summary>
+    /// <param name="rand">system default random object</param>
+    /// <returns>a dead end room piece prefab</returns>
+    public GameObject GetRandomSafeZonePrefab(System.Random rand) {
+        return safeZonePrefabs[rand.Next(safeZonePrefabs.Length)];
     }
 }

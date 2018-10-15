@@ -24,6 +24,6 @@ public class FloorExitTrigger : MonoBehaviour {
 		enabled = false;
 
 		// delete old floor and generate a new one
-		TargetGenerator.GenerateNewFloor(new System.Random().Next(0, int.MaxValue - 1), true);
+		TargetGenerator.NextFloor();
 	}
 }
