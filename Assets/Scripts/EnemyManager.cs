@@ -14,12 +14,11 @@ public class EnemyManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        
+        FloorGenerator.OnFloorGenerated += SpawnEnemies;
     }
 	
 	// Update is called once per frame
 	void Update () {
-        FloorGenerator.OnFloorGenerated += SpawnEnemies;
         enemies.RemoveAll(item => item == null);
     }
 
@@ -29,13 +28,15 @@ public class EnemyManager : MonoBehaviour {
     /// <param name="currentFloor">A floor that contains a room</param>
     /// <param name="rand"> Random used to determine which room to use.</param>
     void SpawnEnemies(Floor currentFloor, System.Random rand) {
-        //Debug.Log("Event Fired");
-        int roomSize = currentFloor.roomList.Count;
-        
-        Vector3 roomyPos = currentFloor.roomList[rand.Next(0, roomSize)].transform.position;
-        Vector3 enemyPos = new Vector3(roomyPos.x, roomyPos.y + .85f, roomyPos.z);
-        GameObject temp = enemyType[0].gameObject;
-        Instantiate(temp, enemyPos, Quaternion.identity);
-        enemies.Add(temp);
+       
+        for (int i = 0; i <= rand.Next(5, 10); i++) {
+            int roomSize = currentFloor.roomList.Count;
+            Debug.Log("Event Fired");
+            Vector3 roomyPos = currentFloor.roomList[rand.Next(0, roomSize)].transform.position;
+            Vector3 enemyPos = new Vector3(roomyPos.x, roomyPos.y + .85f, roomyPos.z);
+            GameObject temp = enemyType[0].gameObject;
+            Instantiate(temp, enemyPos, Quaternion.identity);
+            enemies.Add(temp);
+        }
     }
 }
