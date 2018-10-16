@@ -22,7 +22,7 @@ public class FloatingTextController : MonoBehaviour {
     public Vector3 textOffset;
 
     // Use this for initialization
-    private void Start() {
+    private void Awake() {
         instance = this;
     }
 

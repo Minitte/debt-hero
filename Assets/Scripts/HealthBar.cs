@@ -25,11 +25,6 @@ public class HealthBar : MonoBehaviour
     /// </summary>
     public Vector3 offset;
 
-    /// <summary>
-    /// An offset for the health bar.
-    /// </summary>
-    private Vector3 _offset;
-
     private void Update()
     {
         // Stay next to the character
