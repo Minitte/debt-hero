@@ -30,4 +30,16 @@ public class WarpPad : MonoBehaviour {
 			_teleportMenu.SetActive(true);
 		}
 	}
+
+    /// <summary>
+    /// OnTriggerExit is called when the Collider leaves the trigger.
+    /// </summary>
+    /// <param name="other">The other Collider involved in this collision.</param>
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.tag == "Player")
+        {
+            _teleportMenu.SetActive(false);
+        }
+    }
 }
