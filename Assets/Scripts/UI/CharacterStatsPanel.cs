@@ -48,17 +48,16 @@ public class CharacterStatsPanel : MonoBehaviour {
 	/// </summary>
 	public TextMeshProUGUI expTextValue;
 
-	[Header("Stat")]
-
 	/// <summary>
 	/// Stats to display
 	/// </summary>
-	public CharacterStats stats;
+	private CharacterStats _stats;
 
 	/// <summary>
-	/// Awake is called when the script instance is being loaded.
+	/// Start is called on the frame when a script is enabled just before
+	/// any of the Update methods is called the first time.
 	/// </summary>
-	void Awake() {
+	void Start() {
 		UpdateTextValues();
 	}
 
@@ -73,18 +72,22 @@ public class CharacterStatsPanel : MonoBehaviour {
 	/// Updates the text values with the corresponding values in stats
 	/// </summary>
 	public void UpdateTextValues() {
-		hpTextValue.text = stats.currentHp + " / " + stats.maxHp;
-		mpTextValue.text = stats.currentMp + " / " + stats.maxMp;
+		if (_stats == null) {
+			_stats = PlayerManager.instance.GetComponent<CharacterStats>();
+		}
+		
+		hpTextValue.text = _stats.currentHp + " / " + _stats.maxHp;
+		mpTextValue.text = _stats.currentMp + " / " + _stats.maxMp;
 
-		pattTextValue.text = stats.physAtk + "";
-		mattTextValue.text = stats.magicAtk + "";
+		pattTextValue.text = _stats.physAtk + "";
+		mattTextValue.text = _stats.magicAtk + "";
 
-		pdefTextValue.text = stats.physDef + "";
-		mattTextValue.text = stats.magicDef + "";
+		pdefTextValue.text = _stats.physDef + "";
+		mattTextValue.text = _stats.magicDef + "";
 
-		levelTextValue.text = stats.level + "";
+		levelTextValue.text = _stats.level + "";
 
-		expTextValue.text = stats.exp + "";
+		expTextValue.text = _stats.exp + "";
 
 	}
 }
