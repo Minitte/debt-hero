@@ -8,6 +8,12 @@ using UnityEngine.AI;
 public class PlayerInputHandler : MonoBehaviour {
 
     /// <summary>
+    /// The maximum allowed difference in y value between the clicked
+    /// position and the current position.
+    /// </summary>
+    private static readonly float MAX_CLIMB = 2f;
+
+    /// <summary>
     /// Map for keybinds.
     /// </summary>
     private Keybinds _keybinds;
@@ -62,8 +68,15 @@ public class PlayerInputHandler : MonoBehaviour {
             if (Input.GetKey(_keybinds["MoveKeyboard"])) {
                 if (GetClickedPoint(out clickedPoint)) {
                     transform.LookAt(new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z));
-                    _agent.destination = clickedPoint;
-                    _animator.SetFloat("Speed", 1); // Start walk animation
+
+                    // Check for massive elevation difference between clicked point and current position
+                    if (Mathf.Abs(transform.position.y - clickedPoint.y) > MAX_CLIMB) {
+                        _agent.destination = new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z); // Discard clicked y point
+                    } else {
+                        _agent.destination = clickedPoint;
+                    }
+
+                    _animator.SetFloat("Speed", 1f); // Start walk animation
                 }
             }
 
