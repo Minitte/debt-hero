@@ -121,7 +121,7 @@ public class FloorGenerator : MonoBehaviour {
 			GameState.floorReached = GameState.currentFloor;
 		}
 
-		if (GameState.currentFloor % 3 == 0) {
+		if (GameState.currentFloor % 2 == 0) {
 			StartCoroutine(GenerateSafeZone());
 		} else {
 			GenerateNewFloor(true);
