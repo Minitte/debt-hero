@@ -79,10 +79,6 @@ public class AIController : MonoBehaviour {
                 _actionQueue.Dequeue().Action();
             }
         }
-
-        // Force model position and rotation to stay the same
-        transform.GetChild(0).position = transform.position;
-        transform.GetChild(0).rotation = transform.rotation;
     }
 
     /// <summary>

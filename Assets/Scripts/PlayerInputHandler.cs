@@ -51,7 +51,6 @@ public class PlayerInputHandler : MonoBehaviour {
             if (Input.GetKeyDown(_keybinds["AttackKeyboard"])) {
                 if (GetClickedPoint(out clickedPoint)) {
                     transform.LookAt(new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z));
-                    transform.Rotate(0f, 60f, 0f); // Needed for sword_swing animation
                     StartCoroutine(StopMovement(0.5f)); // Stop movement
                     _skillCaster.Cast(0, 0);
                     return;
@@ -68,7 +67,6 @@ public class PlayerInputHandler : MonoBehaviour {
                 // Check if the player pressed or is holding the controller attack key
                 if (Input.GetKeyDown(_keybinds["AttackController"])) {
                     StartCoroutine(StopMovement(0.5f)); // Stop movement
-                    transform.Rotate(0f, 60f, 0f); // Needed for sword_swing animation
                     _skillCaster.Cast(0, 0);
                 }
 
@@ -84,6 +82,10 @@ public class PlayerInputHandler : MonoBehaviour {
                 }
             }
         }
+
+        // Force model position and rotation to stay the same
+        transform.GetChild(0).position = transform.position;
+        transform.GetChild(0).rotation = transform.rotation;
     }
 
     /// <summary>
