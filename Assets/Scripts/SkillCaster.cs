@@ -132,8 +132,8 @@ public class SkillCaster : MonoBehaviour {
                     case 0:
                         if (transform.GetComponent<Animator>()) {
                             transform.GetComponent<Animator>().SetTrigger("Attack");
-                        } else if (transform.GetChild(0).GetComponent<Animation>()) {
-                            transform.GetChild(0).GetComponent<Animation>().Play("attack");
+                        } else if (transform.GetChild(0).GetComponent<Animator>()) {
+                            transform.GetChild(0).GetComponent<Animator>().SetTrigger("Attack");
                         }
                         Instantiate(skill0, transform); // Create the basic attack hitbox
                         break;

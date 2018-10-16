@@ -6,7 +6,6 @@ using UnityEngine.AI;
 /// Class for the controlling AI behaviour.
 /// </summary>
 [RequireComponent(typeof(NavMeshAgent))]
-[RequireComponent(typeof(SkillCaster))]
 [RequireComponent(typeof(CharacterStats))]
 public class AIController : MonoBehaviour {
 
@@ -55,7 +54,16 @@ public class AIController : MonoBehaviour {
     // Use this for initialization
     private void Start() {
         _agent = GetComponent<NavMeshAgent>();
-        _skillCaster = GetComponent<SkillCaster>();
+
+        // Find the skill caster component
+        if (GetComponent<SkillCaster>()) {
+            _skillCaster = GetComponent<SkillCaster>();
+        } else if (transform.GetChild(0).GetComponent<SkillCaster>()) { // Check first child
+            _skillCaster = transform.GetChild(0).GetComponent<SkillCaster>();
+        } else {
+            Debug.Log("Couldn't find a skill caster for AI gameobject");
+        }
+
         _actionQueue = new Queue<AIAction>();
         GetComponent<CharacterStats>().OnDamageTaken += DrawHealthBar;
         GetComponent<CharacterStats>().OnDeath += Die;
