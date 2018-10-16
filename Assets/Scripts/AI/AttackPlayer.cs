@@ -24,6 +24,6 @@ public class AttackPlayer : AIAction {
     /// </summary>
     public override void Action() {
         // Basic melee attack
-        GetComponent<SkillCaster>().Cast(0, 0);
+        GetComponent<SkillCaster>().Cast(skillNum, skillID);
     }
 }

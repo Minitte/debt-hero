@@ -3,7 +3,6 @@ using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
-
     /// <summary>
     /// The title of the user.
     /// </summary>
@@ -17,7 +16,6 @@ public class HealthBar : MonoBehaviour
     /// <summary>
     /// The health value of a user.
     /// </summary>
-    /// 
     public Text value;
 
     /// <summary>
@@ -26,14 +24,34 @@ public class HealthBar : MonoBehaviour
     public Vector3 offset;
 
     /// <summary>
-    /// An offset for the health bar.
+    /// The owner of the health bar.
     /// </summary>
-    private Vector3 _offset;
+    private GameObject _owner;
 
+    /// <summary>
+    /// Property variable for owner.
+    /// </summary>
+    public GameObject owner {
+        get {
+            return _owner;
+        }
+        set {
+            _owner = value;
+        }
+    }
+
+    // Use this for initialization
+    private void Start() {
+        BarColor(176, 25, 5, 255); // Default health bar colour
+    }
+
+    // Update is called once per frame
     private void Update()
     {
-        // Stay next to the character
-        transform.Find("HealthBarColor").position = Camera.main.WorldToScreenPoint(transform.parent.position + offset);
+        // Stay next to the owner
+        if (_owner != null) {
+            transform.Find("HealthBarColor").position = Camera.main.WorldToScreenPoint(owner.transform.position + offset);
+        }
     }
 
     /// <summary>
@@ -43,16 +61,6 @@ public class HealthBar : MonoBehaviour
     public void BarGenerateName(string title)
     {
         this.title.text = title;
-    }
-
-    /// <summary>
-    /// Setting the position of the bar. 
-    /// </summary>
-    /// <param name="Position"></param>
-    public void BarPosition(Vector3 Position)
-    {
-        this.transform.position = new Vector3(Position.x, Position.y + 0.8f, Position.z);
-
     }
 
     /// <summary>
