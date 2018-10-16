@@ -1,159 +1,138 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Events;
+
+/// <summary>
+/// Class for the controlling AI behaviour.
+/// </summary>
+[RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(SkillCaster))]
+[RequireComponent(typeof(CharacterStats))]
 public class AIController : MonoBehaviour {
 
     /// <summary>
-    /// The NavMeshAgent associated with this gameobject.
+    /// For filtering out all layers except the player's.
     /// </summary>
-    //public Transform target;
-    //public Vector3 offset = new Vector3(0f, 7.5f, 0f);
-    public Light spotlight;
+    private static readonly int PLAYER_MASK = 1 << 10;
+
+    /// <summary>
+    /// The currently targeted gameobject.
+    /// </summary>
+    public Transform target;
+
+    /// <summary>
+    /// The aggro radius.
+    /// </summary>
+    public float aggroRadius = 5f;
+
+    /// <summary>
+    /// Reference to the NavMeshAgent.
+    /// </summary>
     private NavMeshAgent _agent;
-    public float detectionRange;
-    public float detectionAngle;
-    public bool playerDetected = false;
-    private bool follow = false;
-    private float timeSinceAggro;
-
-    public UnityEvent unityEvent;
 
     /// <summary>
-    /// Preset contaning a canvas, image, text.
+    /// Reference to the SkillCaster.
     /// </summary>
-    public HealthBar healthbar;
+    private SkillCaster _skillCaster;
 
     /// <summary>
-    /// Instance to the preset.
+    /// A queue of actions for the AI.
     /// </summary>
-    private HealthBar Healthbarinstance;
+    private Queue<AIAction> _actionQueue;
 
-    
+    /// <summary>
+    /// Reference to the AI's health bar.
+    /// </summary>
+    private HealthBar _healthBar;
 
+    /// <summary>
+    /// Property variable for the action queue.
+    /// </summary>
+    public Queue<AIAction> ActionQueue {
+        get { return _actionQueue; }
+    }
 
     // Use this for initialization
-    void Start () {
+    private void Start() {
         _agent = GetComponent<NavMeshAgent>();
-
-        // Make sure that this gameobject has a NavMeshAgent
-        if (_agent == null)
-        {
-            Debug.Log("Attempted to run AIController script without a NavMeshAgent.");
-            Destroy(this);
-        }
-        follow = false;
-        timeSinceAggro = 0;
-        spotlight.spotAngle = detectionAngle;
-
-        //Instantiates the instance to the Healthbar prefab.
-        HealthBar hp = Healthbarinstance = Instantiate(healthbar) as HealthBar;
-        hp.gameObject.transform.parent = transform;
-
-        //For test purposes its known as enemy. Can change later.
-        Healthbarinstance.BarGenerateName("Enemy");
-
-        //Setting a red color.
-        Healthbarinstance.BarColor(176, 25, 5, 255);
-
-        unityEvent = new UnityEvent();
-        //unityEvent.AddListener(ch)
-
-        gameObject.GetComponent<CharacterStats>().OnDeath += Example;
-
+        _skillCaster = GetComponent<SkillCaster>();
+        _actionQueue = new Queue<AIAction>();
+        GetComponent<CharacterStats>().OnDamageTaken += DrawHealthBar;
+        GetComponent<CharacterStats>().OnDeath += Die;
     }
-	
-	// Update is called once per frame
-	void Update () {
 
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            gameObject.GetComponent<CharacterStats>().TakeDamage(5, 0);
-        }
+    // Update is called once per frame
+    private void FixedUpdate() {
+        // Don't do anything if already attacking
+        if (!_skillCaster.isCasting) {
 
-        /// <summary>
-        /// If player is detected, set aggro timer to 0
-        /// If player is not detected, start counting up to 60 sec before losing aggro
-        /// </summary>
-        if (playerDetected)
-        {
-            timeSinceAggro = 0;
+            // If there is a player in aggro radius, it will be assigned to target
+            if (CheckAggro()) {
+                _agent.destination = target.position; // Move to the target
 
-        }
-        else if (timeSinceAggro < 60)
-        {
+                // Keep facing the target
+                transform.LookAt(new Vector3(target.position.x, transform.position.y, target.position.z));
+            }
 
+            // If there are actions in the queue, perform them
+            if (_actionQueue.Count > 0) {
+                _actionQueue.Dequeue().Action();
+            }
         }
-        else if(playerDetected == false)
-        {
-            timeSinceAggro = timeSinceAggro += Time.deltaTime;
-        }
-
-        if (timeSinceAggro >= 60)
-        {
-            timeSinceAggro = 0;
-            playerDetected = false;
-            follow = false;
-        }
-
-        if(follow && PlayerDistanceFrom() > 1)
-        {
-            _agent.destination = GameObject.FindGameObjectWithTag("Player").transform.position;
-        }
-        else
-        {
-            _agent.destination = transform.position;
-        }
-
-        /// <summary>
-        /// Calculates the angle and distance from the player and follows if within specified values
-        /// </summary>
-        float angle = PlayerAngleFrom();
-        float distance = PlayerDistanceFrom();
-        if (angle <= detectionAngle && distance < detectionRange)
-        {
-            playerDetected = true;
-            follow = true;
-        }
-        else
-        {
-            playerDetected = false;
-        }
-
-        //Moves the Hp bar to following the Ai.
-        //Healthbarinstance.BarPosition(GameObject.FindGameObjectWithTag("AI").transform.position);
-       
-
     }
 
     /// <summary>
-    /// Calculates the angle from the player
+    /// Checks if any players are within the aggro radius.
     /// </summary>
-    private float PlayerAngleFrom()
-    {
-        Vector3 forward = transform.TransformDirection(Vector3.forward);
-        Vector3 playerPos = GameObject.FindGameObjectWithTag("Player").transform.position;
-        float detection = Vector3.Angle(forward, playerPos);
-        return detection;
+    /// <param name="target">A transform to output to</param>
+    /// <returns>Whether a player is within the aggro radius</returns>
+    private bool CheckAggro() {
+        // Check all colliders within the aggro radius that match the player mask
+        Collider[] withinAggroColliders = Physics.OverlapSphere(transform.position, aggroRadius, PLAYER_MASK);
+
+        // Array length greater than zero means at least one player is within the aggro radius
+        if (withinAggroColliders.Length > 0) {
+            Transform aggroedTarget = withinAggroColliders[0].transform; // Target is the player's transform
+
+            // Check if the target is behind a wall
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, aggroedTarget.position - transform.position, out hit)) {
+                if (hit.collider.tag == "Wall") {
+                    return false; // Player is behind wall, don't aggro
+                }
+            }
+
+            target = aggroedTarget;
+            return true;
+        } else {
+            target = null; // No targets in aggro range
+            return false;
+        }
     }
 
     /// <summary>
-    /// Calculates the distance from the player
+    /// Draws a health bar over this gameobject when damage is first taken.
     /// </summary>
-    private float PlayerDistanceFrom()
-    {
-        Vector3 playerPos = GameObject.FindGameObjectWithTag("Player").transform.position;
-        float playerDistance = Vector3.Distance(transform.position, playerPos);
-        return playerDistance;
+    /// <param name="physAtkdamge">Unused</param>
+    /// <param name="magicAtkdamage">Unused</param>
+    private void DrawHealthBar(float physAtkdamge, float magicAtkdamage) {
+        if (_healthBar == null) {
+            _healthBar = FloatingTextController.instance.CreateHealthBar(gameObject);
+        }
     }
 
-    public void Example()
-    {
-        Debug.Log("AI DIED");
+    /// <summary>
+    /// Draws a red sphere to indicate the aggro radius in the editor.
+    /// </summary>
+    private void OnDrawGizmosSelected() {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, aggroRadius);
     }
 
-
-
+    /// <summary>
+    /// Additional cleanup for when this gameobject dies.
+    /// </summary>
+    private void Die() {
+        Destroy(_healthBar.gameObject); // Get rid of the health bar
+    }
 }

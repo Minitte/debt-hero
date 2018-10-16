@@ -4,7 +4,7 @@ using UnityEngine.AI;
 /// <summary>
 /// This is an abstract class for AI Actions.
 /// </summary>
-[RequireComponent(typeof(AIControl))]
+[RequireComponent(typeof(AIController))]
 [RequireComponent(typeof(CharacterStats))]
 public abstract class AIAction : MonoBehaviour {
 
@@ -26,7 +26,7 @@ public abstract class AIAction : MonoBehaviour {
     /// <summary>
     /// Reference to the AI Controller.
     /// </summary>
-    protected AIControl _AIControl;
+    protected AIController _AIControl;
 
     /// <summary>
     /// Reference to the character stats
@@ -37,7 +37,7 @@ public abstract class AIAction : MonoBehaviour {
     private void Start() {
         _agent = GetComponent<NavMeshAgent>();
         _skillCaster = GetComponent<SkillCaster>();
-        _AIControl = GetComponent<AIControl>();
+        _AIControl = GetComponent<AIController>();
         _characterStats = GetComponent<CharacterStats>();
         InvokeRepeating("Check", 0f, checkFrequency);
     }
