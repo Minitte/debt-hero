@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LevelSystem : MonoBehaviour
 {
-    public int currentLevel;
+    //public int currentLevel;
     public float currentLevelEXP;
     public float nextLevelEXP;
     public float remainingEXP;
@@ -14,7 +14,7 @@ public class LevelSystem : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        currentLevel = 1;
+        player.GetComponent<CharacterStats>().level = 1;
         currentLevelEXP = 0;
         remainingEXP = EXPCurve(2);
         nextLevelEXP = EXPCurve(2);
@@ -23,7 +23,7 @@ public class LevelSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        currentLevelEXP = player.GetComponent<CharacterStats>().exp - EXPCurve(currentLevel);
+        currentLevelEXP = player.GetComponent<CharacterStats>().exp - EXPCurve(player.GetComponent<CharacterStats>().level);
         remainingEXP = nextLevelEXP - player.GetComponent<CharacterStats>().exp;
         if(remainingEXP <= 0)
         {
@@ -47,8 +47,8 @@ public class LevelSystem : MonoBehaviour
     void LevelUp()
     {
         LevelEffect.Play();
-        currentLevel += 1;
-        nextLevelEXP = EXPCurve(currentLevel+1);
+        player.GetComponent<CharacterStats>().level += 1;
+        nextLevelEXP = EXPCurve(player.GetComponent<CharacterStats>().level + 1);
         player.GetComponent<BaseClass>().GainStats();
     }
 }
