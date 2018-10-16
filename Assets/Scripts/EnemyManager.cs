@@ -52,7 +52,14 @@ public class EnemyManager : MonoBehaviour {
         for (int i = 0; i <= rand.Next(5, 10); i++) {
             int roomSize = currentFloor.roomList.Count;
             // Debug.Log("Event Fired");
-            Vector3 roomyPos = currentFloor.roomList[rand.Next(0, roomSize)].transform.position;
+
+            RoomEntry room = currentFloor.roomList[rand.Next(0, roomSize)];
+
+            if (room.type == RoomEntry.RoomType.SAFE) {
+                continue;
+            }
+
+            Vector3 roomyPos = room.transform.position;
             Vector3 enemyPos = new Vector3(roomyPos.x, roomyPos.y + .85f, roomyPos.z);
             
             GameObject spawned = Instantiate(enemyType[0], enemyPos, Quaternion.identity);
