@@ -30,4 +30,12 @@ public class WarpPad : MonoBehaviour {
 			_teleportMenu.SetActive(true);
 		}
 	}
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.tag == "Player")
+        {
+            _teleportMenu.SetActive(false);
+        }
+    }
 }
