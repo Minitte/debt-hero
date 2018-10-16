@@ -7,7 +7,8 @@ public class EnemyManager : MonoBehaviour {
     /// <summary>
     /// Prefab of the floor's enemies.
     /// </summary>
-    public GameObject[] enemyList;
+    public GameObject[] enemyType;
+    public List<GameObject> enemies;
 
     
 
@@ -19,6 +20,7 @@ public class EnemyManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         FloorGenerator.OnFloorGenerated += SpawnEnemies;
+        enemies.RemoveAll(item => item == null);
     }
 
     /// <summary>
@@ -32,7 +34,8 @@ public class EnemyManager : MonoBehaviour {
         
         Vector3 roomyPos = currentFloor.roomList[rand.Next(0, roomSize)].transform.position;
         Vector3 enemyPos = new Vector3(roomyPos.x, roomyPos.y + .85f, roomyPos.z);
-        Instantiate(enemyList[0].gameObject, enemyPos, Quaternion.identity);
+        GameObject temp = enemyType[0].gameObject;
+        Instantiate(temp, enemyPos, Quaternion.identity);
+        enemies.Add(temp);
     }
-
 }
