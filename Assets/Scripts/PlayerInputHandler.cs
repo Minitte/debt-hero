@@ -5,7 +5,6 @@ using UnityEngine.AI;
 /// <summary>
 /// Class for handling input and keybindings.
 /// </summary>
-[RequireComponent(typeof(NavMeshAgent))]
 public class PlayerInputHandler : MonoBehaviour {
 
     /// <summary>
@@ -23,35 +22,38 @@ public class PlayerInputHandler : MonoBehaviour {
     /// </summary>
     private SkillCaster _skillCaster;
 
+    private bool _ableToMove;
 
     // Use this for initialization
     private void Start() {
         _keybinds = new Keybinds();
-        _agent = GetComponent<NavMeshAgent>();
+        _agent = transform.parent.GetComponent<NavMeshAgent>();
         _skillCaster = GetComponent<SkillCaster>();
+        _ableToMove = true;
     }
 
     // Update is called once per frame
     private void Update() {
         // Don't accept input if the character is casting something
-        if (!_skillCaster.isCasting) {
+        if (!_skillCaster.isCasting && _ableToMove) {
             // Used for inputs that involve the mouse position
             Vector3 clickedPoint;
-
-            // Check if the player pressed the attack key
-            if (Input.GetKeyDown(_keybinds["AttackKeyboard"])) {
-                if (GetClickedPoint(out clickedPoint)) {
-                    transform.LookAt(new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z));
-                    _agent.destination = transform.position; //Stop movement 
-                    _skillCaster.Cast(0, 0);
-                }
-            }
 
             // Check if the player pressed or is holding the move key
             if (Input.GetKey(_keybinds["MoveKeyboard"])) {
                 if (GetClickedPoint(out clickedPoint)) {
                     transform.LookAt(new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z));
                     _agent.destination = clickedPoint;
+                }
+            }
+
+            // Check if the player pressed the attack key
+            if (Input.GetKeyDown(_keybinds["AttackKeyboard"])) {
+                if (GetClickedPoint(out clickedPoint)) {
+                    transform.LookAt(new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z));
+                    StartCoroutine(StopMovement(0.5f)); // Stop movement
+                    _skillCaster.Cast(0, 0);
+                    return;
                 }
             }
 
@@ -64,7 +66,8 @@ public class PlayerInputHandler : MonoBehaviour {
             if (Input.GetJoystickNames().Length > 0) {
                 // Check if the player pressed or is holding the controller attack key
                 if (Input.GetKeyDown(_keybinds["AttackController"])) {
-                    _agent.destination = transform.position; //Stop movement 
+                    _agent.isStopped = true;//Stop movement
+                    _agent.velocity = Vector3.zero;
                     _skillCaster.Cast(0, 0);
                 }
 
@@ -102,5 +105,16 @@ public class PlayerInputHandler : MonoBehaviour {
         // No collision point
         clickedPoint = Vector3.zero;
         return false;
+    }
+
+    /// <summary>
+    /// Stops movement of the player.
+    /// </summary>
+    /// <param name="seconds">How many seconds to stop movement for.</param>
+    private IEnumerator StopMovement(float seconds) {
+        _ableToMove = false;
+        _agent.ResetPath();
+        yield return new WaitForSeconds(seconds);
+        _ableToMove = true;
     }
 }

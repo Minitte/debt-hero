@@ -13,10 +13,15 @@ public class PlayerManager : MonoBehaviour {
 	/// </summary>
 	public GameObject playerPrefab;
 
-	/// <summary>
-	/// The current local player gameobject instance
-	/// </summary>
-	public GameObject localPlayer;
+    /// <summary>
+    /// Health bar prefab.
+    /// </summary>
+    public GameObject healthbar;
+
+    /// <summary>
+    /// The current local player gameobject instance
+    /// </summary>
+    public GameObject localPlayer;
 	
 	/// <summary>
 	/// Player's stats
@@ -28,7 +33,7 @@ public class PlayerManager : MonoBehaviour {
 	/// </summary>
 	private BaseClass _class;
 
-    private PlayerResourceBars _healthbar;
+    
 
 	/// <summary>
 	/// Awake is called when the script instance is being loaded.
@@ -81,7 +86,11 @@ public class PlayerManager : MonoBehaviour {
 		if (localPlayer == null) {
 			localPlayer = Instantiate(playerPrefab);
 			Camera.main.GetComponent<CopyTargetPosition>().target = localPlayer.transform;
-		}
+
+            // Load player's health bar
+            GameObject hp = Instantiate(healthbar, GameObject.Find("Canvas").transform);
+            hp.GetComponent<PlayerResourceBars>().CharacterStats = localPlayer.GetComponent<CharacterStats>();
+        }
 	}
 
 	/// <summary>

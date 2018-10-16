@@ -31,10 +31,15 @@ public class PlayerResourceBars : MonoBehaviour
     /// </summary>
     private CharacterStats _characterStats;
 
+    public CharacterStats CharacterStats {
+        set {
+            _characterStats = value;
+        }
+    }
+
     // Use this for initialization
     private void Start()
     {
-        _characterStats = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterStats>();
         BarColor(255, 25, 5, 255, hpBar);
         BarColor(107, 114, 255, 255, mpBar);
     }
@@ -42,7 +47,9 @@ public class PlayerResourceBars : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        DrawBar(_characterStats); // Draw the bar
+        if (_characterStats != null) {
+            DrawBar(_characterStats); // Draw the bar
+        }
     }
 
     /// <summary>
