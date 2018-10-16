@@ -16,9 +16,9 @@ public class Attack : MonoBehaviour {
     private float _magicAtkdamage;
 
     /// <summary>
-    /// Reference to the SkillCaster component.
+    /// Reference to the animator status.
     /// </summary>
-    private SkillCaster _skillCaster;
+    private AnimatorStatus _animatorStatus;
 
     /// <summary>
     /// Reference to this gameobject's Collider component.
@@ -29,14 +29,14 @@ public class Attack : MonoBehaviour {
     private void Start () {
         _physAtkdamage = transform.parent.GetComponent<CharacterStats>().physAtk;
         _magicAtkdamage = transform.parent.GetComponent<CharacterStats>().magicAtk;
-        _skillCaster = transform.parent.GetComponent<SkillCaster>();
+        _animatorStatus = transform.parent.GetChild(0).GetComponent<AnimatorStatus>();
         _collider = GetComponent<Collider>();
     }
 
     // Update is called once per frame
     private void Update() {
         // Only deal damage within the damage window of the animation
-        if (_skillCaster.canDealDamage) {
+        if (_animatorStatus.canDealDamage) {
             _collider.enabled = true;
         } else {
             // Check if the damage window is over

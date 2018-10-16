@@ -6,20 +6,20 @@
 public class Heal : MonoBehaviour {
 
     /// <summary>
+    /// The radius of the heal.
+    /// </summary>
+    public float healRadius;
+
+    /// <summary>
     /// The amount to heal for.
     /// </summary>
     public float healingAmount;
 
-    /// <summary>
-    /// For detecting collisions.
-    /// </summary>
-    /// <param name="other">The collision object collided with</param>
-    private void OnTriggerEnter(Collider other) {
-        // Only deal damage to Player or AI tags, and no friendly fire
-        if ((other.tag == "AI" || other.tag == "Player")) {
-
-            // Apply a heal to the target
-            other.GetComponent<CharacterStats>().TakeHealing(healingAmount);
+    private void Start() {
+        // Apply a heal within the radius of the spell
+        Collider[] withinRadiusColliders = Physics.OverlapSphere(transform.position, healRadius, (1 << transform.parent.gameObject.layer));
+        foreach (Collider c in withinRadiusColliders) {
+            c.GetComponent<CharacterStats>().TakeHealing(healingAmount);
         }
     }
 }

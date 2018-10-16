@@ -5,7 +5,6 @@ using UnityEngine.AI;
 /// <summary>
 /// Class for handling input and keybindings.
 /// </summary>
-[RequireComponent(typeof(NavMeshAgent))]
 public class PlayerInputHandler : MonoBehaviour {
 
     /// <summary>
@@ -19,39 +18,62 @@ public class PlayerInputHandler : MonoBehaviour {
     private NavMeshAgent _agent;
 
     /// <summary>
-    /// Reference to the gameobject's animator.
+    /// Reference to the gameobject's skill caster.
     /// </summary>
     private SkillCaster _skillCaster;
 
+    /// <summary>
+    /// Reference to the gameobject's animator.
+    /// </summary>
+    private Animator _animator;
+
+    /// <summary>
+    /// Reference to the animator status.
+    /// </summary>
+    private AnimatorStatus _animatorStatus;
+
+    /// <summary>
+    /// Flag for if the player is able to move.
+    /// Used to stop movement when starting actions in the middle of movement.
+    /// </summary>
+    private bool _ableToMove;
 
     // Use this for initialization
     private void Start() {
         _keybinds = new Keybinds();
         _agent = GetComponent<NavMeshAgent>();
         _skillCaster = GetComponent<SkillCaster>();
+        _animator = transform.GetChild(0).GetComponent<Animator>();
+        _animatorStatus = transform.GetChild(0).GetComponent<AnimatorStatus>();
+        _ableToMove = true;
     }
 
     // Update is called once per frame
     private void Update() {
+        if (_agent.remainingDistance < 0.1f) {
+            _animator.SetFloat("Speed", 0f); // Stop walk animation
+        }
         // Don't accept input if the character is casting something
-        if (!_skillCaster.isCasting) {
+        if (!_animatorStatus.isCasting && _ableToMove) {
             // Used for inputs that involve the mouse position
             Vector3 clickedPoint;
-
-            // Check if the player pressed the attack key
-            if (Input.GetKeyDown(_keybinds["AttackKeyboard"])) {
-                if (GetClickedPoint(out clickedPoint)) {
-                    transform.LookAt(new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z));
-                    _agent.destination = transform.position; //Stop movement 
-                    _skillCaster.Cast(0, 0);
-                }
-            }
 
             // Check if the player pressed or is holding the move key
             if (Input.GetKey(_keybinds["MoveKeyboard"])) {
                 if (GetClickedPoint(out clickedPoint)) {
                     transform.LookAt(new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z));
                     _agent.destination = clickedPoint;
+                    _animator.SetFloat("Speed", 1); // Start walk animation
+                }
+            }
+
+            // Check if the player pressed the attack key
+            if (Input.GetKeyDown(_keybinds["AttackKeyboard"])) {
+                if (GetClickedPoint(out clickedPoint)) {
+                    transform.LookAt(new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z));
+                    _skillCaster.Cast(0, 0);
+                    StartCoroutine(StopMovement(0.5f)); // Stop movement
+                    return;
                 }
             }
 
@@ -64,7 +86,7 @@ public class PlayerInputHandler : MonoBehaviour {
             if (Input.GetJoystickNames().Length > 0) {
                 // Check if the player pressed or is holding the controller attack key
                 if (Input.GetKeyDown(_keybinds["AttackController"])) {
-                    _agent.destination = transform.position; //Stop movement 
+                    StartCoroutine(StopMovement(0.5f)); // Stop movement
                     _skillCaster.Cast(0, 0);
                 }
 
@@ -80,6 +102,10 @@ public class PlayerInputHandler : MonoBehaviour {
                 }
             }
         }
+
+        // Force model position and rotation to stay the same
+        transform.GetChild(0).position = transform.position;
+        transform.GetChild(0).rotation = transform.rotation;
     }
 
     /// <summary>
@@ -102,5 +128,17 @@ public class PlayerInputHandler : MonoBehaviour {
         // No collision point
         clickedPoint = Vector3.zero;
         return false;
+    }
+
+    /// <summary>
+    /// Stops movement of the player.
+    /// </summary>
+    /// <param name="seconds">How many seconds to stop movement for.</param>
+    private IEnumerator StopMovement(float seconds) {
+        _animator.SetFloat("Speed", 0f); // Stop walk animation
+        _ableToMove = false;
+        _agent.ResetPath();
+        yield return new WaitForSeconds(seconds);
+        _ableToMove = true;
     }
 }

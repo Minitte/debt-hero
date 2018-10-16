@@ -108,14 +108,17 @@ public class CharacterStats : MonoBehaviour {
     /// </summary>
     /// <param name="healingAmount"></param>
     public void TakeHealing(float healingAmount) {
+        float netHealingAmount = 0f;
         if (currentHp + healingAmount > maxHp) {
+            netHealingAmount = maxHp - currentHp;
             currentHp = maxHp;
         } else {
             currentHp += healingAmount;
+            netHealingAmount = healingAmount;
         }
 
         // Show the healing number
-        FloatingTextController.instance.CreateCombatNumber(healingAmount, false, gameObject);
+        FloatingTextController.instance.CreateCombatNumber(netHealingAmount, false, gameObject);
     }
 
     /// <summary>

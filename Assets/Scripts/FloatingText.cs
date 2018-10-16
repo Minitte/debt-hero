@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 /// <summary>
 /// Class for damage text.
 /// </summary>
-public class DamageText : MonoBehaviour {
+public class FloatingText : MonoBehaviour {
 
     /// <summary>
     /// How long to display the damage text for.
@@ -18,7 +19,6 @@ public class DamageText : MonoBehaviour {
     private void Start() {
         _canvasRenderer = GetComponent<CanvasRenderer>();
 
-        // Destroy the gameobject after aliveTime seconds
         Destroy(transform.parent.gameObject, aliveTime);
     }
 
