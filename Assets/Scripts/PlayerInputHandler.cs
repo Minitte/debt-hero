@@ -18,9 +18,14 @@ public class PlayerInputHandler : MonoBehaviour {
     private NavMeshAgent _agent;
 
     /// <summary>
-    /// Reference to the gameobject's animator.
+    /// Reference to the gameobject's skill caster.
     /// </summary>
     private SkillCaster _skillCaster;
+
+    /// <summary>
+    /// Reference to the gameobject's animator.
+    /// </summary>
+    private Animator _animator;
 
     /// <summary>
     /// Reference to the animator status.
@@ -38,12 +43,16 @@ public class PlayerInputHandler : MonoBehaviour {
         _keybinds = new Keybinds();
         _agent = GetComponent<NavMeshAgent>();
         _skillCaster = GetComponent<SkillCaster>();
+        _animator = transform.GetChild(0).GetComponent<Animator>();
         _animatorStatus = transform.GetChild(0).GetComponent<AnimatorStatus>();
         _ableToMove = true;
     }
 
     // Update is called once per frame
     private void Update() {
+        if (_agent.remainingDistance < 0.1f) {
+            _animator.SetFloat("Speed", 0f); // Stop walk animation
+        }
         // Don't accept input if the character is casting something
         if (!_animatorStatus.isCasting && _ableToMove) {
             // Used for inputs that involve the mouse position
@@ -54,6 +63,7 @@ public class PlayerInputHandler : MonoBehaviour {
                 if (GetClickedPoint(out clickedPoint)) {
                     transform.LookAt(new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z));
                     _agent.destination = clickedPoint;
+                    _animator.SetFloat("Speed", 1); // Start walk animation
                 }
             }
 
@@ -61,8 +71,8 @@ public class PlayerInputHandler : MonoBehaviour {
             if (Input.GetKeyDown(_keybinds["AttackKeyboard"])) {
                 if (GetClickedPoint(out clickedPoint)) {
                     transform.LookAt(new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z));
-                    StartCoroutine(StopMovement(0.5f)); // Stop movement
                     _skillCaster.Cast(0, 0);
+                    StartCoroutine(StopMovement(0.5f)); // Stop movement
                     return;
                 }
             }
@@ -125,6 +135,7 @@ public class PlayerInputHandler : MonoBehaviour {
     /// </summary>
     /// <param name="seconds">How many seconds to stop movement for.</param>
     private IEnumerator StopMovement(float seconds) {
+        _animator.SetFloat("Speed", 0f); // Stop walk animation
         _ableToMove = false;
         _agent.ResetPath();
         yield return new WaitForSeconds(seconds);
