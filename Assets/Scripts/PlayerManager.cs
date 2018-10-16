@@ -28,7 +28,7 @@ public class PlayerManager : MonoBehaviour {
 	/// </summary>
 	private BaseClass _class;
 
-    private StationaryResourcesUI _healthbar;
+    private PlayerResourceBars _healthbar;
 
 	/// <summary>
 	/// Awake is called when the script instance is being loaded.

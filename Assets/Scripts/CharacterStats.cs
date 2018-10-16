@@ -14,7 +14,6 @@ public class CharacterStats : MonoBehaviour {
     /// <summary>
     /// Death event template.
     /// </summary>
-   
     public delegate void DeathEvent();
 
     /// <summary>
@@ -101,13 +100,7 @@ public class CharacterStats : MonoBehaviour {
     public bool isAlive;
 
     private void Start() {
-        OnDamageTaken += ShowDamageText;
         OnDeath += Die;
-
-        // Mini health bar for AI
-        if (tag != "Player") {
-            DrawHealthBar();
-        }
     }
 
     /// <summary>
@@ -141,6 +134,7 @@ public class CharacterStats : MonoBehaviour {
                 OnDamageTaken(physAtkDamage, magicAtkDamage);
             }
         }
+        ShowDamageText(physAtkDamage, magicAtkDamage); // Show damage numbers
     }
 
     /// <summary>
@@ -209,18 +203,6 @@ public class CharacterStats : MonoBehaviour {
       
         // Show the damage text
         FloatingTextController.instance.CreateDamageNumber(netDamageTaken, gameObject);
-    }
-
-    /// <summary>
-    /// Draws the healthbar.
-    /// </summary>
-    private void DrawHealthBar() {
-        // Create the health bar object as a child
-        GameObject hpObject = Instantiate(healthBar, transform);
-        hpObject.transform.position = Camera.main.WorldToScreenPoint(transform.position);
-
-        // Set the colour to red
-        hpObject.GetComponent<HealthBar>().BarColor(176, 25, 5, 255);
     }
 
     /// <summary>

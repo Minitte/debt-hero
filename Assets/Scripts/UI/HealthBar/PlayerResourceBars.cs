@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class StationaryResourcesUI : MonoBehaviour
+/// <summary>
+/// This is a class for the player's resource bars.
+/// </summary>
+public class PlayerResourceBars : MonoBehaviour
 {
-
     /// <summary>
     /// Image used to represent HP.
     /// </summary>
@@ -40,7 +42,7 @@ public class StationaryResourcesUI : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        DrawBar(_characterStats);
+        DrawBar(_characterStats); // Draw the bar
     }
 
     /// <summary>
@@ -64,14 +66,5 @@ public class StationaryResourcesUI : MonoBehaviour
     private void BarColor(byte Red, byte Green, byte Blue, byte Alpha, Image Bar)
     {
         Bar.color = new Color32(Red, Green, Blue, Alpha);
-    }
-
-    /// <summary>
-    /// Setting the position of the bars.
-    /// </summary>
-    /// <param name="position"> A vector use to set the location of the stationary ui object.</param>
-    private void BarPosition(Vector3 position)
-    {
-        this.transform.position = new Vector3(position.x, position.y - 2.5f, position.z + 1f);
     }
 }

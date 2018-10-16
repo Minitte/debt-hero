@@ -7,6 +7,7 @@ using UnityEngine.AI;
 /// </summary>
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(SkillCaster))]
+[RequireComponent(typeof(CharacterStats))]
 public class AIControl : MonoBehaviour {
 
     /// <summary>
@@ -40,6 +41,11 @@ public class AIControl : MonoBehaviour {
     private Queue<AIAction> _actionQueue;
 
     /// <summary>
+    /// Reference to the AI's health bar.
+    /// </summary>
+    private HealthBar _healthBar;
+
+    /// <summary>
     /// Property variable for the action queue.
     /// </summary>
     public Queue<AIAction> ActionQueue {
@@ -51,6 +57,8 @@ public class AIControl : MonoBehaviour {
         _agent = GetComponent<NavMeshAgent>();
         _skillCaster = GetComponent<SkillCaster>();
         _actionQueue = new Queue<AIAction>();
+        GetComponent<CharacterStats>().OnDamageTaken += DrawHealthBar;
+        GetComponent<CharacterStats>().OnDeath += Die;
     }
 
     // Update is called once per frame
@@ -103,10 +111,28 @@ public class AIControl : MonoBehaviour {
     }
 
     /// <summary>
+    /// Draws a health bar over this gameobject when damage is first taken.
+    /// </summary>
+    /// <param name="physAtkdamge">Unused</param>
+    /// <param name="magicAtkdamage">Unused</param>
+    private void DrawHealthBar(float physAtkdamge, float magicAtkdamage) {
+        if (_healthBar == null) {
+            _healthBar = FloatingTextController.instance.CreateHealthBar(gameObject);
+        }
+    }
+
+    /// <summary>
     /// Draws a red sphere to indicate the aggro radius in the editor.
     /// </summary>
     private void OnDrawGizmosSelected() {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, aggroRadius);
+    }
+
+    /// <summary>
+    /// Additional cleanup for when this gameobject dies.
+    /// </summary>
+    private void Die() {
+        Destroy(_healthBar.gameObject); // Get rid of the health bar
     }
 }

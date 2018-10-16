@@ -12,6 +12,11 @@ public class FloatingTextController : MonoBehaviour {
     public static FloatingTextController instance;
 
     /// <summary>
+    /// Reference to the health bar prefab.
+    /// </summary>
+    public GameObject healthBar;
+
+    /// <summary>
     /// Reference to the damage text prefab.
     /// </summary>
     public GameObject damageText;
@@ -46,5 +51,16 @@ public class FloatingTextController : MonoBehaviour {
         } else {
             text.color = Color.yellow; // Mob took damage
         }
+    }
+
+    /// <summary>
+    /// Creates a health bar on the canvas for the input gameobject.
+    /// </summary>
+    /// <param name="owner">The owner of the health bar</param>
+    public HealthBar CreateHealthBar(GameObject owner) {
+        // Create the health bar object as a child
+        GameObject hpObject = Instantiate(healthBar, transform);
+        hpObject.GetComponent<HealthBar>().owner = owner;
+        return hpObject.GetComponent<HealthBar>();
     }
 }

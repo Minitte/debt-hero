@@ -123,7 +123,7 @@ public class AIController : MonoBehaviour {
         }
 
         //Moves the Hp bar to following the Ai.
-        Healthbarinstance.BarPosition(GameObject.FindGameObjectWithTag("AI").transform.position);
+        //Healthbarinstance.BarPosition(GameObject.FindGameObjectWithTag("AI").transform.position);
        
 
     }
