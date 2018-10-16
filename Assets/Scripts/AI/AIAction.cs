@@ -9,6 +9,11 @@ using UnityEngine.AI;
 public abstract class AIAction : MonoBehaviour {
 
     /// <summary>
+    /// Information about the skill.
+    /// </summary>
+    public int skillNum, skillID;
+
+    /// <summary>
     /// How often the conditions for this action should be checked.
     /// </summary>
     public float checkFrequency = 0.5f;
