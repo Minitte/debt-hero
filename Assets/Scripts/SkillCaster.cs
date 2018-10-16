@@ -8,17 +8,6 @@ using UnityEngine;
 /// </summary>
 public class SkillCaster : MonoBehaviour {
 
-    /// <summary>
-    /// Whether the gameobject can deal damage or not.
-    /// Used by the animator to make damage windows.
-    /// </summary>
-    public bool canDealDamage;
-
-    /// <summary>
-    /// Represents if the character is attacking.
-    /// </summary>
-    public bool isCasting;
-
     // Skill 0 Cooldown
     public GameObject skill0;
     public int skill0ID;
@@ -130,9 +119,7 @@ public class SkillCaster : MonoBehaviour {
             if (currentSkill.type != -1) {
                 switch (Skill.GetInfo(skillID).type) {
                     case 0:
-                        if (transform.GetComponent<Animator>()) {
-                            transform.GetComponent<Animator>().SetTrigger("Attack");
-                        } else if (transform.GetChild(0).GetComponent<Animator>()) {
+                        if (transform.GetChild(0).GetComponent<Animator>()) {
                             transform.GetChild(0).GetComponent<Animator>().SetTrigger("Attack");
                         }
                         Instantiate(skill0, transform); // Create the basic attack hitbox
@@ -154,16 +141,6 @@ public class SkillCaster : MonoBehaviour {
             }
         }
     }
-    /*private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "AI") {
-            Debug.Log("Melee skill hit");
-
-            // Apply damage to the enemy
-            Skill.Melee(0, other);
-        }
-    }*/
-
 
     /// <summary>
     /// For updating the cooldowns

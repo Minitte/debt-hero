@@ -22,20 +22,30 @@ public class PlayerInputHandler : MonoBehaviour {
     /// </summary>
     private SkillCaster _skillCaster;
 
+    /// <summary>
+    /// Reference to the animator status.
+    /// </summary>
+    private AnimatorStatus _animatorStatus;
+
+    /// <summary>
+    /// Flag for if the player is able to move.
+    /// Used to stop movement when starting actions in the middle of movement.
+    /// </summary>
     private bool _ableToMove;
 
     // Use this for initialization
     private void Start() {
         _keybinds = new Keybinds();
         _agent = GetComponent<NavMeshAgent>();
-        _skillCaster = transform.GetChild(0).GetComponent<SkillCaster>();
+        _skillCaster = GetComponent<SkillCaster>();
+        _animatorStatus = transform.GetChild(0).GetComponent<AnimatorStatus>();
         _ableToMove = true;
     }
 
     // Update is called once per frame
     private void Update() {
         // Don't accept input if the character is casting something
-        if (!_skillCaster.isCasting && _ableToMove) {
+        if (!_animatorStatus.isCasting && _ableToMove) {
             // Used for inputs that involve the mouse position
             Vector3 clickedPoint;
 

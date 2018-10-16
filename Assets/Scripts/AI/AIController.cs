@@ -22,7 +22,7 @@ public class AIController : MonoBehaviour {
     /// <summary>
     /// The aggro radius.
     /// </summary>
-    public float aggroRadius = 5f;
+    public float aggroRadius = 25f;
 
     /// <summary>
     /// Reference to the NavMeshAgent.
@@ -30,9 +30,9 @@ public class AIController : MonoBehaviour {
     private NavMeshAgent _agent;
 
     /// <summary>
-    /// Reference to the SkillCaster.
+    /// Reference to the animator status.
     /// </summary>
-    private SkillCaster _skillCaster;
+    private AnimatorStatus _animatorStatus;
 
     /// <summary>
     /// A queue of actions for the AI.
@@ -54,16 +54,7 @@ public class AIController : MonoBehaviour {
     // Use this for initialization
     private void Start() {
         _agent = GetComponent<NavMeshAgent>();
-
-        // Find the skill caster component
-        if (GetComponent<SkillCaster>()) {
-            _skillCaster = GetComponent<SkillCaster>();
-        } else if (transform.GetChild(0).GetComponent<SkillCaster>()) { // Check first child
-            _skillCaster = transform.GetChild(0).GetComponent<SkillCaster>();
-        } else {
-            Debug.Log("Couldn't find a skill caster for AI gameobject");
-        }
-
+        _animatorStatus = transform.GetChild(0).GetComponent<AnimatorStatus>();
         _actionQueue = new Queue<AIAction>();
         GetComponent<CharacterStats>().OnDamageTaken += DrawHealthBar;
         GetComponent<CharacterStats>().OnDeath += Die;
@@ -72,7 +63,7 @@ public class AIController : MonoBehaviour {
     // Update is called once per frame
     private void FixedUpdate() {
         // Don't do anything if already attacking
-        if (!_skillCaster.isCasting) {
+        if (!_animatorStatus.isCasting) {
 
             // If there is a player in aggro radius, it will be assigned to target
             if (CheckAggro()) {
