@@ -14,12 +14,13 @@ public class InventoryPanel : MonoBehaviour {
 	/// <summary>
 	/// target inventory to show
 	/// </summary>
-	public CharacterInventory inventory;
+	private CharacterInventory _inventory;
 
 	/// <summary>
-	/// Awake is called when the script instance is being loaded.
+	/// Start is called on the frame when a script is enabled just before
+	/// any of the Update methods is called the first time.
 	/// </summary>
-	void Awake() {
+	void Start() {
 		UpdateInventoryDisplay();
 	}
 
@@ -34,6 +35,10 @@ public class InventoryPanel : MonoBehaviour {
 	/// Updatse the inventory panel
 	/// </summary>
 	public void UpdateInventoryDisplay() {
-		goldText.text = inventory.gold + "g";
+		if (_inventory == null) {
+			_inventory = PlayerManager.instance.GetComponent<CharacterInventory>();
+		}
+		
+		goldText.text = _inventory.gold + "g";
 	}
 }
