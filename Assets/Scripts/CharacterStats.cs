@@ -104,6 +104,21 @@ public class CharacterStats : MonoBehaviour {
     }
 
     /// <summary>
+    /// Called when this character takes healing.
+    /// </summary>
+    /// <param name="healingAmount"></param>
+    public void TakeHealing(float healingAmount) {
+        if (currentHp + healingAmount > maxHp) {
+            currentHp = maxHp;
+        } else {
+            currentHp += healingAmount;
+        }
+
+        // Show the healing number
+        FloatingTextController.instance.CreateCombatNumber(healingAmount, false, gameObject);
+    }
+
+    /// <summary>
     /// Basic damage calculation function.
     /// </summary>
     /// <param name="physAtkDamage">The amount of physical damage to take.</param>
@@ -202,7 +217,11 @@ public class CharacterStats : MonoBehaviour {
         }
       
         // Show the damage text
-        FloatingTextController.instance.CreateDamageNumber(netDamageTaken, gameObject);
+        FloatingTextController.instance.CreateCombatNumber(netDamageTaken, true, gameObject);
+    }
+
+    private void ShowHealingText() {
+        //FloatingTextController.instance.CreateCombatNumber(netDamageTaken, true, gameObject);
     }
 
     /// <summary>

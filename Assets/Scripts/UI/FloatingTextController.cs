@@ -19,7 +19,7 @@ public class FloatingTextController : MonoBehaviour {
     /// <summary>
     /// Reference to the damage text prefab.
     /// </summary>
-    public GameObject damageText;
+    public GameObject textPrefab;
 
     /// <summary>
     /// An offset to the damage text's position.
@@ -32,24 +32,29 @@ public class FloatingTextController : MonoBehaviour {
     }
 
     /// <summary>
-    /// Creates a text object on the canvas showing a damage taken number.
+    /// Creates a text object on the canvas showing a damage or healing taken number.
     /// </summary>
-    /// <param name="netDamage">The net amount of damage taken</param>
-    /// <param name="victim">The gameobject that took damage</param>
-    public void CreateDamageNumber(float netDamage, GameObject victim) {
+    /// <param name="value">The value of the damage or healing taken</param>
+    /// <param name="damage">True if its a damage event, false if its a healing event</param>
+    /// <param name="victim">The gameobject that took damage or healing</param>
+    public void CreateCombatNumber(float value, bool damage, GameObject victim) {
         // Create the text object and move it onto the canvas
-        GameObject textObject = Instantiate(damageText, transform);
+        GameObject textObject = Instantiate(textPrefab, transform);
         textObject.transform.position = Camera.main.WorldToScreenPoint(victim.transform.position + textOffset);
 
         // Get the actual text field
-        Text text = textObject.transform.Find("DamageText").GetComponent<Text>();
-        text.text = netDamage.ToString(); // Change the text to the net damage taken
+        Text text = textObject.transform.Find("FloatingText").GetComponent<Text>();
+        text.text = value.ToString(); // Change the text to the net damage taken
 
-        // Change the text color depending on if its a player or mob that took damage
-        if (victim.tag == "Player") {
-            text.color = Color.red; // Player took damage
+        if (damage) {
+            // Change the text color depending on if its a player or mob that took damage
+            if (victim.tag == "Player") {
+                text.color = Color.red; // Player took damage
+            } else {
+                text.color = Color.yellow; // Mob took damage
+            }
         } else {
-            text.color = Color.yellow; // Mob took damage
+            text.color = Color.green; // Gameobject took healing
         }
     }
 
