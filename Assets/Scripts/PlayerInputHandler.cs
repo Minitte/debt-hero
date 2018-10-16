@@ -27,8 +27,8 @@ public class PlayerInputHandler : MonoBehaviour {
     // Use this for initialization
     private void Start() {
         _keybinds = new Keybinds();
-        _agent = transform.parent.GetComponent<NavMeshAgent>();
-        _skillCaster = GetComponent<SkillCaster>();
+        _agent = GetComponent<NavMeshAgent>();
+        _skillCaster = transform.GetChild(0).GetComponent<SkillCaster>();
         _ableToMove = true;
     }
 

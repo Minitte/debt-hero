@@ -89,7 +89,7 @@ public class PlayerManager : MonoBehaviour {
 
             // Load player's health bar
             GameObject hp = Instantiate(healthbar, GameObject.Find("Canvas").transform);
-            hp.GetComponent<PlayerResourceBars>().CharacterStats = localPlayer.GetComponent<CharacterStats>();
+            hp.GetComponent<PlayerResourceBars>().CharacterStats = localPlayer.transform.GetChild(0).GetComponent<CharacterStats>();
         }
 	}
 
