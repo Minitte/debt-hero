@@ -31,6 +31,10 @@ public class WarpPad : MonoBehaviour {
 		}
 	}
 
+    /// <summary>
+    /// OnTriggerExit is called when the Collider leaves the trigger.
+    /// </summary>
+    /// <param name="other">The other Collider involved in this collision.</param>
     private void OnTriggerExit(Collider other)
     {
         if(other.tag == "Player")
