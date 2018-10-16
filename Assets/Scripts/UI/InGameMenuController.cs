@@ -71,13 +71,13 @@ public class InGameMenuController : MonoBehaviour {
 	/// Update is called every frame, if the MonoBehaviour is enabled.
 	/// </summary>
 	void Update() {
-		float cancel = Input.GetAxis("Cancel");
+		float start = Input.GetAxis("Start");
 
 		float leftMenu = Input.GetAxis("Left Menu");
 
 		float rightMenu = Input.GetAxis("Right Menu");
 
-		float keySum = (cancel + leftMenu + rightMenu);
+		float keySum = (start + leftMenu + rightMenu);
 
 		// reset if no key down
 		if (_MenuKeyDown && keySum == 0) {
@@ -99,7 +99,7 @@ public class InGameMenuController : MonoBehaviour {
 			_menuKeyBlocked = true;
 			_MenuKeyDown = true;
 			
-			if (cancel != 0) {
+			if (start != 0) {
 				ToggleMenu();
 			} else if (leftMenu != 0) {
 				PrevPanel();

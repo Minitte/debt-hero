@@ -9,6 +9,7 @@ public class MenuController : MonoBehaviour {
 	/// </summary>
 	/// <param name="sceneName">the name of the scene</param>
 	public void LoadScene(string sceneName) {
+		Debug.Log("Changing scene to " + sceneName);
 		SceneManager.LoadScene(sceneName);
 	}
 
@@ -16,6 +17,7 @@ public class MenuController : MonoBehaviour {
 	/// Quits the game
 	/// </summary>
 	public void QuitGame() {
+		Debug.Log("Quit the game from menu");
 		Application.Quit();
 	}
 

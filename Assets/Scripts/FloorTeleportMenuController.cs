@@ -4,10 +4,19 @@ using UnityEngine.SceneManagement;
 
 public class FloorTeleportMenuController : MonoBehaviour {
 
+	/// <summary>
+	/// Floor button list
+	/// </summary>
 	public Button[] floorButtons;
 
+	/// <summary>
+	/// Floor destination level list
+	/// </summary>
 	public int[] floorDestinations;
 
+	/// <summary>
+	/// Player manager reference
+	/// </summary>
 	private PlayerManager _playerManager;
 
 	/// <summary>
@@ -17,25 +26,13 @@ public class FloorTeleportMenuController : MonoBehaviour {
 	void Start() {
 		_playerManager = PlayerManager.instance;
 		
-		updateButtons();
-	}
-
-	/// <summary>
-	/// Update is called every frame, if the MonoBehaviour is enabled.
-	/// </summary>
-	void Update()
-	{
-		float cancel = Input.GetAxis("Cancel");
-
-		if (cancel != 0) {
-			this.gameObject.SetActive(false);
-		}
+		UpdateButtons();
 	}
 
 	/// <summary>
 	/// Updates button visability based on the floor reached
 	/// </summary>
-	private void updateButtons() {
+	private void UpdateButtons() {
 		for (int i = 0; i < floorButtons.Length; i++) {
 			floorButtons[i].interactable = floorDestinations[i] <= GameState.floorReached;
 		}
