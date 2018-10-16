@@ -73,10 +73,18 @@ public class InGameMenuController : MonoBehaviour {
 	void Update() {
 		float cancel = Input.GetAxis("Cancel");
 
-		if (_MenuKeyDown && cancel == 0) {
+		float leftMenu = Input.GetAxis("Left Menu");
+
+		float rightMenu = Input.GetAxis("Right Menu");
+
+		float keySum = (cancel + leftMenu + rightMenu);
+
+		// reset if no key down
+		if (_MenuKeyDown && keySum == 0) {
 			_MenuKeyDown = false;
 		}
 
+		// counter for menu key blocking
 		if (_menuKeyBlocked) {
 			_time += Time.deltaTime;
 
@@ -86,10 +94,18 @@ public class InGameMenuController : MonoBehaviour {
 			}
 		}
 
-		if (cancel != 0 && !_menuKeyBlocked && !_MenuKeyDown) {
+		// detecting a new key
+		if (keySum != 0 && !_menuKeyBlocked && !_MenuKeyDown) {
 			_menuKeyBlocked = true;
 			_MenuKeyDown = true;
-			ToggleMenu();
+			
+			if (cancel != 0) {
+				ToggleMenu();
+			} else if (leftMenu != 0) {
+				PrevPanel();
+			} else if (rightMenu != 0) {
+				NextPanel();
+			}
 		}
 	}
 
