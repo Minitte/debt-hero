@@ -38,9 +38,9 @@ public class ButtonNavUI : MonoBehaviour {
 	/// Update is called every frame, if the MonoBehaviour is enabled.
 	/// </summary>
 	void Update() {
-		ButtonNavigationUpdate();
-
 		ButtonConfirmUpdate();
+
+		ButtonNavigationUpdate();
 	}
 
 	/// <summary>
