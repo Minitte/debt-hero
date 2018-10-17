@@ -31,6 +31,9 @@ public class PlayerResourceBars : MonoBehaviour
     /// </summary>
     private CharacterStats _characterStats;
 
+    /// <summary>
+    /// Property variable for character stats.
+    /// </summary>
     public CharacterStats CharacterStats {
         set {
             _characterStats = value;
