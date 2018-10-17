@@ -109,12 +109,19 @@ public class CharacterStats : MonoBehaviour {
     /// <param name="healingAmount"></param>
     public void TakeHealing(float healingAmount) {
         float netHealingTaken = 0f;
+
+        // Calculate healing taken
         if (currentHp + healingAmount > maxHp) {
             netHealingTaken = maxHp - currentHp;
             currentHp = maxHp;
         } else {
             currentHp += healingAmount;
             netHealingTaken = healingAmount;
+        }
+
+        // If healing was taken, trigger health changed event
+        if (netHealingTaken > 0f) {
+            OnHealthChanged();
         }
 
         ShowFloatingText(netHealingTaken, false); // Show healing numbers
@@ -127,16 +134,18 @@ public class CharacterStats : MonoBehaviour {
     /// <param name="magicAtkDamage">The amount of magical damage to take.</param>
     public void TakeDamage(float physAtkDamage, float magicAtkDamage) {
         float netDamageTaken = 0f;
+        
+        // Calculate damage taken
         if (physDef < physAtkDamage) {
             currentHp = currentHp - (physAtkDamage - physDef);
             netDamageTaken += physAtkDamage - physDef;
         }
-
         if (magicDef < magicAtkDamage) {
             currentHp = currentHp - (magicAtkDamage - magicDef);
             netDamageTaken += magicAtk - magicDef;
         }
 
+        // Check if character is dead
         if (currentHp > 0) {
             isAlive = true;
         } else {
@@ -144,10 +153,10 @@ public class CharacterStats : MonoBehaviour {
             OnDeath();
         }
 
-        // if damage was taken, trigger OnDamageTaken event
+        // If damage was taken, trigger health changed event
         if (netDamageTaken > 0f) {
-            if (OnDamageTaken != null) {
-                OnDamageTaken(physAtkDamage, magicAtkDamage);
+            if (OnHealthChanged != null) {
+                OnHealthChanged();
             }
         }
         ShowFloatingText(netDamageTaken, true); // Show damage numbers

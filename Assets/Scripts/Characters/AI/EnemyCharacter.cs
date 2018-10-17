@@ -44,7 +44,7 @@ public class EnemyCharacter : BaseCharacter {
     // Use this for initialization
     private void Start() {
         _actionQueue = new Queue<AIAction>();
-        characterStats.OnDamageTaken += DrawHealthBar;
+        characterStats.OnHealthChanged += DrawHealthBar;
         characterStats.OnDeath += Die;
     }
 
@@ -100,9 +100,7 @@ public class EnemyCharacter : BaseCharacter {
     /// <summary>
     /// Draws a health bar over this gameobject when damage is first taken.
     /// </summary>
-    /// <param name="physAtkdamge">Unused</param>
-    /// <param name="magicAtkdamage">Unused</param>
-    private void DrawHealthBar(float physAtkdamge, float magicAtkdamage) {
+    private void DrawHealthBar() {
         if (_healthBar == null) {
             _healthBar = FloatingTextController.instance.CreateHealthBar(gameObject);
         }
