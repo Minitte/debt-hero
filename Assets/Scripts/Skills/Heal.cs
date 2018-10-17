@@ -19,7 +19,7 @@ public class Heal : MonoBehaviour {
         // Apply a heal within the radius of the spell
         Collider[] withinRadiusColliders = Physics.OverlapSphere(transform.position, healRadius, (1 << transform.parent.gameObject.layer));
         foreach (Collider c in withinRadiusColliders) {
-            c.GetComponent<CharacterStats>().TakeHealing(healingAmount);
+            c.GetComponent<BaseCharacter>().characterStats.TakeHealing(healingAmount);
         }
     }
 }
