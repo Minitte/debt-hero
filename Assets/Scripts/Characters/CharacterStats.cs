@@ -3,26 +3,24 @@
 public class CharacterStats : MonoBehaviour {
 
     /// <summary>
-    /// Damage event template.
-    /// </summary>
-    /// <param name="physAtkdamge">The amount of physical damage to take.</param>
-    /// <param name="magicAtkdamage">The amount of magical damage to take.</param>
-    public delegate void DamageEvent(float physAtkdamge, float magicAtkdamage);
-
-    /// <summary>
     /// Death event template.
     /// </summary>
     public delegate void DeathEvent();
 
     /// <summary>
-    /// This damage event is called after the character has taken damage.
+    /// Health changed event template.
     /// </summary>
-    public event DamageEvent OnDamageTaken;
+    public delegate void HealthChangedEvent();
 
     /// <summary>
     /// This death event is called when the character dies.
     /// </summary>
     public event DeathEvent OnDeath;
+
+    /// <summary>
+    /// This event is called when the player takes damage or healing.
+    /// </summary>
+    public event HealthChangedEvent OnHealthChanged;
 
     /// <summary>
     /// Reference to the health bar prefab.
