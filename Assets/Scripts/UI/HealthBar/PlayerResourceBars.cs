@@ -69,4 +69,12 @@ public class PlayerResourceBars : MonoBehaviour {
     {
         Bar.color = new Color32(Red, Green, Blue, Alpha);
     }
+
+    public void UpdateHealth() {
+        // Calculate health percentage
+        float percentage = _characterStats.currentHp
+            / _characterStats.maxHp * 100f;
+
+        transform.Find("HP").GetComponent<Slider>().value = percentage; // Update health bar
+    }
 }
