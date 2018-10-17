@@ -16,6 +16,11 @@ public class Attack : MonoBehaviour {
     private float _magicAtkdamage;
 
     /// <summary>
+    /// Reference to the skill caster.
+    /// </summary>
+    private SkillCaster _skillCaster;
+
+    /// <summary>
     /// Reference to the animator status.
     /// </summary>
     private AnimatorStatus _animatorStatus;
@@ -27,9 +32,9 @@ public class Attack : MonoBehaviour {
 
     // Use this for initialization
     private void Start () {
-        _physAtkdamage = transform.parent.GetComponent<CharacterStats>().physAtk;
-        _magicAtkdamage = transform.parent.GetComponent<CharacterStats>().magicAtk;
-        _animatorStatus = transform.parent.GetChild(0).GetComponent<AnimatorStatus>();
+        _physAtkdamage = transform.parent.GetComponent<BaseCharacter>().characterStats.physAtk;
+        _magicAtkdamage = transform.parent.GetComponent<BaseCharacter>().characterStats.magicAtk;
+        _animatorStatus = transform.parent.GetComponent<BaseCharacter>().animatorStatus;
         _collider = GetComponent<Collider>();
     }
 
@@ -55,7 +60,7 @@ public class Attack : MonoBehaviour {
         if ((other.tag == "AI" || other.tag == "Player") && other.tag != transform.parent.tag) {
 
             // Apply damage to the enemy
-            other.GetComponent<CharacterStats>().TakeDamage(_physAtkdamage, _magicAtkdamage);
+            other.GetComponent<BaseCharacter>().characterStats.TakeDamage(_physAtkdamage, _magicAtkdamage);
         }
     }
 }

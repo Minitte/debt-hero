@@ -118,7 +118,11 @@ public class CharacterStats : MonoBehaviour {
         }
 
         // Show the healing number
-        FloatingTextController.instance.CreateCombatNumber(netHealingAmount, false, gameObject);
+        if (tag == "AI") {
+            FloatingTextController.instance.CreateCombatNumber(netHealingAmount, false, gameObject);
+        } else {
+            FloatingTextController.instance.CreateCombatNumber(netHealingAmount, false, PlayerManager.instance.localPlayer);
+        }
     }
 
     /// <summary>
@@ -220,7 +224,12 @@ public class CharacterStats : MonoBehaviour {
         }
       
         // Show the damage text
-        FloatingTextController.instance.CreateCombatNumber(netDamageTaken, true, gameObject);
+        if (tag == "AI") {
+            FloatingTextController.instance.CreateCombatNumber(netDamageTaken, true, gameObject);
+        }  else {
+            FloatingTextController.instance.CreateCombatNumber(netDamageTaken, true, PlayerManager.instance.localPlayer);
+        }
+
     }
 
     private void ShowHealingText() {

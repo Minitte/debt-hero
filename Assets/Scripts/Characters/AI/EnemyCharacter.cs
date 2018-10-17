@@ -7,7 +7,7 @@ using UnityEngine.AI;
 /// </summary>
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(CharacterStats))]
-public class AIController : MonoBehaviour {
+public class EnemyCharacter : BaseCharacter {
 
     /// <summary>
     /// For filtering out all layers except the player's.
@@ -23,16 +23,6 @@ public class AIController : MonoBehaviour {
     /// The aggro radius.
     /// </summary>
     public float aggroRadius = 25f;
-
-    /// <summary>
-    /// Reference to the NavMeshAgent.
-    /// </summary>
-    private NavMeshAgent _agent;
-
-    /// <summary>
-    /// Reference to the animator status.
-    /// </summary>
-    private AnimatorStatus _animatorStatus;
 
     /// <summary>
     /// A queue of actions for the AI.
@@ -53,21 +43,19 @@ public class AIController : MonoBehaviour {
 
     // Use this for initialization
     private void Start() {
-        _agent = GetComponent<NavMeshAgent>();
-        _animatorStatus = transform.GetChild(0).GetComponent<AnimatorStatus>();
         _actionQueue = new Queue<AIAction>();
-        GetComponent<CharacterStats>().OnDamageTaken += DrawHealthBar;
-        GetComponent<CharacterStats>().OnDeath += Die;
+        characterStats.OnDamageTaken += DrawHealthBar;
+        characterStats.OnDeath += Die;
     }
 
     // Update is called once per frame
     private void FixedUpdate() {
         // Don't do anything if already attacking
-        if (!_animatorStatus.isCasting) {
+        if (!animatorStatus.isCasting) {
 
             // If there is a player in aggro radius, it will be assigned to target
             if (CheckAggro()) {
-                _agent.destination = target.position; // Move to the target
+                agent.destination = target.position; // Move to the target
 
                 // Keep facing the target
                 transform.LookAt(new Vector3(target.position.x, transform.position.y, target.position.z));

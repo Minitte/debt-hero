@@ -23,6 +23,6 @@ public class Drops : MonoBehaviour {
         GameObject goldTemp = (GameObject) Instantiate(goldItem, transform.position, temp);
         goldTemp.GetComponent<Gold>().gold = gold;
 
-        GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterStats>().exp += EXP;
+        PlayerManager.instance.localPlayer.GetComponent<BaseCharacter>().characterStats.exp += EXP;
     }
 }

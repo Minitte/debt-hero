@@ -1,42 +1,21 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.AI;
 
 /// <summary>
 /// Class for handling input and keybindings.
 /// </summary>
-public class PlayerInputHandler : MonoBehaviour {
+public class PlayerCharacter : BaseCharacter {
 
     /// <summary>
     /// The maximum allowed difference in y value between the clicked
     /// position and the current position.
     /// </summary>
-    private static readonly float MAX_CLIMB = 2f;
+    private static readonly float MAX_CLIMB = 3f;
 
     /// <summary>
     /// Map for keybinds.
     /// </summary>
     private Keybinds _keybinds;
-
-    /// <summary>
-    /// The NavMeshAgent associated with this gameobject.
-    /// </summary>
-    private NavMeshAgent _agent;
-
-    /// <summary>
-    /// Reference to the gameobject's skill caster.
-    /// </summary>
-    private SkillCaster _skillCaster;
-
-    /// <summary>
-    /// Reference to the gameobject's animator.
-    /// </summary>
-    private Animator _animator;
-
-    /// <summary>
-    /// Reference to the animator status.
-    /// </summary>
-    private AnimatorStatus _animatorStatus;
 
     /// <summary>
     /// Flag for if the player is able to move.
@@ -47,20 +26,17 @@ public class PlayerInputHandler : MonoBehaviour {
     // Use this for initialization
     private void Start() {
         _keybinds = new Keybinds();
-        _agent = GetComponent<NavMeshAgent>();
-        _skillCaster = GetComponent<SkillCaster>();
-        _animator = transform.GetChild(0).GetComponent<Animator>();
-        _animatorStatus = transform.GetChild(0).GetComponent<AnimatorStatus>();
         _ableToMove = true;
+        characterStats = PlayerManager.instance.GetComponent<CharacterStats>();
     }
 
     // Update is called once per frame
     private void Update() {
-        if (_agent.remainingDistance < 0.1f) {
-            _animator.SetFloat("Speed", 0f); // Stop walk animation
+        if (agent.remainingDistance < 0.1f) {
+            animator.SetFloat("Speed", 0f); // Stop walk animation
         }
         // Don't accept input if the character is casting something
-        if (!_animatorStatus.isCasting && _ableToMove) {
+        if (!animatorStatus.isCasting && _ableToMove) {
             // Used for inputs that involve the mouse position
             Vector3 clickedPoint;
 
@@ -71,12 +47,13 @@ public class PlayerInputHandler : MonoBehaviour {
 
                     // Check for massive elevation difference between clicked point and current position
                     if (Mathf.Abs(transform.position.y - clickedPoint.y) > MAX_CLIMB) {
-                        _agent.destination = new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z); // Discard clicked y point
+                        //agent.destination = new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z); // Discard clicked y point
                     } else {
-                        _agent.destination = clickedPoint;
+                        agent.destination = clickedPoint;
                     }
+                    agent.destination = clickedPoint;
 
-                    _animator.SetFloat("Speed", 1f); // Start walk animation
+                    animator.SetFloat("Speed", 1f); // Start walk animation
                 }
             }
 
@@ -84,7 +61,7 @@ public class PlayerInputHandler : MonoBehaviour {
             if (Input.GetKeyDown(_keybinds["AttackKeyboard"])) {
                 if (GetClickedPoint(out clickedPoint)) {
                     transform.LookAt(new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z));
-                    _skillCaster.Cast(0, 0);
+                    skillCaster.Cast(0, 0);
                     StartCoroutine(StopMovement(0.5f)); // Stop movement
                     return;
                 }
@@ -92,7 +69,7 @@ public class PlayerInputHandler : MonoBehaviour {
 
             // Check if the player pressed or is holding the move key
             if (Input.GetKey(_keybinds["Skill1"])) {
-                _skillCaster.Cast(1, 1);
+                skillCaster.Cast(1, 1);
             }
 
             // If a controller is plugged in
@@ -100,7 +77,7 @@ public class PlayerInputHandler : MonoBehaviour {
                 // Check if the player pressed or is holding the controller attack key
                 if (Input.GetKeyDown(_keybinds["AttackController"])) {
                     StartCoroutine(StopMovement(0.5f)); // Stop movement
-                    _skillCaster.Cast(0, 0);
+                    skillCaster.Cast(0, 0);
                 }
 
                 // Horizontal and vertical input values of the joystick
@@ -111,7 +88,7 @@ public class PlayerInputHandler : MonoBehaviour {
                 if (horizontal != 0f || vertical != 0f) {
                     // Move in the direction of the joystick
                     Vector3 goal = gameObject.transform.position + new Vector3(horizontal, gameObject.transform.position.y, vertical).normalized;
-                    _agent.destination = goal;
+                    agent.destination = goal;
                 }
             }
         }
@@ -148,9 +125,9 @@ public class PlayerInputHandler : MonoBehaviour {
     /// </summary>
     /// <param name="seconds">How many seconds to stop movement for.</param>
     private IEnumerator StopMovement(float seconds) {
-        _animator.SetFloat("Speed", 0f); // Stop walk animation
+        animator.SetFloat("Speed", 0f); // Stop walk animation
         _ableToMove = false;
-        _agent.ResetPath();
+        agent.ResetPath();
         yield return new WaitForSeconds(seconds);
         _ableToMove = true;
     }
