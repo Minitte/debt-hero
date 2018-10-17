@@ -23,11 +23,6 @@ public class CharacterStats : MonoBehaviour {
     public event HealthChangedEvent OnHealthChanged;
 
     /// <summary>
-    /// Reference to the health bar prefab.
-    /// </summary>
-    public GameObject healthBar;
-
-    /// <summary>
     /// Enum for all stat types.
     /// </summary>
     public enum StatType {
@@ -121,7 +116,9 @@ public class CharacterStats : MonoBehaviour {
 
         // If healing was taken, trigger health changed event
         if (netHealingTaken > 0f) {
-            OnHealthChanged();
+            if (OnHealthChanged != null) {
+                OnHealthChanged();
+            }
         }
 
         ShowFloatingText(netHealingTaken, false); // Show healing numbers
