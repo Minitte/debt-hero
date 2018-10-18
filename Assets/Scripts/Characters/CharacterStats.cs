@@ -1,15 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CharacterStats : MonoBehaviour {
-
-    /// <summary>
-    /// Damage event template.
-    /// </summary>
-    /// <param name="physAtkdamge">The amount of physical damage to take.</param>
-    /// <param name="magicAtkdamage">The amount of magical damage to take.</param>
-    public delegate void DamageEvent(float physAtkdamge, float magicAtkdamage);
 
     /// <summary>
     /// Death event template.
@@ -17,10 +8,23 @@ public class CharacterStats : MonoBehaviour {
     public delegate void DeathEvent();
 
     /// <summary>
-    /// This damage event is called after the character has taken damage.
+    /// Health changed event template.
     /// </summary>
-    public event DamageEvent OnDamageTaken;
+    public delegate void HealthChangedEvent();
 
+    /// <summary>
+    /// This death event is called when the character dies.
+    /// </summary>
+    public event DeathEvent OnDeath;
+
+    /// <summary>
+    /// This event is called when the player takes damage or healing.
+    /// </summary>
+    public event HealthChangedEvent OnHealthChanged;
+
+    /// <summary>
+    /// Enum for all stat types.
+    /// </summary>
     public enum StatType {
         NONE,
         CURRENT_HP,
@@ -33,16 +37,6 @@ public class CharacterStats : MonoBehaviour {
         MAG_DEF,
         EXP
     }
-
-    /// <summary>
-    /// This death event is called when the character dies.
-    /// </summary>
-    public event DeathEvent OnDeath;
-
-    /// <summary>
-    /// Reference to the health bar prefab.
-    /// </summary>
-    public GameObject healthBar;
 
     /// <summary>
     /// The character's current health point.
@@ -99,6 +93,7 @@ public class CharacterStats : MonoBehaviour {
     /// </summary>
     public bool isAlive;
 
+    // Use this for initialization
     private void Start() {
         OnDeath += Die;
     }
@@ -108,21 +103,25 @@ public class CharacterStats : MonoBehaviour {
     /// </summary>
     /// <param name="healingAmount"></param>
     public void TakeHealing(float healingAmount) {
-        float netHealingAmount = 0f;
+        float netHealingTaken = 0f;
+
+        // Calculate healing taken
         if (currentHp + healingAmount > maxHp) {
-            netHealingAmount = maxHp - currentHp;
+            netHealingTaken = maxHp - currentHp;
             currentHp = maxHp;
         } else {
             currentHp += healingAmount;
-            netHealingAmount = healingAmount;
+            netHealingTaken = healingAmount;
         }
 
-        // Show the healing number
-        if (tag == "AI") {
-            FloatingTextController.instance.CreateCombatNumber(netHealingAmount, false, gameObject);
-        } else {
-            FloatingTextController.instance.CreateCombatNumber(netHealingAmount, false, PlayerManager.instance.localPlayer);
+        // If healing was taken, trigger health changed event
+        if (netHealingTaken > 0f) {
+            if (OnHealthChanged != null) {
+                OnHealthChanged();
+            }
         }
+
+        ShowFloatingText(netHealingTaken, false); // Show healing numbers
     }
 
     /// <summary>
@@ -131,15 +130,19 @@ public class CharacterStats : MonoBehaviour {
     /// <param name="physAtkDamage">The amount of physical damage to take.</param>
     /// <param name="magicAtkDamage">The amount of magical damage to take.</param>
     public void TakeDamage(float physAtkDamage, float magicAtkDamage) {
-
+        float netDamageTaken = 0f;
+        
+        // Calculate damage taken
         if (physDef < physAtkDamage) {
             currentHp = currentHp - (physAtkDamage - physDef);
+            netDamageTaken += physAtkDamage - physDef;
         }
-
         if (magicDef < magicAtkDamage) {
             currentHp = currentHp - (magicAtkDamage - magicDef);
+            netDamageTaken += magicAtk - magicDef;
         }
 
+        // Check if character is dead
         if (currentHp > 0) {
             isAlive = true;
         } else {
@@ -147,16 +150,13 @@ public class CharacterStats : MonoBehaviour {
             OnDeath();
         }
 
-        // Start the take damage animation
-        //GetComponent<Animator>().SetTrigger("TakeDamage");
-
-        // if damage was taken, trigger OnDamageTaken event
-        if (physDef < physAtkDamage || magicDef < magicAtkDamage) {
-            if (OnDamageTaken != null) {
-                OnDamageTaken(physAtkDamage, magicAtkDamage);
+        // If damage was taken, trigger health changed event
+        if (netDamageTaken > 0f) {
+            if (OnHealthChanged != null) {
+                OnHealthChanged();
             }
         }
-        ShowDamageText(physAtkDamage, magicAtkDamage); // Show damage numbers
+        ShowFloatingText(netDamageTaken, true); // Show damage numbers
     }
 
     /// <summary>
@@ -208,32 +208,17 @@ public class CharacterStats : MonoBehaviour {
     }
 
     /// <summary>
-    /// Shows the damage taken as a floating text object on the canvas.
+    /// Displays floating combat text next to this gameobject.
     /// </summary>
-    /// <param name="physAtkDamage">The raw amount of physical damage taken</param>
-    /// <param name="magicAtkDamage">The raw amount of magical damage taken</param>
-    private void ShowDamageText(float physAtkDamage, float magicAtkDamage) {
-        float netDamageTaken = 0f;
-
-        // Calculate net damage taken
-        if (physDef < physAtkDamage) {
-            netDamageTaken += physAtkDamage - physDef;
-        }
-        if (magicDef < magicAtkDamage) {
-            netDamageTaken += magicAtkDamage - magicDef;
-        }
-      
-        // Show the damage text
+    /// <param name="value">The amount of damage or healing taken</param>
+    /// <param name="isDamage">Whether it's a damage or healing value</param>
+    private void ShowFloatingText(float value, bool isDamage) {
         if (tag == "AI") {
-            FloatingTextController.instance.CreateCombatNumber(netDamageTaken, true, gameObject);
+            FloatingTextController.instance.CreateCombatNumber(value, isDamage, gameObject);
         }  else {
-            FloatingTextController.instance.CreateCombatNumber(netDamageTaken, true, PlayerManager.instance.localPlayer);
+            FloatingTextController.instance.CreateCombatNumber(value, isDamage, PlayerManager.instance.localPlayer);
         }
 
-    }
-
-    private void ShowHealingText() {
-        //FloatingTextController.instance.CreateCombatNumber(netDamageTaken, true, gameObject);
     }
 
     /// <summary>

@@ -66,6 +66,10 @@ public class FloatingTextController : MonoBehaviour {
         // Create the health bar object as a child
         GameObject hpObject = Instantiate(healthBar, transform);
         hpObject.GetComponent<HealthBar>().owner = owner;
+
+        // Have it respond to health change event
+        owner.GetComponent<BaseCharacter>().characterStats.OnHealthChanged += hpObject.GetComponent<HealthBar>().UpdateHealth;
+        hpObject.GetComponent<HealthBar>().UpdateHealth(); // Initial health update
         return hpObject.GetComponent<HealthBar>();
     }
 }

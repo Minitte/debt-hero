@@ -4,17 +4,7 @@ using UnityEngine.UI;
 /// <summary>
 /// This is a class for the player's resource bars.
 /// </summary>
-public class PlayerResourceBars : MonoBehaviour
-{
-    /// <summary>
-    /// Image used to represent HP.
-    /// </summary>
-    public Image hpBar;
-
-    /// <summary>
-    /// Image used to represent MP.
-    /// </summary>
-    public Image mpBar;
+public class PlayerResourceBars : MonoBehaviour {
 
     /// <summary>
     /// HP Text portion of the Image.
@@ -31,6 +21,9 @@ public class PlayerResourceBars : MonoBehaviour
     /// </summary>
     private CharacterStats _characterStats;
 
+    /// <summary>
+    /// Property variable for character stats.
+    /// </summary>
     public CharacterStats CharacterStats {
         set {
             _characterStats = value;
@@ -40,8 +33,10 @@ public class PlayerResourceBars : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
-        BarColor(255, 25, 5, 255, hpBar);
-        BarColor(107, 114, 255, 255, mpBar);
+        //BarColor(255, 25, 5, 255, hpBar);
+        //BarColor(107, 114, 255, 255, mpBar);
+        hpValue = transform.Find("HP").Find("HPText").GetComponent<Text>();
+        mpValue = transform.Find("MP").Find("MPText").GetComponent<Text>();
     }
 
     // Update is called once per frame
@@ -73,5 +68,13 @@ public class PlayerResourceBars : MonoBehaviour
     private void BarColor(byte Red, byte Green, byte Blue, byte Alpha, Image Bar)
     {
         Bar.color = new Color32(Red, Green, Blue, Alpha);
+    }
+
+    public void UpdateHealth() {
+        // Calculate health percentage
+        float percentage = _characterStats.currentHp
+            / _characterStats.maxHp * 100f;
+
+        transform.Find("HP").GetComponent<Slider>().value = percentage; // Update health bar
     }
 }

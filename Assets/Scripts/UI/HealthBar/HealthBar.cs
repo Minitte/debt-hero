@@ -40,17 +40,12 @@ public class HealthBar : MonoBehaviour
         }
     }
 
-    // Use this for initialization
-    private void Start() {
-        BarColor(176, 25, 5, 255); // Default health bar colour
-    }
-
     // Update is called once per frame
     private void Update()
     {
         // Stay next to the owner
         if (_owner != null) {
-            transform.Find("HealthBarColor").position = Camera.main.WorldToScreenPoint(owner.transform.position + offset);
+            transform.position = Camera.main.WorldToScreenPoint(owner.transform.position + offset);
         }
     }
 
@@ -78,5 +73,16 @@ public class HealthBar : MonoBehaviour
     public void BarValue(string value)
     {
         this.value.text = value;
+    }
+
+    /// <summary>
+    /// Updates the slider value proportionally to owner's health.
+    /// </summary>
+    public void UpdateHealth() {
+        // Calculate health percentage
+        float percentage = _owner.GetComponent<BaseCharacter>().characterStats.currentHp
+            / _owner.GetComponent<BaseCharacter>().characterStats.maxHp * 100f;
+
+        GetComponent<Slider>().value = percentage; // Update health bar
     }
 }
