@@ -28,6 +28,7 @@ public class PlayerCharacter : BaseCharacter {
         _keybinds = new Keybinds();
         _ableToMove = true;
         characterStats = PlayerManager.instance.GetComponent<CharacterStats>();
+        characterStats.OnDeath += Die;
     }
 
     // Update is called once per frame
@@ -130,5 +131,12 @@ public class PlayerCharacter : BaseCharacter {
         agent.ResetPath();
         yield return new WaitForSeconds(seconds);
         _ableToMove = true;
+    }
+
+    /// <summary>
+    /// Additional cleanup for when this gameobject dies.
+    /// </summary>
+    private void Die() {
+        Destroy(gameObject);
     }
 }

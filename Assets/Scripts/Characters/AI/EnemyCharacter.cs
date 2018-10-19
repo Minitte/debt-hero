@@ -96,7 +96,7 @@ public class EnemyCharacter : BaseCharacter {
             return false;
         }
     }
-
+        
     /// <summary>
     /// Draws a health bar over this gameobject when damage is first taken.
     /// </summary>
@@ -118,6 +118,10 @@ public class EnemyCharacter : BaseCharacter {
     /// Additional cleanup for when this gameobject dies.
     /// </summary>
     private void Die() {
+        // Delay removal of gameobject
+        gameObject.SetActive(false);
+        Destroy(gameObject, 2f);
+
         Destroy(_healthBar.gameObject); // Get rid of the health bar
     }
 }
