@@ -93,11 +93,6 @@ public class CharacterStats : MonoBehaviour {
     /// </summary>
     public bool isAlive;
 
-    // Use this for initialization
-    private void Start() {
-        OnDeath += Die;
-    }
-
     /// <summary>
     /// Called when this character takes healing.
     /// </summary>
@@ -220,12 +215,4 @@ public class CharacterStats : MonoBehaviour {
         }
 
     }
-
-    /// <summary>
-    /// Called when the gameobject dies.
-    /// </summary>
-    public void Die() {
-        Destroy(gameObject); // Get rid of the gameobject
-    }
-
 }

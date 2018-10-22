@@ -21,11 +21,6 @@ public class FloatingTextController : MonoBehaviour {
     /// </summary>
     public GameObject textPrefab;
 
-    /// <summary>
-    /// An offset to the damage text's position.
-    /// </summary>
-    public Vector3 textOffset;
-
     // Use this for initialization
     private void Awake() {
         instance = this;
@@ -40,7 +35,7 @@ public class FloatingTextController : MonoBehaviour {
     public void CreateCombatNumber(float value, bool damage, GameObject victim) {
         // Create the text object and move it onto the canvas
         GameObject textObject = Instantiate(textPrefab, transform);
-        textObject.transform.position = Camera.main.WorldToScreenPoint(victim.transform.position + textOffset);
+        textObject.transform.Find("FloatingText").GetComponent<FloatingText>().Owner = victim.transform;
 
         // Get the actual text field
         Text text = textObject.transform.Find("FloatingText").GetComponent<Text>();
