@@ -20,6 +20,11 @@ public class MiniMapController : MonoBehaviour {
 	/// </summary>
 	public float mapObjectPadding;
 
+	/// <summary>
+	/// Offset for the map. Usually half of the width and height
+	/// </summary>
+	public Vector2 mapOffset;
+
 	[Header("Others")]
 
 	/// <summary>
@@ -28,19 +33,46 @@ public class MiniMapController : MonoBehaviour {
 	public Transform mapObjectParent;
 
 	/// <summary>
-	/// A list of map objects
+	/// A dictionary of map objects
 	/// </summary>
-	public List<GameObject> mapObjects;
+	private Dictionary<XZCoordinate, GameObject> mapObjects;
 
-	 /// <summary>
-	 /// Awake is called when the script instance is being loaded.
-	 /// </summary>
+	/// <summary>
+	/// Awake is called when the script instance is being loaded.
+	/// </summary>
 	void Awake() {
-		mapObjects = new List<GameObject>();
+		mapObjects = new Dictionary<XZCoordinate, GameObject>();
 
 		FloorGenerator.OnFloorGenerated += GenerateMapObjects;
 	}
 
+	/// <summary>
+	/// Update is called every frame, if the MonoBehaviour is enabled.
+	/// </summary>
+	void Update() {
+
+		if (PlayerManager.instance == null || PlayerManager.instance.localPlayer == null) {
+			return;
+		}
+
+		Vector3 playerPos = PlayerManager.instance.localPlayer.transform.position;
+
+		float x = -playerPos.x;
+		float y = -playerPos.z;
+
+		// by room piece size
+		x /= 25f;
+		y /= 25f;
+
+		x *= mapObjectSize + mapObjectPadding;
+		y *= mapObjectSize + mapObjectPadding;
+
+		x -= mapOffset.x;
+		y -= mapOffset.y;
+
+		mapObjectParent.GetComponent<RectTransform>().localPosition = new Vector2(x, y);
+ 
+	}
 
 	/// <summary>
 	/// Generates a map object for each room in the floor
@@ -51,7 +83,9 @@ public class MiniMapController : MonoBehaviour {
 		foreach (RoomEntry room in floor.roomList) {
 			GameObject mapobject = Instantiate(mapObjectPrefab, mapObjectParent);
 
-			mapobject.transform.localPosition = room.coordinate.ToVector2() * (mapObjectSize + mapObjectPadding);
+			mapobject.transform.localPosition = (room.coordinate.ToVector2() * (mapObjectSize + mapObjectPadding));
+
+			mapObjects.Add(new XZCoordinate(room.coordinate), mapobject);
 		}
 	}
 }
