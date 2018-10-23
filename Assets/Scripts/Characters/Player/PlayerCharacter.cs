@@ -10,7 +10,7 @@ public class PlayerCharacter : BaseCharacter {
     /// The maximum allowed difference in y value between the clicked
     /// position and the current position.
     /// </summary>
-    private static readonly float MAX_CLIMB = 3f;
+    private static readonly float MAX_CLIMB = 6f;
 
     /// <summary>
     /// Map for keybinds.
@@ -45,14 +45,13 @@ public class PlayerCharacter : BaseCharacter {
             if (Input.GetKey(_keybinds["MoveKeyboard"])) {
                 if (GetClickedPoint(out clickedPoint)) {
                     transform.LookAt(new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z));
-
+                    
                     // Check for massive elevation difference between clicked point and current position
                     if (Mathf.Abs(transform.position.y - clickedPoint.y) > MAX_CLIMB) {
-                        //agent.destination = new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z); // Discard clicked y point
+                        agent.destination = new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z); // Discard clicked y point
                     } else {
                         agent.destination = clickedPoint;
                     }
-                    agent.destination = clickedPoint;
 
                     animator.SetFloat("Speed", 1f); // Start walk animation
                 }

@@ -36,6 +36,7 @@ public class FloatingTextController : MonoBehaviour {
         // Create the text object and move it onto the canvas
         GameObject textObject = Instantiate(textPrefab, transform);
         textObject.transform.Find("FloatingText").GetComponent<FloatingText>().Owner = victim.transform;
+        textObject.transform.position = victim.transform.position;
 
         // Get the actual text field
         Text text = textObject.transform.Find("FloatingText").GetComponent<Text>();
