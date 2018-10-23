@@ -10,7 +10,8 @@ public class RoomEntry : MonoBehaviour {
 	public enum RoomType {
 		NORMAL,
 		ENTRANCE,
-		EXIT
+		EXIT,
+		SAFE
 	}
 
 	/// <summary>
