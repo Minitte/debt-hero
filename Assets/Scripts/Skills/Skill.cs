@@ -1,16 +1,35 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Skill {
+/// <summary>
+/// This is a scriptable class for skills.
+/// </summary>
+[CreateAssetMenu(menuName = "Create Skill")]
+public class Skill : ScriptableObject {
 
-    public string name;
+    /// <summary>
+    /// The name of the skill.
+    /// </summary>
+    public string skillName;
+
+    /// <summary>
+    /// The description of the skill.
+    /// </summary>
+    [TextArea]
+    public string skillDescription;
+    
+    /// <summary>
+    /// The base cooldown of the skill.
+    /// 0 if not applicable.
+    /// </summary>
     public float cooldown;
-    public CharacterStats.StatType stat;
-    public float duration;
-    public float amount;
-    public int type;
 
+    /// <summary>
+    /// The base duration of the skill.
+    /// 0 if not applicable.
+    /// </summary>
+    public float duration;
+
+    /*
     public Skill()
     {
         name = "";
@@ -20,7 +39,8 @@ public class Skill {
         duration = 0;
         type = -1;
     }
-
+    
+    
 
     /// <summary>
     /// ALL SKILL INFO IS HERE
@@ -99,4 +119,5 @@ public class Skill {
     {
 
     }
+    */
 }

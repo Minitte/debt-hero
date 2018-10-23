@@ -114,6 +114,7 @@ public class SkillCaster : MonoBehaviour {
                 break;
         }
         if (cast) {
+            /*
             Skill currentSkill = Skill.GetInfo(skillID);
             if (currentSkill.type != -1) {
                 switch (Skill.GetInfo(skillID).type) {
@@ -136,8 +137,10 @@ public class SkillCaster : MonoBehaviour {
                     case 5:
                         break;
                 }
+                
                 UpdateCooldown(skillNum, currentSkill.cooldown);
             }
+            */
         }
     }
 
