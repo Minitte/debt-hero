@@ -145,7 +145,7 @@ public class FloorGenerator : MonoBehaviour {
 		}
 
 		RoomEntry entry = createRoomEntry(XZCoordinate.zero);
-
+		entry.type = RoomEntry.RoomType.SAFE;
 		currentFloorParent.entrance = entry;
 
 		GameObject safeZone = Instantiate(pieceSet.GetRandomSafeZonePrefab(_rand), entry.transform);
