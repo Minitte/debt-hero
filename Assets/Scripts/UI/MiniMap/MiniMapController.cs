@@ -44,6 +44,8 @@ public class MiniMapController : MonoBehaviour {
 		mapObjects = new Dictionary<XZCoordinate, GameObject>();
 
 		FloorGenerator.OnFloorGenerated += GenerateMapObjects;
+		
+		FloorGenerator.OnBeginGeneration += ClearMapObjects;
 	}
 
 	/// <summary>
@@ -87,5 +89,18 @@ public class MiniMapController : MonoBehaviour {
 
 			mapObjects.Add(new XZCoordinate(room.coordinate), mapobject);
 		}
+	}
+
+	/// <summary>
+	/// Destorys all mapobjects
+	/// </summary>
+	/// <param name="floor"></param>
+	/// <param name="random"></param>
+	private void ClearMapObjects(Floor floor, System.Random random) {
+		foreach (XZCoordinate coord in mapObjects.Keys) {
+			Destroy(mapObjects[coord]);
+		}
+
+		mapObjects.Clear();
 	}
 }
