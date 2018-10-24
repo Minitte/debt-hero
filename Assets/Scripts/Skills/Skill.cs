@@ -18,20 +18,29 @@ public class Skill : ScriptableObject {
     public string skillName;
 
     /// <summary>
+    /// The icon of the skill.
+    /// </summary>
+    public Sprite skillIcon;
+
+    /// <summary>
+    /// The description of the skill.
+    /// </summary>
+    public string skillDescription;
+
+    /// <summary>
     /// The type of skill.
     /// </summary>
     public SkillType skillType;
 
     /// <summary>
-    /// The description of the skill.
-    /// </summary>
-    [TextArea]
-    public string skillDescription;
-    
-    /// <summary>
     /// The base cooldown of the skill.
     /// </summary>
     public float cooldown;
+
+    /// <summary>
+    /// How much mana the skill costs.
+    /// </summary>
+    public float manaCost;
 
     /// <summary>
     /// The base duration of the skill.
@@ -52,6 +61,11 @@ public class Skill : ScriptableObject {
     /// Amount of healing done by the skill.
     /// </summary>
     public float healing;
+
+    /// <summary>
+    /// Radius for AoE skills.
+    /// </summary>
+    public float areaRadius;
 
     /// <summary>
     /// The behaviours of this skill.
