@@ -70,11 +70,25 @@ public class PlayerResourceBars : MonoBehaviour {
         Bar.color = new Color32(Red, Green, Blue, Alpha);
     }
 
+    /// <summary>
+    /// Updates the player's health bar.
+    /// </summary>
     public void UpdateHealth() {
         // Calculate health percentage
         float percentage = _characterStats.currentHp
             / _characterStats.maxHp * 100f;
 
         transform.Find("HP").GetComponent<Slider>().value = percentage; // Update health bar
+    }
+
+    /// <summary>
+    /// Updates the player's mana bar.
+    /// </summary>
+    public void UpdateMana() {
+        // Calculate mana percentage
+        float percentage = _characterStats.currentMp
+            / _characterStats.maxMp * 100f;
+
+        transform.Find("MP").GetComponent<Slider>().value = percentage; // Update mana bar
     }
 }

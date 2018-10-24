@@ -24,7 +24,7 @@ public class FloatingText : MonoBehaviour {
     /// The gameobject that this floating text belongs to.
     /// e.g. For damage text, it's the gameobject that took damage.
     /// </summary>
-    private volatile Transform _owner;
+    private Transform _owner;
 
     /// <summary>
     /// Property variable for owner.
