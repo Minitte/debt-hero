@@ -3,13 +3,24 @@
 /// <summary>
 /// This is a scriptable class for skills.
 /// </summary>
-[CreateAssetMenu(menuName = "Create Skill")]
+[CreateAssetMenu(menuName = "New Skill")]
 public class Skill : ScriptableObject {
+    
+    public enum SkillType {
+        Melee,
+        Ranged,
+        Magic
+    }
 
     /// <summary>
     /// The name of the skill.
     /// </summary>
     public string skillName;
+
+    /// <summary>
+    /// The type of skill.
+    /// </summary>
+    public SkillType skillType;
 
     /// <summary>
     /// The description of the skill.
@@ -19,15 +30,47 @@ public class Skill : ScriptableObject {
     
     /// <summary>
     /// The base cooldown of the skill.
-    /// 0 if not applicable.
     /// </summary>
     public float cooldown;
 
     /// <summary>
     /// The base duration of the skill.
-    /// 0 if not applicable.
     /// </summary>
     public float duration;
+
+    /// <summary>
+    /// Multiplier for physical damage.
+    /// </summary>
+    public float physicalMultiplier = 1f;
+
+    /// <summary>
+    /// Multiplier for magic damage.
+    /// </summary>
+    public float magicMultiplier = 1f;
+
+    /// <summary>
+    /// Amount of healing done by the skill.
+    /// </summary>
+    public float healing;
+
+    /// <summary>
+    /// The behaviours of this skill.
+    /// </summary>
+    public SkillBehaviour[] skillBehaviours;
+
+    /// <summary>
+    /// Casts the skill.
+    /// </summary>
+    /// <param name="caster">The transform of the caster</param>
+    public void Cast(Transform caster) {
+        // Play melee animation if skill type is melee
+        if (skillType == SkillType.Melee) {
+            caster.GetComponent<BaseCharacter>().animator.SetTrigger("Attack");
+        }
+        foreach (SkillBehaviour behaviour in skillBehaviours) {
+            behaviour.Activate(caster, this);
+        }
+    }
 
     /*
     public Skill()

@@ -24,6 +24,6 @@ public class HealSelf : AIAction {
     /// Casts a heal spell.
     /// </summary>
     public override void Action() {
-        _skillCaster.Cast(skillNum, skillID);
+        _skillCaster.Cast(skillNum);
     }
 }

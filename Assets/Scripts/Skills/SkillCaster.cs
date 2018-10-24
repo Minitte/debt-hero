@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// For casting skills
@@ -8,44 +6,47 @@ using UnityEngine;
 /// </summary>
 public class SkillCaster : MonoBehaviour {
 
-    // Skill 0 Cooldown
-    public GameObject skill0;
-    public int skill0ID;
-    private float timeStamp0;
-    public bool canCast0;
+    /// <summary>
+    /// List of skills.
+    /// </summary>
+    public Skill[] skills;
 
-    // Skill 1 Cooldown
-    public GameObject skill1;
-    public int skill1ID;
-    private float timeStamp1;
-    public bool canCast1;
+    /// <summary>
+    /// Timestamps used for skill cooldown.
+    /// </summary>
+    private float[] timestamps;
 
-    // Skill 2 Cooldown
-    public int skill2ID;
-    private float timeStamp2;
-    public bool canCast2;
-
-    // Skill 3 Cooldown
-    public int skill3ID;
-    private float timeStamp3;
-    public bool canCast3;
-
-    // Skill 4 Cooldown
-    public int skill4ID;
-    private float timeStamp4;
-    public bool canCast4;
+    /// <summary>
+    /// 
+    /// </summary>
+    private bool[] canCasts;
 
     // Use this for initialization
     void Start() {
+        timestamps = new float[skills.Length];
+        canCasts = new bool[skills.Length];
+
+        // Initialize timestamps
+        for (int i = 0; i < timestamps.Length; i++) {
+            timestamps[i] = Time.time;
+        }
+        /*
         canCast0 = canCast1 = canCast2 = canCast3 = canCast4 = true;
         timeStamp0 = timeStamp1 = timeStamp2 = timeStamp3 = timeStamp4 = Time.time;
+        test.character = transform;
+        */
     }
 
     // Update is called once per frame
     void Update() {
         //Debug.Log("Cooldown Skill1: "+ (timeStamp1-Time.time));
-        canCast0 = canCast1 = canCast2 = canCast3 = canCast4 = false;
-
+        //canCast0 = canCast1 = canCast2 = canCast3 = canCast4 = false;
+        for (int i = 0; i < timestamps.Length; i++) {
+            if (timestamps[i] <= Time.time) {
+                canCasts[i] = true;
+            }
+        }
+        /*
         /// <summary>
         /// If skill time is less than current time, skill0 can be casted again
         /// </summary>
@@ -79,13 +80,26 @@ public class SkillCaster : MonoBehaviour {
         if (timeStamp4 <= Time.time) {
             canCast4 = true;
         }
+        */
     }
 
     /// <summary>
-    /// Cast
+    /// Casts a skill if it is available.
     /// </summary>
-    public void Cast(int skillNum, int skillID) {
+    /// <param name="skillNum">The index of the skill to cast</param>
+    public void Cast(int skillNum) {
+        if (skillNum < skills.Length && canCasts[skillNum] == true) {
+            skills[skillNum].Cast(transform); // Cast the skill
+
+            // Put skill on cooldown
+            timestamps[skillNum] += skills[skillNum].cooldown;
+            canCasts[skillNum] = false;
+        }
+
+        /*
         bool cast = false;
+        
+        /*
         switch (skillNum) {
             case 0:
                 if (canCast0) {
@@ -113,6 +127,7 @@ public class SkillCaster : MonoBehaviour {
                 }
                 break;
         }
+        
         if (cast) {
             /*
             Skill currentSkill = Skill.GetInfo(skillID);
@@ -140,14 +155,16 @@ public class SkillCaster : MonoBehaviour {
                 
                 UpdateCooldown(skillNum, currentSkill.cooldown);
             }
-            */
+            
         }
+        */
     }
-
+    /*
     /// <summary>
     /// For updating the cooldowns
     /// </summary>
     private void UpdateCooldown(int skillNum, float cooldown) {
+        
         switch (skillNum) {
             case 0:
                 timeStamp0 += cooldown;
@@ -166,6 +183,7 @@ public class SkillCaster : MonoBehaviour {
                 break;
         }
     }
+    */
 
 
 

@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// This is a class that heals gameobjects it collides with.
+/// This is a skill behaviour that heals gameobjects in a radius around user.
 /// </summary>
-public class Heal : MonoBehaviour {
+public class Heal : SkillBehaviour {
 
     /// <summary>
     /// The radius of the heal.
@@ -15,6 +15,11 @@ public class Heal : MonoBehaviour {
     /// </summary>
     public float healingAmount;
 
+    public override void Activate(Transform caster, Skill skill) {
+        Instantiate(gameObject, caster);
+    }
+
+    
     private void Start() {
         // Apply a heal within the radius of the spell
         Collider[] withinRadiusColliders = Physics.OverlapSphere(transform.position, healRadius, (1 << transform.parent.gameObject.layer));
@@ -22,4 +27,5 @@ public class Heal : MonoBehaviour {
             c.GetComponent<BaseCharacter>().characterStats.TakeHealing(healingAmount);
         }
     }
+    
 }
