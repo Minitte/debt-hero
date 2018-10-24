@@ -37,6 +37,10 @@ public class PlayerResourceBars : MonoBehaviour {
         //BarColor(107, 114, 255, 255, mpBar);
         hpValue = transform.Find("HP").Find("HPText").GetComponent<Text>();
         mpValue = transform.Find("MP").Find("MPText").GetComponent<Text>();
+
+        // Initial update for the bars
+        UpdateHealth();
+        UpdateMana();
     }
 
     // Update is called once per frame

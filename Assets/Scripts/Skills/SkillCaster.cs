@@ -75,6 +75,8 @@ public class SkillCaster : MonoBehaviour {
                 if (OnSkillCasted != null) {
                     OnSkillCasted(); // Fire the skill casted event
                 }
+            } else {
+                FloatingTextController.instance.CreateFloatingText("Out of mana!", gameObject);
             }
         }
     }

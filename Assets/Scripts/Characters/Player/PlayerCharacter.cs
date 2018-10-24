@@ -67,8 +67,8 @@ public class PlayerCharacter : BaseCharacter {
                 }
             }
 
-            // Check if the player pressed or is holding the move key
-            if (Input.GetKey(_keybinds["Skill1"])) {
+            // Check if the player pressed the Skill 1 key
+            if (Input.GetKeyDown(_keybinds["Skill1"])) {
                 skillCaster.Cast(1);
             }
 
