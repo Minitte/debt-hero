@@ -43,7 +43,7 @@ public abstract class ItemBase : MonoBehaviour {
     /// </summary>
     public void Use() {
         // check qty
-        if (properties.quantity <= 0 || properties.usable) {
+        if (properties.quantity <= 0 || properties.usable || owner == null) {
             return;
         }
 
