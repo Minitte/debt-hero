@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public abstract class BaseItem : MonoBehaviour {
+public abstract class ItemBase : MonoBehaviour {
 
     #region Events and Delegates
 
@@ -14,7 +14,7 @@ public abstract class BaseItem : MonoBehaviour {
     /// delegate that requires a refernece of the current item 
     /// </summary>
     /// <param name="item">Current item</param>
-    public delegate void ReferenceItemEvent(BaseItem item);
+    public delegate void ReferenceItemEvent(ItemBase item);
 
     /// <summary>
     /// Event triggered when this item is used
