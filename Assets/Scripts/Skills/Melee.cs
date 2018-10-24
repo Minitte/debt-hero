@@ -25,23 +25,28 @@ public class Melee : SkillBehaviour {
     /// </summary>
     private Collider _collider;
 
+    /// <summary>
+    /// Flag for if this behaviour is ready to begin.
+    /// </summary>
+    private bool ready;
+
     // Use this for initialization
     private void Start () {
-        _physAtkdamage = transform.parent.GetComponent<BaseCharacter>().characterStats.physAtk;
-        _magicAtkdamage = transform.parent.GetComponent<BaseCharacter>().characterStats.magicAtk;
         _animatorStatus = transform.parent.GetComponent<BaseCharacter>().animatorStatus;
         _collider = GetComponent<Collider>();
     }
 
     // Update is called once per frame
     private void Update() {
-        // Only deal damage within the damage window of the animation
-        if (_animatorStatus.canDealDamage) {
-            _collider.enabled = true;
-        } else {
-            // Check if the damage window is over
-            if (_collider.enabled && !_animatorStatus.canDealDamage) {
-                Destroy(gameObject);
+        if (ready) {
+            // Only deal damage within the damage window of the animation
+            if (_animatorStatus.canDealDamage) {
+                _collider.enabled = true;
+            } else {
+                // Check if the damage window is over
+                if (_collider.enabled && !_animatorStatus.canDealDamage) {
+                    Destroy(gameObject);
+                }
             }
         }
     }
@@ -63,6 +68,8 @@ public class Melee : SkillBehaviour {
     /// Starts the melee attack.
     /// </summary>
     public override void Activate(Transform caster, Skill skill) {
-        Instantiate(gameObject, caster);
+        _physAtkdamage = caster.GetComponent<BaseCharacter>().characterStats.physAtk * skill.physicalMultiplier;
+        _magicAtkdamage = caster.GetComponent<BaseCharacter>().characterStats.magicAtk * skill.magicMultiplier;
+        ready = true;
     }
 }

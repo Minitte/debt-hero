@@ -81,8 +81,10 @@ public class Skill : ScriptableObject {
         if (skillType == SkillType.Melee) {
             caster.GetComponent<BaseCharacter>().animator.SetTrigger("Attack");
         }
+        // Activate each behaviour
         foreach (SkillBehaviour behaviour in skillBehaviours) {
-            behaviour.Activate(caster, this);
+            SkillBehaviour behaviourObj = Instantiate(behaviour, caster);
+            behaviourObj.Activate(caster, this);
         }
     }
 

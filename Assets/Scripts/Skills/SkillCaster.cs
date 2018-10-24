@@ -88,7 +88,7 @@ public class SkillCaster : MonoBehaviour {
     /// </summary>
     /// <param name="skillNum">The index of the skill to cast</param>
     public void Cast(int skillNum) {
-        if (skillNum < skills.Length && canCasts[skillNum] == true) {
+        if (skillNum < skills.Length && skills[skillNum] != null && canCasts[skillNum] == true) {
             skills[skillNum].Cast(transform); // Cast the skill
 
             // Put skill on cooldown

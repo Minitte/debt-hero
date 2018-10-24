@@ -12,6 +12,7 @@ public class SkillEditor : Editor {
     /// </summary>
     public override void OnInspectorGUI() {
         Skill skill = target as Skill;
+        serializedObject.Update();
 
         // Basic properties of the skill
         EditorGUILayout.LabelField("Basics", EditorStyles.boldLabel);
