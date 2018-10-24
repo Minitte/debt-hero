@@ -16,6 +16,11 @@ public class ItemProperties {
     public string name = "ITEM_NAME";
 
     /// <summary>
+    /// Description of the item
+    /// </summary>
+    public string description = "ITEM_DESCRIPTION";
+
+    /// <summary>
     /// Type of item
     /// </summary>
     public Type type;
