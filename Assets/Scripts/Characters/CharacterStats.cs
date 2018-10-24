@@ -155,6 +155,18 @@ public class CharacterStats : MonoBehaviour {
     }
 
     /// <summary>
+    /// Recovers mana up to the max
+    /// </summary>
+    /// <param name="amt">fixed amount to recover</param>
+    public void RecoverMana(float amt) {
+        currentMp += amt;
+
+        if (currentMp > maxMp) {
+            currentMp = maxMp;
+        }
+    }
+
+    /// <summary>
     /// Looks up a stat and adds to it
     /// </summary>
     /// <param name="targetStat">Stat to look up</param>
