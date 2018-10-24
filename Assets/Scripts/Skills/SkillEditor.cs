@@ -18,6 +18,7 @@ public class SkillEditor : Editor {
         EditorGUILayout.LabelField("Basics", EditorStyles.boldLabel);
         EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
         skill.skillName = EditorGUILayout.TextField("Skill Name:", skill.skillName);
+        skill.skillIcon = (Sprite)EditorGUILayout.ObjectField("Skill Icon:", skill.skillIcon, typeof(Sprite), allowSceneObjects: true);
         skill.skillDescription = EditorGUILayout.TextField("Skill Description:", skill.skillDescription);
         skill.skillType = (Skill.SkillType)EditorGUILayout.EnumPopup("Skill Type:", skill.skillType);
         EditorGUILayout.Space();
