@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -63,6 +64,14 @@ public class CharacterInventory : MonoBehaviour {
 	/// <returns></returns>
 	public ItemBase GetItem(ItemSlot slot) {
 		return GetItem(slot.row, slot.col);
+	}
+
+	/// <summary>
+	/// Gets all of the items in the inventory
+	/// </summary>
+	/// <returns></returns>
+	public ItemBase[] GetAllItems() {
+		return _itemSlotsMap.Keys.ToArray();
 	}
 
 	/// <summary>
