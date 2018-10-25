@@ -69,4 +69,31 @@ public abstract class ItemBase : MonoBehaviour {
             OnDisposal(this);
         }
     }
+
+    // override object.Equals
+    public override bool Equals(object obj) {
+        //
+        // See the full list of guidelines at
+        //   http://go.microsoft.com/fwlink/?LinkID=85237
+        // and also the guidance for operator== at
+        //   http://go.microsoft.com/fwlink/?LinkId=85238
+        //
+        
+        if (obj == null || GetType() != obj.GetType()) {
+            return false;
+        }
+        
+        ItemBase other = (ItemBase) obj;
+        
+        return this.GetHashCode() == other.GetHashCode();
+    }
+
+    // override object.GetHashCode
+    public override int GetHashCode() {
+        string s =  properties.name + "/" + 
+            properties.description + "/" + 
+            properties.type;
+
+        return s.GetHashCode();
+    }
 }

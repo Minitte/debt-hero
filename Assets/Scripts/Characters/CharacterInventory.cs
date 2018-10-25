@@ -163,11 +163,46 @@ public class CharacterInventory : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Adds the item in the first open inventory slot
+	/// Adds the item to the inventory.
+	/// If the item is stackable, this will attempt to stack the item.
+	/// If not, this will attempt to put the item in a new slot
 	/// </summary>
 	/// <param name="itemToAdd"></param>
 	/// <returns></returns>
 	public bool AddItem(ItemBase itemToAdd) {
+		if (itemToAdd.properties.stackable) {
+			return AttemptItemStack(itemToAdd);
+		} else {
+			return PutItemInNewSlot(itemToAdd);
+		}
+	}
+
+	/// <summary>
+	/// Attempts to find a matching item to stack with
+	/// If none are found, the item will be put into the next empty slot
+	/// </summary>
+	/// <param name="itemToAdd"></param>
+	/// <returns></returns>
+	private bool AttemptItemStack(ItemBase itemToAdd) {
+		ItemBase[] items = GetAllItems();
+
+		foreach (ItemBase item in items) {
+			if (item.properties.stackable && item.Equals(itemToAdd)) {
+				item.properties.quantity++;
+				
+				return true;
+			}
+		}
+
+		return PutItemInNewSlot(itemToAdd);
+	}
+
+	/// <summary>
+	/// Puts the item in the next empty slot
+	/// </summary>
+	/// <param name="itemToAdd"></param>
+	/// <returns></returns>
+	private bool PutItemInNewSlot(ItemBase itemToAdd) {
 		ItemSlot slot = FindEmptySlot();
 
 		if (slot == null) {
