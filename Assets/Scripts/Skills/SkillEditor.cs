@@ -6,7 +6,7 @@ using UnityEngine;
 /// </summary>
 [CustomEditor(typeof(Skill))]
 public class SkillEditor : Editor {
-    
+
     /// <summary>
     /// Called when the inspector is opened or changed.
     /// </summary>
@@ -15,7 +15,7 @@ public class SkillEditor : Editor {
         serializedObject.Update();
 
         // Basic properties of the skill
-        EditorGUILayout.LabelField("Basics", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("General", EditorStyles.boldLabel);
         EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
         skill.skillName = EditorGUILayout.TextField("Skill Name:", skill.skillName);
         skill.skillIcon = (Sprite)EditorGUILayout.ObjectField("Skill Icon:", skill.skillIcon, typeof(Sprite), allowSceneObjects: true);
@@ -30,20 +30,34 @@ public class SkillEditor : Editor {
         skill.manaCost = EditorGUILayout.FloatField("Mana Cost:", skill.manaCost);
         EditorGUILayout.Space();
 
-        // Combat properties of the skill
-        EditorGUILayout.LabelField("Combat", EditorStyles.boldLabel);
+        // Damage properties of the skill
+        EditorGUILayout.LabelField("Damage", EditorStyles.boldLabel);
         EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+        EditorGUILayout.ObjectField(serializedObject.FindProperty("damagePrefab"));
+        serializedObject.ApplyModifiedProperties();
         skill.physicalMultiplier = EditorGUILayout.FloatField("Physical Multiplier:", skill.physicalMultiplier);
         skill.magicMultiplier = EditorGUILayout.FloatField("Magic Multiplier:", skill.magicMultiplier);
-        skill.areaRadius = EditorGUILayout.FloatField("Area Radius:", skill.areaRadius);
-        skill.healing = EditorGUILayout.FloatField("Healing Amount:", skill.healing);
+        skill.rangeMultiplier = EditorGUILayout.FloatField("Range Multiplier:", skill.magicMultiplier);
+        skill.areaMultiplier = EditorGUILayout.FloatField("Area Multiplier:", skill.magicMultiplier);
         EditorGUILayout.Space();
 
-        // Behaviour prefabs attached to the skill
-        EditorGUILayout.LabelField("Behaviour", EditorStyles.boldLabel);
+        // Healing properties of the skill
+        EditorGUILayout.LabelField("Healing", EditorStyles.boldLabel);
         EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("skillBehaviours"), true);
-        serializedObject.ApplyModifiedProperties(); // Apply changes
+        EditorGUILayout.ObjectField(serializedObject.FindProperty("healingPrefab"));
+        serializedObject.ApplyModifiedProperties();
+        skill.healing = EditorGUILayout.FloatField("Heal Amount:", skill.healing);
+        skill.healingRadius = EditorGUILayout.FloatField("Heal Radius:", skill.healingRadius);
+        EditorGUILayout.Space();
+
+        // Status effects of the skill
+        EditorGUILayout.LabelField("Status Effect", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+        skill.hasStatusEffects = EditorGUILayout.Toggle("Has status effects:", skill.hasStatusEffects);
+
+        if (skill.hasStatusEffects) {
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("statusEffects"), true);
+            serializedObject.ApplyModifiedProperties(); // Apply changes
+        }
     }
-    
 }

@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-
+﻿using System.Collections.Generic;
+using UnityEngine;
 /// <summary>
 /// This is a scriptable class for skills.
 /// </summary>
@@ -15,6 +15,7 @@ public class Skill : ScriptableObject {
         Magic
     }
 
+    #region General
     /// <summary>
     /// The name of the skill.
     /// </summary>
@@ -34,7 +35,9 @@ public class Skill : ScriptableObject {
     /// The type of skill.
     /// </summary>
     public SkillType skillType;
+    #endregion
 
+    #region Costs
     /// <summary>
     /// The base cooldown of the skill.
     /// </summary>
@@ -44,11 +47,13 @@ public class Skill : ScriptableObject {
     /// How much mana the skill costs.
     /// </summary>
     public float manaCost;
+    #endregion
 
+    #region Damage Properties
     /// <summary>
-    /// The base duration of the skill.
+    /// Prefab of the damage hitbox.
     /// </summary>
-    public float duration;
+    public GameObject damagePrefab;
 
     /// <summary>
     /// Multiplier for physical damage.
@@ -61,6 +66,25 @@ public class Skill : ScriptableObject {
     public float magicMultiplier = 1f;
 
     /// <summary>
+    /// Multiplier for the damage range.
+    /// Used for melee attacks.
+    /// </summary>
+    public float rangeMultiplier = 1f;
+
+    /// <summary>
+    /// Multiplier for the damage area.
+    /// Used for AoE skills.
+    /// </summary>
+    public float areaMultiplier = 1f;
+    #endregion
+
+    #region Healing Properties
+    /// <summary>
+    /// Prefab of the healing hitbox.
+    /// </summary>
+    public GameObject healingPrefab;
+
+    /// <summary>
     /// Amount of healing done by the skill.
     /// </summary>
     public float healing;
@@ -68,12 +92,20 @@ public class Skill : ScriptableObject {
     /// <summary>
     /// Radius for AoE skills.
     /// </summary>
-    public float areaRadius;
+    public float healingRadius;
+    #endregion
+
+    #region Status Effects
+    /// <summary>
+    /// Flag for if this skill has status effects.
+    /// </summary>
+    public bool hasStatusEffects;
 
     /// <summary>
-    /// The behaviours of this skill.
+    /// Array of status effects.
     /// </summary>
-    public SkillBehaviour[] skillBehaviours;
+    public GameObject[] statusEffects;
+    #endregion
 
     /// <summary>
     /// Casts the skill.
@@ -84,10 +116,17 @@ public class Skill : ScriptableObject {
         if (skillType == SkillType.Melee) {
             caster.GetComponent<BaseCharacter>().animator.SetTrigger("Attack");
         }
-        // Activate each behaviour
-        foreach (SkillBehaviour behaviour in skillBehaviours) {
-            SkillBehaviour behaviourObj = Instantiate(behaviour, caster);
-            behaviourObj.Activate(caster, this);
+
+        // Activate damage behaviour
+        if (damagePrefab != null) {
+            SkillBehaviour damage = Instantiate(damagePrefab, caster).GetComponent<SkillBehaviour>();
+            damage.Activate(caster, this);
+        }
+
+        // Activate healing behaviour
+        if (healingPrefab != null) {
+            SkillBehaviour healing = Instantiate(healingPrefab, caster).GetComponent<SkillBehaviour>();
+            healing.Activate(caster, this);
         }
     }
 }
