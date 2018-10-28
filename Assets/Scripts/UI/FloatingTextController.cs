@@ -27,6 +27,22 @@ public class FloatingTextController : MonoBehaviour {
     }
 
     /// <summary>
+    /// Creates a text object on the canvas.
+    /// </summary>
+    /// <param name="text">The text to show</param>
+    /// <param name="origin">The gameobject to follow</param>
+    public void CreateFloatingText(string text, GameObject origin) {
+        // Create the text object and move it onto the canvas
+        GameObject textObject = Instantiate(textPrefab, transform);
+        textObject.transform.Find("FloatingText").GetComponent<FloatingText>().Owner = origin.transform;
+        textObject.transform.position = origin.transform.position;
+
+        // Get the actual text field
+        Text textField = textObject.transform.Find("FloatingText").GetComponent<Text>();
+        textField.text = text; // Change the text
+    }
+
+    /// <summary>
     /// Creates a text object on the canvas showing a damage or healing taken number.
     /// </summary>
     /// <param name="value">The value of the damage or healing taken</param>
@@ -36,6 +52,7 @@ public class FloatingTextController : MonoBehaviour {
         // Create the text object and move it onto the canvas
         GameObject textObject = Instantiate(textPrefab, transform);
         textObject.transform.Find("FloatingText").GetComponent<FloatingText>().Owner = victim.transform;
+        textObject.transform.position = victim.transform.position;
 
         // Get the actual text field
         Text text = textObject.transform.Find("FloatingText").GetComponent<Text>();
