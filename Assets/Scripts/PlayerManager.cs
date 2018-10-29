@@ -59,7 +59,12 @@ public class PlayerManager : MonoBehaviour {
 		FloorGenerator.OnBeginGeneration += RemovePlayerOnNewFloor;
 
 		DontDestroyOnLoad(this.gameObject);
-	}
+
+        // Instantiate player's health and mana bars
+        GameObject hp = Instantiate(healthbar, GameObject.Find("Canvas").transform);
+        hp.GetComponent<PlayerResourceBars>().CharacterStats = GetComponent<CharacterStats>();
+        GetComponent<CharacterStats>().OnHealthChanged += hp.GetComponent<PlayerResourceBars>().UpdateHealth;
+    }
 
 	/// <summary>
 	/// removes player on floor generation
@@ -86,14 +91,8 @@ public class PlayerManager : MonoBehaviour {
 		if (localPlayer == null) {
 			localPlayer = Instantiate(playerPrefab);
 			Camera.main.GetComponent<CopyTargetPosition>().target = localPlayer.transform;
-
-            // Load player's health bar
-            GameObject hp = Instantiate(healthbar, GameObject.Find("Canvas").transform);
-            hp.GetComponent<PlayerResourceBars>().CharacterStats = GetComponent<CharacterStats>();
-            GetComponent<CharacterStats>().OnHealthChanged += hp.GetComponent<PlayerResourceBars>().UpdateHealth;
-            localPlayer.GetComponent<BaseCharacter>().skillCaster.OnSkillCasted += hp.GetComponent<PlayerResourceBars>().UpdateMana;
         }
-	}
+    }
 
 	/// <summary>
 	/// moves the player to the entrance of the floor

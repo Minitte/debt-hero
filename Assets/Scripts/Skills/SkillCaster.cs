@@ -46,6 +46,10 @@ public class SkillCaster : MonoBehaviour {
         for (int i = 0; i < _timestamps.Length; i++) {
             _timestamps[i] = Time.time;
         }
+
+        if (CompareTag("Player")) {
+            OnSkillCasted += GameObject.Find("Canvas").transform.GetComponentInChildren<PlayerResourceBars>().UpdateMana;
+        }
     }
 
     // Update is called once per frame
@@ -62,7 +66,8 @@ public class SkillCaster : MonoBehaviour {
     /// Casts a skill if it is available.
     /// </summary>
     /// <param name="skillNum">The index of the skill to cast</param>
-    public void Cast(int skillNum) {
+    /// <returns>True if successfully cast, else false</returns>
+    public bool Cast(int skillNum) {
         if (skillNum < skills.Length && skills[skillNum] != null && _canCasts[skillNum] == true) { // Validation
             if (_characterStats.currentMp >= skills[skillNum].manaCost) { // Check if enough mana to cast
                 skills[skillNum].Cast(transform); // Cast the skill
@@ -75,11 +80,13 @@ public class SkillCaster : MonoBehaviour {
                 if (OnSkillCasted != null) {
                     OnSkillCasted(); // Fire the skill casted event
                 }
+                return true;
             } else {
                 if (CompareTag("Player")) {
                     FloatingTextController.instance.CreateFloatingText("Out of mana!", gameObject);
                 }
             }
         }
+        return false;
     }
 }

@@ -58,26 +58,27 @@ public class PlayerCharacter : BaseCharacter {
             }
 
             // Check if the player pressed the attack key
-            if (Input.GetKeyDown(_keybinds["AttackKeyboard"])) {
-                if (GetClickedPoint(out clickedPoint)) {
+            if (Input.GetKeyDown(_keybinds["AttackKeyboard"]) && GetClickedPoint(out clickedPoint)) {
+                if (skillCaster.Cast(0)) { // Attempt to attack
                     transform.LookAt(new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z));
-                    skillCaster.Cast(0);
                     StartCoroutine(StopMovement(0.5f)); // Stop movement
-                    return;
                 }
+                return;
             }
 
             // Check if the player pressed the Skill 1 key
             if (Input.GetKeyDown(_keybinds["Skill1"])) {
                 skillCaster.Cast(1);
+                return;
             }
 
             // If a controller is plugged in
             if (Input.GetJoystickNames().Length > 0) {
                 // Check if the player pressed or is holding the controller attack key
                 if (Input.GetKeyDown(_keybinds["AttackController"])) {
-                    StartCoroutine(StopMovement(0.5f)); // Stop movement
-                    skillCaster.Cast(0);
+                    if (skillCaster.Cast(0)) {
+                        StartCoroutine(StopMovement(0.5f)); // Stop movement
+                    }
                 }
 
                 // Horizontal and vertical input values of the joystick
