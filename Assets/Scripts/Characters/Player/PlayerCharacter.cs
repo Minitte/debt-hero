@@ -10,7 +10,7 @@ public class PlayerCharacter : BaseCharacter {
     /// The maximum allowed difference in y value between the clicked
     /// position and the current position.
     /// </summary>
-    private static readonly float MAX_CLIMB = 3f;
+    private static readonly float MAX_CLIMB = 6f;
 
     /// <summary>
     /// Map for keybinds.
@@ -45,14 +45,13 @@ public class PlayerCharacter : BaseCharacter {
             if (Input.GetKey(_keybinds["MoveKeyboard"])) {
                 if (GetClickedPoint(out clickedPoint)) {
                     transform.LookAt(new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z));
-
+                    
                     // Check for massive elevation difference between clicked point and current position
                     if (Mathf.Abs(transform.position.y - clickedPoint.y) > MAX_CLIMB) {
-                        //agent.destination = new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z); // Discard clicked y point
+                        agent.destination = new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z); // Discard clicked y point
                     } else {
                         agent.destination = clickedPoint;
                     }
-                    agent.destination = clickedPoint;
 
                     animator.SetFloat("Speed", 1f); // Start walk animation
                 }
@@ -62,15 +61,15 @@ public class PlayerCharacter : BaseCharacter {
             if (Input.GetKeyDown(_keybinds["AttackKeyboard"])) {
                 if (GetClickedPoint(out clickedPoint)) {
                     transform.LookAt(new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z));
-                    skillCaster.Cast(0, 0);
+                    skillCaster.Cast(0);
                     StartCoroutine(StopMovement(0.5f)); // Stop movement
                     return;
                 }
             }
 
-            // Check if the player pressed or is holding the move key
-            if (Input.GetKey(_keybinds["Skill1"])) {
-                skillCaster.Cast(1, 1);
+            // Check if the player pressed the Skill 1 key
+            if (Input.GetKeyDown(_keybinds["Skill1"])) {
+                skillCaster.Cast(1);
             }
 
             // If a controller is plugged in
@@ -78,7 +77,7 @@ public class PlayerCharacter : BaseCharacter {
                 // Check if the player pressed or is holding the controller attack key
                 if (Input.GetKeyDown(_keybinds["AttackController"])) {
                     StartCoroutine(StopMovement(0.5f)); // Stop movement
-                    skillCaster.Cast(0, 0);
+                    skillCaster.Cast(0);
                 }
 
                 // Horizontal and vertical input values of the joystick

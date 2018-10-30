@@ -38,6 +38,7 @@ public class CharacterStats : MonoBehaviour {
         EXP
     }
 
+    [Header("Resources")]
     /// <summary>
     /// The character's current health point.
     /// </summary>
@@ -58,6 +59,7 @@ public class CharacterStats : MonoBehaviour {
     /// </summary>
     public float maxMp;
 
+    [Header("Offense")]
     /// <summary>
     /// The character's physical attack stat.
     /// </summary>
@@ -68,6 +70,7 @@ public class CharacterStats : MonoBehaviour {
     /// </summary>
     public float magicAtk;
 
+    [Header("Defence")]
     /// <summary>
     /// The character's physical defense stat. 
     /// </summary>
@@ -78,6 +81,7 @@ public class CharacterStats : MonoBehaviour {
     /// </summary>
     public float magicDef;
 
+    [Header("Other")]
     /// <summary>
     /// The character's level.
     /// </summary>
@@ -152,6 +156,18 @@ public class CharacterStats : MonoBehaviour {
             }
         }
         ShowFloatingText(netDamageTaken, true); // Show damage numbers
+    }
+
+    /// <summary>
+    /// Recovers mana up to the max
+    /// </summary>
+    /// <param name="amt">fixed amount to recover</param>
+    public void RecoverMana(float amt) {
+        currentMp += amt;
+
+        if (currentMp > maxMp) {
+            currentMp = maxMp;
+        }
     }
 
     /// <summary>
