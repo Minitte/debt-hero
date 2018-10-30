@@ -35,12 +35,14 @@ public class CharacterInventory : MonoBehaviour {
 	private Dictionary<ItemBase, ItemSlot> _itemSlotsMap;
 
 	/// <summary>
-	/// Awake is called when the script instance is being loaded.
+	/// Start is called on the frame when a script is enabled just before
+	/// any of the Update methods is called the first time.
 	/// </summary>
-	void Awake() {
+	void Start() {
 		_itemSlotsMap = new Dictionary<ItemBase, ItemSlot>();
 		AddExistingToDictionary();
 	}
+	
 
 	/// <summary>
 	/// Adds the inital items found in itemRows to the dictionary
@@ -51,7 +53,8 @@ public class CharacterInventory : MonoBehaviour {
 				ItemBase item = itemRows[row].items[col];
 
 				if (item != null) {
-					_itemSlotsMap.Add(item, new ItemSlot(row, col));
+					ItemSlot slot = new ItemSlot(row, col);
+					_itemSlotsMap.Add(item, slot);
 				}
 			}
 		}
