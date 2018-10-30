@@ -32,8 +32,16 @@ public class TimeManager : MonoBehaviour {
     public int currentHour;
     public int currentMinute;
 
-    // Number of days passed since game start. Starts at 1
+    // Number of days passed since game start.Starts at 1
     public int days = 1;
+
+    // Event for when day changes
+    public delegate void OnDayChangeEvent();
+    public event OnDayChangeEvent DayChange;
+
+    // Event for when hour changes
+    public delegate void OnHourChangeEvent();
+    public event OnHourChangeEvent HourChange;
 
 
     // Use this for initialization
@@ -55,6 +63,7 @@ public class TimeManager : MonoBehaviour {
             days += 1;
             currentTime = 0;
             dayNumber.text = "Day " + days;
+            DayChange();
         }
     }
 
