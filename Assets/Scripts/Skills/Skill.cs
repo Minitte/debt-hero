@@ -1,102 +1,132 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-
-public class Skill {
-
-    public string name;
-    public float cooldown;
-    public CharacterStats.StatType stat;
-    public float duration;
-    public float amount;
-    public int type;
-
-    public Skill()
-    {
-        name = "";
-        cooldown = 0;
-        stat = CharacterStats.StatType.NONE;
-        amount = 0;
-        duration = 0;
-        type = -1;
+/// <summary>
+/// This is a scriptable class for skills.
+/// </summary>
+[CreateAssetMenu(menuName = "New Skill")]
+public class Skill : ScriptableObject {
+    
+    /// <summary>
+    /// Enum for the different types of skills.
+    /// </summary>
+    public enum SkillType {
+        Melee,
+        Ranged,
+        Magic
     }
 
+    #region General
+    /// <summary>
+    /// The name of the skill.
+    /// </summary>
+    public string skillName;
 
     /// <summary>
-    /// ALL SKILL INFO IS HERE
-    /// Gets info for a skill by Skill ID
-    /// Skill.type is -1 if skill not found
+    /// The icon of the skill.
     /// </summary>
-    public static Skill GetInfo(int skillID)
-    {
-        Skill skill = new Skill();
+    public Sprite skillIcon;
 
-        switch (skillID)
-        {
-            case 0:
-                skill.name = "Basic Attack";
-                skill.amount = 5;
-                skill.type = 0;
-                skill.cooldown = 1;
-                break;
-            case 1:
-                skill.name = "Healing";
-                skill.stat = CharacterStats.StatType.CURRENT_HP;
-                skill.amount = 20;
-                skill.type = 1;
-                skill.cooldown = 30;
-                break;
+    /// <summary>
+    /// The description of the skill.
+    /// </summary>
+    public string skillDescription;
+
+    /// <summary>
+    /// The type of skill.
+    /// </summary>
+    public SkillType skillType;
+    #endregion
+
+    #region Costs
+    /// <summary>
+    /// The base cooldown of the skill.
+    /// </summary>
+    public float cooldown;
+
+    /// <summary>
+    /// How much mana the skill costs.
+    /// </summary>
+    public float manaCost;
+    #endregion
+
+    #region Damage Properties
+    /// <summary>
+    /// Prefab of the damage hitbox.
+    /// </summary>
+    public GameObject damagePrefab;
+
+    /// <summary>
+    /// Multiplier for physical damage.
+    /// </summary>
+    public float physicalMultiplier = 1f;
+
+    /// <summary>
+    /// Multiplier for magic damage.
+    /// </summary>
+    public float magicMultiplier = 1f;
+
+    /// <summary>
+    /// Multiplier for the damage range.
+    /// Used for melee attacks.
+    /// </summary>
+    public float rangeMultiplier = 1f;
+
+    /// <summary>
+    /// Multiplier for the damage area.
+    /// Used for AoE skills.
+    /// </summary>
+    public float areaMultiplier = 1f;
+    #endregion
+
+    #region Healing Properties
+    /// <summary>
+    /// Prefab of the healing hitbox.
+    /// </summary>
+    public GameObject healingPrefab;
+
+    /// <summary>
+    /// Amount of healing done by the skill.
+    /// </summary>
+    public float healing;
+
+    /// <summary>
+    /// Radius for AoE skills.
+    /// </summary>
+    public float healingRadius;
+    #endregion
+
+    #region Status Effects
+    /// <summary>
+    /// Flag for if this skill has status effects.
+    /// </summary>
+    public bool hasStatusEffects;
+
+    /// <summary>
+    /// Array of status effects.
+    /// </summary>
+    public GameObject[] statusEffects;
+    #endregion
+
+    /// <summary>
+    /// Casts the skill.
+    /// </summary>
+    /// <param name="caster">The transform of the caster</param>
+    public void Cast(Transform caster) {
+        // Play melee animation if skill type is melee
+        if (skillType == SkillType.Melee) {
+            caster.GetComponent<BaseCharacter>().animator.SetTrigger("Attack");
         }
 
-        return skill;
-    }
+        // Activate damage behaviour
+        if (damagePrefab != null) {
+            SkillBehaviour damage = Instantiate(damagePrefab, caster).GetComponent<SkillBehaviour>();
+            damage.Activate(caster, this);
+        }
 
-    /// <summary>
-    /// Skill Type 1
-    /// To use a buff skill that increases a stat, for recovery
-    /// (i.e.) Gain("hp", 10); gain 10 hp
-    /// Should only be used for HP and MP
-    /// </summary>
-    public static void Gain(CharacterStats target, CharacterStats.StatType stat, float amount)
-    {
-        //target.GetComponent<Animator>().SetBool("skillcast", true);
-        target.AddToStat(stat, amount);
-    }
-    /// <summary>
-    /// Skill Type 2
-    /// To use a buff skill that buffs a stat by amount for duration
-    /// (i.e.) BuffDuration("hp", 10, 10); buffs MaxHP by 10 for 10 seconds
-    /// </summary>
-    public static void BuffDuration(string stat, float duration, float amount)
-    {
-
-    }
-    /// <summary>
-    /// Skill Type 3
-    /// To use a buff skill that gives stat by amount/second for duration
-    /// (i.e.) BuffOverTime("hp", 10, 10); gives 10 HP per second for 10 seconds
-    /// </summary>
-    public static void BuffOverTime(string stat, float duration, float amount)
-    {
-
-    }
-
-    /// <summary>
-    /// Skill Type 4
-    /// To use a melee skill that does damage
-    /// </summary>
-    public static void Melee(float damage, Collider enemy)
-    {
-        
-        enemy.GetComponent<CharacterStats>().TakeDamage(damage, 0);
-    }
-
-    /// <summary>
-    /// Skill Type 5
-    /// To use a ranged skill
-    /// </summary>
-    public static void Ranged(float damage)
-    {
-
+        // Activate healing behaviour
+        if (healingPrefab != null) {
+            SkillBehaviour healing = Instantiate(healingPrefab, caster).GetComponent<SkillBehaviour>();
+            healing.Activate(caster, this);
+        }
     }
 }

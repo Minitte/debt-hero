@@ -101,7 +101,7 @@ public class EnemyCharacter : BaseCharacter {
     /// Draws a health bar over this gameobject when damage is first taken.
     /// </summary>
     private void DrawHealthBar() {
-        if (_healthBar == null) {
+        if (_healthBar == null && characterStats.currentHp > 0f) {
             _healthBar = FloatingTextController.instance.CreateHealthBar(gameObject);
         }
     }
@@ -122,6 +122,8 @@ public class EnemyCharacter : BaseCharacter {
         gameObject.SetActive(false);
         Destroy(gameObject, 2f);
 
-        Destroy(_healthBar.gameObject); // Get rid of the health bar
+        if (_healthBar != null) {
+            Destroy(_healthBar.gameObject); // Get rid of the health bar
+        }
     }
 }

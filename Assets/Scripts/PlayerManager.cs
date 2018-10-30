@@ -115,6 +115,7 @@ public class PlayerManager : MonoBehaviour {
             GameObject hp = Instantiate(healthbar, GameObject.Find("Canvas").transform);
             hp.GetComponent<PlayerResourceBars>().CharacterStats = GetComponent<CharacterStats>();
             GetComponent<CharacterStats>().OnHealthChanged += hp.GetComponent<PlayerResourceBars>().UpdateHealth;
+            localPlayer.GetComponent<BaseCharacter>().skillCaster.OnSkillCasted += hp.GetComponent<PlayerResourceBars>().UpdateMana;
         }
 	}
 
