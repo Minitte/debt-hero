@@ -24,6 +24,11 @@ public class PlayerManager : MonoBehaviour {
     public GameObject localPlayer;
 	
 	/// <summary>
+	/// Player's inventory
+	/// </summary>
+	private CharacterInventory _inventory;
+
+	/// <summary>
 	/// Player's stats
 	/// </summary>
 	private CharacterStats _stats;
@@ -32,9 +37,7 @@ public class PlayerManager : MonoBehaviour {
 	/// Player's class
 	/// </summary>
 	private BaseClass _class;
-
-    
-
+	
 	/// <summary>
 	/// Awake is called when the script instance is being loaded.
 	/// </summary>
@@ -52,13 +55,34 @@ public class PlayerManager : MonoBehaviour {
 
 		_stats = GetComponent<CharacterStats>();
 
-		// _class = GetComponent<BaseClass>();
+		_inventory = GetComponent<CharacterInventory>();
+
+		_class = GetComponent<BaseClass>();
 
 		FloorGenerator.OnFloorGenerated += MovePlayerToEntrance;
+		FloorGenerator.OnFloorGenerated += RebindItemReferences;
 
 		FloorGenerator.OnBeginGeneration += RemovePlayerOnNewFloor;
 
 		DontDestroyOnLoad(this.gameObject);
+	}
+
+	/// <summary>
+	/// Resets the owner of items
+	/// </summary>
+	/// <param name="currentFloor">Unused, delegate requirements</param>
+	/// <param name="rand">Unused, delegate requirements</param>
+	private void RebindItemReferences(Floor currentFloor, System.Random rand) {
+		if (localPlayer == null) {
+			Debug.Log("Missing local player reference. Skipping rebinding");
+			return;
+		}
+		
+		ItemBase[] items = _inventory.GetAllItems();
+
+		foreach (ItemBase item in items) {
+			item.owner = localPlayer.GetComponent<BaseCharacter>();
+		}
 	}
 
 	/// <summary>
