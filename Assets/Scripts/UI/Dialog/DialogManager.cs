@@ -25,15 +25,26 @@ public class DialogManager : MonoBehaviour {
 		
 	}
 
+    /// <summary>
+    /// Read Lines of dialog.
+    /// </summary>
+    /// <param name="line"></param>
     public void ReadDialog(string line) {
         ToggleDialog(true);
         dialogText.text = line;
     }
 
+    /// <summary>
+    /// Disable the dialog box.
+    /// </summary>
     public void CloseDialog() {
         ToggleDialog(false);
     }
 
+    /// <summary>
+    /// Toggle Dialog
+    /// </summary>
+    /// <param name="flag"></param>
     public void ToggleDialog(bool flag) {
         dialogBackground.enabled = flag;
         dialogText.text = "";
