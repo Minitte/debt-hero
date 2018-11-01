@@ -27,6 +27,11 @@ public class InventoryPanel : MonoBehaviour {
 	private CharacterInventory _inventory;
 
 	/// <summary>
+	/// Currente selected item slot
+	/// </summary>
+	private ItemSlot _currentSlot;
+
+	/// <summary>
 	/// Start is called on the frame when a script is enabled just before
 	/// any of the Update methods is called the first time.
 	/// </summary>
@@ -36,6 +41,8 @@ public class InventoryPanel : MonoBehaviour {
 		_items = new ItemUI[itemRows.Length, itemRows[0].items.Length];
 
 		_inventory.OnItemAdded += AddItemToDisplay;
+
+		ItemGridItemUI.OnSelect += SelectSlot;
 	}
 
 	/// <summary>
@@ -72,6 +79,14 @@ public class InventoryPanel : MonoBehaviour {
 				}
 			}
 		}
+	}
+
+	/// <summary>
+	/// Selects the item slot for action
+	/// </summary>
+	/// <param name="slot"></param>
+	private void SelectSlot(ItemSlot slot) {
+		_currentSlot = slot;
 	}
 
 	/// <summary>
