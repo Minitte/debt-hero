@@ -12,52 +12,26 @@ public class SkillEditor : Editor {
     /// </summary>
     public override void OnInspectorGUI() {
         Skill skill = target as Skill;
-        serializedObject.Update();
 
-        // Basic properties of the skill
-        EditorGUILayout.LabelField("General", EditorStyles.boldLabel);
-        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
-        skill.skillName = EditorGUILayout.TextField("Skill Name:", skill.skillName);
-        skill.skillIcon = (Sprite)EditorGUILayout.ObjectField("Skill Icon:", skill.skillIcon, typeof(Sprite), allowSceneObjects: true);
-        skill.skillDescription = EditorGUILayout.TextField("Skill Description:", skill.skillDescription);
-        skill.skillType = (Skill.SkillType)EditorGUILayout.EnumPopup("Skill Type:", skill.skillType);
-        EditorGUILayout.Space();
+        SerializedProperty it = serializedObject.GetIterator();
+        if (it.NextVisible(true)) {
+            while (it.NextVisible(false)) { // Loop through all the skill variables
+                if (it.name == "skillBehaviours") { // Special handling for the skill behaviour array
+                    EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(it.name), true);
 
-        // Costs of the skill
-        EditorGUILayout.LabelField("Costs", EditorStyles.boldLabel);
-        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
-        skill.cooldown = EditorGUILayout.FloatField("Cooldown:", skill.cooldown);
-        skill.manaCost = EditorGUILayout.FloatField("Mana Cost:", skill.manaCost);
-        EditorGUILayout.Space();
-
-        // Damage properties of the skill
-        EditorGUILayout.LabelField("Damage", EditorStyles.boldLabel);
-        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
-        EditorGUILayout.ObjectField(serializedObject.FindProperty("damagePrefab"));
-        serializedObject.ApplyModifiedProperties();
-        skill.physicalMultiplier = EditorGUILayout.FloatField("Physical Multiplier:", skill.physicalMultiplier);
-        skill.magicMultiplier = EditorGUILayout.FloatField("Magic Multiplier:", skill.magicMultiplier);
-        skill.rangeMultiplier = EditorGUILayout.FloatField("Range Multiplier:", skill.magicMultiplier);
-        skill.areaMultiplier = EditorGUILayout.FloatField("Area Multiplier:", skill.magicMultiplier);
-        EditorGUILayout.Space();
-
-        // Healing properties of the skill
-        EditorGUILayout.LabelField("Healing", EditorStyles.boldLabel);
-        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
-        EditorGUILayout.ObjectField(serializedObject.FindProperty("healingPrefab"));
-        serializedObject.ApplyModifiedProperties();
-        skill.healing = EditorGUILayout.FloatField("Heal Amount:", skill.healing);
-        skill.healingRadius = EditorGUILayout.FloatField("Heal Radius:", skill.healingRadius);
-        EditorGUILayout.Space();
-
-        // Status effects of the skill
-        EditorGUILayout.LabelField("Status Effect", EditorStyles.boldLabel);
-        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
-        skill.hasStatusEffects = EditorGUILayout.Toggle("Has status effects:", skill.hasStatusEffects);
-
-        if (skill.hasStatusEffects) {
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("statusEffects"), true);
-            serializedObject.ApplyModifiedProperties(); // Apply changes
+                    // Create an editor for each skill behaviour
+                    for (int i = 0; i < skill.skillBehaviours.Length; i++) {
+                        if (skill.skillBehaviours[i] != null) {
+                            CreateEditor(skill.skillBehaviours[i].GetComponent<SkillBehaviour>()).OnInspectorGUI();
+                        }
+                    }
+                } else {
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty(it.name), true);
+                    
+                }
+                serializedObject.ApplyModifiedProperties(); // Save changes
+            }
         }
     }
 }

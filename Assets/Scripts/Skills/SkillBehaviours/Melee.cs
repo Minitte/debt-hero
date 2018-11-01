@@ -70,6 +70,7 @@ public class Melee : SkillBehaviour {
     public override void Activate(Transform caster, Skill skill) {
         _physAtkdamage = caster.GetComponent<BaseCharacter>().characterStats.physAtk * skill.physicalMultiplier;
         _magicAtkdamage = caster.GetComponent<BaseCharacter>().characterStats.magicAtk * skill.magicMultiplier;
+        caster.GetComponent<BaseCharacter>().animator.SetTrigger("Attack"); // Play attack animation
         ready = true;
     }
 }

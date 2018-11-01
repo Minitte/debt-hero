@@ -19,6 +19,7 @@ public class Skill : ScriptableObject {
     /// <summary>
     /// The name of the skill.
     /// </summary>
+    [Header("General")]
     public string skillName;
 
     /// <summary>
@@ -41,6 +42,7 @@ public class Skill : ScriptableObject {
     /// <summary>
     /// The base cooldown of the skill.
     /// </summary>
+    [Header("Costs")]
     public float cooldown;
 
     /// <summary>
@@ -53,8 +55,7 @@ public class Skill : ScriptableObject {
     /// <summary>
     /// Prefab of the damage hitbox.
     /// </summary>
-    public GameObject damagePrefab;
-
+    [Header("Damage")]
     /// <summary>
     /// Multiplier for physical damage.
     /// </summary>
@@ -78,55 +79,20 @@ public class Skill : ScriptableObject {
     public float areaMultiplier = 1f;
     #endregion
 
-    #region Healing Properties
     /// <summary>
-    /// Prefab of the healing hitbox.
+    /// Array of skill behaviours.
     /// </summary>
-    public GameObject healingPrefab;
-
-    /// <summary>
-    /// Amount of healing done by the skill.
-    /// </summary>
-    public float healing;
-
-    /// <summary>
-    /// Radius for AoE skills.
-    /// </summary>
-    public float healingRadius;
-    #endregion
-
-    #region Status Effects
-    /// <summary>
-    /// Flag for if this skill has status effects.
-    /// </summary>
-    public bool hasStatusEffects;
-
-    /// <summary>
-    /// Array of status effects.
-    /// </summary>
-    public GameObject[] statusEffects;
-    #endregion
+    public GameObject[] skillBehaviours;
 
     /// <summary>
     /// Casts the skill.
     /// </summary>
     /// <param name="caster">The transform of the caster</param>
     public void Cast(Transform caster) {
-        // Play melee animation if skill type is melee
-        if (skillType == SkillType.Melee) {
-            caster.GetComponent<BaseCharacter>().animator.SetTrigger("Attack");
-        }
-
-        // Activate damage behaviour
-        if (damagePrefab != null) {
-            SkillBehaviour damage = Instantiate(damagePrefab, caster).GetComponent<SkillBehaviour>();
-            damage.Activate(caster, this);
-        }
-
-        // Activate healing behaviour
-        if (healingPrefab != null) {
-            SkillBehaviour healing = Instantiate(healingPrefab, caster).GetComponent<SkillBehaviour>();
-            healing.Activate(caster, this);
+        // Activate all the skill behaviours
+        foreach (GameObject behaviour in skillBehaviours) {
+            SkillBehaviour sb = Instantiate(behaviour, caster).GetComponent<SkillBehaviour>();
+            sb.Activate(caster, this);
         }
     }
 }
