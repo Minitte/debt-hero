@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Drops : MonoBehaviour {
     public int gold;
-    public float EXP;
+    public float exp;
     public List<ItemDrop> DropList;
     public GameObject goldItem;
 	// Use this for initialization
@@ -23,6 +23,6 @@ public class Drops : MonoBehaviour {
         GameObject goldTemp = (GameObject) Instantiate(goldItem, transform.position, temp);
         goldTemp.GetComponent<Gold>().gold = gold;
 
-        PlayerManager.instance.localPlayer.GetComponent<BaseCharacter>().characterStats.exp += EXP;
+        PlayerManager.instance.localPlayer.GetComponent<BaseCharacter>().characterStats.GainExp(exp);
     }
 }

@@ -116,6 +116,8 @@ public class PlayerManager : MonoBehaviour {
             hp.GetComponent<PlayerResourceBars>().CharacterStats = GetComponent<CharacterStats>();
             GetComponent<CharacterStats>().OnHealthChanged += hp.GetComponent<PlayerResourceBars>().UpdateHealth;
             localPlayer.GetComponent<BaseCharacter>().skillCaster.OnSkillCasted += hp.GetComponent<PlayerResourceBars>().UpdateMana;
+            GetComponent<CharacterStats>().OnExpChanged += hp.GetComponent<PlayerResourceBars>().UpdateExp;
+
         }
 	}
 

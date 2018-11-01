@@ -17,6 +17,11 @@ public class PlayerResourceBars : MonoBehaviour {
     public Text mpValue;
 
     /// <summary>
+    /// EXP Text portion of the Image.
+    /// </summary>
+    public Text expValue;
+
+    /// <summary>
     /// Reads info from a CharacterStats object.
     /// </summary>
     private CharacterStats _characterStats;
@@ -30,6 +35,7 @@ public class PlayerResourceBars : MonoBehaviour {
         }
     }
 
+
     // Use this for initialization
     private void Start()
     {
@@ -37,10 +43,12 @@ public class PlayerResourceBars : MonoBehaviour {
         //BarColor(107, 114, 255, 255, mpBar);
         hpValue = transform.Find("HP").Find("HPText").GetComponent<Text>();
         mpValue = transform.Find("MP").Find("MPText").GetComponent<Text>();
+        expValue = transform.Find("EXP").Find("ExpText").GetComponent<Text>();
 
         // Initial update for the bars
         UpdateHealth();
         UpdateMana();
+        UpdateExp();
     }
 
     // Update is called once per frame
@@ -59,6 +67,7 @@ public class PlayerResourceBars : MonoBehaviour {
     {
         hpValue.text = "HP:" + characterStats.currentHp + "/" + characterStats.maxHp;
         mpValue.text = "MP:" + characterStats.currentMp + "/" + characterStats.maxMp;
+        expValue.text = "EXP:" + characterStats.exp + "/" + characterStats.maxExp;
     }
 
     /// <summary>
@@ -94,5 +103,16 @@ public class PlayerResourceBars : MonoBehaviour {
             / _characterStats.maxMp * 100f;
 
         transform.Find("MP").GetComponent<Slider>().value = percentage; // Update mana bar
+    }
+
+    /// <summary>
+    /// Updates the player's EXP bar.
+    /// </summary>
+    public void UpdateExp() {
+        // Calculate exp percentage
+        float percentage = _characterStats.exp
+            / _characterStats.maxExp;
+
+        transform.Find("EXP").GetComponent<Slider>().value = percentage; // Update Exp bar
     }
 }
