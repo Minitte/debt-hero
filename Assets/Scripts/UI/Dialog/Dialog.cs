@@ -47,12 +47,18 @@ public class Dialog : MonoBehaviour {
 
     //Close dialog when player leaves area.
     public void OnTriggerExit(Collider other) {
-        dialogManager.CloseDialog();
-        inRange = false;
+       if(other.tag == "Player") {
+            dialogManager.CloseDialog();
+            inRange = false;
+        }
+       
     }
 
     //Setting the range is true.
     public void OnTriggerEnter(Collider other) {
-        inRange = true;
+        if(other.tag == "Player") {
+            inRange = true;
+        }
+       
     }
 }
