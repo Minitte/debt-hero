@@ -50,28 +50,4 @@ public class ItemSlot {
 
         return row == other.row && col == other.col;
     }
-
-    #region operators
-
-    /// <summary>
-    /// checks if the row and col of both lhs and rhs are equal
-    /// </summary>
-    /// <param name="lhs"></param>
-    /// <param name="rhs"></param>
-    /// <returns></returns>
-    public static bool operator==(ItemSlot lhs, ItemSlot rhs) {
-        return lhs.row == rhs.row && lhs.col == rhs.col;
-    }
-
-    /// <summary>
-    /// checks if the row and col of both lhs and rhs are not equal
-    /// </summary>
-    /// <param name="lhs"></param>
-    /// <param name="rhs"></param>
-    /// <returns></returns>
-    public static bool operator!=(ItemSlot lhs, ItemSlot rhs) {
-        return lhs.row != rhs.row || lhs.col != rhs.col;
-    }
-
-    #endregion
 }

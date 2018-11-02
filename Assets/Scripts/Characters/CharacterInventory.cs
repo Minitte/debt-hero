@@ -55,6 +55,8 @@ public class CharacterInventory : MonoBehaviour {
 				if (item != null) {
 					ItemSlot slot = new ItemSlot(row, col);
 					_itemSlotsMap.Add(item, slot);
+
+					item.OnDisposal += DisposeItemEventListener;
 				}
 			}
 		}
@@ -129,6 +131,8 @@ public class CharacterInventory : MonoBehaviour {
 		// remove from map
 		_itemSlotsMap.Remove(item);
 
+		item.OnDisposal -= DisposeItemEventListener;
+
 		if (OnItemRemoved != null) {
 			OnItemRemoved(new ItemSlot(row, col));
 		}
@@ -157,6 +161,8 @@ public class CharacterInventory : MonoBehaviour {
 
 		// remove from map
 		_itemSlotsMap.Remove(itemToRemove);
+
+		itemToRemove.OnDisposal -= DisposeItemEventListener;
 
 		if (OnItemRemoved != null) {
 			OnItemRemoved(slot);
@@ -227,6 +233,10 @@ public class CharacterInventory : MonoBehaviour {
 			}
 		}
 
+		itemToAdd.OnDisposal += DisposeItemEventListener;
+
+		itemToAdd.transform.SetParent(this.transform, false);
+
 		itemToAdd.owner = chara;
 
 		itemRows[slot.row].items[slot.col] = itemToAdd;
@@ -265,6 +275,14 @@ public class CharacterInventory : MonoBehaviour {
 		if (OnItemsSwapped != null) {
 			OnItemsSwapped(slotA, slotB);
 		}
+	}
+
+	/// <summary>
+	/// Item disposal event listener
+	/// </summary>
+	/// <param name="item"></param>
+	private void DisposeItemEventListener(ItemBase item) {
+		RemoveItem(item);
 	}
 
 	/// <summary>

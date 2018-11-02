@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class ItemGridItemUI : MonoBehaviour {
+public class ItemGridItemUI : MonoBehaviour, IPointerClickHandler {
 
 	/// <summary>
 	/// Event template
@@ -11,10 +12,13 @@ public class ItemGridItemUI : MonoBehaviour {
 	public delegate void ItemGridEvent(ItemSlot slot);
 
 	/// <summary>
-	/// Select event
+	/// left click event
 	/// </summary>
 	public static event ItemGridEvent OnLeftClick;
 
+	/// <summary>
+	/// Right click event
+	/// </summary>
 	public static event ItemGridEvent OnRightClick;
 
 	/// <summary>
@@ -28,43 +32,18 @@ public class ItemGridItemUI : MonoBehaviour {
 	private bool _hoverOver;
 
 	/// <summary>
-	/// Update is called every frame, if the MonoBehaviour is enabled.
+	/// Click event
 	/// </summary>
-	void Update() {
-		if (_hoverOver) {
-			if (Input.GetMouseButtonDown(0)) {
-				if (OnLeftClick != null) {
-					OnLeftClick(slot);
-				}
-			} else if(Input.GetMouseButtonDown(1)) {
-				if (OnRightClick != null) {
-					OnRightClick(slot);
-				}
+	/// <param name="eventData"></param>
+	public void OnPointerClick(PointerEventData eventData) {
+		if (eventData.button == PointerEventData.InputButton.Left) {
+			if (OnLeftClick != null) {
+				OnLeftClick(slot);
 			}
-		}
-	}
-
-	/// <summary>
-	/// Called every frame while the mouse is over the GUIElement or Collider.
-	/// </summary>
-	void OnMouseOver() {
-		_hoverOver = true;
-	}
-
-	/// <summary>
-	/// Called when the mouse is not any longer over the GUIElement or Collider.
-	/// </summary>
-	void OnMouseExit() {
-		_hoverOver = false;
-	}
-
-	/// <summary>
-	/// OnMouseDown is called when the user has pressed the mouse button while
-	/// over the GUIElement or Collider.
-	/// </summary>
-	void OnMouseDown() {
-		if (OnLeftClick != null) {
-			OnLeftClick(slot);
+		} else if (eventData.button == PointerEventData.InputButton.Right) {
+			if (OnRightClick != null) {
+				OnRightClick(slot);
+			}
 		}
 	}
 }

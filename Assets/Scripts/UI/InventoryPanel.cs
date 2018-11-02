@@ -59,35 +59,25 @@ public class InventoryPanel : MonoBehaviour {
 	/// <summary>
 	/// This function is called when the object becomes enabled and active.
 	/// </summary>
-	void OnEnable() {
-		UpdateGoldDisplay();
-		UpdateAllItemSlots();
-	}
-
-	/// <summary>
-	/// Updatse the inventory panel
-	/// </summary>
-	public void UpdateGoldDisplay() {	
-		if (_inventory != null) {	
-			goldText.text = _inventory.gold + "g";
-		}
-	}
-
-	public void UpdateAllItemSlots() {
+	void OnEnable() {	
 		if (_inventory == null) {
 			return;
 		}
 
+		goldText.text = _inventory.gold + "g";
+		UpdateAllItemSlots();
+	}
+
+	/// <summary>
+	/// Updates all item slots
+	/// </summary>
+	public void UpdateAllItemSlots() {
 		for (int row = 0; row < itemRows.Length; row++) {
 			for (int col = 0; col < itemRows[0].items.Length; col++) {
 
-				ItemSlot slot = new ItemSlot(col, row);
+				ItemSlot slot = new ItemSlot(row, col);
 
-				ItemBase item = _inventory.GetItem(slot);
-				
-				if (item != null) {
-					UpdateItemSlot(slot);
-				}
+				UpdateItemSlot(slot);
 			}
 		}
 	}
@@ -99,7 +89,9 @@ public class InventoryPanel : MonoBehaviour {
 	private void UseSlot(ItemSlot slot) {
 		ItemBase item = _inventory.GetItem(slot);
 
-		item.Use();
+		if (item != null) {
+			item.Use();
+		}
 
 		UpdateItemSlot(slot);
 	}
@@ -117,20 +109,30 @@ public class InventoryPanel : MonoBehaviour {
 	/// </summary>
 	/// <param name="slot"></param>
 	private void UpdateItemSlot(ItemSlot slot) {
-		int id = _inventory.GetItem(slot).properties.itemID;
+		ItemBase item = _inventory.GetItem(slot);
 
 		ItemUI itemUI = _items[slot.row, slot.col];
 
-		// destory current ui item if any
-		if (itemUI != null) {
+		// no item in slot but ui exist... remove ui
+		if (item == null && itemUI != null) {
 			Destroy(itemUI.gameObject);
 		}
 
-		itemUI = GameDatabase.instance.itemDatabase.GetNewItemUI(id);
+		// item exist in slot but no ui... create ui
+		else if (item != null && itemUI == null) {
+			itemUI = GameDatabase.instance.itemDatabase.GetNewItemUI(item.properties.itemID);
 
-		itemUI.transform.SetParent(GetGridSlot(slot).transform, false);
+			itemUI.transform.SetParent(GetGridSlot(slot).transform, false);
 
-		_items[slot.row, slot.col] = itemUI;
+			_items[slot.row, slot.col] = itemUI;
+
+			itemUI.stackText.text = item.properties.quantity + "";
+		}
+
+		// item and ui exist... update ui
+		else if (item != null && itemUI != null) {
+			itemUI.stackText.text = item.properties.quantity + "";
+		}
 	}
 
 	private ItemGridItemUI GetGridSlot(ItemSlot slot) {

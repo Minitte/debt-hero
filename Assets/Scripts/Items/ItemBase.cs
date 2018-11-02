@@ -43,7 +43,7 @@ public abstract class ItemBase : MonoBehaviour {
     /// </summary>
     public void Use() {
         // check qty
-        if (properties.quantity <= 0 || properties.usable || owner == null) {
+        if (properties.quantity <= 0 || !properties.usable || owner == null) {
             return;
         }
 
@@ -55,18 +55,11 @@ public abstract class ItemBase : MonoBehaviour {
 
         // destory item if qualtity is <= 0
         if (properties.destoryOnNone && properties.quantity <= 0) {
+            if (OnDisposal != null) {
+                OnDisposal(this);
+            }
+            
             Destroy(this.gameObject);
-        }
-    }
-
-    /// <summary>
-    /// This function is called when the MonoBehaviour will be destroyed.
-    /// </summary>
-    void OnDestroy() {
-
-        // trigger event for listener
-        if (OnDisposal != null) {
-            OnDisposal(this);
         }
     }
 
