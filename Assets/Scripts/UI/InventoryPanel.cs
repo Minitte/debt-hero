@@ -40,9 +40,20 @@ public class InventoryPanel : MonoBehaviour {
 
 		_items = new ItemUI[itemRows.Length, itemRows[0].items.Length];
 
-		_inventory.OnItemAdded += AddItemToDisplay;
+		_inventory.OnItemAdded += UpdateItemSlot;
 
-		ItemGridItemUI.OnSelect += SelectSlot;
+		ItemGridItemUI.OnLeftClick += SelectSlot;
+
+		ItemGridItemUI.OnRightClick += UseSlot;
+
+		// assign slot references
+
+		for (int row = 0; row < itemRows.Length; row++) {
+			for(int col = 0; col < itemRows[0].items.Length; col++) {
+				ItemSlot slot = new ItemSlot(row, col);
+				GetGridSlot(slot).slot = slot;
+			}
+		}
 	}
 
 	/// <summary>
@@ -50,7 +61,7 @@ public class InventoryPanel : MonoBehaviour {
 	/// </summary>
 	void OnEnable() {
 		UpdateGoldDisplay();
-		UpdateInventorySlots();
+		UpdateAllItemSlots();
 	}
 
 	/// <summary>
@@ -62,7 +73,7 @@ public class InventoryPanel : MonoBehaviour {
 		}
 	}
 
-	public void UpdateInventorySlots() {
+	public void UpdateAllItemSlots() {
 		if (_inventory == null) {
 			return;
 		}
@@ -75,10 +86,22 @@ public class InventoryPanel : MonoBehaviour {
 				ItemBase item = _inventory.GetItem(slot);
 				
 				if (item != null) {
-					AddItemToDisplay(slot);
+					UpdateItemSlot(slot);
 				}
 			}
 		}
+	}
+
+	/// <summary>
+	/// Uses the item in the slot
+	/// </summary>
+	/// <param name="slot"></param>
+	private void UseSlot(ItemSlot slot) {
+		ItemBase item = _inventory.GetItem(slot);
+
+		item.Use();
+
+		UpdateItemSlot(slot);
 	}
 
 	/// <summary>
@@ -93,7 +116,7 @@ public class InventoryPanel : MonoBehaviour {
 	/// Adds an item from inventory in the same slot to the display grid
 	/// </summary>
 	/// <param name="slot"></param>
-	private void AddItemToDisplay(ItemSlot slot) {
+	private void UpdateItemSlot(ItemSlot slot) {
 		int id = _inventory.GetItem(slot).properties.itemID;
 
 		ItemUI itemUI = _items[slot.row, slot.col];
@@ -110,7 +133,7 @@ public class InventoryPanel : MonoBehaviour {
 		_items[slot.row, slot.col] = itemUI;
 	}
 
-	private GameObject GetGridSlot(ItemSlot slot) {
+	private ItemGridItemUI GetGridSlot(ItemSlot slot) {
 		return itemRows[slot.row].items[slot.col];
 	}
 
@@ -121,5 +144,5 @@ public class InventoryPanel : MonoBehaviour {
 /// </summary>
 [Serializable]
 public class ItemRowUI {
-	public GameObject[] items;
+	public ItemGridItemUI[] items;
 }

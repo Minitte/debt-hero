@@ -13,7 +13,9 @@ public class ItemGridItemUI : MonoBehaviour {
 	/// <summary>
 	/// Select event
 	/// </summary>
-	public static event ItemGridEvent OnSelect;
+	public static event ItemGridEvent OnLeftClick;
+
+	public static event ItemGridEvent OnRightClick;
 
 	/// <summary>
 	/// row col slot of this
@@ -30,8 +32,14 @@ public class ItemGridItemUI : MonoBehaviour {
 	/// </summary>
 	void Update() {
 		if (_hoverOver) {
-			if (OnSelect != null) {
-				OnSelect(slot);
+			if (Input.GetMouseButtonDown(0)) {
+				if (OnLeftClick != null) {
+					OnLeftClick(slot);
+				}
+			} else if(Input.GetMouseButtonDown(1)) {
+				if (OnRightClick != null) {
+					OnRightClick(slot);
+				}
 			}
 		}
 	}
@@ -47,7 +55,7 @@ public class ItemGridItemUI : MonoBehaviour {
 	/// Called when the mouse is not any longer over the GUIElement or Collider.
 	/// </summary>
 	void OnMouseExit() {
-		_hoverOver = false
+		_hoverOver = false;
 	}
 
 	/// <summary>
@@ -55,8 +63,8 @@ public class ItemGridItemUI : MonoBehaviour {
 	/// over the GUIElement or Collider.
 	/// </summary>
 	void OnMouseDown() {
-		if (OnSelect != null) {
-			OnSelect(slot);
+		if (OnLeftClick != null) {
+			OnLeftClick(slot);
 		}
 	}
 }
