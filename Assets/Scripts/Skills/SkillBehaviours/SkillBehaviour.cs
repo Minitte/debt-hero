@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// This is an abstract class for all skill behaviours.
+/// This is an abstract class for skill behaviours.
 /// </summary>
-public abstract class SkillBehaviour : MonoBehaviour {
+public abstract class SkillBehaviour : ScriptableObject {
 
     /// <summary>
     /// Activates the skill behaviour.

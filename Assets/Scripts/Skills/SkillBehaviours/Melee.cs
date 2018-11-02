@@ -3,7 +3,7 @@
 /// <summary>
 /// This is a skill behaviour that deals damage in an arc infront of the player.
 /// </summary>
-public class Melee : SkillBehaviour {
+public class Melee : MonoBehaviour {
 
     /// <summary>
     /// The physical attack damage of the user.
@@ -67,7 +67,7 @@ public class Melee : SkillBehaviour {
     /// <summary>
     /// Starts the melee attack.
     /// </summary>
-    public override void Activate(Transform caster, Skill skill) {
+    public void Activate(Transform caster, Skill skill) {
         _physAtkdamage = caster.GetComponent<BaseCharacter>().characterStats.physAtk * skill.physicalMultiplier;
         _magicAtkdamage = caster.GetComponent<BaseCharacter>().characterStats.magicAtk * skill.magicMultiplier;
         caster.GetComponent<BaseCharacter>().animator.SetTrigger("Attack"); // Play attack animation

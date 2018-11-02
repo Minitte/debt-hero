@@ -52,10 +52,12 @@ public class Skill : ScriptableObject {
     #endregion
 
     #region Damage Properties
+    [Header("Damage")]
     /// <summary>
     /// Prefab of the damage hitbox.
     /// </summary>
-    [Header("Damage")]
+    public GameObject damagePrefab;
+
     /// <summary>
     /// Multiplier for physical damage.
     /// </summary>
@@ -82,17 +84,25 @@ public class Skill : ScriptableObject {
     /// <summary>
     /// Array of skill behaviours.
     /// </summary>
-    public GameObject[] skillBehaviours;
+    public List<SkillBehaviour> skillBehaviours;
 
     /// <summary>
     /// Casts the skill.
     /// </summary>
     /// <param name="caster">The transform of the caster</param>
     public void Cast(Transform caster) {
+        // Activate the damage prefab if it exists
+        if (damagePrefab != null) {
+            GameObject damage = Instantiate(damagePrefab, caster);
+            switch (skillType) {
+                case SkillType.Melee:
+                    damage.GetComponent<Melee>().Activate(caster, this);
+                    break;
+            }
+        }
         // Activate all the skill behaviours
-        foreach (GameObject behaviour in skillBehaviours) {
-            SkillBehaviour sb = Instantiate(behaviour, caster).GetComponent<SkillBehaviour>();
-            sb.Activate(caster, this);
+        foreach (SkillBehaviour behaviour in skillBehaviours) {
+            behaviour.Activate(caster, this);
         }
     }
 }
