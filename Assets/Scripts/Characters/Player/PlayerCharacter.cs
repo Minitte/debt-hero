@@ -25,7 +25,6 @@ public class PlayerCharacter : BaseCharacter {
     // Use this for initialization
     private void Start() {
         _keybinds = new Keybinds();
-        //_ableToMove = true;
         characterStats = PlayerManager.instance.GetComponent<CharacterStats>();
         characterStats.OnDeath += Die;
     }
