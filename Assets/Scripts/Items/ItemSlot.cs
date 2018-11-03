@@ -32,8 +32,7 @@ public class ItemSlot {
     }
 
     // override object.Equals
-    public override bool Equals(object obj)
-    {
+    public override bool Equals(object obj) {
         //
         // See the full list of guidelines at
         //   http://go.microsoft.com/fwlink/?LinkID=85237

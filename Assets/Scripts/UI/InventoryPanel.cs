@@ -32,6 +32,11 @@ public class InventoryPanel : MonoBehaviour {
 	private ItemSlot _currentSlot;
 
 	/// <summary>
+	/// mouse item icon
+	/// </summary>
+	private GameObject _mouseItemIcon;
+
+	/// <summary>
 	/// Start is called on the frame when a script is enabled just before
 	/// any of the Update methods is called the first time.
 	/// </summary>
@@ -53,6 +58,15 @@ public class InventoryPanel : MonoBehaviour {
 				ItemSlot slot = new ItemSlot(row, col);
 				GetGridSlot(slot).slot = slot;
 			}
+		}
+	}
+	
+	/// <summary>
+	/// Update is called every frame, if the MonoBehaviour is enabled.
+	/// </summary>
+	void Update() {
+		if (_mouseItemIcon != null) {
+			_mouseItemIcon.transform.position = Input.mousePosition;
 		}
 	}
 
@@ -104,7 +118,26 @@ public class InventoryPanel : MonoBehaviour {
 
 		// begin item movement
 		if (_currentSlot == null) {
-			_currentSlot = slot;
+			ItemBase item = _inventory.GetItem(slot);
+
+			if (item != null) {
+				_currentSlot = slot;
+
+				ItemUI iUI = GameDatabase.instance.itemDatabase.GetNewItemUI(item.properties.itemID);
+
+				_mouseItemIcon = iUI.icon.gameObject;
+
+				_mouseItemIcon.transform.SetParent(GameObject.Find("Canvas").transform, false);
+
+				RectTransform rt = _mouseItemIcon.GetComponent<RectTransform>();
+
+				rt.sizeDelta = new Vector2(100, 100);
+
+				rt.anchorMin = new Vector2(0.5f, 0.5f);
+				rt.anchorMax = new Vector2(0.5f, 0.5f);
+
+				Destroy(iUI.gameObject);
+			}
 		}
 
 		// end item movement
@@ -115,6 +148,10 @@ public class InventoryPanel : MonoBehaviour {
 			UpdateItemSlot(slot);
 
 			_currentSlot = null;
+
+			Destroy(_mouseItemIcon);
+
+			_mouseItemIcon = null;
 		}
 	}
 

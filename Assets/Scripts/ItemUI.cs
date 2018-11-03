@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+using UnityEngine.UI;
 using TMPro;
 
 public class ItemUI : MonoBehaviour {
@@ -10,4 +9,9 @@ public class ItemUI : MonoBehaviour {
 	/// Text representing the number of qty
 	/// </summary>
 	public TextMeshProUGUI stackText;
+
+	/// <summary>
+	/// Item image icon
+	/// </summary>
+	public Image icon;
 }
