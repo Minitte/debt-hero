@@ -30,6 +30,11 @@ public class InventoryPanel : MonoBehaviour {
 	/// </summary>
 	public TextMeshProUGUI itemQtyText;
 
+	/// <summary>
+	/// Area for big item icon
+	/// </summary>
+	public Transform itemIconArea;
+
 	[Header("Items")]
 
 	/// <summary>
@@ -56,6 +61,11 @@ public class InventoryPanel : MonoBehaviour {
 	/// mouse item icon
 	/// </summary>
 	private GameObject _mouseItemIcon;
+
+	/// <summary>
+	/// Item details icon
+	/// </summary>
+	private GameObject _itemDetailIcon;
 
 	/// <summary>
 	/// Start is called on the frame when a script is enabled just before
@@ -161,10 +171,23 @@ public class InventoryPanel : MonoBehaviour {
 			itemNameText.text = item.properties.name;
 			itemDescText.text = item.properties.description;
 			itemQtyText.text = "x " + item.properties.quantity;
+
+			ItemUI iUI = GameDatabase.instance.itemDatabase.GetNewItemUI(item.properties.itemID);
+
+			_itemDetailIcon = iUI.icon.gameObject;
+
+			_itemDetailIcon.transform.SetParent(itemIconArea, false);
+
+			Destroy(iUI.gameObject);
 		} else {
 			itemNameText.text = "";
 			itemDescText.text = "";
 			itemQtyText.text = "";
+
+			if (_itemDetailIcon != null) {
+				Destroy(_itemDetailIcon);
+				_itemDetailIcon = null;
+			}
 		}
 	}
 
