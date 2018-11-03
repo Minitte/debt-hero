@@ -33,18 +33,24 @@ public class SkillEditor : Editor {
     public override void OnInspectorGUI() {
         Skill skill = target as Skill;
 
+        // Iterate through all of the skill variables
         SerializedProperty it = serializedObject.GetIterator();
         if (it.NextVisible(true)) {
             while (it.NextVisible(false)) { // Loop through all the skill variables
-                // Special handling for the skill behaviour array
-                if (it.name == "skillBehaviours") { 
+                if (it.name == "skillBehaviours") { // Special handling for the skill behaviour array
                     EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty(it.name), true);
 
                     // Create an editor for each skill behaviour
                     for (int i = 0; i < skill.skillBehaviours.Count; i++) {
                         if (skill.skillBehaviours[i] != null) {
-                            //CreateEditor(skill.skillBehaviours[i]).OnInspectorGUI();
+                            CreateEditor(skill.skillBehaviours[i]).OnInspectorGUI();
+
+                            // Button for removing this behaviour
+                            if (GUILayout.Button("Remove behaviour", EditorStyles.miniButton)) {
+                                DestroyImmediate(skill.skillBehaviours[i], true);
+                                skill.skillBehaviours.RemoveAt(i);
+                            }
+                            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
                         }
                     }
                 } else {
@@ -55,11 +61,10 @@ public class SkillEditor : Editor {
             }
         }
         // Section for adding new behaviours
-        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
         selectedOption = EditorGUILayout.Popup("Behaviour Type: ", selectedOption, options);
 
         // Check if the add behaviour button was clicked
-        if (GUILayout.Button("Add Behaviour")) { 
+        if (GUILayout.Button("Add new behaviour")) { 
             // Add it to the list of behaviours
             SkillBehaviour behaviour = CreateInstance(options[selectedOption]) as SkillBehaviour;
             AssetDatabase.AddObjectToAsset(behaviour, skill);

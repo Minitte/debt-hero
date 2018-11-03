@@ -82,9 +82,16 @@ public class Skill : ScriptableObject {
     #endregion
 
     /// <summary>
-    /// Array of skill behaviours.
+    /// List of skill behaviours.
     /// </summary>
     public List<SkillBehaviour> skillBehaviours;
+
+    /// <summary>
+    /// Used for initialization.
+    /// </summary>
+    private void Awake() {
+        skillBehaviours = new List<SkillBehaviour>();
+    }
 
     /// <summary>
     /// Casts the skill.
