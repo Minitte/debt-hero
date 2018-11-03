@@ -9,5 +9,5 @@ public abstract class SkillBehaviour : ScriptableObject {
     /// <summary>
     /// Activates the skill behaviour.
     /// </summary>
-    public abstract IEnumerator Activate(BaseCharacter caster, Skill skill);
+    public abstract void Activate(BaseCharacter caster);
 }

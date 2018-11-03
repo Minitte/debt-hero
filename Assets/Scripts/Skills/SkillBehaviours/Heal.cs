@@ -16,12 +16,11 @@ public class Heal : SkillBehaviour {
     /// </summary>
     public float healingRadius;
 
-    public override IEnumerator Activate(BaseCharacter caster, Skill skill) {
+    public override void Activate(BaseCharacter caster) {
         // Apply a heal within the radius of the spell
         Collider[] withinRadiusColliders = Physics.OverlapSphere(caster.transform.position, healingRadius, (1 << caster.gameObject.layer));
         foreach (Collider c in withinRadiusColliders) {
             c.GetComponent<BaseCharacter>().characterStats.TakeHealing(healing);
         }
-        return null;
     }
 }

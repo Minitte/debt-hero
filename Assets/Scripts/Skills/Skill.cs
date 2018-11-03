@@ -109,7 +109,22 @@ public class Skill : ScriptableObject {
         }
         // Activate all the skill behaviours
         foreach (SkillBehaviour behaviour in skillBehaviours) {
-            SkillManager.instance.StartCoroutine(behaviour.Activate(caster, this));
+            behaviour.Activate(caster);
+        }
+    }
+
+    /// <summary>
+    /// Deals damage to a character.
+    /// </summary>
+    /// <param name="victim">The character to deal damage to</param>
+    /// <param name="physDamage">The amount of physical damage to deal</param>
+    /// <param name="magicDamage">The amount of magical damage to deal</param>
+    public void DealDamage(BaseCharacter victim, float physDamage, float magicDamage) {
+        victim.characterStats.TakeDamage(physDamage, magicDamage);
+
+        // Activate all the debuff behaviours
+        foreach (DebuffBehaviour behaviour in skillBehaviours) {
+            behaviour.OnDamageActivate(victim);
         }
     }
 }

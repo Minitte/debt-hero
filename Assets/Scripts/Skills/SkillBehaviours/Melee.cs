@@ -26,6 +26,11 @@ public class Melee : MonoBehaviour {
     private Collider _collider;
 
     /// <summary>
+    /// Reference to the skill that called this attack.
+    /// </summary>
+    private Skill _skill;
+
+    /// <summary>
     /// Flag for if this behaviour is ready to begin.
     /// </summary>
     private bool ready;
@@ -59,8 +64,8 @@ public class Melee : MonoBehaviour {
         // Only deal damage to Player or AI tags, and no friendly fire
         if ((other.CompareTag("AI") || other.CompareTag("Player")) && !other.CompareTag(transform.parent.tag)) {
 
-            // Apply damage to the enemy
-            other.GetComponent<BaseCharacter>().characterStats.TakeDamage(_physAtkdamage, _magicAtkdamage);
+            // Apply damage to the other character
+            _skill.DealDamage(other.GetComponent<BaseCharacter>(), _physAtkdamage, _magicAtkdamage);
         }
     }
 
@@ -68,8 +73,14 @@ public class Melee : MonoBehaviour {
     /// Starts the melee attack.
     /// </summary>
     public void Activate(Transform caster, Skill skill) {
+        // Setup melee properties
         _physAtkdamage = caster.GetComponent<BaseCharacter>().characterStats.physAtk * skill.physicalMultiplier;
         _magicAtkdamage = caster.GetComponent<BaseCharacter>().characterStats.magicAtk * skill.magicMultiplier;
+        _skill = skill;
+        transform.localScale *= skill.rangeMultiplier;
+        transform.localPosition = transform.localScale * 1.5f;
+        
+        // Start the melee attack
         caster.GetComponent<BaseCharacter>().animator.SetTrigger("Attack"); // Play attack animation
         ready = true;
     }

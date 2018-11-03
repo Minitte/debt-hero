@@ -13,12 +13,15 @@ public class MoveCaster : SkillBehaviour {
     /// </summary>
     public float distance;
 
+    public override void Activate(BaseCharacter caster) {
+        SkillManager.instance.StartCoroutine(Move(caster));
+    }
+
     /// <summary>
     /// Moves the caster.
     /// </summary>
     /// <param name="caster">The character to move</param>
-    /// <param name="skill">Reference to the skill used</param>
-    public override IEnumerator Activate(BaseCharacter caster, Skill skill) {
+    private IEnumerator Move(BaseCharacter caster) {
         caster.animator.SetBool("Dash", true);
         // Calculate direction
         Vector3 direction = GetDirection(caster);
@@ -26,7 +29,7 @@ public class MoveCaster : SkillBehaviour {
         // Make sure that the character is looking in the correct direction
         caster.transform.LookAt(caster.transform.position + direction);
         caster.agent.ResetPath();
-        
+
         // For keeping track of duration
         float startTime = Time.time;
         float endTime = startTime + seconds;
@@ -34,7 +37,7 @@ public class MoveCaster : SkillBehaviour {
 
         // Move the caster over the duration
         while (startTime < endTime) {
-            caster.agent.nextPosition = caster.transform.position + (direction * step  * Time.deltaTime);
+            caster.agent.nextPosition = caster.transform.position + (direction * step * Time.deltaTime);
             startTime += Time.deltaTime;
             yield return null;
         }
