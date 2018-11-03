@@ -130,6 +130,8 @@ public class InventoryPanel : MonoBehaviour {
 		Destroy(_mouseItemIcon);
 
 		_mouseItemIcon = null;
+
+		ResetItemDetails(null);
 	}
 
 	/// <summary>
