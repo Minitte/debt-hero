@@ -41,6 +41,8 @@ public class PlayerResourceBars : MonoBehaviour {
         // Initial update for the bars
         UpdateHealth();
         UpdateMana();
+
+        InGameMenuController.OnMenuShown += HideBars;
     }
 
     // Update is called once per frame
@@ -94,5 +96,13 @@ public class PlayerResourceBars : MonoBehaviour {
             / _characterStats.maxMp * 100f;
 
         transform.Find("MP").GetComponent<Slider>().value = percentage; // Update mana bar
+    }
+
+    /// <summary>
+    /// Hides or shows the bars
+    /// </summary>
+    /// <param name="hide"></param>
+    private void HideBars(bool hide) {
+        this.gameObject.SetActive(!hide);
     }
 }
