@@ -101,7 +101,21 @@ public class InventoryPanel : MonoBehaviour {
 	/// </summary>
 	/// <param name="slot"></param>
 	private void SelectSlot(ItemSlot slot) {
-		_currentSlot = slot;
+
+		// begin item movement
+		if (_currentSlot == null) {
+			_currentSlot = slot;
+		}
+
+		// end item movement
+		else if (_currentSlot != null) {
+			_inventory.SwapItems(_currentSlot, slot);
+
+			UpdateItemSlot(_currentSlot);
+			UpdateItemSlot(slot);
+
+			_currentSlot = null;
+		}
 	}
 
 	/// <summary>
