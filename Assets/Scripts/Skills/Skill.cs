@@ -116,15 +116,18 @@ public class Skill : ScriptableObject {
     /// <summary>
     /// Deals damage to a character.
     /// </summary>
+    /// <param name="dealer">The character dealing the damage</param>
     /// <param name="victim">The character to deal damage to</param>
     /// <param name="physDamage">The amount of physical damage to deal</param>
     /// <param name="magicDamage">The amount of magical damage to deal</param>
-    public void DealDamage(BaseCharacter victim, float physDamage, float magicDamage) {
+    public void DealDamage(BaseCharacter dealer, BaseCharacter victim, float physDamage, float magicDamage) {
         victim.characterStats.TakeDamage(physDamage, magicDamage);
 
-        // Activate all the debuff behaviours
-        foreach (DebuffBehaviour behaviour in skillBehaviours) {
-            behaviour.OnDamageActivate(victim);
+        if (victim.characterStats.isAlive) {
+            // Activate all the debuff behaviours
+            foreach (DebuffBehaviour behaviour in skillBehaviours) {
+                behaviour.OnDamageActivate(dealer, victim);
+            }
         }
     }
 }

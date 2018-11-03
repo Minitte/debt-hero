@@ -3,11 +3,6 @@
 public abstract class DebuffBehaviour : SkillBehaviour {
 
     /// <summary>
-    /// The duration of the damage over time effect.
-    /// </summary>
-    public int duration;
-
-    /// <summary>
     /// Represents one second of waiting time.
     /// </summary>
     protected WaitForSeconds _oneSecond;
@@ -24,5 +19,5 @@ public abstract class DebuffBehaviour : SkillBehaviour {
     /// ie. DoTs, status effects
     /// </summary>
     /// <param name="victim">The character that took damage</param>
-    public abstract void OnDamageActivate(BaseCharacter victim);
+    public abstract void OnDamageActivate(BaseCharacter dealer, BaseCharacter victim);
 }

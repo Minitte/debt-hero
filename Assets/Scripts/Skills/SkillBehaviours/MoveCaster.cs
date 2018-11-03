@@ -6,7 +6,7 @@ public class MoveCaster : SkillBehaviour {
     /// <summary>
     /// Movement duration.
     /// </summary>
-    public float seconds;
+    public float duration;
 
     /// <summary>
     /// How far to move.
@@ -22,7 +22,7 @@ public class MoveCaster : SkillBehaviour {
     /// </summary>
     /// <param name="caster">The character to move</param>
     private IEnumerator Move(BaseCharacter caster) {
-        caster.animator.SetBool("Dash", true);
+        caster.animator.SetBool("Stop", true);
         // Calculate direction
         Vector3 direction = GetDirection(caster);
 
@@ -32,8 +32,8 @@ public class MoveCaster : SkillBehaviour {
 
         // For keeping track of duration
         float startTime = Time.time;
-        float endTime = startTime + seconds;
-        float step = distance / seconds;
+        float endTime = startTime + duration;
+        float step = distance / duration;
 
         // Move the caster over the duration
         while (startTime < endTime) {
@@ -44,7 +44,7 @@ public class MoveCaster : SkillBehaviour {
 
         // Done moving
         caster.agent.ResetPath();
-        caster.animator.SetBool("Dash", false);
+        caster.animator.SetBool("Stop", false);
     }
 
     /// <summary>

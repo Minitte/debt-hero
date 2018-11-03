@@ -65,7 +65,8 @@ public class Melee : MonoBehaviour {
         if ((other.CompareTag("AI") || other.CompareTag("Player")) && !other.CompareTag(transform.parent.tag)) {
 
             // Apply damage to the other character
-            _skill.DealDamage(other.GetComponent<BaseCharacter>(), _physAtkdamage, _magicAtkdamage);
+            _skill.DealDamage(transform.parent.GetComponent<BaseCharacter>(), 
+                other.GetComponent<BaseCharacter>(), _physAtkdamage, _magicAtkdamage);
         }
     }
 

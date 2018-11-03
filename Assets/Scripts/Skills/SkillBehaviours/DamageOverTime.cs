@@ -8,6 +8,11 @@ using UnityEngine;
 public class DamageOverTime : DebuffBehaviour {
 
     /// <summary>
+    /// The duration of the damage over time effect.
+    /// </summary>
+    public int duration;
+
+    /// <summary>
     /// The total amount of physical damage to deal.
     /// </summary>
     public float physDamage;
@@ -22,10 +27,11 @@ public class DamageOverTime : DebuffBehaviour {
     }
 
     /// <summary>
-    /// Called when a character takes damage from this skill.
+    /// Starts the damage over time effect.
     /// </summary>
-    /// <param name="victim"></param>
-    public override void OnDamageActivate(BaseCharacter victim) {
+    /// <param name="dealer">The character that dealt damage</param>
+    /// <param name="victim">The character that took damage</param>
+    public override void OnDamageActivate(BaseCharacter dealer, BaseCharacter victim) {
         SkillManager.instance.StartCoroutine(ApplyDoT(victim));
     }
 
