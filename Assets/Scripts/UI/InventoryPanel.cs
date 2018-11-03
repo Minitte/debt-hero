@@ -83,6 +83,17 @@ public class InventoryPanel : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// This function is called when the behaviour becomes disabled or inactive.
+	/// </summary>
+	void OnDisable() {
+		_currentSlot = null;
+
+		Destroy(_mouseItemIcon);
+
+		_mouseItemIcon = null;
+	}
+
+	/// <summary>
 	/// Updates all item slots
 	/// </summary>
 	public void UpdateAllItemSlots() {
