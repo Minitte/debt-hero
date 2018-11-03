@@ -34,6 +34,11 @@ public abstract class ItemBase : MonoBehaviour {
 	public ItemProperties properties;
 
     /// <summary>
+    /// Item UI Prefab
+    /// </summary>
+    public ItemUI itemUIPrefab;
+
+    /// <summary>
     /// Owner of the item
     /// </summary>
     public BaseCharacter owner;

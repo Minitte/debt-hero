@@ -36,17 +36,6 @@ public class ItemDatabase : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// returns a new instances 
-	/// </summary>
-	/// <param name="id"></param>
-	/// <returns></returns>
-	public ItemUI GetNewItemUI(int id) {
-		Debug.Assert(_itemDict.ContainsKey(id), "Item database does not contain an item with an id of " + id);
-
-		return Instantiate(_itemDict[id].itemUIPrefab).GetComponent<ItemUI>();
-	}
-
-	/// <summary>
 	/// Initalizes the dictionary database
 	/// </summary>
 	private void InitalizeDictionary() {
@@ -71,9 +60,4 @@ public class ItemEntry {
 	/// item prefab
 	/// </summary>
 	public ItemBase itemPrefab;
-
-	/// <summary>
-	/// Item display UI prefab
-	/// </summary>
-	public ItemUI itemUIPrefab;
 }

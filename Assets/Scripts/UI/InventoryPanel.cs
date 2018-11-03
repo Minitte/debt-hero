@@ -84,6 +84,8 @@ public class InventoryPanel : MonoBehaviour {
 
 		ItemGridItemUI.OnHoverOver += ShowItemDetails;
 
+		ItemGridItemUI.OnHoverOff += ResetItemDetails;
+
 		// assign slot references
 
 		for (int row = 0; row < itemRows.Length; row++) {
@@ -95,8 +97,7 @@ public class InventoryPanel : MonoBehaviour {
 
 		UpdateAllItemSlots();
 
-		itemNameText.text = "";
-		itemDescText.text = "";
+		ResetItemDetails(null);
 	}
 	
 	/// <summary>
@@ -172,22 +173,28 @@ public class InventoryPanel : MonoBehaviour {
 			itemDescText.text = item.properties.description;
 			itemQtyText.text = "x " + item.properties.quantity;
 
-			ItemUI iUI = GameDatabase.instance.itemDatabase.GetNewItemUI(item.properties.itemID);
+			ItemUI iUI = Instantiate(item.itemUIPrefab).GetComponent<ItemUI>();
 
 			_itemDetailIcon = iUI.icon.gameObject;
 
 			_itemDetailIcon.transform.SetParent(itemIconArea, false);
 
 			Destroy(iUI.gameObject);
-		} else {
-			itemNameText.text = "";
-			itemDescText.text = "";
-			itemQtyText.text = "";
+		}
+	}
 
-			if (_itemDetailIcon != null) {
-				Destroy(_itemDetailIcon);
-				_itemDetailIcon = null;
-			}
+	/// <summary>
+	/// Resets the item details area to blank
+	/// </summary>
+	/// <param name="slot">Unused. Satifies delegate template</param>
+	private void ResetItemDetails(ItemSlot slot) {
+		itemNameText.text = "";
+		itemDescText.text = "";
+		itemQtyText.text = "";
+
+		if (_itemDetailIcon != null) {
+			Destroy(_itemDetailIcon);
+			_itemDetailIcon = null;
 		}
 	}
 
@@ -204,7 +211,7 @@ public class InventoryPanel : MonoBehaviour {
 			if (item != null) {
 				_currentSlot = slot;
 
-				ItemUI iUI = GameDatabase.instance.itemDatabase.GetNewItemUI(item.properties.itemID);
+				ItemUI iUI = Instantiate(item.itemUIPrefab).GetComponent<ItemUI>();
 
 				_mouseItemIcon = iUI.icon.gameObject;
 
@@ -252,7 +259,7 @@ public class InventoryPanel : MonoBehaviour {
 
 		// item exist in slot but no ui... create ui
 		else if (item != null && itemUI == null) {
-			itemUI = GameDatabase.instance.itemDatabase.GetNewItemUI(item.properties.itemID);
+			itemUI = Instantiate(item.itemUIPrefab).GetComponent<ItemUI>();
 
 			itemUI.transform.SetParent(GetGridSlot(slot).transform, false);
 
