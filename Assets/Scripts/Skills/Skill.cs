@@ -97,19 +97,19 @@ public class Skill : ScriptableObject {
     /// Casts the skill.
     /// </summary>
     /// <param name="caster">The transform of the caster</param>
-    public void Cast(Transform caster) {
+    public void Cast(BaseCharacter caster) {
         // Activate the damage prefab if it exists
         if (damagePrefab != null) {
-            GameObject damage = Instantiate(damagePrefab, caster);
+            GameObject damage = Instantiate(damagePrefab, caster.transform);
             switch (skillType) {
                 case SkillType.Melee:
-                    damage.GetComponent<Melee>().Activate(caster, this);
+                    damage.GetComponent<Melee>().Activate(caster.transform, this);
                     break;
             }
         }
         // Activate all the skill behaviours
         foreach (SkillBehaviour behaviour in skillBehaviours) {
-            behaviour.Activate(caster, this);
+            SkillManager.instance.StartCoroutine(behaviour.Activate(caster, this));
         }
     }
 }

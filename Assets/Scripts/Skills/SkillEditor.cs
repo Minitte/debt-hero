@@ -23,7 +23,7 @@ public class SkillEditor : Editor {
     /// </summary>
     public void Awake() {
         options = new string[] {
-            "Heal", "Test"
+            "Heal", "MoveCaster"
         };
     }
 

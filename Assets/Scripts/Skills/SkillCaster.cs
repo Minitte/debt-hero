@@ -70,7 +70,7 @@ public class SkillCaster : MonoBehaviour {
     public bool Cast(int skillNum) {
         if (skillNum < skills.Length && skills[skillNum] != null && _canCasts[skillNum] == true) { // Validation
             if (_characterStats.currentMp >= skills[skillNum].manaCost) { // Check if enough mana to cast
-                skills[skillNum].Cast(transform); // Cast the skill
+                skills[skillNum].Cast(GetComponent<BaseCharacter>()); // Cast the skill
                 _characterStats.currentMp -= skills[skillNum].manaCost;
 
                 // Put skill on cooldown

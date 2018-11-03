@@ -12,7 +12,7 @@ public class SkillManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-        if (instance != null) {
+        if (instance == null) {
             instance = this;
         } else {
             Debug.LogWarning("Tried to instantiate skill manager instance twice.");
