@@ -6,10 +6,31 @@ using TMPro;
 
 public class InventoryPanel : MonoBehaviour {
 
+	[Header("Text Displays")]
+
 	/// <summary>
 	/// Text showing the gold amount
 	/// </summary>
 	public TextMeshProUGUI goldText;
+
+	[Header("Item Detail Text")]
+
+	/// <summary>
+	/// Text showing the item name
+	/// </summary>
+	public TextMeshProUGUI itemNameText;
+
+	/// <summary>
+	/// Text showing the item desc
+	/// </summary>
+	public TextMeshProUGUI itemDescText;
+
+	/// <summary>
+	/// Text showing the item quantity
+	/// </summary>
+	public TextMeshProUGUI itemQtyText;
+
+	[Header("Items")]
 
 	/// <summary>
 	/// Rows of item ui slots
@@ -51,6 +72,8 @@ public class InventoryPanel : MonoBehaviour {
 
 		ItemGridItemUI.OnRightClick += UseSlot;
 
+		ItemGridItemUI.OnHoverOver += ShowItemDetails;
+
 		// assign slot references
 
 		for (int row = 0; row < itemRows.Length; row++) {
@@ -59,6 +82,11 @@ public class InventoryPanel : MonoBehaviour {
 				GetGridSlot(slot).slot = slot;
 			}
 		}
+
+		UpdateAllItemSlots();
+
+		itemNameText.text = "";
+		itemDescText.text = "";
 	}
 	
 	/// <summary>
@@ -122,15 +150,34 @@ public class InventoryPanel : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Shows the item details in the slot if any
+	/// </summary>
+	/// <param name="slot"></param>
+	private void ShowItemDetails(ItemSlot slot) {
+		ItemBase item = _inventory.GetItem(slot);
+
+		// display details
+		if (item != null) {
+			itemNameText.text = item.properties.name;
+			itemDescText.text = item.properties.description;
+			itemQtyText.text = "x " + item.properties.quantity;
+		} else {
+			itemNameText.text = "";
+			itemDescText.text = "";
+			itemQtyText.text = "";
+		}
+	}
+
+	/// <summary>
 	/// Selects the item slot for action
 	/// </summary>
 	/// <param name="slot"></param>
 	private void SelectSlot(ItemSlot slot) {
-
 		// begin item movement
 		if (_currentSlot == null) {
 			ItemBase item = _inventory.GetItem(slot);
 
+			// Drag icon and stuff if there is actually an item
 			if (item != null) {
 				_currentSlot = slot;
 

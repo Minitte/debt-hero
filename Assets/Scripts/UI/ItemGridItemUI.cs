@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ItemGridItemUI : MonoBehaviour, IPointerClickHandler {
+public class ItemGridItemUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler {
 
 	/// <summary>
 	/// Event template
@@ -22,14 +22,14 @@ public class ItemGridItemUI : MonoBehaviour, IPointerClickHandler {
 	public static event ItemGridEvent OnRightClick;
 
 	/// <summary>
+	/// mouse hover over event
+	/// </summary>
+	public static event ItemGridEvent OnHoverOver;
+
+	/// <summary>
 	/// row col slot of this
 	/// </summary>
 	public ItemSlot slot;
-
-	/// <summary>
-	/// If this is hovered over on
-	/// </summary>
-	private bool _hoverOver;
 
 	/// <summary>
 	/// Click event
@@ -44,6 +44,16 @@ public class ItemGridItemUI : MonoBehaviour, IPointerClickHandler {
 			if (OnRightClick != null) {
 				OnRightClick(slot);
 			}
+		}
+	}
+
+	/// <summary>
+	/// Mouse hover over event
+	/// </summary>
+	/// <param name="eventData"></param>
+	public void OnPointerEnter(PointerEventData eventData) {
+		if (OnHoverOver != null) {
+			OnHoverOver(slot);
 		}
 	}
 }
