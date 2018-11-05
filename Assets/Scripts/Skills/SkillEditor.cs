@@ -56,19 +56,20 @@ public class SkillEditor : Editor {
                 } else {
                     EditorGUILayout.PropertyField(serializedObject.FindProperty(it.name), true);
                 }
-                // Save changes
-                serializedObject.ApplyModifiedProperties();
             }
         }
         // Section for adding new behaviours
         selectedOption = EditorGUILayout.Popup("Behaviour Type: ", selectedOption, options);
 
-        // Check if the add behaviour button was clicked
+        // Button for adding a new behaviour
         if (GUILayout.Button("Add new behaviour")) { 
             // Add it to the list of behaviours
             SkillBehaviour behaviour = CreateInstance(options[selectedOption]) as SkillBehaviour;
             AssetDatabase.AddObjectToAsset(behaviour, skill);
             skill.skillBehaviours.Add(behaviour);
         }
+
+        // Save changes
+        serializedObject.ApplyModifiedProperties();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 /// <summary>
 /// This is a scriptable class for skills.
 /// </summary>
@@ -91,6 +92,14 @@ public class Skill : ScriptableObject {
     /// </summary>
     private void Awake() {
         skillBehaviours = new List<SkillBehaviour>();
+        
+        // Reload subassets
+        Object[] assets = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(this));
+        foreach (Object o in assets) {
+            if (o is SkillBehaviour) {
+                skillBehaviours.Add(o as SkillBehaviour);
+            }
+        }
     }
 
     /// <summary>
