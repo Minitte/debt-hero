@@ -22,6 +22,7 @@ public class CharacterStats : MonoBehaviour {
     /// </summary>
     public event HealthChangedEvent OnHealthChanged;
 
+
     /// <summary>
     /// Enum for all stat types.
     /// </summary>
@@ -35,7 +36,8 @@ public class CharacterStats : MonoBehaviour {
         MAG_ATK,
         PHY_DEF,
         MAG_DEF,
-        EXP
+        EXP,
+        MAXEXP
     }
 
     [Header("Resources")]
@@ -88,14 +90,32 @@ public class CharacterStats : MonoBehaviour {
     public int level;
 
     /// <summary>
-    /// The character's experience point.
+    /// The character's Experience point.
     /// </summary>
     public float exp;
+
+    /// <summary>
+    /// The character's Experience point.
+    /// </summary>
+    public float maxExp;
 
     /// <summary>
     /// Boolean to represent if a character is alive.
     /// </summary>
     public bool isAlive;
+
+    public delegate void LevelEvent();
+    public event LevelEvent OnLevel;
+
+    /// <summary>
+    /// Exp changed event template.
+    /// </summary>
+    public delegate void ExpChangedEvent();
+
+    /// <summary>
+    /// This event is called when the player gains Exp.
+    /// </summary>
+    public event ExpChangedEvent OnExpChanged;
 
     /// <summary>
     /// Called when this character takes healing.
@@ -170,6 +190,18 @@ public class CharacterStats : MonoBehaviour {
         }
     }
 
+    //Adds Exp to the player
+    public void GainExp(float gainExp) {
+        exp += gainExp;
+        OnExpChanged();
+    }
+
+    //Levels up the player
+    public void LevelUp() {
+        level++;
+        OnLevel();
+    }
+
     /// <summary>
     /// Looks up a stat and adds to it
     /// </summary>
@@ -211,6 +243,10 @@ public class CharacterStats : MonoBehaviour {
                 
             case StatType.EXP:
                 exp += amt;
+                break;
+
+            case StatType.MAXEXP:
+                maxExp += amt;
                 break;
 
             default:

@@ -34,9 +34,14 @@ public class EventManager : MonoBehaviour {
     private void StartEvent(int e) {
         switch (e) {
             case 0:
-                PlayerManager.instance.GetComponent<CharacterInventory>().gold -= 100;
+                PlayerManager.instance.GetComponent<CharacterInventory>().gold -= DebtCurve(timeManager.days);
                 break;
         }
+    }
+
+    // Calculates the money needed to be paid back (Linear)
+    private int DebtCurve(int days) {
+        return (Mathf.RoundToInt((Mathf.Pow((days - 1), 2) + days - 1) / 2 * 100));
     }
 }
 

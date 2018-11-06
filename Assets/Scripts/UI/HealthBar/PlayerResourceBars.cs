@@ -17,6 +17,11 @@ public class PlayerResourceBars : MonoBehaviour {
     public Text mpValue;
 
     /// <summary>
+    /// EXP Text portion of the Image.
+    /// </summary>
+    public Text expValue;
+
+    /// <summary>
     /// Reads info from a CharacterStats object.
     /// </summary>
     private CharacterStats _characterStats;
@@ -30,6 +35,7 @@ public class PlayerResourceBars : MonoBehaviour {
         }
     }
 
+
     // Use this for initialization
     private void Start()
     {
@@ -37,10 +43,17 @@ public class PlayerResourceBars : MonoBehaviour {
         //BarColor(107, 114, 255, 255, mpBar);
         hpValue = transform.Find("HP").Find("HPText").GetComponent<Text>();
         mpValue = transform.Find("MP").Find("MPText").GetComponent<Text>();
+        expValue = transform.Find("EXP").Find("ExpText").GetComponent<Text>();
+
+        // Makes the slider no interactable
+        transform.Find("HP").GetComponent<Slider>().interactable = false;
+        transform.Find("MP").GetComponent<Slider>().interactable = false;
+        transform.Find("EXP").GetComponent<Slider>().interactable = false;
 
         // Initial update for the bars
         UpdateHealth();
         UpdateMana();
+        UpdateExp();
 
         InGameMenuController.OnMenuShown += HideBars;
     }
@@ -61,6 +74,7 @@ public class PlayerResourceBars : MonoBehaviour {
     {
         hpValue.text = "HP:" + characterStats.currentHp + "/" + characterStats.maxHp;
         mpValue.text = "MP:" + characterStats.currentMp + "/" + characterStats.maxMp;
+        expValue.text = "EXP:" + characterStats.exp + "/" + characterStats.maxExp;
     }
 
     /// <summary>
@@ -99,6 +113,15 @@ public class PlayerResourceBars : MonoBehaviour {
     }
 
     /// <summary>
+    /// Updates the player's EXP bar.
+    /// </summary>
+    public void UpdateExp() {
+        // Calculate exp percentage
+        float percentage = _characterStats.exp
+            / _characterStats.maxExp * 100f;
+        Debug.Log("UPDATE EXP: " + percentage);
+        transform.Find("EXP").GetComponent<Slider>().value = percentage; // Update Exp bar
+    }
     /// Hides or shows the bars
     /// </summary>
     /// <param name="hide"></param>

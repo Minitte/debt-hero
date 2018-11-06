@@ -5,40 +5,35 @@ using UnityEngine;
 public class LevelSystem : MonoBehaviour
 {
     //public int currentLevel;
-    public float currentLevelEXP;
-    public float nextLevelEXP;
-    public float remainingEXP;
+    public float currentLevelExp;
+    //public float nextLevelExp;
+    public float remainingExp;
     private GameObject player;
     public ParticleSystem LevelEffect;
+
     // Use this for initialization
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         player.GetComponent<CharacterStats>().level = 1;
-        currentLevelEXP = 0;
-        remainingEXP = EXPCurve(2);
-        nextLevelEXP = EXPCurve(2);
+        currentLevelExp = 0;
+        remainingExp = ExpCurve(2);
+        player.GetComponent<CharacterStats>().maxExp = ExpCurve(2);
     }
 
     // Update is called once per frame
     void Update()
     {
-        currentLevelEXP = player.GetComponent<CharacterStats>().exp - EXPCurve(player.GetComponent<CharacterStats>().level);
-        remainingEXP = nextLevelEXP - player.GetComponent<CharacterStats>().exp;
-        if(remainingEXP <= 0)
+        currentLevelExp = player.GetComponent<CharacterStats>().exp - ExpCurve(player.GetComponent<CharacterStats>().level);
+        remainingExp = player.GetComponent<CharacterStats>().maxExp - player.GetComponent<CharacterStats>().exp;
+        if(remainingExp <= 0)
         {
             LevelUp();
         }
     }
 
-    //Adds EXP to the player
-    void GainEXP(float exp)
-    {
-       player.GetComponent<CharacterStats>().exp += exp; 
-    }
-
-    // Calculates the EXP needed for a level (Linear)
-    float EXPCurve(int level)
+    // Calculates the Exp needed for a level (Linear)
+    float ExpCurve(int level)
     {
         return ((Mathf.Pow((level-1),2) + level-1) / 2 * 100);
     }
@@ -47,8 +42,8 @@ public class LevelSystem : MonoBehaviour
     void LevelUp()
     {
         LevelEffect.Play();
-        player.GetComponent<CharacterStats>().level += 1;
-        nextLevelEXP = EXPCurve(player.GetComponent<CharacterStats>().level + 1);
+        player.GetComponent<CharacterStats>().LevelUp();
+        player.GetComponent<CharacterStats>().maxExp = ExpCurve(player.GetComponent<CharacterStats>().level + 1);
         player.GetComponent<BaseClass>().GainStats();
     }
 }
