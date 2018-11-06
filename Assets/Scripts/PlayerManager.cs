@@ -65,7 +65,12 @@ public class PlayerManager : MonoBehaviour {
 		FloorGenerator.OnBeginGeneration += RemovePlayerOnNewFloor;
 
 		DontDestroyOnLoad(this.gameObject);
-	}
+
+        // Instantiate player's health and mana bars
+        GameObject hp = Instantiate(healthbar, GameObject.Find("Canvas").transform);
+        hp.GetComponent<PlayerResourceBars>().CharacterStats = GetComponent<CharacterStats>();
+        GetComponent<CharacterStats>().OnHealthChanged += hp.GetComponent<PlayerResourceBars>().UpdateHealth;
+    }
 
 	/// <summary>
 	/// Resets the owner of items
@@ -119,7 +124,7 @@ public class PlayerManager : MonoBehaviour {
             GetComponent<CharacterStats>().OnExpChanged += hp.GetComponent<PlayerResourceBars>().UpdateExp;
 
         }
-	}
+    }
 
 	/// <summary>
 	/// moves the player to the entrance of the floor

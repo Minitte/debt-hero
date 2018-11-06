@@ -11,6 +11,11 @@ public class ItemProperties {
     }
 
     /// <summary>
+    /// Item unique identifier
+    /// </summary>
+    public int itemID;
+
+    /// <summary>
     /// Item name
     /// </summary>
     public string name = "ITEM_NAME";
