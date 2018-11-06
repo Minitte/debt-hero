@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 /// <summary>
 /// This is a scriptable class for skills.
 /// </summary>
@@ -19,6 +20,7 @@ public class Skill : ScriptableObject {
     /// <summary>
     /// The name of the skill.
     /// </summary>
+    [Header("General")]
     public string skillName;
 
     /// <summary>
@@ -41,6 +43,7 @@ public class Skill : ScriptableObject {
     /// <summary>
     /// The base cooldown of the skill.
     /// </summary>
+    [Header("Costs")]
     public float cooldown;
 
     /// <summary>
@@ -50,6 +53,7 @@ public class Skill : ScriptableObject {
     #endregion
 
     #region Damage Properties
+    [Header("Damage")]
     /// <summary>
     /// Prefab of the damage hitbox.
     /// </summary>
@@ -78,55 +82,61 @@ public class Skill : ScriptableObject {
     public float areaMultiplier = 1f;
     #endregion
 
-    #region Healing Properties
     /// <summary>
-    /// Prefab of the healing hitbox.
+    /// List of skill behaviours.
     /// </summary>
-    public GameObject healingPrefab;
+    public List<SkillBehaviour> skillBehaviours;
 
     /// <summary>
-    /// Amount of healing done by the skill.
+    /// Used for initialization.
     /// </summary>
-    public float healing;
-
-    /// <summary>
-    /// Radius for AoE skills.
-    /// </summary>
-    public float healingRadius;
-    #endregion
-
-    #region Status Effects
-    /// <summary>
-    /// Flag for if this skill has status effects.
-    /// </summary>
-    public bool hasStatusEffects;
-
-    /// <summary>
-    /// Array of status effects.
-    /// </summary>
-    public GameObject[] statusEffects;
-    #endregion
+    private void Awake() {
+        skillBehaviours = new List<SkillBehaviour>();
+        
+        // Reload subassets
+        Object[] assets = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(this));
+        foreach (Object o in assets) {
+            if (o is SkillBehaviour) {
+                skillBehaviours.Add(o as SkillBehaviour);
+            }
+        }
+    }
 
     /// <summary>
     /// Casts the skill.
     /// </summary>
     /// <param name="caster">The transform of the caster</param>
-    public void Cast(Transform caster) {
-        // Play melee animation if skill type is melee
-        if (skillType == SkillType.Melee) {
-            caster.GetComponent<BaseCharacter>().animator.SetTrigger("Attack");
-        }
-
-        // Activate damage behaviour
+    public void Cast(BaseCharacter caster) {
+        // Activate the damage prefab if it exists
         if (damagePrefab != null) {
-            SkillBehaviour damage = Instantiate(damagePrefab, caster).GetComponent<SkillBehaviour>();
-            damage.Activate(caster, this);
+            GameObject damage = Instantiate(damagePrefab, caster.transform);
+            switch (skillType) {
+                case SkillType.Melee:
+                    damage.GetComponent<Melee>().Activate(caster.transform, this);
+                    break;
+            }
         }
+        // Activate all the skill behaviours
+        foreach (SkillBehaviour behaviour in skillBehaviours) {
+            behaviour.Activate(caster);
+        }
+    }
 
-        // Activate healing behaviour
-        if (healingPrefab != null) {
-            SkillBehaviour healing = Instantiate(healingPrefab, caster).GetComponent<SkillBehaviour>();
-            healing.Activate(caster, this);
+    /// <summary>
+    /// Deals damage to a character.
+    /// </summary>
+    /// <param name="dealer">The character dealing the damage</param>
+    /// <param name="victim">The character to deal damage to</param>
+    /// <param name="physDamage">The amount of physical damage to deal</param>
+    /// <param name="magicDamage">The amount of magical damage to deal</param>
+    public void DealDamage(BaseCharacter dealer, BaseCharacter victim, float physDamage, float magicDamage) {
+        victim.characterStats.TakeDamage(physDamage, magicDamage);
+
+        if (victim.characterStats.isAlive) {
+            // Activate all the debuff behaviours
+            foreach (DebuffBehaviour behaviour in skillBehaviours) {
+                behaviour.OnDamageActivate(dealer, victim);
+            }
         }
     }
 }

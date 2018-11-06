@@ -7,6 +7,10 @@ using TMPro;
 
 public class InGameMenuController : MonoBehaviour {
 
+	public delegate void MenuShownEvent(bool shown);
+
+	public static event MenuShownEvent OnMenuShown;
+
 	[Header("Menu Panels")]
 	/// <summary>
 	/// All of the panels in the menu
@@ -132,6 +136,10 @@ public class InGameMenuController : MonoBehaviour {
 
 		nextButton.gameObject.SetActive(true);
 		prevButton.gameObject.SetActive(true);
+
+		if (OnMenuShown != null) {
+			OnMenuShown(true);
+		}
 	}
 
 	/// <summary>
@@ -144,6 +152,10 @@ public class InGameMenuController : MonoBehaviour {
 
 		nextButton.gameObject.SetActive(false);
 		prevButton.gameObject.SetActive(false);
+
+		if (OnMenuShown != null) {
+			OnMenuShown(false);
+		}
 	}
 
 	/// <summary>
