@@ -10,6 +10,10 @@ public class EnemyManager : MonoBehaviour {
     public GameObject[] enemyType;
     public List<GameObject> enemies;
 
+    /// <summary>
+    /// spawnScalar is a number used to scale amount of enemies.
+    /// </summary>
+    public int spawnScalar;
     
 
     // Use this for initialization
@@ -17,6 +21,7 @@ public class EnemyManager : MonoBehaviour {
         FloorGenerator.OnFloorGenerated += SpawnEnemies;
 
         FloorGenerator.OnBeginGeneration += DespawnEnemies;
+        spawnScalar = 2;
     }
 	
 	// Update is called once per frame
@@ -59,9 +64,26 @@ public class EnemyManager : MonoBehaviour {
             
             Vector3 roomyPos = room.transform.position;
             Vector3 enemyPos = new Vector3(roomyPos.x, roomyPos.y + .85f, roomyPos.z);
-            
-            GameObject spawned = Instantiate(enemyType[0], enemyPos, Quaternion.identity);
-            enemies.Add(spawned);
+
+            EnemyGroups(currentFloor.floorNumber, enemyPos, rand);
+        }
+    }
+
+    /// <summary>
+    /// EnemyGroups handles getting references to the an enemy.
+    /// This function also handles spawning a group of enemies.
+    /// Lots of code duplication unfortunately.
+    /// </summary>
+    /// <param name="floor">Current floor number.</param>
+    /// <param name="enemyPos">Vector to spawn enemy.</param>
+    /// <param name="rand">Random used to spawn randomly.</param>
+    void EnemyGroups(int floor, Vector3 enemyPos, System.Random rand) {
+        //Cave
+        if (floor >= 0 && floor <= 3) {
+            for(int i = 0; i < spawnScalar; i++) {
+                GameObject spawned = Instantiate(enemyType[rand.Next(0, 3)], enemyPos, Quaternion.identity);
+                enemies.Add(spawned);
+            }
         }
     }
 }
