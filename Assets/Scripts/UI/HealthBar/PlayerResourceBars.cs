@@ -45,6 +45,11 @@ public class PlayerResourceBars : MonoBehaviour {
         mpValue = transform.Find("MP").Find("MPText").GetComponent<Text>();
         expValue = transform.Find("EXP").Find("ExpText").GetComponent<Text>();
 
+        // Makes the slider no interactable
+        transform.Find("HP").GetComponent<Slider>().interactable = false;
+        transform.Find("MP").GetComponent<Slider>().interactable = false;
+        transform.Find("EXP").GetComponent<Slider>().interactable = false;
+
         // Initial update for the bars
         UpdateHealth();
         UpdateMana();
@@ -113,8 +118,8 @@ public class PlayerResourceBars : MonoBehaviour {
     public void UpdateExp() {
         // Calculate exp percentage
         float percentage = _characterStats.exp
-            / _characterStats.maxExp;
-
+            / _characterStats.maxExp * 100f;
+        Debug.Log("UPDATE EXP: " + percentage);
         transform.Find("EXP").GetComponent<Slider>().value = percentage; // Update Exp bar
     }
     /// Hides or shows the bars

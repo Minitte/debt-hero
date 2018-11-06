@@ -66,10 +66,11 @@ public class PlayerManager : MonoBehaviour {
 
 		DontDestroyOnLoad(this.gameObject);
 
-        // Instantiate player's health and mana bars
+        /*// Instantiate player's health and mana bars
         GameObject hp = Instantiate(healthbar, GameObject.Find("Canvas").transform);
         hp.GetComponent<PlayerResourceBars>().CharacterStats = GetComponent<CharacterStats>();
         GetComponent<CharacterStats>().OnHealthChanged += hp.GetComponent<PlayerResourceBars>().UpdateHealth;
+        GetComponent<CharacterStats>().OnExpChanged += hp.GetComponent<PlayerResourceBars>().UpdateExp;*/
     }
 
 	/// <summary>
