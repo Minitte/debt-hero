@@ -37,6 +37,8 @@ public class Skill : ScriptableObject {
     /// The type of skill.
     /// </summary>
     public SkillType skillType;
+
+    public AudioClip soundFX;
     #endregion
 
     #region Costs
@@ -113,6 +115,9 @@ public class Skill : ScriptableObject {
             switch (skillType) {
                 case SkillType.Melee:
                     damage.GetComponent<Melee>().Activate(caster.transform, this);
+                    if(soundFX != null) {
+                        SoundManager.instance.PlaySound(GameObject.FindGameObjectWithTag("PlayerWeapon").GetComponent<AudioSource>(), soundFX);
+                    }
                     break;
             }
         }

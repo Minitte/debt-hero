@@ -4,11 +4,14 @@ using UnityEngine.SceneManagement;
 
 public class MenuController : MonoBehaviour {
 
-	/// <summary>
-	/// Loads the given scene by it's name
-	/// </summary>
-	/// <param name="sceneName">the name of the scene</param>
-	public void LoadScene(string sceneName) {
+    public void Start() {
+        SoundManager.instance.PlayMusic(0);
+    }
+    /// <summary>
+    /// Loads the given scene by it's name
+    /// </summary>
+    /// <param name="sceneName">the name of the scene</param>
+    public void LoadScene(string sceneName) {
 		Debug.Log("Changing scene to " + sceneName);
 		SceneManager.LoadScene(sceneName);
 	}
