@@ -1,10 +1,13 @@
 fileFormatVersion: 2
 guid: 57c943ef4e99918468b85644eeda817c
-timeCreated: 1540355716
+timeCreated: 1541285823
 licenseType: Pro
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - itemUIPrefab: {fileID: 114431547519456466, guid: 1d5ac43f2dd76eb4b8d30aae1c7c4ca4,
+      type: 2}
+  - owner: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

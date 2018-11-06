@@ -35,12 +35,14 @@ public class CharacterInventory : MonoBehaviour {
 	private Dictionary<ItemBase, ItemSlot> _itemSlotsMap;
 
 	/// <summary>
-	/// Awake is called when the script instance is being loaded.
+	/// Start is called on the frame when a script is enabled just before
+	/// any of the Update methods is called the first time.
 	/// </summary>
-	void Awake() {
+	void Start() {
 		_itemSlotsMap = new Dictionary<ItemBase, ItemSlot>();
 		AddExistingToDictionary();
 	}
+	
 
 	/// <summary>
 	/// Adds the inital items found in itemRows to the dictionary
@@ -51,7 +53,10 @@ public class CharacterInventory : MonoBehaviour {
 				ItemBase item = itemRows[row].items[col];
 
 				if (item != null) {
-					_itemSlotsMap.Add(item, new ItemSlot(row, col));
+					ItemSlot slot = new ItemSlot(row, col);
+					_itemSlotsMap.Add(item, slot);
+
+					item.OnDisposal += DisposeItemEventListener;
 				}
 			}
 		}
@@ -126,6 +131,8 @@ public class CharacterInventory : MonoBehaviour {
 		// remove from map
 		_itemSlotsMap.Remove(item);
 
+		item.OnDisposal -= DisposeItemEventListener;
+
 		if (OnItemRemoved != null) {
 			OnItemRemoved(new ItemSlot(row, col));
 		}
@@ -154,6 +161,8 @@ public class CharacterInventory : MonoBehaviour {
 
 		// remove from map
 		_itemSlotsMap.Remove(itemToRemove);
+
+		itemToRemove.OnDisposal -= DisposeItemEventListener;
 
 		if (OnItemRemoved != null) {
 			OnItemRemoved(slot);
@@ -224,6 +233,10 @@ public class CharacterInventory : MonoBehaviour {
 			}
 		}
 
+		itemToAdd.OnDisposal += DisposeItemEventListener;
+
+		itemToAdd.transform.SetParent(this.transform, false);
+
 		itemToAdd.owner = chara;
 
 		itemRows[slot.row].items[slot.col] = itemToAdd;
@@ -262,6 +275,14 @@ public class CharacterInventory : MonoBehaviour {
 		if (OnItemsSwapped != null) {
 			OnItemsSwapped(slotA, slotB);
 		}
+	}
+
+	/// <summary>
+	/// Item disposal event listener
+	/// </summary>
+	/// <param name="item"></param>
+	private void DisposeItemEventListener(ItemBase item) {
+		RemoveItem(item);
 	}
 
 	/// <summary>
