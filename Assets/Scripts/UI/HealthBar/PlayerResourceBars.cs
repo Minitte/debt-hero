@@ -119,7 +119,6 @@ public class PlayerResourceBars : MonoBehaviour {
         // Calculate exp percentage
         float percentage = _characterStats.exp
             / _characterStats.maxExp * 100f;
-        Debug.Log("UPDATE EXP: " + percentage);
         transform.Find("EXP").GetComponent<Slider>().value = percentage; // Update Exp bar
     }
     /// Hides or shows the bars

@@ -215,6 +215,8 @@ public class FloorGenerator : MonoBehaviour {
 
 		currentFloorParent.GetComponent<NavMeshSurface>().BuildNavMesh();
 
+        SoundManager.instance.PlayMusic(1);
+
 		// trigger event if anything is listening to it
 		if (OnFloorGenerated != null) {
 			OnFloorGenerated(currentFloorParent, _rand);           
