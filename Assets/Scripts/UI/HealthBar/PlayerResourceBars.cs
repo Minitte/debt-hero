@@ -48,12 +48,9 @@ public class PlayerResourceBars : MonoBehaviour {
         // Initial update for the bars
         UpdateHealth();
         UpdateMana();
-<<<<<<< HEAD
         UpdateExp();
-=======
 
         InGameMenuController.OnMenuShown += HideBars;
->>>>>>> 4e58009c402b54216df379b386de3cb5078025fb
     }
 
     // Update is called once per frame
