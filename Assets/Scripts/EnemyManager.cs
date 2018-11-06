@@ -7,7 +7,12 @@ public class EnemyManager : MonoBehaviour {
     /// <summary>
     /// Prefab of the floor's enemies.
     /// </summary>
-    public GameObject[] enemyType;
+    public GameObject[] caveEnemyPrefabs;
+
+    public GameObject[] forestEnemyPrefabs;
+
+    public GameObject[] fireEnemyPrefabs;
+
     public List<GameObject> enemies;
 
     /// <summary>
@@ -80,8 +85,24 @@ public class EnemyManager : MonoBehaviour {
     void EnemyGroups(int floor, Vector3 enemyPos, System.Random rand) {
         //Cave
         if (floor >= 0 && floor <= 3) {
-            for(int i = 0; i < spawnScalar; i++) {
-                GameObject spawned = Instantiate(enemyType[rand.Next(0, 3)], enemyPos, Quaternion.identity);
+            for (int i = 0; i < spawnScalar; i++) {
+                GameObject spawned = Instantiate(caveEnemyPrefabs[rand.Next(0, caveEnemyPrefabs.Length)], enemyPos, Quaternion.identity);
+                enemies.Add(spawned);
+            }
+        }
+
+        // forest
+        else if (floor >= 4 && floor <= 7) {
+            for (int i = 0; i < spawnScalar; i++) {
+                GameObject spawned = Instantiate(forestEnemyPrefabs[rand.Next(0, forestEnemyPrefabs.Length)], enemyPos, Quaternion.identity);
+                enemies.Add(spawned);
+            }
+        }
+
+        // fire
+        else if (floor >= 8 && floor <= 11) {
+            for (int i = 0; i < spawnScalar; i++) {
+                GameObject spawned = Instantiate(fireEnemyPrefabs[rand.Next(0, fireEnemyPrefabs.Length)], enemyPos, Quaternion.identity);
                 enemies.Add(spawned);
             }
         }
