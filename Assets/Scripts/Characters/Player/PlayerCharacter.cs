@@ -18,29 +18,23 @@ public class PlayerCharacter : BaseCharacter {
     private Keybinds _keybinds;
 
     /// <summary>
-    /// Flag for if the player is able to move.
-    /// Used to stop movement when starting actions in the middle of movement.
+    /// Used for inputs that involve the mouse position
     /// </summary>
-    private bool _ableToMove;
+    private Vector3 clickedPoint;
 
     // Use this for initialization
     private void Start() {
         _keybinds = new Keybinds();
-        _ableToMove = true;
         characterStats = PlayerManager.instance.GetComponent<CharacterStats>();
         characterStats.OnDeath += Die;
     }
 
     // Update is called once per frame
     private void Update() {
-        if (agent.remainingDistance < 0.1f) {
-            animator.SetFloat("Speed", 0f); // Stop walk animation
-        }
-        // Don't accept input if the character is casting something
-        if (!animatorStatus.isCasting && _ableToMove) {
-            // Used for inputs that involve the mouse position
-            Vector3 clickedPoint;
+        animator.SetFloat("Speed", agent.velocity.magnitude); // Run animation
 
+        // Don't accept input if the character is casting something
+        if (!animatorStatus.isCasting) {
             // Check if the player pressed or is holding the move key
             if (Input.GetKey(_keybinds["MoveKeyboard"])) {
                 if (GetClickedPoint(out clickedPoint)) {
@@ -52,32 +46,31 @@ public class PlayerCharacter : BaseCharacter {
                     } else {
                         agent.destination = clickedPoint;
                     }
-
-                    animator.SetFloat("Speed", 1f); // Start walk animation
                 }
             }
 
             // Check if the player pressed the attack key
-            if (Input.GetKeyDown(_keybinds["AttackKeyboard"])) {
-                if (GetClickedPoint(out clickedPoint)) {
+            if (Input.GetKeyDown(_keybinds["AttackKeyboard"]) && GetClickedPoint(out clickedPoint)) {
+                if (skillCaster.Cast(0)) { // Attempt to attack
                     transform.LookAt(new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z));
-                    skillCaster.Cast(0);
-                    StartCoroutine(StopMovement(0.5f)); // Stop movement
-                    return;
+                    agent.ResetPath();
                 }
+                return;
             }
 
             // Check if the player pressed the Skill 1 key
             if (Input.GetKeyDown(_keybinds["Skill1"])) {
                 skillCaster.Cast(1);
+                return;
             }
 
             // If a controller is plugged in
             if (Input.GetJoystickNames().Length > 0) {
                 // Check if the player pressed or is holding the controller attack key
                 if (Input.GetKeyDown(_keybinds["AttackController"])) {
-                    StartCoroutine(StopMovement(0.5f)); // Stop movement
-                    skillCaster.Cast(0);
+                    if (skillCaster.Cast(0)) {
+                        agent.ResetPath();
+                    }
                 }
 
                 // Horizontal and vertical input values of the joystick
@@ -103,7 +96,7 @@ public class PlayerCharacter : BaseCharacter {
     /// </summary>
     /// <param name="clickedPoint">A Vector3 to output to</param>
     /// <returns>Whether a collider was found or not</returns>
-    private bool GetClickedPoint(out Vector3 clickedPoint) {
+    public static bool GetClickedPoint(out Vector3 clickedPoint) {
         // Ray from camera to the clicked position in world space
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -118,18 +111,6 @@ public class PlayerCharacter : BaseCharacter {
         // No collision point
         clickedPoint = Vector3.zero;
         return false;
-    }
-
-    /// <summary>
-    /// Stops movement of the player.
-    /// </summary>
-    /// <param name="seconds">How many seconds to stop movement for.</param>
-    private IEnumerator StopMovement(float seconds) {
-        animator.SetFloat("Speed", 0f); // Stop walk animation
-        _ableToMove = false;
-        agent.ResetPath();
-        yield return new WaitForSeconds(seconds);
-        _ableToMove = true;
     }
 
     /// <summary>
