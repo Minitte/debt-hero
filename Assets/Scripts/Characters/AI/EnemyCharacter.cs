@@ -50,6 +50,8 @@ public class EnemyCharacter : BaseCharacter {
 
     // Update is called once per frame
     private void FixedUpdate() {
+        animator.SetFloat("Speed", agent.velocity.magnitude); // Run animation
+
         // Don't do anything if already attacking
         if (!animatorStatus.isCasting) {
 
