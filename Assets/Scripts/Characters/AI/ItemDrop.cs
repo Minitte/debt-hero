@@ -13,4 +13,16 @@ public class ItemDrop : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    private void OnTriggerEnter(Collider other) {
+        if (other.gameObject.tag == "PickupRadius") {
+
+            ItemBase item = GetComponent<ItemBase>();
+
+            ItemBase newItem = GameDatabase.instance.GetComponent<ItemDatabase>().GetNewItem(item.properties.itemID, 1);
+
+            PlayerManager.instance.GetComponent<CharacterInventory>().AddItem(newItem);
+            DestroyObject(gameObject);
+        }
+    }
 }
