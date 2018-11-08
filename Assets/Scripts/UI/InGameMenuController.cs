@@ -75,13 +75,11 @@ public class InGameMenuController : MonoBehaviour {
 	/// Update is called every frame, if the MonoBehaviour is enabled.
 	/// </summary>
 	void Update() {
-		float start = Input.GetAxis("Start");
+		float start = Input.GetAxis("Game Menu Open");
 
-		float leftMenu = Input.GetAxis("Left Menu");
+		float menuDirection = Input.GetAxis("Switch Game Menu");
 
-		float rightMenu = Input.GetAxis("Right Menu");
-
-		float keySum = (start + leftMenu + rightMenu);
+		float keySum = (start + Mathf.Abs(menuDirection));
 
 		// reset if no key down
 		if (_MenuKeyDown && keySum == 0) {
@@ -105,9 +103,9 @@ public class InGameMenuController : MonoBehaviour {
 			
 			if (start != 0) {
 				ToggleMenu();
-			} else if (leftMenu != 0) {
+			} else if (menuDirection < 0) {
 				PrevPanel();
-			} else if (rightMenu != 0) {
+			} else if (menuDirection > 0) {
 				NextPanel();
 			}
 		}
