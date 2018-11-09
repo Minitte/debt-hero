@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
 /// <summary>
 /// Class for handling input and keybindings.
@@ -7,24 +8,18 @@ using UnityEngine;
 public class PlayerCharacter : BaseCharacter {
 
     /// <summary>
-    /// The maximum allowed difference in y value between the clicked
-    /// position and the current position.
-    /// </summary>
-    private static readonly float MAX_CLIMB = 6f;
-
-    /// <summary>
-    /// Map for keybinds.
-    /// </summary>
-    private Keybinds _keybinds;
-
-    /// <summary>
     /// Used for inputs that involve the mouse position
     /// </summary>
-    private Vector3 clickedPoint;
+    private Vector3 _clickedPoint;
+
+    /// <summary>
+    /// The current path that the agent is taking.
+    /// </summary>
+    private NavMeshPath _path;
 
     // Use this for initialization
     private void Start() {
-        _keybinds = new Keybinds();
+        _path = new NavMeshPath();
         characterStats = PlayerManager.instance.GetComponent<CharacterStats>();
         characterStats.OnDeath += Die;
     }
@@ -35,62 +30,83 @@ public class PlayerCharacter : BaseCharacter {
 
         // Don't accept input if the character is casting something
         if (!animatorStatus.isCasting) {
-            // Check if the player pressed or is holding the move key
-            if (Input.GetKey(_keybinds["MoveKeyboard"])) {
-                if (GetClickedPoint(out clickedPoint)) {
-                    transform.LookAt(new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z));
-                    
-                    // Check for massive elevation difference between clicked point and current position
-                    if (Mathf.Abs(transform.position.y - clickedPoint.y) > MAX_CLIMB) {
-                        agent.destination = new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z); // Discard clicked y point
-                    } else {
-                        agent.destination = clickedPoint;
-                    }
-                }
-            }
-
-            // Check if the player pressed the attack key
-            if (Input.GetKeyDown(_keybinds["AttackKeyboard"]) && GetClickedPoint(out clickedPoint)) {
-                if (skillCaster.Cast(0)) { // Attempt to attack
-                    transform.LookAt(new Vector3(clickedPoint.x, transform.position.y, clickedPoint.z));
-                    agent.ResetPath();
-                }
-                return;
-            }
-
-            // Check if the player pressed the Skill 1 key
-            if (Input.GetKeyDown(_keybinds["Skill1"])) {
-                skillCaster.Cast(1);
-                return;
-            }
+            // Handle player input
+            HandleMouseInput();
+            HandleKeyboardInput();
 
             // If a controller is plugged in
             if (Input.GetJoystickNames().Length > 0) {
-                // Check if the player pressed or is holding the controller attack key
-                if (Input.GetKeyDown(_keybinds["AttackController"])) {
-                    if (skillCaster.Cast(0)) {
-                        agent.ResetPath();
-                    }
-                }
-
-                // Horizontal and vertical input values of the joystick
-                float horizontal = Input.GetAxis("HorizontalAnalog");
-                float vertical = Input.GetAxis("VerticalAnalog");
-
-                // Check if the player is moving the joystick
-                if (horizontal != 0f || vertical != 0f) {
-                    // Move in the direction of the joystick
-                    Vector3 goal = gameObject.transform.position + new Vector3(horizontal, gameObject.transform.position.y, vertical).normalized;
-                    agent.destination = goal;
-                }
+                HandleControllerInput();
             }
-        }
+        }    
 
         // Force model position and rotation to stay the same
         transform.GetChild(0).position = transform.position;
         transform.GetChild(0).rotation = transform.rotation;
     }
 
+    /// <summary>
+    /// Handles all mouse input from the player.
+    /// </summary>
+    private void HandleMouseInput() {
+        // Check if the player pressed or is holding the move key
+        if (Input.GetMouseButton(0)) {
+            if (GetClickedPoint(out _clickedPoint)) {
+                transform.LookAt(new Vector3(_clickedPoint.x, transform.position.y, _clickedPoint.z));
+                
+                // Get the closest nav mesh position
+                NavMeshHit navHitPosition;
+                NavMesh.SamplePosition(_clickedPoint, out navHitPosition, 20f, NavMesh.AllAreas);
+
+                // Calculate path to that location and move to it
+                agent.CalculatePath(navHitPosition.position, _path);
+                agent.path = _path;
+            }
+        }
+
+        // Check if the player pressed the attack key
+        if (Input.GetButtonDown("Basic Attack") && GetClickedPoint(out _clickedPoint)) {
+            if (skillCaster.Cast(0)) { // Attempt to attack
+                transform.LookAt(new Vector3(_clickedPoint.x, transform.position.y, _clickedPoint.z));
+                agent.ResetPath();
+            }
+            return;
+        }
+    }
+
+    /// <summary>
+    /// Handles keyboard input from the player.
+    /// </summary>
+    private void HandleKeyboardInput() {
+        // Check if the player pressed the Skill 1 key
+        if (Input.GetButtonDown("Dash")) {
+            skillCaster.Cast(1);
+            return;
+        }
+    }
+
+    /// <summary>
+    /// Handles controller input from the player.
+    /// </summary>
+    private void HandleControllerInput() {
+        // Check if the player pressed or is holding the controller attack key
+        if (Input.GetButtonDown("Basic Attack")) {
+            if (skillCaster.Cast(0)) {
+                agent.ResetPath();
+            }
+        }
+
+        // Horizontal and vertical input values of the left joystick
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+
+        // Check if the player is moving the left joystick
+        if (horizontal != 0f || vertical != 0f) {
+            // Move in the direction of the left joystick
+            Vector3 goal = gameObject.transform.position + new Vector3(horizontal, gameObject.transform.position.y, vertical).normalized;
+            agent.destination = goal;
+        }
+    }
     /// <summary>
     /// Checks if the mouse position is colliding with any gameobject's colliders.
     /// </summary>
