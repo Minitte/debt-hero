@@ -10,7 +10,7 @@ public class PlayerCharacter : BaseCharacter {
     /// <summary>
     /// Used for inputs that involve the mouse position
     /// </summary>
-    private Vector3 _clickedPoint;
+    private Vector3 _mousePosition;
 
     /// <summary>
     /// The current path that the agent is taking.
@@ -49,28 +49,26 @@ public class PlayerCharacter : BaseCharacter {
     /// Handles all mouse input from the player.
     /// </summary>
     private void HandleMouseInput() {
+        // Check if the player pressed the attack key
+        if (Input.GetButtonDown("Basic Attack") && GetMousePosition(out _mousePosition)) {
+            if (skillCaster.Cast(0)) { // Attempt to attack
+                FaceMousePosition();
+            }
+        }
+
         // Check if the player pressed or is holding the move key
         if (Input.GetMouseButton(0)) {
-            if (GetClickedPoint(out _clickedPoint)) {
-                transform.LookAt(new Vector3(_clickedPoint.x, transform.position.y, _clickedPoint.z));
+            if (GetMousePosition(out _mousePosition)) {
+                transform.LookAt(new Vector3(_mousePosition.x, transform.position.y, _mousePosition.z));
                 
                 // Get the closest nav mesh position
                 NavMeshHit navHitPosition;
-                NavMesh.SamplePosition(_clickedPoint, out navHitPosition, 20f, NavMesh.AllAreas);
+                NavMesh.SamplePosition(_mousePosition, out navHitPosition, 20f, NavMesh.AllAreas);
 
                 // Calculate path to that location and move to it
                 agent.CalculatePath(navHitPosition.position, _path);
                 agent.path = _path;
             }
-        }
-
-        // Check if the player pressed the attack key
-        if (Input.GetButtonDown("Basic Attack") && GetClickedPoint(out _clickedPoint)) {
-            if (skillCaster.Cast(0)) { // Attempt to attack
-                transform.LookAt(new Vector3(_clickedPoint.x, transform.position.y, _clickedPoint.z));
-                agent.ResetPath();
-            }
-            return;
         }
     }
 
@@ -79,9 +77,22 @@ public class PlayerCharacter : BaseCharacter {
     /// </summary>
     private void HandleKeyboardInput() {
         // Check if the player pressed the Skill 1 key
-        if (Input.GetButtonDown("Dash")) {
-            skillCaster.Cast(1);
-            return;
+        if (Input.GetButtonDown("Dash") && GetMousePosition(out _mousePosition)) {
+            if (skillCaster.Cast(1)) {
+                FaceMousePosition();
+            }
+        } else if (Input.GetButtonDown("First Skill") && GetMousePosition(out _mousePosition)) {
+            if (skillCaster.Cast(2)) {
+                FaceMousePosition();
+            }
+        } else if (Input.GetButtonDown("Second Skill") && GetMousePosition(out _mousePosition)) {
+            if (skillCaster.Cast(3)) {
+                FaceMousePosition();
+            }
+        } else if (Input.GetButtonDown("Third Skill") && GetMousePosition(out _mousePosition)) {
+            if (skillCaster.Cast(4)) {
+                FaceMousePosition();
+            }
         }
     }
 
@@ -103,16 +114,25 @@ public class PlayerCharacter : BaseCharacter {
         // Check if the player is moving the left joystick
         if (horizontal != 0f || vertical != 0f) {
             // Move in the direction of the left joystick
-            Vector3 goal = gameObject.transform.position + new Vector3(horizontal, gameObject.transform.position.y, vertical).normalized;
-            agent.destination = goal;
+            agent.destination = gameObject.transform.position + new Vector3(horizontal, gameObject.transform.position.y, vertical).normalized;
         }
     }
+
+    /// <summary>
+    /// Makes the player face the mouse position.
+    /// Also resets the navmash agent's path.
+    /// </summary>
+    private void FaceMousePosition() {
+        transform.LookAt(new Vector3(_mousePosition.x, transform.position.y, _mousePosition.z));
+        agent.ResetPath();
+    }
+
     /// <summary>
     /// Checks if the mouse position is colliding with any gameobject's colliders.
     /// </summary>
-    /// <param name="clickedPoint">A Vector3 to output to</param>
+    /// <param name="mousePosition">A Vector3 to output to</param>
     /// <returns>Whether a collider was found or not</returns>
-    public static bool GetClickedPoint(out Vector3 clickedPoint) {
+    private bool GetMousePosition(out Vector3 mousePosition) {
         // Ray from camera to the clicked position in world space
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -120,12 +140,12 @@ public class PlayerCharacter : BaseCharacter {
         // Check if the ray collided with anything
         if (Physics.Raycast(ray, out hit, 100)) {
             // Return the collision point
-            clickedPoint = hit.point;
+            mousePosition = hit.point;
             return true;
         }
 
         // No collision point
-        clickedPoint = Vector3.zero;
+        mousePosition = Vector3.zero;
         return false;
     }
 
