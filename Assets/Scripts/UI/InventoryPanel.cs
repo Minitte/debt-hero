@@ -35,7 +35,7 @@ public class InventoryPanel : MonoBehaviour {
 	/// </summary>
 	public Transform itemIconArea;
 
-	[Header("Items")]
+	[Header("Item Slots")]
 
 	/// <summary>
 	/// Rows of item ui slots
@@ -235,7 +235,7 @@ public class InventoryPanel : MonoBehaviour {
 	private void ShowItemDetails(ItemSlot slot) {
 		ItemBase item = _inventory.GetItem(slot);
 
-		//GetGridSlot(slot).SetBorderVisiblity(true);
+		GetGridSlot(slot).SetBorderVisiblity(true);
 
 		// display details
 		if (item != null) {
@@ -268,7 +268,9 @@ public class InventoryPanel : MonoBehaviour {
 		}
 
 		if (slot != null) {
-			//GetGridSlot(slot).SetBorderVisiblity(false);
+			if (_currentMoveSlot == null || !_currentMoveSlot.Equals(slot)) {
+				GetGridSlot(slot).SetBorderVisiblity(false);
+			}
 		}
 	}
 
@@ -311,7 +313,7 @@ public class InventoryPanel : MonoBehaviour {
 			UpdateItemSlot(_currentMoveSlot);
 			UpdateItemSlot(slot);
 
-			//GetGridSlot(_currentMoveSlot).SetBorderVisiblity(false);
+			GetGridSlot(_currentMoveSlot).SetBorderVisiblity(false);
 
 			_currentMoveSlot = null;
 
