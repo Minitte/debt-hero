@@ -76,7 +76,7 @@ public class PlayerCharacter : BaseCharacter {
     /// Handles keyboard input from the player.
     /// </summary>
     private void HandleKeyboardInput() {
-        // Check if the player pressed the Skill 1 key
+        // Check for skill casts
         if (Input.GetButtonDown("Dash") && GetMousePosition(out _mousePosition)) {
             if (skillCaster.Cast(1)) {
                 FaceMousePosition();
@@ -107,14 +107,22 @@ public class PlayerCharacter : BaseCharacter {
             }
         }
 
-        // Horizontal and vertical input values of the left joystick
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
-
-        // Check if the player is moving the left joystick
-        if (horizontal != 0f || vertical != 0f) {
-            // Move in the direction of the left joystick
-            agent.destination = gameObject.transform.position + new Vector3(horizontal, gameObject.transform.position.y, vertical).normalized;
+        HandleControllerMovement(); // Movement with left joystick
+        HandleControllerDashing(); // Dashing with right joystick
+        
+        // Check for skill casts
+        if (Input.GetButtonDown("First Skill")) {
+            if (skillCaster.Cast(2)) {
+                agent.ResetPath();
+            }
+        } else if (Input.GetButtonDown("Second Skill")) {
+            if (skillCaster.Cast(3)) {
+                agent.ResetPath();
+            }
+        } else if (Input.GetButtonDown("Third Skill")) {
+            if (skillCaster.Cast(4)) {
+                agent.ResetPath();
+            }
         }
     }
 
@@ -125,6 +133,37 @@ public class PlayerCharacter : BaseCharacter {
     private void FaceMousePosition() {
         transform.LookAt(new Vector3(_mousePosition.x, transform.position.y, _mousePosition.z));
         agent.ResetPath();
+    }
+
+    /// <summary>
+    /// Handles regular movement on controllers.
+    /// </summary>
+    private void HandleControllerMovement() {
+        // Horizontal and vertical input values of the left joystick
+        float leftHorizontal = Input.GetAxis("Horizontal");
+        float leftVertical = Input.GetAxis("Vertical");
+
+        // Check if the player is moving the left joystick
+        if (leftHorizontal != 0f || leftVertical != 0f) {
+            // Move in the direction of the left joystick
+            agent.destination = gameObject.transform.position + new Vector3(leftHorizontal, 0f, leftVertical).normalized;
+        }
+    }
+
+    /// <summary>
+    /// Handles the dashing skill on controllers.
+    /// </summary>
+    private void HandleControllerDashing() {
+        // Horizontal and vertical input values of the right joystick
+        float rightHorizontal = Input.GetAxis("Dash Horizontal");
+        float rightVertical = Input.GetAxis("Dash Vertical");
+
+        if (rightHorizontal != 0f || rightVertical != 0f && Input.GetButtonDown("Dash")) {
+            if (skillCaster.Cast(1)) {
+                transform.LookAt(transform.position + new Vector3(rightHorizontal, 0f, rightVertical).normalized);
+                agent.ResetPath();
+            }
+        }
     }
 
     /// <summary>
