@@ -42,6 +42,13 @@ public class InventoryPanel : MonoBehaviour {
 	/// </summary>
 	public ItemRowUI[] itemRows;
 
+	[Header("Inventory Panel Settings")]
+
+	/// <summary>
+	/// Delay between slots
+	/// </summary>
+	public float slotDelay = 0.1f;
+
 	/// <summary>
 	/// array of item uis
 	/// </summary>
@@ -53,9 +60,9 @@ public class InventoryPanel : MonoBehaviour {
 	private CharacterInventory _inventory;
 
 	/// <summary>
-	/// Currente selected item slot
+	/// Currente selected item slot for moving items
 	/// </summary>
-	private ItemSlot _currentSlot;
+	private ItemSlot _currentMoveSlot;
 
 	/// <summary>
 	/// mouse item icon
@@ -66,6 +73,21 @@ public class InventoryPanel : MonoBehaviour {
 	/// Item details icon
 	/// </summary>
 	private GameObject _itemDetailIcon;
+
+	/// <summary>
+	/// current hovered or selected slot 
+	/// </summary>
+	private ItemSlot _currentSelectSlot;
+
+	/// <summary>
+	/// Time for cool down
+	/// </summary>
+	private float _cooldownTime;
+
+	/// <summary>
+	/// cool down flag
+	/// </summary>
+	private bool _onCooldown;
 
 	/// <summary>
 	/// Start is called on the frame when a script is enabled just before
@@ -98,6 +120,8 @@ public class InventoryPanel : MonoBehaviour {
 		UpdateAllItemSlots();
 
 		ResetItemDetails(null);
+
+		_currentSelectSlot = new ItemSlot(0, 0);
 	}
 	
 	/// <summary>
@@ -106,6 +130,46 @@ public class InventoryPanel : MonoBehaviour {
 	void Update() {
 		if (_mouseItemIcon != null) {
 			_mouseItemIcon.transform.position = Input.mousePosition;
+		}
+
+		InventoryControls();
+	}
+
+	/// <summary>
+	/// Key controls for inventory
+	/// </summary>
+	private void InventoryControls() {
+		if (_onCooldown) {
+			_cooldownTime += Time.deltaTime;
+
+			if (_cooldownTime >= slotDelay) {
+				_onCooldown = false;
+				_cooldownTime = 0;
+			}
+
+			return;
+		}
+
+		// input
+		float vert = Input.GetAxis("Menu Vertical");
+		float horz = Input.GetAxis("Menu Horizontal");
+
+		// row col after
+		int rowAfter = horz == 0 ? 0 : (horz > 0 ? 1 : -1);
+		rowAfter += _currentSelectSlot.row;
+
+		// col inverted because positive is down
+		int colAfter = vert == 0 ? 0 : (vert > 0 ? -1 : 1);
+		colAfter += _currentSelectSlot.col;
+
+		if (rowAfter >= 0 && rowAfter < itemRows.Length) {
+			_currentSelectSlot.row = rowAfter;
+			_onCooldown = true;
+		}
+
+		if (colAfter >= 0 && colAfter < itemRows[0].items.Length) {
+			_currentSelectSlot.col = colAfter;
+			_onCooldown = true;
 		}
 	}
 
@@ -119,13 +183,15 @@ public class InventoryPanel : MonoBehaviour {
 
 		goldText.text = _inventory.gold + "g";
 		UpdateAllItemSlots();
+
+		_currentSelectSlot = new ItemSlot(0, 0);
 	}
 
 	/// <summary>
 	/// This function is called when the behaviour becomes disabled or inactive.
 	/// </summary>
 	void OnDisable() {
-		_currentSlot = null;
+		_currentMoveSlot = null;
 
 		Destroy(_mouseItemIcon);
 
@@ -206,12 +272,12 @@ public class InventoryPanel : MonoBehaviour {
 	/// <param name="slot"></param>
 	private void SelectSlot(ItemSlot slot) {
 		// begin item movement
-		if (_currentSlot == null) {
+		if (_currentMoveSlot == null) {
 			ItemBase item = _inventory.GetItem(slot);
 
 			// Drag icon and stuff if there is actually an item
 			if (item != null) {
-				_currentSlot = slot;
+				_currentMoveSlot = slot;
 
 				ItemUI iUI = Instantiate(item.itemUIPrefab).GetComponent<ItemUI>();
 
@@ -231,13 +297,13 @@ public class InventoryPanel : MonoBehaviour {
 		}
 
 		// end item movement
-		else if (_currentSlot != null) {
-			_inventory.SwapItems(_currentSlot, slot);
+		else if (_currentMoveSlot != null) {
+			_inventory.SwapItems(_currentMoveSlot, slot);
 
-			UpdateItemSlot(_currentSlot);
+			UpdateItemSlot(_currentMoveSlot);
 			UpdateItemSlot(slot);
 
-			_currentSlot = null;
+			_currentMoveSlot = null;
 
 			Destroy(_mouseItemIcon);
 
