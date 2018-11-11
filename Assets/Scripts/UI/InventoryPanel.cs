@@ -235,6 +235,8 @@ public class InventoryPanel : MonoBehaviour {
 	private void ShowItemDetails(ItemSlot slot) {
 		ItemBase item = _inventory.GetItem(slot);
 
+		//GetGridSlot(slot).SetBorderVisiblity(true);
+
 		// display details
 		if (item != null) {
 			itemNameText.text = item.properties.name;
@@ -263,6 +265,10 @@ public class InventoryPanel : MonoBehaviour {
 		if (_itemDetailIcon != null) {
 			Destroy(_itemDetailIcon);
 			_itemDetailIcon = null;
+		}
+
+		if (slot != null) {
+			//GetGridSlot(slot).SetBorderVisiblity(false);
 		}
 	}
 
@@ -293,6 +299,8 @@ public class InventoryPanel : MonoBehaviour {
 				rt.anchorMax = new Vector2(0.5f, 0.5f);
 
 				Destroy(iUI.gameObject);
+
+				GetGridSlot(_currentMoveSlot).SetBorderFlash(true);
 			}
 		}
 
@@ -302,6 +310,8 @@ public class InventoryPanel : MonoBehaviour {
 
 			UpdateItemSlot(_currentMoveSlot);
 			UpdateItemSlot(slot);
+
+			//GetGridSlot(_currentMoveSlot).SetBorderVisiblity(false);
 
 			_currentMoveSlot = null;
 
