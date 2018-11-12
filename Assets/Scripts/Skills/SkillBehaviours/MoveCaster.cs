@@ -37,14 +37,17 @@ public class MoveCaster : SkillBehaviour {
         float step = distance / duration;
 
         // Move the caster over the duration
-        while (startTime < endTime) {
+        while (startTime < endTime && caster != null) {
             caster.agent.nextPosition = caster.transform.position + (direction * step * Time.deltaTime);
             startTime += Time.deltaTime;
             yield return null;
         }
 
-        // Done moving
-        caster.agent.ResetPath();
-        caster.animator.SetBool("Dash", false);
+        // Check for null in case character has dashed into the next level
+        if (caster != null) {
+            // Done moving
+            caster.agent.ResetPath();
+            caster.animator.SetBool("Dash", false);
+        }
     }
 }
