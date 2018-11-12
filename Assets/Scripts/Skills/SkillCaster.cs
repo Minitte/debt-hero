@@ -49,6 +49,9 @@ public class SkillCaster : MonoBehaviour {
 
         if (CompareTag("Player")) {
             OnSkillCasted += GameObject.Find("Canvas").transform.GetComponentInChildren<PlayerResourceBars>().UpdateMana;
+
+            // Update skill icons
+            SkillManager.instance.UpdateSkills(this);
         }
     }
 
@@ -76,6 +79,10 @@ public class SkillCaster : MonoBehaviour {
                 // Put skill on cooldown
                 _timestamps[skillNum] = Time.time + skills[skillNum].cooldown;
                 _canCasts[skillNum] = false;
+
+                if (CompareTag("Player")) { // Skill cooldown UI for player
+                    SkillManager.instance.StartCooldown(skillNum, _timestamps[skillNum]);
+                }
 
                 if (OnSkillCasted != null) {
                     OnSkillCasted(); // Fire the skill casted event
