@@ -57,8 +57,13 @@ public class SkillManager : MonoBehaviour {
     /// <param name="skillCaster">The skill caster component of the local player</param>
     public void UpdateSkills(SkillCaster skillCaster) {
         for (int i = 0; i < _skillIcons.Length; i++) {
-            _skillIcons[i].skill = skillCaster.skills[i + 1];
-            _skillIcons[i].GetComponent<Image>().sprite = _skillIcons[i].skill.skillIcon;
+            _skillIcons[i].skill = skillCaster.skills[i + 1]; // Set skill reference
+            _skillIcons[i].GetComponent<Image>().sprite = _skillIcons[i].skill.skillIcon; // Set icon
+            _skillIcons[i].transform.Find("Keybind").GetComponent<Text>().text = SkillNumToString(i + 1); // Set keybind
+        }
+
+        if (Input.GetJoystickNames().Length > 0) {
+            AdjustControllerText();
         }
     }
 
@@ -69,5 +74,43 @@ public class SkillManager : MonoBehaviour {
     /// <param name="cooldownEndTime">The end time of the cooldown</param>
     public void StartCooldown(int skillNum, float cooldownEndTime) {
         _skillIcons[skillNum - 1].StartCooldown(cooldownEndTime);
+    }
+
+    /// <summary>
+    /// Converts a skill number to the appropriate keybind as a string.
+    /// </summary>
+    /// <param name="skillNum"></param>
+    private string SkillNumToString(int skillNum) {
+        bool controllerPluggedIn = Input.GetJoystickNames().Length > 0;
+        char joystick = '\u25C9';
+        char circle = '\u25EF';
+        char square = '\u25A2';
+        char triangle = '\u25B3';
+        switch (skillNum) {
+            case 1:
+                return controllerPluggedIn ? joystick.ToString() : "Q";
+            case 2:
+                return controllerPluggedIn ? circle.ToString() : "W";
+            case 3:
+                return controllerPluggedIn ? triangle.ToString() : "E";
+            case 4:
+                return controllerPluggedIn ? square.ToString() : "R";
+            default:
+                return null;
+        }
+    }
+
+    /// <summary>
+    /// Adjusts the keybind font for controllers.
+    /// </summary>
+    private void AdjustControllerText() {
+        _skillIcons[0].transform.Find("Keybind").GetComponent<Text>().fontSize = 64;
+        _skillIcons[0].transform.Find("Keybind").Translate(0f, 3f, 0f);
+        _skillIcons[1].transform.Find("Keybind").GetComponent<Text>().fontSize = 28;
+        _skillIcons[1].transform.Find("Keybind").GetComponent<Text>().color = Color.magenta;
+        _skillIcons[2].transform.Find("Keybind").GetComponent<Text>().fontSize = 50;
+        _skillIcons[2].transform.Find("Keybind").GetComponent<Text>().color = Color.green;
+        _skillIcons[3].transform.Find("Keybind").GetComponent<Text>().fontSize = 50;
+        _skillIcons[3].transform.Find("Keybind").GetComponent<Text>().color = Color.blue;
     }
 }
