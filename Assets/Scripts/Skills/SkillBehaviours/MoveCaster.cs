@@ -22,9 +22,10 @@ public class MoveCaster : SkillBehaviour {
     /// </summary>
     /// <param name="caster">The character to move</param>
     private IEnumerator Move(BaseCharacter caster) {
-        caster.animator.SetBool("Stop", true);
-        // Calculate direction
-        Vector3 direction = GetDirection(caster);
+        yield return new WaitForEndOfFrame(); // Give enough time for character to face the correct direction
+        caster.animator.SetBool("Dash", true);
+
+        Vector3 direction = caster.transform.forward;
 
         // Make sure that the character is looking in the correct direction
         caster.transform.LookAt(caster.transform.position + direction);
@@ -44,24 +45,6 @@ public class MoveCaster : SkillBehaviour {
 
         // Done moving
         caster.agent.ResetPath();
-        caster.animator.SetBool("Stop", false);
-    }
-
-    /// <summary>
-    /// Gets the direction of movement.
-    /// For mouse players, the direction will be towards the mouse cursor.
-    /// Otherwise, the direction will be the forward vector of the caster.
-    /// </summary>
-    /// <param name="caster">The character that casted this skill</param>
-    /// <returns>The direction to move</returns>
-    private Vector3 GetDirection(BaseCharacter caster) {
-        // Check if it's a mouse player
-        if (Input.GetJoystickNames().Length == 0) {
-            Vector3 clickedPoint = new Vector3();
-            if (PlayerCharacter.GetClickedPoint(out clickedPoint)) {
-                return (clickedPoint - caster.transform.position).normalized;
-            }
-        }
-        return caster.transform.forward;
+        caster.animator.SetBool("Dash", false);
     }
 }
