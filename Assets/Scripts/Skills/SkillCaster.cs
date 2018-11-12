@@ -80,7 +80,7 @@ public class SkillCaster : MonoBehaviour {
                 _timestamps[skillNum] = Time.time + skills[skillNum].cooldown;
                 _canCasts[skillNum] = false;
 
-                if (CompareTag("Player")) { // Skill cooldown UI for player
+                if (CompareTag("Player") && skillNum != 0) { // Skill cooldown UI for player, ignore basic attack
                     SkillManager.instance.StartCooldown(skillNum, _timestamps[skillNum]);
                 }
 
