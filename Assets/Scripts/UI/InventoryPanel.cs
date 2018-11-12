@@ -266,7 +266,10 @@ public class InventoryPanel : MonoBehaviour {
 	private void ShowItemDetails(ItemSlot slot) {
 		ItemBase item = _inventory.GetItem(slot);
 
+		GetGridSlot(_currentSelectSlot).SetBorderVisiblity(false);
 		GetGridSlot(slot).SetBorderVisiblity(true);
+
+		_currentSelectSlot = slot;
 
 		// display details
 		if (item != null) {
