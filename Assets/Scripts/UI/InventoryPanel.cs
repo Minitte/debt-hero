@@ -132,13 +132,6 @@ public class InventoryPanel : MonoBehaviour {
 			_mouseItemIcon.transform.position = Input.mousePosition;
 		}
 
-		InventoryControls();
-	}
-
-	/// <summary>
-	/// Key controls for inventory
-	/// </summary>
-	private void InventoryControls() {
 		if (_onCooldown) {
 			_cooldownTime += Time.deltaTime;
 
@@ -150,6 +143,13 @@ public class InventoryPanel : MonoBehaviour {
 			return;
 		}
 
+		NavControls();
+	}
+
+	/// <summary>
+	/// Navigation Key controls for inventory
+	/// </summary>
+	private void NavControls() {
 		// input
 		float vert = Input.GetAxis("Menu Vertical");
 		float horz = Input.GetAxis("Menu Horizontal");
@@ -179,6 +179,29 @@ public class InventoryPanel : MonoBehaviour {
 		}
 
 		GetGridSlot(_currentSelectSlot).SetBorderVisiblity(true);
+	}
+
+	/// <summary>
+	/// Inventory Action keys
+	/// </summary>
+	private void ActionControls() {
+		// input
+		float use = Input.GetAxis("Inventory Use");
+		float move = Input.GetAxis("Inventory Move");
+
+		if (use != 0) {
+			UseSlot(_currentSelectSlot);
+			_onCooldown = true;
+		}
+
+		if (_onCooldown) {
+			return;
+		}
+
+		if (move != 0) {
+			SelectSlot(_currentSelectSlot);
+			_onCooldown = true;
+		}
 	}
 
 	/// <summary>
