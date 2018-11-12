@@ -154,23 +154,31 @@ public class InventoryPanel : MonoBehaviour {
 		float vert = Input.GetAxis("Menu Vertical");
 		float horz = Input.GetAxis("Menu Horizontal");
 
-		// row col after
-		int rowAfter = horz == 0 ? 0 : (horz > 0 ? 1 : -1);
-		rowAfter += _currentSelectSlot.row;
+		GetGridSlot(_currentSelectSlot).SetBorderVisiblity(false);
 
-		// col inverted because positive is down
-		int colAfter = vert == 0 ? 0 : (vert > 0 ? -1 : 1);
-		colAfter += _currentSelectSlot.col;
+		// row
+		if (vert != 0) {
+			int rowAfter = vert == 0 ? 0 : (vert > 0 ? -1 : 1);
+			rowAfter += _currentSelectSlot.row;
 
-		if (rowAfter >= 0 && rowAfter < itemRows.Length) {
-			_currentSelectSlot.row = rowAfter;
-			_onCooldown = true;
+			if (rowAfter >= 0 && rowAfter < itemRows.Length) {
+				_currentSelectSlot.row = rowAfter;
+				_onCooldown = true;
+			}
 		}
 
-		if (colAfter >= 0 && colAfter < itemRows[0].items.Length) {
-			_currentSelectSlot.col = colAfter;
-			_onCooldown = true;
+		// col
+		if (horz != 0) {
+			int colAfter = horz == 0 ? 0 : (horz > 0 ? 1 : -1);
+			colAfter += _currentSelectSlot.col;
+
+			if (colAfter >= 0 && colAfter < itemRows[0].items.Length) {
+				_currentSelectSlot.col = colAfter;
+				_onCooldown = true;
+			}
 		}
+
+		GetGridSlot(_currentSelectSlot).SetBorderVisiblity(true);
 	}
 
 	/// <summary>
