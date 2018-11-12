@@ -108,48 +108,6 @@ NavMeshSettings:
     tileSize: 256
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &216593590
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4150377916626576, guid: 3e453d29d069a93469d8879056a24986, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4150377916626576, guid: 3e453d29d069a93469d8879056a24986, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4150377916626576, guid: 3e453d29d069a93469d8879056a24986, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4150377916626576, guid: 3e453d29d069a93469d8879056a24986, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4150377916626576, guid: 3e453d29d069a93469d8879056a24986, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4150377916626576, guid: 3e453d29d069a93469d8879056a24986, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4150377916626576, guid: 3e453d29d069a93469d8879056a24986, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4150377916626576, guid: 3e453d29d069a93469d8879056a24986, type: 2}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 3e453d29d069a93469d8879056a24986, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1 &328772280
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,16 +137,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pieceSet:
     fourWayPrefabs:
-    - {fileID: 1753329719130732, guid: e528a0200cf94ae49a960c2bbafce378, type: 2}
+    - {fileID: 1127290924826504, guid: 3e453d29d069a93469d8879056a24986, type: 2}
     threeWayPrefabs:
-    - {fileID: 1161285544021862, guid: 061032788996ec04a94ed3a2cfa90d2c, type: 2}
+    - {fileID: 1704115838637894, guid: 0cc064f851254aa4789bd821631b0707, type: 2}
     hallWayPrefabs:
-    - {fileID: 1021161248926408, guid: e4c986797aa0fbd449875fbedca1f83e, type: 2}
+    - {fileID: 1937679076961892, guid: 8f82ee024ae45c141a9302de2105d861, type: 2}
     cornerPrefabs:
-    - {fileID: 1521214287324476, guid: 0dea85e18ec350f47887a831a0290888, type: 2}
+    - {fileID: 1246096912546238, guid: fadcb960d39f8d64a851761510638317, type: 2}
     deadEndPrefabs:
-    - {fileID: 1420295469438676, guid: 646b4119d3cdbe9488f4c99090e8e23e, type: 2}
-    - {fileID: 1181379653251616, guid: a9afc0a9baa758b41b77e5dbe58a6cb7, type: 2}
+    - {fileID: 1292249673674078, guid: 378971f5f9689094f9343f72b9ec1bbe, type: 2}
     safeZonePrefabs:
     - {fileID: 1893807296134602, guid: 0279f3440e1b72b439bc8d8ff45c60ce, type: 2}
   roomSize: 24.9
