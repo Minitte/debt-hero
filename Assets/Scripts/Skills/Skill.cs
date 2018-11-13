@@ -62,6 +62,11 @@ public class Skill : ScriptableObject {
     public GameObject damagePrefab;
 
     /// <summary>
+    /// Prefab of the damage effect.
+    /// </summary>
+    public GameObject damageFX;
+
+    /// <summary>
     /// Multiplier for physical damage.
     /// </summary>
     public float physicalMultiplier = 1f;
@@ -112,9 +117,18 @@ public class Skill : ScriptableObject {
         // Activate the damage prefab if it exists
         if (damagePrefab != null) {
             GameObject damage = Instantiate(damagePrefab, caster.transform);
+
             switch (skillType) {
                 case SkillType.Melee:
+                    // Set the damage effect if it exists
+                    if (damageFX != null) {
+                        damage.GetComponent<Melee>().DamageFX = Instantiate(damageFX, damage.transform).GetComponent<ParticleSystem>();
+                    }
+                    
+                    // Activate the damage hitbox
                     damage.GetComponent<Melee>().Activate(caster.transform, this);
+
+                    // Play sound effect
                     if(soundFX != null) {
                         SoundManager.instance.PlaySound(GameObject.FindGameObjectWithTag("PlayerWeapon").GetComponent<AudioSource>(), soundFX);
                     }
