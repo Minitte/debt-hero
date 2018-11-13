@@ -12,7 +12,7 @@ public class SkillDisplayUI : MonoBehaviour {
 	/// <summary>
 	/// Skill's Icon
 	/// </summary>
-	public Image Icon;
+	public Image icon;
 
 	/// <summary>
 	/// Skill's name text

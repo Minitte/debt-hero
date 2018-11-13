@@ -6,7 +6,7 @@ using TMPro;
 
 public class CharacterStatsPanel : MonoBehaviour {
 
-	[Header("Text Values")]
+	[Header("Stats Values")]
 	
 	/// <summary>
 	/// Text representing HP
@@ -48,6 +48,10 @@ public class CharacterStatsPanel : MonoBehaviour {
 	/// </summary>
 	public TextMeshProUGUI expTextValue;
 
+	[Header("Skill")]
+
+	public SkillDisplayUI[] skillUI;
+
 	/// <summary>
 	/// Stats to display
 	/// </summary>
@@ -66,6 +70,19 @@ public class CharacterStatsPanel : MonoBehaviour {
 	/// </summary>
 	void OnEnable() {
 		UpdateTextValues();
+		UpdateSkillDisplays();
+	}
+
+	public void UpdateSkillDisplays() {
+		for (int i = 0; i < skillUI.Length; i++) {
+			SkillDisplayUI sui = skillUI[i]; 
+
+			Skill skill = SkillManager.instance._skillIcons[i].skill;
+			
+			sui.nameText.text = skill.name;
+			sui.descText.text = skill.skillDescription;
+			sui.icon.sprite = skill.skillIcon;
+		}
 	}
 
 	/// <summary>
