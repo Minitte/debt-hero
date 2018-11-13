@@ -29,6 +29,14 @@ public class SaveLoadManager : MonoBehaviour {
     /// </summary>
     private GameData gameData = new GameData();
 
+    public ItemSafeFormat itemSav;
+
+    TimeManager time;
+    CharacterInventory inv;
+    CharacterStats stats;
+
+    public GameDatabase gameDatabase;
+    ItemDatabase itemDatabase;
 
     /// <summary>
     /// Setting up the saveLoadManager variable.
@@ -37,14 +45,19 @@ public class SaveLoadManager : MonoBehaviour {
         if(saveLoadManager == null) {
             DontDestroyOnLoad(gameObject);
             saveLoadManager = this;
+        }else {
+            Destroy(gameObject);
         }
     }
-
+    public void Start() {
+        inv = playerManager.GetComponent<CharacterInventory>();
+        stats = playerManager.GetComponent<CharacterStats>();
+        time = eventManager.timeManager;
+        itemDatabase = gameDatabase.itemDatabase;
+        //Save();
+        Load();
+    }
     public void Save() {
-
-        CharacterStats stats = playerManager.GetComponent<CharacterStats>();
-        CharacterInventory inv = playerManager.GetComponent<CharacterInventory>();
-        TimeManager time = eventManager.GetComponent<TimeManager>();
 
         gameData.playerCurrenthp = stats.currentHp;
         gameData.playerMaxhp = stats.maxHp;
@@ -58,20 +71,22 @@ public class SaveLoadManager : MonoBehaviour {
         gameData.playerExp = stats.exp;
         gameData.playerLevel = stats.level;
         gameData.playerGold = inv.gold;
-       
+
         //Saves the player's Inventory.
         for (int i = 0; i < inv.itemRows.Length; i++) {
-            for (int j = 0; j < inv.itemRows[i].items.Length; i++) {
-                ItemSafeFormat itemSav = new ItemSafeFormat( inv.itemRows[i].items[j].properties.itemID
-                                                           , inv.itemRows[i].items[j].properties.quantity
-                                                           , new ItemSlot(i,j));
-                gameData.items.Add(itemSav);
+            for (int j = 0; j < inv.itemRows[i].items.Length; j++) {
+                if (inv.itemRows[i].items[j] != null) {
+                    itemSav = new ItemSafeFormat(inv.itemRows[i].items[j].properties.itemID
+                                                          , inv.itemRows[i].items[j].properties.quantity
+                                                          , new ItemSlot(i, j));
+                    gameData.items.Add(itemSav);
+                }
             }
         }
 
         gameData.currentTime = time.currentTime;
         gameData.currentHour = time.currentHour;
-        gameData.currentMinute = time.currentMinute;
+        gameData.currentMinute =time.currentMinute;
         gameData.days = time.days;
 
         BinaryFormatter bf = new BinaryFormatter();
@@ -81,14 +96,69 @@ public class SaveLoadManager : MonoBehaviour {
         fs.Close();
 
     }
+
+    public void Load() {
+       
+        int gameDataIndex = 0;
+        if (File.Exists(Application.persistentDataPath + "/save.dat")) {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream fs = File.Open(Application.persistentDataPath + "/save.dat", FileMode.Open, FileAccess.Read);
+
+            gameData = (GameData)bf.Deserialize(fs);
+            fs.Close();
+
+            stats.currentHp = gameData.playerCurrenthp;
+            stats.maxHp = gameData.playerMaxhp;
+            stats.currentMp = gameData.playerCurrentmp;
+            stats.maxMp = gameData.playerMaxmp;
+            stats.maxMp = gameData.playerCurrentmp;
+            stats.physAtk = gameData.playerPhysatk;
+            stats.physDef = gameData.playerPhysdef;
+            stats.magicAtk = gameData.playerMagicatk;
+            stats.magicDef = gameData.playerMagicdef;
+            stats.exp = gameData.playerExp;
+            stats.level = gameData.playerLevel;
+            inv.gold = gameData.playerGold;
+            time.currentTime = gameData.currentTime;
+            time.currentHour = gameData.currentHour;
+            time.currentMinute = gameData.currentMinute;
+            time.days = gameData.days;
+
+            for (int i = 0; i < inv.itemRows.Length; i++) {
+                for (int j = 0; j < inv.itemRows[i].items.Length; j++) {
+                    if (inv.itemRows[i].items[j] != null) {
+                        inv.itemRows[i].items[j] = itemDatabase.GetNewItem(gameData.items[gameDataIndex].id
+                                                                        , gameData.items[gameDataIndex].qty);
+                    }
+                    gameDataIndex++;
+                }
+            }
+            Debug.Log("CurrentHP " + gameData.playerCurrenthp);
+            Debug.Log("Max HP" + gameData.playerMaxhp);
+            Debug.Log("CurrentMana " + gameData.playerCurrentmp);
+            Debug.Log("Max Mana " + gameData.playerMaxmp);
+            Debug.Log("PhysAtk " + gameData.playerPhysatk);
+            Debug.Log("PhysDef" + gameData.playerPhysdef);
+            Debug.Log("MagicAtk" + gameData.playerMagicatk);
+            Debug.Log("MagicDef" + gameData.playerMagicdef);
+            Debug.Log("EXP" + gameData.playerExp);
+            Debug.Log("Level" + gameData.playerLevel);
+            Debug.Log("Gold" + gameData.playerGold);
+            Debug.Log("Time" + gameData.currentTime);
+            Debug.Log("Hour" + gameData.currentHour);
+            Debug.Log("Min" + gameData.currentMinute);
+            Debug.Log("Days" + gameData.days);
+        }
+    }
 	
 }
 
 /// <summary>
-/// Struct used to handle Player Inventory.
+/// class used to handle Player Inventory.
 /// </summary>
-public struct ItemSafeFormat {
+public class ItemSafeFormat {
 
+    
     public ItemSafeFormat(int id, int qty, ItemSlot slot) {
         this.id = id;
         this.qty = qty;
