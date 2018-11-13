@@ -54,10 +54,11 @@ public class SaveLoadManager : MonoBehaviour {
         stats = playerManager.GetComponent<CharacterStats>();
         time = eventManager.timeManager;
         itemDatabase = gameDatabase.itemDatabase;
-        //Save();
-        Load();
+        Save(0);
+        Load(0);
     }
-    public void Save() {
+
+    public void Save(int slot) {
 
         gameData.playerCurrenthp = stats.currentHp;
         gameData.playerMaxhp = stats.maxHp;
@@ -71,14 +72,16 @@ public class SaveLoadManager : MonoBehaviour {
         gameData.playerExp = stats.exp;
         gameData.playerLevel = stats.level;
         gameData.playerGold = inv.gold;
+       
+        gameData.items = new List<ItemSafeFormat>();
 
         //Saves the player's Inventory.
         for (int i = 0; i < inv.itemRows.Length; i++) {
             for (int j = 0; j < inv.itemRows[i].items.Length; j++) {
-                if (inv.itemRows[i].items[j] != null) {
-                    itemSav = new ItemSafeFormat(inv.itemRows[i].items[j].properties.itemID
-                                                          , inv.itemRows[i].items[j].properties.quantity
-                                                          , new ItemSlot(i, j));
+                ItemBase item = inv.itemRows[i].items[j];
+
+                if (item != null) {
+                    itemSav = new ItemSafeFormat(item.properties.itemID, item.properties.quantity, new ItemSlot(i, j));
                     gameData.items.Add(itemSav);
                 }
             }
@@ -88,19 +91,18 @@ public class SaveLoadManager : MonoBehaviour {
         gameData.currentHour = time.currentHour;
         gameData.currentMinute =time.currentMinute;
         gameData.days = time.days;
+        gameData.floorReached = GameState.floorReached;
 
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream fs = new FileStream(Application.persistentDataPath + "/save.dat", FileMode.OpenOrCreate);
+        FileStream fs = new FileStream(Application.persistentDataPath + "/save" + slot + ".dat", FileMode.OpenOrCreate);
 
         bf.Serialize(fs, gameData);
         fs.Close();
 
     }
 
-    public void Load() {
-       
-        int gameDataIndex = 0;
-        if (File.Exists(Application.persistentDataPath + "/save.dat")) {
+    public void Load(int slot) {
+        if (File.Exists(Application.persistentDataPath + "/save" + slot + ".dat")) {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream fs = File.Open(Application.persistentDataPath + "/save.dat", FileMode.Open, FileAccess.Read);
 
@@ -123,31 +125,13 @@ public class SaveLoadManager : MonoBehaviour {
             time.currentHour = gameData.currentHour;
             time.currentMinute = gameData.currentMinute;
             time.days = gameData.days;
-
-            for (int i = 0; i < inv.itemRows.Length; i++) {
-                for (int j = 0; j < inv.itemRows[i].items.Length; j++) {
-                    if (inv.itemRows[i].items[j] != null) {
-                        inv.itemRows[i].items[j] = itemDatabase.GetNewItem(gameData.items[gameDataIndex].id
-                                                                        , gameData.items[gameDataIndex].qty);
-                    }
-                    gameDataIndex++;
-                }
+            GameState.floorReached = gameData.floorReached;
+            foreach (ItemSafeFormat item in gameData.items) {
+                ItemSlot itemSlot = item.slot;
+                inv.itemRows[itemSlot.row].items[itemSlot.col] = itemDatabase.GetNewItem(item.id, item.qty);
             }
-            Debug.Log("CurrentHP " + gameData.playerCurrenthp);
-            Debug.Log("Max HP" + gameData.playerMaxhp);
-            Debug.Log("CurrentMana " + gameData.playerCurrentmp);
-            Debug.Log("Max Mana " + gameData.playerMaxmp);
-            Debug.Log("PhysAtk " + gameData.playerPhysatk);
-            Debug.Log("PhysDef" + gameData.playerPhysdef);
-            Debug.Log("MagicAtk" + gameData.playerMagicatk);
-            Debug.Log("MagicDef" + gameData.playerMagicdef);
-            Debug.Log("EXP" + gameData.playerExp);
-            Debug.Log("Level" + gameData.playerLevel);
-            Debug.Log("Gold" + gameData.playerGold);
-            Debug.Log("Time" + gameData.currentTime);
-            Debug.Log("Hour" + gameData.currentHour);
-            Debug.Log("Min" + gameData.currentMinute);
-            Debug.Log("Days" + gameData.days);
+
+            
         }
     }
 	
@@ -156,6 +140,7 @@ public class SaveLoadManager : MonoBehaviour {
 /// <summary>
 /// class used to handle Player Inventory.
 /// </summary>
+[Serializable]
 public class ItemSafeFormat {
 
     
@@ -265,6 +250,11 @@ public class GameData {
     /// The in-game Days.
     /// </summary>
     public int days;
+
+    /// <summary>
+    /// The Floor Reached.
+    /// </summary>
+    public int floorReached;
   
   
     

@@ -32,6 +32,8 @@ public class ItemDatabase : MonoBehaviour {
 
 		ItemBase item = Instantiate(_itemDict[id].itemPrefab.gameObject).GetComponent<ItemBase>();
 
+        item.properties.quantity = qty;
+
 		return item;	
 	}
 
