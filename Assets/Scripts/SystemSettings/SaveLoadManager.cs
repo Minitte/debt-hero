@@ -54,8 +54,8 @@ public class SaveLoadManager : MonoBehaviour {
         stats = playerManager.GetComponent<CharacterStats>();
         time = eventManager.timeManager;
         itemDatabase = gameDatabase.itemDatabase;
-        Save(0);
-        Load(0);
+        //Save(0);
+        //Load(0);
     }
 
     public void Save(int slot) {
