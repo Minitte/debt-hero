@@ -78,8 +78,10 @@ public class Melee : MonoBehaviour {
         _physAtkdamage = caster.GetComponent<BaseCharacter>().characterStats.physAtk * skill.physicalMultiplier;
         _magicAtkdamage = caster.GetComponent<BaseCharacter>().characterStats.magicAtk * skill.magicMultiplier;
         _skill = skill;
+
+        // Setup melee range
         transform.localScale *= skill.rangeMultiplier;
-        transform.localPosition = transform.localScale * 1.5f;
+        transform.localPosition = new Vector3(0f, transform.localScale.y, transform.localScale.z) * 1.5f;
         
         // Start the melee attack
         caster.GetComponent<BaseCharacter>().animator.SetTrigger("Attack"); // Play attack animation

@@ -35,12 +35,19 @@ public class InventoryPanel : MonoBehaviour {
 	/// </summary>
 	public Transform itemIconArea;
 
-	[Header("Items")]
+	[Header("Item Slots")]
 
 	/// <summary>
 	/// Rows of item ui slots
 	/// </summary>
 	public ItemRowUI[] itemRows;
+
+	[Header("Inventory Panel Settings")]
+
+	/// <summary>
+	/// Delay between slots
+	/// </summary>
+	public float slotDelay = 0.1f;
 
 	/// <summary>
 	/// array of item uis
@@ -53,9 +60,9 @@ public class InventoryPanel : MonoBehaviour {
 	private CharacterInventory _inventory;
 
 	/// <summary>
-	/// Currente selected item slot
+	/// Currente selected item slot for moving items
 	/// </summary>
-	private ItemSlot _currentSlot;
+	private ItemSlot _currentMoveSlot;
 
 	/// <summary>
 	/// mouse item icon
@@ -66,6 +73,21 @@ public class InventoryPanel : MonoBehaviour {
 	/// Item details icon
 	/// </summary>
 	private GameObject _itemDetailIcon;
+
+	/// <summary>
+	/// current hovered or selected slot 
+	/// </summary>
+	private ItemSlot _currentSelectSlot;
+
+	/// <summary>
+	/// Time for cool down
+	/// </summary>
+	private float _cooldownTime;
+
+	/// <summary>
+	/// cool down flag
+	/// </summary>
+	private bool _onCooldown;
 
 	/// <summary>
 	/// Start is called on the frame when a script is enabled just before
@@ -98,6 +120,8 @@ public class InventoryPanel : MonoBehaviour {
 		UpdateAllItemSlots();
 
 		ResetItemDetails(null);
+
+		_currentSelectSlot = new ItemSlot(0, 0);
 	}
 	
 	/// <summary>
@@ -106,6 +130,77 @@ public class InventoryPanel : MonoBehaviour {
 	void Update() {
 		if (_mouseItemIcon != null) {
 			_mouseItemIcon.transform.position = Input.mousePosition;
+		}
+
+		if (_onCooldown) {
+			_cooldownTime += Time.deltaTime;
+
+			if (_cooldownTime >= slotDelay) {
+				_onCooldown = false;
+				_cooldownTime = 0;
+			}
+
+			return;
+		}
+
+		NavControls();
+	}
+
+	/// <summary>
+	/// Navigation Key controls for inventory
+	/// </summary>
+	private void NavControls() {
+		// input
+		float vert = Input.GetAxis("Menu Vertical");
+		float horz = Input.GetAxis("Menu Horizontal");
+
+		GetGridSlot(_currentSelectSlot).SetBorderVisiblity(false);
+
+		// row
+		if (vert != 0) {
+			int rowAfter = vert == 0 ? 0 : (vert > 0 ? -1 : 1);
+			rowAfter += _currentSelectSlot.row;
+
+			if (rowAfter >= 0 && rowAfter < itemRows.Length) {
+				_currentSelectSlot.row = rowAfter;
+				_onCooldown = true;
+			}
+		}
+
+		// col
+		if (horz != 0) {
+			int colAfter = horz == 0 ? 0 : (horz > 0 ? 1 : -1);
+			colAfter += _currentSelectSlot.col;
+
+			if (colAfter >= 0 && colAfter < itemRows[0].items.Length) {
+				_currentSelectSlot.col = colAfter;
+				_onCooldown = true;
+			}
+		}
+
+		GetGridSlot(_currentSelectSlot).SetBorderVisiblity(true);
+	}
+
+	/// <summary>
+	/// Inventory Action keys
+	/// </summary>
+	private void ActionControls() {
+		// input
+		float use = Input.GetAxis("Inventory Use");
+		float move = Input.GetAxis("Inventory Move");
+
+		if (use != 0) {
+			UseSlot(_currentSelectSlot);
+			_onCooldown = true;
+		}
+
+		if (_onCooldown) {
+			return;
+		}
+
+		if (move != 0) {
+			SelectSlot(_currentSelectSlot);
+			_onCooldown = true;
 		}
 	}
 
@@ -119,13 +214,15 @@ public class InventoryPanel : MonoBehaviour {
 
 		goldText.text = _inventory.gold + "g";
 		UpdateAllItemSlots();
+
+		_currentSelectSlot = new ItemSlot(0, 0);
 	}
 
 	/// <summary>
 	/// This function is called when the behaviour becomes disabled or inactive.
 	/// </summary>
 	void OnDisable() {
-		_currentSlot = null;
+		_currentMoveSlot = null;
 
 		Destroy(_mouseItemIcon);
 
@@ -169,6 +266,11 @@ public class InventoryPanel : MonoBehaviour {
 	private void ShowItemDetails(ItemSlot slot) {
 		ItemBase item = _inventory.GetItem(slot);
 
+		GetGridSlot(_currentSelectSlot).SetBorderVisiblity(false);
+		GetGridSlot(slot).SetBorderVisiblity(true);
+
+		_currentSelectSlot = slot;
+
 		// display details
 		if (item != null) {
 			itemNameText.text = item.properties.name;
@@ -198,6 +300,12 @@ public class InventoryPanel : MonoBehaviour {
 			Destroy(_itemDetailIcon);
 			_itemDetailIcon = null;
 		}
+
+		if (slot != null) {
+			if (_currentMoveSlot == null || !_currentMoveSlot.Equals(slot)) {
+				GetGridSlot(slot).SetBorderVisiblity(false);
+			}
+		}
 	}
 
 	/// <summary>
@@ -206,12 +314,12 @@ public class InventoryPanel : MonoBehaviour {
 	/// <param name="slot"></param>
 	private void SelectSlot(ItemSlot slot) {
 		// begin item movement
-		if (_currentSlot == null) {
+		if (_currentMoveSlot == null) {
 			ItemBase item = _inventory.GetItem(slot);
 
 			// Drag icon and stuff if there is actually an item
 			if (item != null) {
-				_currentSlot = slot;
+				_currentMoveSlot = slot;
 
 				ItemUI iUI = Instantiate(item.itemUIPrefab).GetComponent<ItemUI>();
 
@@ -227,17 +335,21 @@ public class InventoryPanel : MonoBehaviour {
 				rt.anchorMax = new Vector2(0.5f, 0.5f);
 
 				Destroy(iUI.gameObject);
+
+				GetGridSlot(_currentMoveSlot).SetBorderFlash(true);
 			}
 		}
 
 		// end item movement
-		else if (_currentSlot != null) {
-			_inventory.SwapItems(_currentSlot, slot);
+		else if (_currentMoveSlot != null) {
+			_inventory.SwapItems(_currentMoveSlot, slot);
 
-			UpdateItemSlot(_currentSlot);
+			UpdateItemSlot(_currentMoveSlot);
 			UpdateItemSlot(slot);
 
-			_currentSlot = null;
+			GetGridSlot(_currentMoveSlot).SetBorderVisiblity(false);
+
+			_currentMoveSlot = null;
 
 			Destroy(_mouseItemIcon);
 

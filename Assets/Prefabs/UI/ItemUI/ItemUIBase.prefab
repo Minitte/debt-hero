@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stackText: {fileID: 114726969455574034}
-  icon: {fileID: 0}
+  icon: {fileID: 114138362084586394}
 --- !u!114 &114726969455574034
 MonoBehaviour:
   m_ObjectHideFlags: 1
