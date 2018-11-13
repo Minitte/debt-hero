@@ -2054,7 +2054,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dddad69dbde25440b4367c09bc80805, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieceSet:
+  pieceSets:
+  - name: Cave
     fourWayPrefabs:
     - {fileID: 1753329719130732, guid: e528a0200cf94ae49a960c2bbafce378, type: 2}
     threeWayPrefabs:
@@ -2066,6 +2067,19 @@ MonoBehaviour:
     deadEndPrefabs:
     - {fileID: 1420295469438676, guid: 646b4119d3cdbe9488f4c99090e8e23e, type: 2}
     - {fileID: 1181379653251616, guid: a9afc0a9baa758b41b77e5dbe58a6cb7, type: 2}
+    safeZonePrefabs:
+    - {fileID: 1893807296134602, guid: 0279f3440e1b72b439bc8d8ff45c60ce, type: 2}
+  - name: Forest
+    fourWayPrefabs:
+    - {fileID: 1127290924826504, guid: 3e453d29d069a93469d8879056a24986, type: 2}
+    threeWayPrefabs:
+    - {fileID: 1704115838637894, guid: 0cc064f851254aa4789bd821631b0707, type: 2}
+    hallWayPrefabs:
+    - {fileID: 1937679076961892, guid: 8f82ee024ae45c141a9302de2105d861, type: 2}
+    cornerPrefabs:
+    - {fileID: 1246096912546238, guid: fadcb960d39f8d64a851761510638317, type: 2}
+    deadEndPrefabs:
+    - {fileID: 1292249673674078, guid: 378971f5f9689094f9343f72b9ec1bbe, type: 2}
     safeZonePrefabs:
     - {fileID: 1893807296134602, guid: 0279f3440e1b72b439bc8d8ff45c60ce, type: 2}
   roomSize: 24.9

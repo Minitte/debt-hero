@@ -34,7 +34,7 @@ public class FloorGenerator : MonoBehaviour {
 	/// <summary>
 	/// A set of pieces for generating rooms
 	/// </summary>
-	public FloorPieceSet pieceSet;
+	public FloorPieceSet[] pieceSets;
 
 	[Header("Room Spec")]
 
@@ -148,7 +148,7 @@ public class FloorGenerator : MonoBehaviour {
 		entry.type = RoomEntry.RoomType.SAFE;
 		currentFloorParent.entrance = entry;
 
-		GameObject safeZone = Instantiate(pieceSet.GetRandomSafeZonePrefab(_rand), entry.transform);
+		GameObject safeZone = Instantiate(GetCurrentSet().GetRandomSafeZonePrefab(_rand), entry.transform);
 
 		safeZone.GetComponentInChildren<FloorExitTrigger>().TargetGenerator = this;
 
@@ -348,6 +348,8 @@ public class FloorGenerator : MonoBehaviour {
 
 			GameObject piece;
 
+			FloorPieceSet pieceSet = GetCurrentSet();
+
 			switch (numNeigbors) {
 				// dead end
 				case 1:
@@ -522,6 +524,16 @@ public class FloorGenerator : MonoBehaviour {
 		}
 
 		return closest;
+	}
+
+	/// <summary>
+	/// Gets the current floor set based on the floor number
+	/// </summary>
+	/// <returns></returns>
+	private FloorPieceSet GetCurrentSet() {
+		int index = GameState.currentFloor / 3;
+		index = index >= pieceSets.Length ? pieceSets.Length - 1 : index;
+		return pieceSets[index];
 	}
 
 	/// <summary>
