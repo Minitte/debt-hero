@@ -5,6 +5,11 @@ using UnityEngine;
 public class FloorPieceSet { 
 
     /// <summary>
+    /// Name of the floor piece set
+    /// </summary>
+    public string name;
+
+    /// <summary>
     /// An array of four way room prefabs. Multiple pieces can be added for variety 
     /// </summary>
     public GameObject[] fourWayPrefabs;
