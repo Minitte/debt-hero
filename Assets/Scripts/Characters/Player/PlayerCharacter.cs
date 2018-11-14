@@ -123,6 +123,7 @@ public class PlayerCharacter : BaseCharacter {
         bool castedSomething = false;
 
         HandleControllerMovement(); // Movement with left joystick
+        HandleControllerDashing();
 
         // Check if the player pressed or is holding the controller attack key
         if (Input.GetButtonDown("Basic Attack")) {
@@ -185,7 +186,7 @@ public class PlayerCharacter : BaseCharacter {
         float rightVertical = Input.GetAxis("Dash Vertical");
 
         // Check for skill casts
-        if ((rightHorizontal != 0f || rightVertical != 0f) && Input.GetButtonDown("Dash")) {
+        if ((rightHorizontal != 0f || rightVertical != 0f)) {
             if (skillCaster.Cast(1)) {
                 transform.LookAt(transform.position + new Vector3(rightHorizontal, 0f, rightVertical).normalized);
                 agent.ResetPath();
