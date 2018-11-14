@@ -989,8 +989,8 @@ MonoBehaviour:
     type: 2}
   exitPrefab: {fileID: 1649878235797518, guid: 118c76f53d8e73a458796c1cdd0aba45, type: 2}
   currentFloorParent: {fileID: 0}
-  entriesPerFrame: 1000
-  piecesPerFrame: 1000
+  entriesPerFrame: 5
+  piecesPerFrame: 5
 --- !u!4 &935837541
 Transform:
   m_ObjectHideFlags: 0
