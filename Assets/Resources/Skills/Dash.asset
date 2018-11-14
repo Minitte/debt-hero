@@ -19,6 +19,7 @@ MonoBehaviour:
   cooldown: 2
   manaCost: 0
   damagePrefab: {fileID: 0}
+  damageFX: {fileID: 0}
   physicalMultiplier: 1
   magicMultiplier: 1
   rangeMultiplier: 1
