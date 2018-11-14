@@ -15,6 +15,9 @@ public class TownManager : MonoBehaviour {
 
 		playerManager.CreatePlayer(true);
 
-		playerManager.localPlayer.GetComponent<NavMeshAgent>().Warp(new Vector3(0, 5, 0));
+		playerManager.localPlayer.GetComponent<NavMeshAgent>().Warp(gameObject.transform.position);
+
+        playerManager.localPlayer.transform.localScale = new Vector3(0.5f,0.5f,0.5f);
+
 	}
 }

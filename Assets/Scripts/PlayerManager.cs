@@ -117,13 +117,15 @@ public class PlayerManager : MonoBehaviour {
 			localPlayer = Instantiate(playerPrefab);
 			Camera.main.GetComponent<CopyTargetPosition>().target = localPlayer.transform;
 
-            // Load player's health bar
             GameObject hp = Instantiate(healthbar, GameObject.Find("Canvas").transform);
-            hp.GetComponent<PlayerResourceBars>().CharacterStats = GetComponent<CharacterStats>();
-            GetComponent<CharacterStats>().OnHealthChanged += hp.GetComponent<PlayerResourceBars>().UpdateHealth;
-            localPlayer.GetComponent<BaseCharacter>().skillCaster.OnSkillCasted += hp.GetComponent<PlayerResourceBars>().UpdateMana;
-            GetComponent<CharacterStats>().OnExpChanged += hp.GetComponent<PlayerResourceBars>().UpdateExp;
 
+            // Load player's health bar
+            if (hp != null) {
+                hp.GetComponent<PlayerResourceBars>().CharacterStats = GetComponent<CharacterStats>();
+                GetComponent<CharacterStats>().OnHealthChanged += hp.GetComponent<PlayerResourceBars>().UpdateHealth;
+                localPlayer.GetComponent<BaseCharacter>().skillCaster.OnSkillCasted += hp.GetComponent<PlayerResourceBars>().UpdateMana;
+                GetComponent<CharacterStats>().OnExpChanged += hp.GetComponent<PlayerResourceBars>().UpdateExp;
+            }
         }
     }
 
