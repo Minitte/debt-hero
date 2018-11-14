@@ -75,7 +75,7 @@ public class InGameMenuController : MonoBehaviour {
 	/// Update is called every frame, if the MonoBehaviour is enabled.
 	/// </summary>
 	void Update() {
-		float start = Input.GetAxis("Game Menu Open");
+		float start = Input.GetAxis("System Menu Open");
 
 		float menuDirection = Input.GetAxis("Switch Game Menu");
 
@@ -103,9 +103,9 @@ public class InGameMenuController : MonoBehaviour {
 			
 			if (start != 0) {
 				ToggleMenu();
-			} else if (menuDirection < 0) {
+			} else if (!_hideMenu && menuDirection < 0) {
 				PrevPanel();
-			} else if (menuDirection > 0) {
+			} else if (!_hideMenu && menuDirection > 0) {
 				NextPanel();
 			}
 		}
