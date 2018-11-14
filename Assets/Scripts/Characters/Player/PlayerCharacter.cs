@@ -38,11 +38,13 @@ public class PlayerCharacter : BaseCharacter {
         // Don't accept input if the character is casting something
         if (!animatorStatus.isCasting && _canMove) {
             // Handle player input
-            HandleMouseInput();
-            HandleKeyboardInput();
-
+            if (!controllerPluggedIn) {
+                HandleMouseInput();
+                HandleKeyboardInput();
+            }
+            
             // Handle controller input if plugged in
-            if (controllerPluggedIn) {
+            else {
                 HandleControllerInput();
             }
         }    
@@ -125,7 +127,6 @@ public class PlayerCharacter : BaseCharacter {
         // Check if the player pressed or is holding the controller attack key
         if (Input.GetButtonDown("Basic Attack")) {
             if (skillCaster.Cast(0)) {
-                agent.ResetPath();
                 castedSomething = true;
             }
         }

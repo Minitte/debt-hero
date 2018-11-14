@@ -55,6 +55,8 @@ MonoBehaviour:
   initalEntries:
   - itemPrefab: {fileID: 114804641259824942, guid: 5c9d6c97ff0ed8a4692506f923a16d5e,
       type: 2}
+  - itemPrefab: {fileID: 114840849298554960, guid: 20d307e747a196d469097206fe18313a,
+      type: 2}
 --- !u!114 &114653670696092660
 MonoBehaviour:
   m_ObjectHideFlags: 1
