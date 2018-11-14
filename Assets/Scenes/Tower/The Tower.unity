@@ -433,7 +433,8 @@ MonoBehaviour:
   - {fileID: 1923014447315438, guid: a44a5fd07967f4b4baf8fa14ccf261fb, type: 2}
   - {fileID: 1963224199353422, guid: 8f58fdba79fc3044faa7f81dcde993c5, type: 2}
   - {fileID: 1123000165227596, guid: 034e07b57c366124191fefffb343cd28, type: 2}
-  forestEnemyPrefabs: []
+  forestEnemyPrefabs:
+  - {fileID: 1963224199353422, guid: 8f58fdba79fc3044faa7f81dcde993c5, type: 2}
   fireEnemyPrefabs: []
   enemies: []
   spawnScalar: 0
