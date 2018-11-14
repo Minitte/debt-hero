@@ -587,7 +587,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skills:
-  - {fileID: 11400000, guid: 255ea0a30e876834fa02a67256bba01e, type: 2}
+  - {fileID: 11400000, guid: 70a229b48fb662b4d9e1492e4a90c7c6, type: 2}
 --- !u!114 &114551692451122868
 MonoBehaviour:
   m_ObjectHideFlags: 1

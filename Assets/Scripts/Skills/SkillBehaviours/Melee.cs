@@ -65,8 +65,7 @@ public class Melee : MonoBehaviour {
             } else {
                 // Check if the damage window is over
                 if (_collider.enabled && !_animatorStatus.canDealDamage) {
-                    _collider.enabled = false;
-                    Destroy(gameObject, 1f);
+                    Destroy(gameObject);
                 }
             }
         }

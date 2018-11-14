@@ -120,9 +120,13 @@ public class Skill : ScriptableObject {
 
             switch (skillType) {
                 case SkillType.Melee:
+                    Melee melee = damage.GetComponent<Melee>();
                     // Set the damage effect if it exists
                     if (damageFX != null) {
-                        damage.GetComponent<Melee>().DamageFX = Instantiate(damageFX, damage.transform).GetComponent<ParticleSystem>();
+                        ParticleSystem damagePS = Instantiate(damageFX, damage.transform).GetComponent<ParticleSystem>();
+                        ParticleSystem.MainModule module = damagePS.main;
+                        module.startSize = module.startSize.constant * rangeMultiplier; // Multiply particle width by range
+                        melee.DamageFX = damagePS;
                     }
                     
                     // Activate the damage hitbox

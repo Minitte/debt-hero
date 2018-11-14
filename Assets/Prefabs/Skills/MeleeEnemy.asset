@@ -20,6 +20,7 @@ MonoBehaviour:
   manaCost: 0
   damagePrefab: {fileID: 1102072977288342, guid: cc127540eb7d36346b2d6dbcb5074c19,
     type: 2}
+  damageFX: {fileID: 149006, guid: 60ef2ee03e4214845b2c330b6463f887, type: 2}
   physicalMultiplier: 1
   magicMultiplier: 1
   rangeMultiplier: 1
