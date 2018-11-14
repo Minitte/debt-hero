@@ -219,7 +219,7 @@ InputManager:
     descriptiveNegativeName: Player Menu Horizontal
     negativeButton: a
     positiveButton: d
-    altNegativeButton: joystick button 14
+    altNegativeButton: joystick button 13
     altPositiveButton: joystick button 11
     gravity: 1000
     dead: 0
