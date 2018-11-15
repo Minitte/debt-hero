@@ -15,22 +15,22 @@ public class ItemGridItemUI : MonoBehaviour, IPointerClickHandler, IPointerEnter
 	/// <summary>
 	/// left click event
 	/// </summary>
-	public static event ItemGridEvent OnLeftClick;
+	public event ItemGridEvent OnLeftClick;
 
 	/// <summary>
 	/// Right click event
 	/// </summary>
-	public static event ItemGridEvent OnRightClick;
+	public event ItemGridEvent OnRightClick;
 
 	/// <summary>
 	/// mouse hover over event
 	/// </summary>
-	public static event ItemGridEvent OnHoverOver;
+	public event ItemGridEvent OnHoverOver;
 
 	/// <summary>
 	/// mouse hover off event
 	/// </summary>
-	public static event ItemGridEvent OnHoverOff;
+	public event ItemGridEvent OnHoverOff;
 
 	/// <summary>
 	/// row col slot of this

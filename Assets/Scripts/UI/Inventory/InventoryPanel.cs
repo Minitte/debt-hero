@@ -35,6 +35,11 @@ public class InventoryPanel : MonoBehaviour {
 	/// </summary>
 	public Transform itemIconArea;
 
+	/// <summary>
+	/// Item value/worth in gold
+	/// </summary>
+	public TextMeshProUGUI itemWorthText;
+
 	[Header("Item Slots")]
 
 	/// <summary>
@@ -57,7 +62,7 @@ public class InventoryPanel : MonoBehaviour {
 	/// <summary>
 	/// target inventory to show
 	/// </summary>
-	private CharacterInventory _inventory;
+	protected CharacterInventory _inventory;
 
 	/// <summary>
 	/// Currente selected item slot for moving items
@@ -93,27 +98,33 @@ public class InventoryPanel : MonoBehaviour {
 	/// Start is called on the frame when a script is enabled just before
 	/// any of the Update methods is called the first time.
 	/// </summary>
-	void Start() {
-		_inventory = PlayerManager.instance.GetComponent<CharacterInventory>();
+	public void Start() {
+		if (_inventory == null) {
+			_inventory = PlayerManager.instance.GetComponent<CharacterInventory>();
+		}
 
 		_items = new ItemUI[itemRows.Length, itemRows[0].items.Length];
 
 		_inventory.OnItemAdded += UpdateItemSlot;
 
-		ItemGridItemUI.OnLeftClick += SelectSlot;
-
-		ItemGridItemUI.OnRightClick += UseSlot;
-
-		ItemGridItemUI.OnHoverOver += ShowItemDetails;
-
-		ItemGridItemUI.OnHoverOff += ResetItemDetails;
-
 		// assign slot references
-
 		for (int row = 0; row < itemRows.Length; row++) {
 			for(int col = 0; col < itemRows[0].items.Length; col++) {
 				ItemSlot slot = new ItemSlot(row, col);
-				GetGridSlot(slot).slot = slot;
+
+				ItemGridItemUI igiu = GetGridSlot(slot);
+
+				// assign slot
+				igiu.slot = slot;
+
+				// setup event listeners
+				igiu.OnLeftClick += SelectSlot;
+
+				igiu.OnRightClick += UseSlot;
+
+				igiu.OnHoverOver += ShowItemDetails;
+
+				igiu.OnHoverOff += ResetItemDetails;
 			}
 		}
 
@@ -122,6 +133,10 @@ public class InventoryPanel : MonoBehaviour {
 		ResetItemDetails(null);
 
 		_currentSelectSlot = new ItemSlot(0, 0);
+
+		if (itemWorthText == null) {
+			Debug.Log("itemWorthText is missing/null! Updates will ignore itemWorthText.");
+		}
 	}
 	
 	/// <summary>
@@ -212,7 +227,7 @@ public class InventoryPanel : MonoBehaviour {
 			return;
 		}
 
-		goldText.text = _inventory.gold + "g";
+		UpdateGoldText();
 		UpdateAllItemSlots();
 
 		_currentSelectSlot = new ItemSlot(0, 0);
@@ -249,7 +264,7 @@ public class InventoryPanel : MonoBehaviour {
 	/// Uses the item in the slot
 	/// </summary>
 	/// <param name="slot"></param>
-	private void UseSlot(ItemSlot slot) {
+	protected virtual void UseSlot(ItemSlot slot) {
 		ItemBase item = _inventory.GetItem(slot);
 
 		if (item != null) {
@@ -263,7 +278,7 @@ public class InventoryPanel : MonoBehaviour {
 	/// Shows the item details in the slot if any
 	/// </summary>
 	/// <param name="slot"></param>
-	private void ShowItemDetails(ItemSlot slot) {
+	protected void ShowItemDetails(ItemSlot slot) {
 		ItemBase item = _inventory.GetItem(slot);
 
 		GetGridSlot(_currentSelectSlot).SetBorderVisiblity(false);
@@ -271,11 +286,17 @@ public class InventoryPanel : MonoBehaviour {
 
 		_currentSelectSlot = slot;
 
+		ResetItemDetails();
+
 		// display details
 		if (item != null) {
 			itemNameText.text = item.properties.name;
 			itemDescText.text = item.properties.description;
 			itemQtyText.text = "x " + item.properties.quantity;
+
+			if (itemWorthText != null) {
+				itemWorthText.text = item.properties.value + "";
+			}
 
 			ItemUI iUI = Instantiate(item.itemUIPrefab).GetComponent<ItemUI>();
 
@@ -290,11 +311,15 @@ public class InventoryPanel : MonoBehaviour {
 	/// <summary>
 	/// Resets the item details area to blank
 	/// </summary>
-	/// <param name="slot">Unused. Satifies delegate template</param>
-	private void ResetItemDetails(ItemSlot slot) {
+	/// <param name="slot">Unused and optional. Satifies delegate template</param>
+	protected void ResetItemDetails(ItemSlot slot = null) {
 		itemNameText.text = "";
 		itemDescText.text = "";
 		itemQtyText.text = "";
+
+		if (itemWorthText) {
+			itemWorthText.text = "";
+		}
 
 		if (_itemDetailIcon != null) {
 			Destroy(_itemDetailIcon);
@@ -312,7 +337,7 @@ public class InventoryPanel : MonoBehaviour {
 	/// Selects the item slot for action
 	/// </summary>
 	/// <param name="slot"></param>
-	private void SelectSlot(ItemSlot slot) {
+	protected virtual void SelectSlot(ItemSlot slot) {
 		// begin item movement
 		if (_currentMoveSlot == null) {
 			ItemBase item = _inventory.GetItem(slot);
@@ -358,10 +383,17 @@ public class InventoryPanel : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Updates gold text
+	/// </summary>
+	public void UpdateGoldText() {
+		goldText.text = _inventory.gold + "g";
+	}
+
+	/// <summary>
 	/// Adds an item from inventory in the same slot to the display grid
 	/// </summary>
 	/// <param name="slot"></param>
-	private void UpdateItemSlot(ItemSlot slot) {
+	public void UpdateItemSlot(ItemSlot slot) {
 		ItemBase item = _inventory.GetItem(slot);
 
 		ItemUI itemUI = _items[slot.row, slot.col];

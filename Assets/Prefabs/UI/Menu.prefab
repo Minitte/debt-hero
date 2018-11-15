@@ -402,7 +402,7 @@ GameObject:
   - component: {fileID: 224443159118892580}
   - component: {fileID: 222917496557729226}
   - component: {fileID: 114711829380709364}
-  - component: {fileID: 114902037977697916}
+  - component: {fileID: 114099555286314452}
   m_Layer: 5
   m_Name: Inventory Panel
   m_TagString: Untagged
@@ -4180,6 +4180,60 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114099555286314452
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1142139238306594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a371e38f5ccde044b0e5e0f2bf82fe8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  goldText: {fileID: 114184341261243390}
+  itemNameText: {fileID: 114308060816725420}
+  itemDescText: {fileID: 114993953762747152}
+  itemQtyText: {fileID: 114582304840313746}
+  itemIconArea: {fileID: 224622921558572556}
+  itemWorthText: {fileID: 0}
+  itemRows:
+  - items:
+    - {fileID: 114762661880511328}
+    - {fileID: 114032573185956744}
+    - {fileID: 114989098367731470}
+    - {fileID: 114728543767621172}
+    - {fileID: 114110643892831442}
+    - {fileID: 114625068070587124}
+  - items:
+    - {fileID: 114965186157446904}
+    - {fileID: 114106173185787568}
+    - {fileID: 114301302833198306}
+    - {fileID: 114107042990471944}
+    - {fileID: 114102660995886732}
+    - {fileID: 114979588368069444}
+  - items:
+    - {fileID: 114225981866781192}
+    - {fileID: 114294466197342210}
+    - {fileID: 114296089593298992}
+    - {fileID: 114203374494935928}
+    - {fileID: 114967350780469068}
+    - {fileID: 114728114359663628}
+  - items:
+    - {fileID: 114834303735171426}
+    - {fileID: 114240436167936342}
+    - {fileID: 114004594381737026}
+    - {fileID: 114698405126230832}
+    - {fileID: 114892640547130724}
+    - {fileID: 114391606969525224}
+  - items:
+    - {fileID: 114155976747558906}
+    - {fileID: 114890590432213168}
+    - {fileID: 114614001441725336}
+    - {fileID: 114103187569665876}
+    - {fileID: 114641834320305140}
+    - {fileID: 114702638963140906}
+  slotDelay: 0.1
 --- !u!114 &114099813813544252
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -10477,59 +10531,6 @@ MonoBehaviour:
   slot:
     row: 0
     col: 0
---- !u!114 &114902037977697916
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1142139238306594}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a371e38f5ccde044b0e5e0f2bf82fe8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  goldText: {fileID: 114184341261243390}
-  itemNameText: {fileID: 114308060816725420}
-  itemDescText: {fileID: 114993953762747152}
-  itemQtyText: {fileID: 114582304840313746}
-  itemIconArea: {fileID: 224622921558572556}
-  itemRows:
-  - items:
-    - {fileID: 114762661880511328}
-    - {fileID: 114032573185956744}
-    - {fileID: 114989098367731470}
-    - {fileID: 114728543767621172}
-    - {fileID: 114110643892831442}
-    - {fileID: 114625068070587124}
-  - items:
-    - {fileID: 114965186157446904}
-    - {fileID: 114106173185787568}
-    - {fileID: 114301302833198306}
-    - {fileID: 114107042990471944}
-    - {fileID: 114102660995886732}
-    - {fileID: 114979588368069444}
-  - items:
-    - {fileID: 114225981866781192}
-    - {fileID: 114294466197342210}
-    - {fileID: 114296089593298992}
-    - {fileID: 114203374494935928}
-    - {fileID: 114967350780469068}
-    - {fileID: 114728114359663628}
-  - items:
-    - {fileID: 114834303735171426}
-    - {fileID: 114240436167936342}
-    - {fileID: 114004594381737026}
-    - {fileID: 114698405126230832}
-    - {fileID: 114892640547130724}
-    - {fileID: 114391606969525224}
-  - items:
-    - {fileID: 114155976747558906}
-    - {fileID: 114890590432213168}
-    - {fileID: 114614001441725336}
-    - {fileID: 114103187569665876}
-    - {fileID: 114641834320305140}
-    - {fileID: 114702638963140906}
-  slotDelay: 0.1
 --- !u!114 &114903328548171094
 MonoBehaviour:
   m_ObjectHideFlags: 1
