@@ -94,26 +94,32 @@ public class InventoryPanel : MonoBehaviour {
 	/// any of the Update methods is called the first time.
 	/// </summary>
 	public void Start() {
-		_inventory = PlayerManager.instance.GetComponent<CharacterInventory>();
+		if (_inventory == null) {
+			_inventory = PlayerManager.instance.GetComponent<CharacterInventory>();
+		}
 
 		_items = new ItemUI[itemRows.Length, itemRows[0].items.Length];
 
 		_inventory.OnItemAdded += UpdateItemSlot;
 
-		ItemGridItemUI.OnLeftClick += SelectSlot;
-
-		ItemGridItemUI.OnRightClick += UseSlot;
-
-		ItemGridItemUI.OnHoverOver += ShowItemDetails;
-
-		ItemGridItemUI.OnHoverOff += ResetItemDetails;
-
 		// assign slot references
-
 		for (int row = 0; row < itemRows.Length; row++) {
 			for(int col = 0; col < itemRows[0].items.Length; col++) {
 				ItemSlot slot = new ItemSlot(row, col);
-				GetGridSlot(slot).slot = slot;
+
+				ItemGridItemUI igiu = GetGridSlot(slot);
+
+				// assign slot
+				igiu.slot = slot;
+
+				// setup event listeners
+				igiu.OnLeftClick += SelectSlot;
+
+				igiu.OnRightClick += UseSlot;
+
+				igiu.OnHoverOver += ShowItemDetails;
+
+				igiu.OnHoverOff += ResetItemDetails;
 			}
 		}
 
@@ -314,7 +320,7 @@ public class InventoryPanel : MonoBehaviour {
 	/// Selects the item slot for action
 	/// </summary>
 	/// <param name="slot"></param>
-	private void SelectSlot(ItemSlot slot) {
+	protected virtual void SelectSlot(ItemSlot slot) {
 		// begin item movement
 		if (_currentMoveSlot == null) {
 			ItemBase item = _inventory.GetItem(slot);
