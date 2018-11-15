@@ -13,17 +13,13 @@ public class DialogManager : MonoBehaviour {
     /// </summary>
     public Text dialogText;
 
-
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    /// <summary>
+    /// Start is called on the frame when a script is enabled just before
+    /// any of the Update methods is called the first time.
+    /// </summary>
+    void Start() {
+        ToggleDialog(false);
+    }
 
     /// <summary>
     /// Read Lines of dialog.
