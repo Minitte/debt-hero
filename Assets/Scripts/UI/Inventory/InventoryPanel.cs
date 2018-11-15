@@ -35,6 +35,8 @@ public class InventoryPanel : MonoBehaviour {
 	/// </summary>
 	public Transform itemIconArea;
 
+	public TextMeshProUGUI itemWorthText;
+
 	[Header("Item Slots")]
 
 	/// <summary>
@@ -284,6 +286,7 @@ public class InventoryPanel : MonoBehaviour {
 			itemNameText.text = item.properties.name;
 			itemDescText.text = item.properties.description;
 			itemQtyText.text = "x " + item.properties.quantity;
+			itemWorthText.text = item.properties.value + "";
 
 			ItemUI iUI = Instantiate(item.itemUIPrefab).GetComponent<ItemUI>();
 
@@ -303,6 +306,7 @@ public class InventoryPanel : MonoBehaviour {
 		itemNameText.text = "";
 		itemDescText.text = "";
 		itemQtyText.text = "";
+		itemWorthText.text = "";
 
 		if (_itemDetailIcon != null) {
 			Destroy(_itemDetailIcon);
