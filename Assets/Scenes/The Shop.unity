@@ -445,6 +445,49 @@ Transform:
   m_PrefabParentObject: {fileID: 4917702745813754, guid: 3086d1ca46372d54591520f5471c92c0,
     type: 2}
   m_PrefabInternal: {fileID: 210421043}
+--- !u!1 &220144324
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 220144325}
+  - component: {fileID: 220144326}
+  m_Layer: 0
+  m_Name: Basic Potion Drop
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &220144325
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 220144324}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1015676354}
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &220144326
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 220144324}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.35
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: -0.1, z: 0}
 --- !u!1001 &347694331
 Prefab:
   m_ObjectHideFlags: 0
@@ -3290,6 +3333,76 @@ MonoBehaviour:
   m_VoxelSize: 0.16666667
   m_BuildHeightMesh: 0
   m_NavMeshData: {fileID: 23800000, guid: 1fd5bb4ffd9391449925b11de67e78e5, type: 2}
+--- !u!1001 &1015676353
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 220144325}
+    m_Modifications:
+    - target: {fileID: 431344, guid: 2664a0678955f48169affb1ef7028159, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 431344, guid: 2664a0678955f48169affb1ef7028159, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 431344, guid: 2664a0678955f48169affb1ef7028159, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 431344, guid: 2664a0678955f48169affb1ef7028159, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 431344, guid: 2664a0678955f48169affb1ef7028159, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 431344, guid: 2664a0678955f48169affb1ef7028159, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 431344, guid: 2664a0678955f48169affb1ef7028159, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 431344, guid: 2664a0678955f48169affb1ef7028159, type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 431344, guid: 2664a0678955f48169affb1ef7028159, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 431344, guid: 2664a0678955f48169affb1ef7028159, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 431344, guid: 2664a0678955f48169affb1ef7028159, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 175268, guid: 2664a0678955f48169affb1ef7028159, type: 2}
+      propertyPath: m_Name
+      value: Potion Model
+      objectReference: {fileID: 0}
+    - target: {fileID: 2332280, guid: 2664a0678955f48169affb1ef7028159, type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6871e28f73be94cc2ad06ea1d1c11d11, type: 2}
+    - target: {fileID: 180832, guid: 2664a0678955f48169affb1ef7028159, type: 2}
+      propertyPath: m_Name
+      value: Fill
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 2664a0678955f48169affb1ef7028159, type: 2}
+  m_IsPrefabParent: 0
+--- !u!4 &1015676354 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 431344, guid: 2664a0678955f48169affb1ef7028159, type: 2}
+  m_PrefabInternal: {fileID: 1015676353}
 --- !u!1 &1081235064
 GameObject:
   m_ObjectHideFlags: 0
