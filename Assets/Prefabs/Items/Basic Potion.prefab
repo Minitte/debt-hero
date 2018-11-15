@@ -60,7 +60,7 @@ MonoBehaviour:
     destoryOnNone: 1
     disposable: 1
     usable: 1
-    value: 0
+    value: 20
     quantity: 1
   itemUIPrefab: {fileID: 114272368215147736, guid: 5e0e4f946765d2240a5e733dff299f2e,
     type: 2}
