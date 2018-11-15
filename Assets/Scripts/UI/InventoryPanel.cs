@@ -57,7 +57,7 @@ public class InventoryPanel : MonoBehaviour {
 	/// <summary>
 	/// target inventory to show
 	/// </summary>
-	private CharacterInventory _inventory;
+	protected CharacterInventory _inventory;
 
 	/// <summary>
 	/// Currente selected item slot for moving items
@@ -93,7 +93,7 @@ public class InventoryPanel : MonoBehaviour {
 	/// Start is called on the frame when a script is enabled just before
 	/// any of the Update methods is called the first time.
 	/// </summary>
-	void Start() {
+	public void Start() {
 		_inventory = PlayerManager.instance.GetComponent<CharacterInventory>();
 
 		_items = new ItemUI[itemRows.Length, itemRows[0].items.Length];
@@ -212,7 +212,7 @@ public class InventoryPanel : MonoBehaviour {
 			return;
 		}
 
-		goldText.text = _inventory.gold + "g";
+		UpdateGoldText();
 		UpdateAllItemSlots();
 
 		_currentSelectSlot = new ItemSlot(0, 0);
@@ -249,7 +249,7 @@ public class InventoryPanel : MonoBehaviour {
 	/// Uses the item in the slot
 	/// </summary>
 	/// <param name="slot"></param>
-	private void UseSlot(ItemSlot slot) {
+	protected virtual void UseSlot(ItemSlot slot) {
 		ItemBase item = _inventory.GetItem(slot);
 
 		if (item != null) {
@@ -263,13 +263,15 @@ public class InventoryPanel : MonoBehaviour {
 	/// Shows the item details in the slot if any
 	/// </summary>
 	/// <param name="slot"></param>
-	private void ShowItemDetails(ItemSlot slot) {
+	protected void ShowItemDetails(ItemSlot slot) {
 		ItemBase item = _inventory.GetItem(slot);
 
 		GetGridSlot(_currentSelectSlot).SetBorderVisiblity(false);
 		GetGridSlot(slot).SetBorderVisiblity(true);
 
 		_currentSelectSlot = slot;
+
+		ResetItemDetails();
 
 		// display details
 		if (item != null) {
@@ -290,8 +292,8 @@ public class InventoryPanel : MonoBehaviour {
 	/// <summary>
 	/// Resets the item details area to blank
 	/// </summary>
-	/// <param name="slot">Unused. Satifies delegate template</param>
-	private void ResetItemDetails(ItemSlot slot) {
+	/// <param name="slot">Unused and optional. Satifies delegate template</param>
+	protected void ResetItemDetails(ItemSlot slot = null) {
 		itemNameText.text = "";
 		itemDescText.text = "";
 		itemQtyText.text = "";
@@ -358,10 +360,17 @@ public class InventoryPanel : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Updates gold text
+	/// </summary>
+	public void UpdateGoldText() {
+		goldText.text = _inventory.gold + "g";
+	}
+
+	/// <summary>
 	/// Adds an item from inventory in the same slot to the display grid
 	/// </summary>
 	/// <param name="slot"></param>
-	private void UpdateItemSlot(ItemSlot slot) {
+	public void UpdateItemSlot(ItemSlot slot) {
 		ItemBase item = _inventory.GetItem(slot);
 
 		ItemUI itemUI = _items[slot.row, slot.col];
