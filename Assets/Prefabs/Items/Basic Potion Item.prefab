@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4325447408712294}
   - component: {fileID: 114804641259824942}
   m_Layer: 0
-  m_Name: Basic Potion
+  m_Name: Basic Potion Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

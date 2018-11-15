@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 54816235265528368}
   - component: {fileID: 65736522856693060}
   m_Layer: 13
-  m_Name: Gold
+  m_Name: Gold Drop
   m_TagString: Drop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
