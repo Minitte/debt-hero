@@ -102,7 +102,14 @@ public class InGameMenuController : MonoBehaviour {
 			_MenuKeyDown = true;
 			
 			if (start != 0) {
-				ToggleMenu();
+
+				// don't open menu on shop or dialog
+				if (GameState.currentState == GameState.MENU_INGAME ||
+					GameState.currentState == GameState.PLAYING) {
+						Debug.Log(GameState.currentState);
+					ToggleMenu();
+				}
+
 			} else if (!_hideMenu && menuDirection < 0) {
 				PrevPanel();
 			} else if (!_hideMenu && menuDirection > 0) {
@@ -130,6 +137,8 @@ public class InGameMenuController : MonoBehaviour {
 	public void OpenMenu() {
 		_hideMenu = false;
 
+		GameState.SetState(GameState.MENU_INGAME);
+
 		ShowPanel(_currentIndex);
 
 		nextButton.gameObject.SetActive(true);
@@ -147,6 +156,8 @@ public class InGameMenuController : MonoBehaviour {
 		_hideMenu = true;
 
 		ShowPanel(-1);
+
+		GameState.SetState(GameState.PLAYING);
 
 		nextButton.gameObject.SetActive(false);
 		prevButton.gameObject.SetActive(false);

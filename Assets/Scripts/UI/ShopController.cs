@@ -11,7 +11,15 @@ public class ShopController : MonoBehaviour {
 		float closeShop = Input.GetAxis("System Menu Open");
 		
 		if (closeShop != 0) {
+			GameState.SetState(GameState.PLAYING);
 			this.gameObject.SetActive(false);
 		}
+	}
+
+	/// <summary>
+	/// This function is called when the object becomes enabled and active.
+	/// </summary>
+	void OnEnable() {
+		GameState.SetState(GameState.MENU_SHOP);
 	}
 }

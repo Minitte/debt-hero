@@ -94,7 +94,7 @@ public class Dialog : MonoBehaviour {
             else {
                 float nextLineInput = Input.GetAxis("Dialog Start");
 
-                if (nextLineInput != 0 && !_blocked) {
+                if (nextLineInput != 0 && !_blocked && !GameState.InAnyUIState()) {
                     StartDialog();
                 }
             }
@@ -125,6 +125,8 @@ public class Dialog : MonoBehaviour {
         _blocked = true;
         _cooldown = true;
 
+        GameState.SetState(GameState.DIALOG);
+
         dialogManager.ReadDialog(lines[_lineIndex]);
     }
 
@@ -143,9 +145,11 @@ public class Dialog : MonoBehaviour {
     }
 
     /// <summary>
-    /// Ends the dialog
+    /// Ends the dialog and triggers the OnEndOfDialog event
     /// </summary>
     public void EndDialog() {
+
+        GameState.SetState(GameState.PLAYING);
 
         if (OnEndOfDialog != null) {
             OnEndOfDialog();
@@ -158,10 +162,23 @@ public class Dialog : MonoBehaviour {
         dialogManager.ToggleDialog(false);
     }
 
+    /// <summary>
+    /// Ends the dialog but does not trigger the OnEndOfDialog event
+    /// </summary>
+    public void LeaveDialog() {
+         GameState.SetState(GameState.PLAYING);
+
+        _dialogRunning = false;
+        _lineIndex = 0;
+        // _currentDialogIndex = -1;
+
+        dialogManager.ToggleDialog(false);
+    }
+
     //Close dialog when player leaves area.
     public void OnTriggerExit(Collider other) {
        if(other.tag == "Player") {
-            dialogManager.CloseDialog();
+            LeaveDialog();
             _inRange = false;
             _blocked = false;
         }
