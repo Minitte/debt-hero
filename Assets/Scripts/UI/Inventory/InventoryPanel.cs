@@ -35,6 +35,9 @@ public class InventoryPanel : MonoBehaviour {
 	/// </summary>
 	public Transform itemIconArea;
 
+	/// <summary>
+	/// Item value/worth in gold
+	/// </summary>
 	public TextMeshProUGUI itemWorthText;
 
 	[Header("Item Slots")]
@@ -130,6 +133,10 @@ public class InventoryPanel : MonoBehaviour {
 		ResetItemDetails(null);
 
 		_currentSelectSlot = new ItemSlot(0, 0);
+
+		if (itemWorthText == null) {
+			Debug.Log("itemWorthText is missing/null! Updates will ignore itemWorthText.");
+		}
 	}
 	
 	/// <summary>
@@ -286,7 +293,10 @@ public class InventoryPanel : MonoBehaviour {
 			itemNameText.text = item.properties.name;
 			itemDescText.text = item.properties.description;
 			itemQtyText.text = "x " + item.properties.quantity;
-			itemWorthText.text = item.properties.value + "";
+
+			if (itemWorthText != null) {
+				itemWorthText.text = item.properties.value + "";
+			}
 
 			ItemUI iUI = Instantiate(item.itemUIPrefab).GetComponent<ItemUI>();
 
@@ -306,7 +316,10 @@ public class InventoryPanel : MonoBehaviour {
 		itemNameText.text = "";
 		itemDescText.text = "";
 		itemQtyText.text = "";
-		itemWorthText.text = "";
+
+		if (itemWorthText) {
+			itemWorthText.text = "";
+		}
 
 		if (_itemDetailIcon != null) {
 			Destroy(_itemDetailIcon);
