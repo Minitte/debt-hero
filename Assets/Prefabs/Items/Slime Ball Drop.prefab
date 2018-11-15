@@ -22,11 +22,10 @@ GameObject:
   - component: {fileID: 33220004152907352}
   - component: {fileID: 23772304911343750}
   - component: {fileID: 65085827079910076}
-  - component: {fileID: 114840849298554960}
   - component: {fileID: 54590760411635064}
   - component: {fileID: 114455150256924946}
   m_Layer: 13
-  m_Name: SlimeBall
+  m_Name: Slime Ball Drop
   m_TagString: Drop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -122,28 +121,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5fd9eb0b8a1fe34f8d572caccb23111, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114840849298554960
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1706421576795776}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3a4f61d9ed543849b5a0439dc519b81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  properties:
-    itemID: 1
-    name: Slime Ball
-    description: A piece of a slime.
-    type: 0
-    stackable: 1
-    destoryOnNone: 1
-    disposable: 1
-    usable: 0
-    value: 10
-    quantity: 1
-  itemUIPrefab: {fileID: 114431547519456466, guid: 317b32ef3abe1a44388354f495b48567,
+  itemPrefabToDrop: {fileID: 114406899321851676, guid: 3086d1ca46372d54591520f5471c92c0,
     type: 2}
-  owner: {fileID: 0}
+  qty: 0
