@@ -62,7 +62,7 @@ MonoBehaviour:
     usable: 1
     value: 200
     quantity: 1
-  itemUIPrefab: {fileID: 114272368215147736, guid: 5e0e4f946765d2240a5e733dff299f2e,
+  itemUIPrefab: {fileID: 114973478400538414, guid: 045f8de3186d354488b7dcb1c14ce37a,
     type: 2}
   owner: {fileID: 0}
   HealthRecovery: 0

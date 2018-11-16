@@ -62,7 +62,7 @@ MonoBehaviour:
     usable: 1
     value: 170
     quantity: 1
-  itemUIPrefab: {fileID: 114272368215147736, guid: 5e0e4f946765d2240a5e733dff299f2e,
+  itemUIPrefab: {fileID: 114998418470537158, guid: fdc84706d7bf17c48ae97cffb2857cfd,
     type: 2}
   owner: {fileID: 0}
   HealthRecovery: 180
