@@ -295,7 +295,7 @@ public class InventoryPanel : MonoBehaviour {
 			itemQtyText.text = "x " + item.properties.quantity;
 
 			if (itemWorthText != null) {
-				itemWorthText.text = item.properties.value + "";
+				itemWorthText.text = item.properties.value + "g";
 			}
 
 			ItemUI iUI = Instantiate(item.itemUIPrefab).GetComponent<ItemUI>();
