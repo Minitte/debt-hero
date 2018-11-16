@@ -82,7 +82,7 @@ public class InventoryPanel : MonoBehaviour {
 	/// <summary>
 	/// current hovered or selected slot 
 	/// </summary>
-	private ItemSlot _currentSelectSlot;
+	protected ItemSlot _currentSelectSlot;
 
 	/// <summary>
 	/// Time for cool down
@@ -278,7 +278,7 @@ public class InventoryPanel : MonoBehaviour {
 	/// Shows the item details in the slot if any
 	/// </summary>
 	/// <param name="slot"></param>
-	protected void ShowItemDetails(ItemSlot slot) {
+	protected virtual void ShowItemDetails(ItemSlot slot) {
 		ItemBase item = _inventory.GetItem(slot);
 
 		GetGridSlot(_currentSelectSlot).SetBorderVisiblity(false);
@@ -295,7 +295,7 @@ public class InventoryPanel : MonoBehaviour {
 			itemQtyText.text = "x " + item.properties.quantity;
 
 			if (itemWorthText != null) {
-				itemWorthText.text = item.properties.value + "";
+				itemWorthText.text = item.properties.value + "g";
 			}
 
 			ItemUI iUI = Instantiate(item.itemUIPrefab).GetComponent<ItemUI>();
@@ -420,7 +420,7 @@ public class InventoryPanel : MonoBehaviour {
 		}
 	}
 
-	private ItemGridItemUI GetGridSlot(ItemSlot slot) {
+	protected ItemGridItemUI GetGridSlot(ItemSlot slot) {
 		return itemRows[slot.row].items[slot.col];
 	}
 
