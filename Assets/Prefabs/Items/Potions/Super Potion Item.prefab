@@ -54,16 +54,16 @@ MonoBehaviour:
   properties:
     itemID: 5
     name: Super Potion
-    description: A super potion that heals for 250 HP
+    description: A super potion that heals for 585 HP
     type: 1
     stackable: 1
     destoryOnNone: 1
     disposable: 1
     usable: 1
-    value: 240
+    value: 650
     quantity: 1
   itemUIPrefab: {fileID: 114644258519689826, guid: 1812320010dddb74699122c5fb41f610,
     type: 2}
   owner: {fileID: 0}
-  HealthRecovery: 250
+  HealthRecovery: 585
   ManaRecovery: 0

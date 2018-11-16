@@ -54,16 +54,16 @@ MonoBehaviour:
   properties:
     itemID: 10
     name: Super Mana Potion
-    description: A super potion that recovers 150 mana
+    description: A super potion that recovers 340 mana
     type: 1
     stackable: 1
     destoryOnNone: 1
     disposable: 1
     usable: 1
-    value: 200
+    value: 340
     quantity: 1
   itemUIPrefab: {fileID: 114973478400538414, guid: 045f8de3186d354488b7dcb1c14ce37a,
     type: 2}
   owner: {fileID: 0}
   HealthRecovery: 0
-  ManaRecovery: 150
+  ManaRecovery: 340

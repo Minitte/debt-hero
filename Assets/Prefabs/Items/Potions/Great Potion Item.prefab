@@ -54,16 +54,16 @@ MonoBehaviour:
   properties:
     itemID: 4
     name: Great Potion
-    description: A great potion that heals for 180 HP
+    description: A great potion that heals for 230 HP
     type: 1
     stackable: 1
     destoryOnNone: 1
     disposable: 1
     usable: 1
-    value: 170
+    value: 225
     quantity: 1
   itemUIPrefab: {fileID: 114998418470537158, guid: fdc84706d7bf17c48ae97cffb2857cfd,
     type: 2}
   owner: {fileID: 0}
-  HealthRecovery: 180
+  HealthRecovery: 230
   ManaRecovery: 0

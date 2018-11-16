@@ -54,16 +54,16 @@ MonoBehaviour:
   properties:
     itemID: 3
     name: Good Potion
-    description: A good potion that heals for 100 HP
+    description: A good potion that heals for 105 HP
     type: 1
     stackable: 1
     destoryOnNone: 1
     disposable: 1
     usable: 1
-    value: 130
+    value: 95
     quantity: 1
   itemUIPrefab: {fileID: 114116051957753334, guid: fb51f7f250c521745accab4a1c54bb3d,
     type: 2}
   owner: {fileID: 0}
-  HealthRecovery: 100
+  HealthRecovery: 105
   ManaRecovery: 0

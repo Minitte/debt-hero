@@ -54,16 +54,16 @@ MonoBehaviour:
   properties:
     itemID: 2
     name: Decent Potion
-    description: A decent potion that heals for 65 HP
+    description: A decent potion that heals for 55 HP
     type: 1
     stackable: 1
     destoryOnNone: 1
     disposable: 1
     usable: 1
-    value: 55
+    value: 45
     quantity: 1
   itemUIPrefab: {fileID: 114188397848480910, guid: 878266e617d9d544692fff4101fed2f1,
     type: 2}
   owner: {fileID: 0}
-  HealthRecovery: 65
+  HealthRecovery: 55
   ManaRecovery: 0
