@@ -6,7 +6,7 @@ public class ItemProperties {
     public enum Type {
         MISC,
         CONSUMABLE,
-        EQUIPMENT,
+        EQUIPMENT_WEAPON,
         QUEST
     }
 
