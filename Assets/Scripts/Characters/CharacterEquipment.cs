@@ -35,6 +35,20 @@ public class CharacterEquipment : MonoBehaviour {
 		}
 	}
 
+	public void Unequip(ItemEquipment equipment) {
+		switch (equipment.properties.type) {
+			case ItemProperties.Type.EQUIPMENT_WEAPON:
+				// if that equipment is actually equiped
+				if (weapon.Equals(equipment)) {
+					UnequipWeapon();
+				}
+				break;
+
+			default:
+				break;
+		}
+	}
+
 	/// <summary>
 	/// Equips the give weapon and replaces the old one if any  
 	/// </summary>
@@ -47,5 +61,15 @@ public class CharacterEquipment : MonoBehaviour {
 		weapon = wpn;
 
 		wpn.AddBonusStats(); 
+	}
+
+	/// <summary>
+	/// Unequips the weapon and removes the bonuses
+	/// </summary>
+	public void UnequipWeapon() {
+		if (weapon != null) {
+			weapon.RemoveBonusStats();
+			weapon = null;
+		}
 	}
 }

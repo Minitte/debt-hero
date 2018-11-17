@@ -42,6 +42,19 @@ public class ItemEquipment : ItemBase {
     }
 
     /// <summary>
+    /// This function is called when the MonoBehaviour will be destroyed.
+    /// </summary>
+    void OnDestroy() {
+        CharacterEquipment ce = GetComponent<CharacterEquipment>();
+
+        if (ce == null) {
+            return;
+        }
+
+        ce.Unequip(this);
+    }
+
+    /// <summary>
     /// Equip the equipment if able to
     /// </summary>
     public void Equip() {
@@ -52,6 +65,9 @@ public class ItemEquipment : ItemBase {
         }
 
         ce.Equip(this);
+    
+        // counter act the default qty consumption
+        properties.quantity++;
     }
 
     /// <summary>
@@ -81,6 +97,7 @@ public class ItemEquipment : ItemBase {
         owner.characterStats.physDef -= phyDefence;
         owner.characterStats.magicDef -= magDefence;
     }
+    
 
     /// <summary>
     /// Get a string containing the description and stats
