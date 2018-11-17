@@ -123,4 +123,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemPrefabToDrop: {fileID: 114406899321851676, guid: 3086d1ca46372d54591520f5471c92c0,
     type: 2}
-  qty: 0
+  qty: 1

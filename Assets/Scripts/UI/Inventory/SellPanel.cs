@@ -40,4 +40,14 @@ public class SellPanel : InventoryPanel {
         // update gold
         UpdateGoldText();
     } 
+
+    /// <summary>
+    /// Override of SelectSlot
+    /// 
+    /// Overrides the functionality to nothing to disable moving items
+    /// </summary>
+    /// <param name="slot"></param>
+    protected override void SelectSlot(ItemSlot slot) {
+        // do nothing
+    }
 }

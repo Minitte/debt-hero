@@ -60,4 +60,21 @@ public class BuyPanel : InventoryPanel {
     protected override void SelectSlot(ItemSlot slot) {
         // do nothing
     }
+
+    /// <summary>
+	/// Shows the item details in the slot if any
+	/// </summary>
+	/// <param name="slot"></param>
+	protected override void ShowItemDetails(ItemSlot slot) {
+        base.ShowItemDetails(slot);
+
+		ItemBase item = _inventory.GetItem(slot);
+
+		// display details
+		if (item != null) {
+			if (itemWorthText != null) {
+				itemWorthText.text = item.properties.value * 2 + "g";
+			}
+		}
+	}
 }
