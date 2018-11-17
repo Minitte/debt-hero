@@ -274,7 +274,8 @@ public class InventoryPanel : MonoBehaviour {
 			item.Use();
 		}
 
-		UpdateItemSlot(slot);
+		// UpdateItemSlot(slot);
+		UpdateAllItemSlots();
 	}
 
 	/// <summary>
