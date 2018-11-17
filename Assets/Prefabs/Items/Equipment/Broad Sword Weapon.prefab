@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   properties:
-    itemID: 12
+    itemID: 13
     name: Broad Sword
     description: A basic broad sword
     type: 2

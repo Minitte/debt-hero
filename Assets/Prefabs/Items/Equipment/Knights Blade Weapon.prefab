@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   properties:
-    itemID: 12
+    itemID: 15
     name: Knight's Blade
     description: A blade used by knights.
     type: 2

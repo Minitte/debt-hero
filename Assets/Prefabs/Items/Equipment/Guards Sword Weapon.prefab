@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   properties:
-    itemID: 12
+    itemID: 16
     name: Guards Sword
     description: A sword used by guards.
     type: 2

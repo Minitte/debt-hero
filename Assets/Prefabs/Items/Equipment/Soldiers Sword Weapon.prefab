@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   properties:
-    itemID: 12
+    itemID: 14
     name: Soldier's Sword
     description: A sword used by Soldiers.
     type: 2

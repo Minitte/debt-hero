@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   properties:
-    itemID: 12
+    itemID: 17
     name: Enhanced Broadsword
     description: An enhanced broadsword.
     type: 2
