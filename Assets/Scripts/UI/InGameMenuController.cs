@@ -106,7 +106,6 @@ public class InGameMenuController : MonoBehaviour {
 				// don't open menu on shop or dialog
 				if (GameState.currentState == GameState.MENU_INGAME ||
 					GameState.currentState == GameState.PLAYING) {
-						Debug.Log(GameState.currentState);
 					ToggleMenu();
 				}
 
