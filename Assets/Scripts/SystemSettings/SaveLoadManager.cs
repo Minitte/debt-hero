@@ -139,7 +139,7 @@ public class SaveLoadManager : MonoBehaviour {
     public GameData LoadGameData(int slot) {
         if (File.Exists(Application.persistentDataPath + "/save" + slot + ".dat")) {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream fs = File.Open(Application.persistentDataPath + "/save.dat", FileMode.Open, FileAccess.Read);
+            FileStream fs = File.Open(Application.persistentDataPath + "/save" + slot + ".dat", FileMode.Open, FileAccess.Read);
 
             GameData data = (GameData)bf.Deserialize(fs);
             fs.Close();
