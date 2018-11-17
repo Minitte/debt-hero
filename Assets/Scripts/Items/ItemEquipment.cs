@@ -37,6 +37,8 @@ public class ItemEquipment : ItemBase {
     /// </summary>
     void Start() {
         OnUse += Equip;
+
+        properties.description = FormattedDescription();
     }
 
     /// <summary>
@@ -79,4 +81,19 @@ public class ItemEquipment : ItemBase {
         owner.characterStats.physDef -= phyDefence;
         owner.characterStats.magicDef -= magDefence;
     }
+
+    /// <summary>
+    /// Get a string containing the description and stats
+    /// </summary>
+    /// <returns></returns>
+    public string FormattedDescription() {
+        return string.Format(
+            properties.description + "\n" +
+            "HP: {0,-8} P.Att: {2,-8} P.Def: {4,-8}\n" +
+            "MP: {1,-8} M.Att: {3,-8} M.Def: {5,-8}",
+            maxHealth.ToString("+#;-#"), maxMana.ToString("+#;-#"),
+            phyAttack.ToString("+#;-#"), magAttack.ToString("+#;-#"),
+            phyDefence.ToString("+#;-#"), magDefence.ToString("+#;-#")
+            );
+	}
 }
