@@ -8,57 +8,44 @@ using UnityEngine;
 
 
 public class SaveLoadManager : MonoBehaviour {
-   
-    /// <summary>
-    /// PlayerManager used to read Player information.
-    /// </summary>
-    public PlayerManager playerManager;
-
-    /// <summary>
-    /// EventManager is used to read Time information.
-    /// </summary>
-    public EventManager eventManager;
 
     /// <summary>
     /// Using Singleton design pattern to ensure only 1 instance.
     /// </summary>
-    private SaveLoadManager saveLoadManager;
+    public static SaveLoadManager instance;
+
+    /// <summary>
+    /// eventManager to get the Time manager to pull the tiem from
+    /// </summary>
+    public EventManager eventManager;
+
+    /// <summary>
+    /// Item database
+    /// </summary>
+    public ItemDatabase itemDatabase;
 
     /// <summary>
     /// Class containing all game data.
     /// </summary>
     private GameData gameData = new GameData();
 
-    public ItemSafeFormat itemSav;
-
-    TimeManager time;
-    CharacterInventory inv;
-    CharacterStats stats;
-
-    public GameDatabase gameDatabase;
-    ItemDatabase itemDatabase;
-
     /// <summary>
     /// Setting up the saveLoadManager variable.
     /// </summary>
     public void Awake() {
-        if(saveLoadManager == null) {
+        if(instance == null) {
             DontDestroyOnLoad(gameObject);
-            saveLoadManager = this;
+            instance = this;
         }else {
             Destroy(gameObject);
         }
     }
-    public void Start() {
-        inv = playerManager.GetComponent<CharacterInventory>();
-        stats = playerManager.GetComponent<CharacterStats>();
-        time = eventManager.timeManager;
-        itemDatabase = gameDatabase.itemDatabase;
-        //Save(0);
-        //Load(0);
-    }
 
     public void Save(int slot) {
+
+        CharacterStats stats = PlayerManager.instance.GetComponent<CharacterStats>();
+        CharacterInventory inv = PlayerManager.instance.GetComponent<CharacterInventory>();
+        TimeManager time = eventManager.timeManager;
 
         gameData.playerCurrenthp = stats.currentHp;
         gameData.playerMaxhp = stats.maxHp;
@@ -81,7 +68,7 @@ public class SaveLoadManager : MonoBehaviour {
                 ItemBase item = inv.itemRows[i].items[j];
 
                 if (item != null) {
-                    itemSav = new ItemSafeFormat(item.properties.itemID, item.properties.quantity, new ItemSlot(i, j));
+                    ItemSafeFormat itemSav = new ItemSafeFormat(item.properties.itemID, item.properties.quantity, new ItemSlot(i, j));
                     gameData.items.Add(itemSav);
                 }
             }
@@ -109,6 +96,10 @@ public class SaveLoadManager : MonoBehaviour {
             gameData = (GameData)bf.Deserialize(fs);
             fs.Close();
 
+            CharacterStats stats = PlayerManager.instance.GetComponent<CharacterStats>();
+            CharacterInventory inv = PlayerManager.instance.GetComponent<CharacterInventory>();
+            TimeManager time = eventManager.timeManager;
+
             stats.currentHp = gameData.playerCurrenthp;
             stats.maxHp = gameData.playerMaxhp;
             stats.currentMp = gameData.playerCurrentmp;
@@ -120,12 +111,15 @@ public class SaveLoadManager : MonoBehaviour {
             stats.magicDef = gameData.playerMagicdef;
             stats.exp = gameData.playerExp;
             stats.level = gameData.playerLevel;
+
             inv.gold = gameData.playerGold;
+
             time.currentTime = gameData.currentTime;
             time.currentHour = gameData.currentHour;
             time.currentMinute = gameData.currentMinute;
             time.days = gameData.days;
             GameState.floorReached = gameData.floorReached;
+
             foreach (ItemSafeFormat item in gameData.items) {
                 ItemSlot itemSlot = item.slot;
                 inv.itemRows[itemSlot.row].items[itemSlot.col] = itemDatabase.GetNewItem(item.id, item.qty);
@@ -143,12 +137,12 @@ public class SaveLoadManager : MonoBehaviour {
 [Serializable]
 public class ItemSafeFormat {
 
-    
     public ItemSafeFormat(int id, int qty, ItemSlot slot) {
         this.id = id;
         this.qty = qty;
         this.slot = slot;
     }
+
     /// <summary>
     /// Id of the item. 
     /// </summary>
