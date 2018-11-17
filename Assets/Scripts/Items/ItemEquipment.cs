@@ -133,11 +133,11 @@ public class ItemEquipment : ItemBase {
     public string FormattedDescription() {
         return string.Format(
             properties.description + "\n" +
-            "HP: {0,-8} P.Att: {2,-8} P.Def: {4,-8}\n" +
-            "MP: {1,-8} M.Att: {3,-8} M.Def: {5,-8}",
-            maxHealth.ToString("+#;-#"), maxMana.ToString("+#;-#"),
-            phyAttack.ToString("+#;-#"), magAttack.ToString("+#;-#"),
-            phyDefence.ToString("+#;-#"), magDefence.ToString("+#;-#")
+            "HP: {0,-15} P.Att: {2,-15} P.Def: {4,-15}\n" +
+            "MP: {1,-15} M.Att: {3,-15}  M.Def: {5,-15}",
+            maxHealth.ToString("+#;-#;0"), maxMana.ToString("+#;-#;0"),
+            phyAttack.ToString("+#;-#;0"), magAttack.ToString("+#;-#;0"),
+            phyDefence.ToString("+#;-#;0"), magDefence.ToString("+#;-#;0")
             );
 	}
 }
