@@ -45,7 +45,11 @@ public class ItemEquipment : ItemBase {
     /// This function is called when the MonoBehaviour will be destroyed.
     /// </summary>
     void OnDestroy() {
-        CharacterEquipment ce = owner.characterEquipment;
+        CharacterEquipment ce = null;
+
+        if (owner != null) {
+            ce = owner.characterEquipment;
+        }
 
         if (ce == null) {
             return;
