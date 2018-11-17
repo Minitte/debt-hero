@@ -25,11 +25,6 @@ public class SaveLoadManager : MonoBehaviour {
     public ItemDatabase itemDatabase;
 
     /// <summary>
-    /// Class containing all game data.
-    /// </summary>
-    private GameData gameData = new GameData();
-
-    /// <summary>
     /// Setting up the saveLoadManager variable.
     /// </summary>
     public void Awake() {
@@ -41,11 +36,16 @@ public class SaveLoadManager : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Saves the file to the slot
+    /// </summary>
+    /// <param name="slot"></param>
     public void Save(int slot) {
-
         CharacterStats stats = PlayerManager.instance.GetComponent<CharacterStats>();
         CharacterInventory inv = PlayerManager.instance.GetComponent<CharacterInventory>();
         TimeManager time = eventManager.timeManager;
+
+        GameData gameData = new GameData();
 
         gameData.playerCurrenthp = stats.currentHp;
         gameData.playerMaxhp = stats.maxHp;
@@ -85,48 +85,69 @@ public class SaveLoadManager : MonoBehaviour {
 
         bf.Serialize(fs, gameData);
         fs.Close();
-
     }
 
-    public void Load(int slot) {
+    /// <summary>
+    /// Attempts to load the save file from the slot
+    /// </summary>
+    /// <param name="slot"></param>
+    /// <returns>True=Successfully loaded False=Failed to load</returns>
+    public bool LoadGameState(int slot) {
+        GameData gameData = LoadGameData(slot);
+
+        if (gameData == null) {
+            return false;
+        }        
+
+        CharacterStats stats = PlayerManager.instance.GetComponent<CharacterStats>();
+        CharacterInventory inv = PlayerManager.instance.GetComponent<CharacterInventory>();
+        TimeManager time = eventManager.timeManager;
+
+        stats.currentHp = gameData.playerCurrenthp;
+        stats.maxHp = gameData.playerMaxhp;
+        stats.currentMp = gameData.playerCurrentmp;
+        stats.maxMp = gameData.playerMaxmp;
+        stats.maxMp = gameData.playerCurrentmp;
+        stats.physAtk = gameData.playerPhysatk;
+        stats.physDef = gameData.playerPhysdef;
+        stats.magicAtk = gameData.playerMagicatk;
+        stats.magicDef = gameData.playerMagicdef;
+        stats.exp = gameData.playerExp;
+        stats.level = gameData.playerLevel;
+
+        inv.gold = gameData.playerGold;
+
+        time.currentTime = gameData.currentTime;
+        time.currentHour = gameData.currentHour;
+        time.currentMinute = gameData.currentMinute;
+        time.days = gameData.days;
+        GameState.floorReached = gameData.floorReached;
+
+        foreach (ItemSafeFormat item in gameData.items) {
+            ItemSlot itemSlot = item.slot;
+            inv.itemRows[itemSlot.row].items[itemSlot.col] = itemDatabase.GetNewItem(item.id, item.qty);
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Attempts to load the game data
+    /// </summary>
+    /// <param name="slot"></param>
+    /// <returns></returns>
+    public GameData LoadGameData(int slot) {
         if (File.Exists(Application.persistentDataPath + "/save" + slot + ".dat")) {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream fs = File.Open(Application.persistentDataPath + "/save.dat", FileMode.Open, FileAccess.Read);
 
-            gameData = (GameData)bf.Deserialize(fs);
+            GameData data = (GameData)bf.Deserialize(fs);
             fs.Close();
 
-            CharacterStats stats = PlayerManager.instance.GetComponent<CharacterStats>();
-            CharacterInventory inv = PlayerManager.instance.GetComponent<CharacterInventory>();
-            TimeManager time = eventManager.timeManager;
-
-            stats.currentHp = gameData.playerCurrenthp;
-            stats.maxHp = gameData.playerMaxhp;
-            stats.currentMp = gameData.playerCurrentmp;
-            stats.maxMp = gameData.playerMaxmp;
-            stats.maxMp = gameData.playerCurrentmp;
-            stats.physAtk = gameData.playerPhysatk;
-            stats.physDef = gameData.playerPhysdef;
-            stats.magicAtk = gameData.playerMagicatk;
-            stats.magicDef = gameData.playerMagicdef;
-            stats.exp = gameData.playerExp;
-            stats.level = gameData.playerLevel;
-
-            inv.gold = gameData.playerGold;
-
-            time.currentTime = gameData.currentTime;
-            time.currentHour = gameData.currentHour;
-            time.currentMinute = gameData.currentMinute;
-            time.days = gameData.days;
-            GameState.floorReached = gameData.floorReached;
-
-            foreach (ItemSafeFormat item in gameData.items) {
-                ItemSlot itemSlot = item.slot;
-                inv.itemRows[itemSlot.row].items[itemSlot.col] = itemDatabase.GetNewItem(item.id, item.qty);
-            }
-
-            
+            return data;
         }
+
+        return null;
     }
 	
 }
