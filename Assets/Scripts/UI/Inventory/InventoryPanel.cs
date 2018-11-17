@@ -268,6 +268,9 @@ public class InventoryPanel : MonoBehaviour {
 		ItemBase item = _inventory.GetItem(slot);
 
 		if (item != null) {
+			// ensure the player is set as the owner
+			item.owner = PlayerManager.instance.localPlayer.GetComponent<BaseCharacter>();
+			
 			item.Use();
 		}
 

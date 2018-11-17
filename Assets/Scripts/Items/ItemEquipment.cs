@@ -1,3 +1,4 @@
+using UnityEngine;
 
 public class ItemEquipment : ItemBase {
 
@@ -32,10 +33,9 @@ public class ItemEquipment : ItemBase {
     public int magDefence;
 
     /// <summary>
-    /// Start is called on the frame when a script is enabled just before
-    /// any of the Update methods is called the first time.
+    /// Awake is called when the script instance is being loaded.
     /// </summary>
-    void Start() {
+    void Awake() {
         OnUse += Equip;
 
         properties.description = FormattedDescription();
@@ -45,7 +45,7 @@ public class ItemEquipment : ItemBase {
     /// This function is called when the MonoBehaviour will be destroyed.
     /// </summary>
     void OnDestroy() {
-        CharacterEquipment ce = GetComponent<CharacterEquipment>();
+        CharacterEquipment ce = owner.characterEquipment;
 
         if (ce == null) {
             return;
@@ -58,16 +58,16 @@ public class ItemEquipment : ItemBase {
     /// Equip the equipment if able to
     /// </summary>
     public void Equip() {
-        CharacterEquipment ce = GetComponent<CharacterEquipment>();
+        CharacterEquipment ce = owner.characterEquipment;
+
+        // counter act the default qty consumption
+        properties.quantity++;
 
         if (ce == null) {
             return;
         }
 
         ce.Equip(this);
-    
-        // counter act the default qty consumption
-        properties.quantity++;
     }
 
     /// <summary>

@@ -54,9 +54,11 @@ public class CharacterEquipment : MonoBehaviour {
 	/// </summary>
 	/// <param name="wpn"></param>
 	public void EquipWeapon(ItemEquipment wpn) {
-		Debug.Assert(wpn.properties.type != ItemProperties.Type.EQUIPMENT_WEAPON, wpn.properties.name + " is not a weapon?");
+		Debug.Assert(wpn.properties.type == ItemProperties.Type.EQUIPMENT_WEAPON, wpn.properties.name + " is not a weapon?");
 
-		weapon.RemoveBonusStats();
+		if (weapon != null) {
+			weapon.RemoveBonusStats();
+		}
 
 		weapon = wpn;
 
