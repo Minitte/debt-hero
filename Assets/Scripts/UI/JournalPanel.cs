@@ -5,20 +5,11 @@ using UnityEngine.UI;
 
 public class JournalPanel : MonoBehaviour {
 
-    /// <summary>
-    /// The image box that contains day text.
-    /// </summary>
-    public Image dayImage;
-
+    [Header("Text")]
     /// <summary>
     /// A text representing days in-game.
     /// </summary>
     public Text dayText;
-
-    /// <summary>
-    /// The image box that contains time text.
-    /// </summary>
-    public Image timeImage;
 
     /// <summary>
     /// A text representing time in-game.
@@ -26,53 +17,71 @@ public class JournalPanel : MonoBehaviour {
     public Text timeText;
 
     /// <summary>
-    /// The image box that contains gold text.
-    /// </summary>
-    public Image goldImage;
-
-    /// <summary>
     /// A text representing gold due in-game.
     /// </summary>
     public Text goldText;
+
+    [Header("Button")]
 
     /// <summary>
     /// An image that acts as a menu button.
     /// When clicked it will lead to another menu ui.
     /// </summary>
-    public Image menuImage;
+    public Button menuButton;
 
     /// <summary>
     /// An image that acts as a save button.
     /// When clicked it will lead to another save ui.
     /// </summary>
-    public Image saveImage;
+    public Button saveButton;
 
-    /// <summary>
-    /// This manager is used to get gold amount of a player.
-    /// </summary>
-    public PlayerManager playerManager;
+    [Header("Game Object References")]
 
     /// <summary>
     /// This manager is used to get days and time in-game.
     /// </summary>
     public GameObject time;
 
+    /// <summary>
+    /// Panel containg save slots
+    /// </summary>
+    public GameObject saveSlotPanel;
 
+    /// <summary>
+    /// This manager is used to get gold amount of a player.
+    /// </summary>
+    private PlayerManager _playerManager;
 
-    // Use this for initialization
-    void Start () {
-       
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    /// <summary>
+    /// Start is called on the frame when a script is enabled just before
+    /// any of the Update methods is called the first time.
+    /// </summary>
+    void Start() {
+        _playerManager = PlayerManager.instance;
+    }
+
+    /// <summary>
+    /// This function is called when the object becomes enabled and active.
+    /// </summary>
+    void OnEnable() {
+        SetJournalPanel();
+    }
+    
+    /// <summary>
+    /// Update is called every frame, if the MonoBehaviour is enabled.
+    /// </summary>
+    void Update() {
+        JournalPanelControls();
+    }
 
     //Function used to set journal panel text data.
     void SetJournalPanel() {
+        if (_playerManager == null) {
+            _playerManager = PlayerManager.instance;
+        }
+
         //Getting a reference to the player's inventory.
-        CharacterInventory inventory = playerManager.GetComponent<CharacterInventory>();
+        CharacterInventory inventory = _playerManager.GetComponent<CharacterInventory>();
 
         //Getting a reference to the Time in-game.
         TimeManager timeManager = time.GetComponent<TimeManager>();
@@ -80,13 +89,10 @@ public class JournalPanel : MonoBehaviour {
         //Setting the text for day, time and gold due.
         dayText.text = "Day:\n" + timeManager.dayNumber;
         timeText.text = "Time:\n" + timeManager.currentTime;
-        goldText.text = "Gold due:\n" + "$" + inventory.gold;
+        goldText.text = "Gold due:\n" + inventory.gold + "g";
     }
 
-    void JournalPanelControls() {
-        //Input
-        Button saveButton = saveImage.GetComponent<Button>();
-        Button menuButton = menuImage.GetComponent<Button>();
+    private void JournalPanelControls() {
         bool select = false;
         float vert = Input.GetAxis("Menu Vertical");
 
@@ -107,12 +113,12 @@ public class JournalPanel : MonoBehaviour {
         
     }
 
-    public void ClosePanel() {
-        GameObject.Find("Journal Panel").SetActive(false);
-    }
-
+    /// <summary>
+    /// Opens the save slot panel
+    /// </summary>
     public void OpenSaveSlotPanel() {
-        GameObject.Find("SaveSlotPanel").SetActive(true);
+        saveSlotPanel.SetActive(true);
+        this.gameObject.SetActive(false);
     }
 
 }
