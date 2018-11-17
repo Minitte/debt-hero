@@ -96,9 +96,9 @@ public class ItemGridItemUI : MonoBehaviour, IPointerClickHandler, IPointerEnter
 	public void SetBorderVisiblity(bool show) {
 		_animator.SetBool("Border Visible", show);
 
-		if (!show) {
-			_animator.SetBool("Border Flashing", false);
-		}
+		// if (!show) {
+		// 	_animator.SetBool("Border Flashing", false);
+		// }
 	}
 
 	/// <summary>
@@ -110,6 +110,19 @@ public class ItemGridItemUI : MonoBehaviour, IPointerClickHandler, IPointerEnter
 	
 		if (flash) {
 			_animator.SetBool("Border Visible", true);
+		}
+	}
+
+	/// <summary>
+	/// Set border to equip
+	/// </summary>
+	/// <param name="equip"></param>
+	public void SetBorderEquip(bool equip) {
+		_animator.SetBool("Border Equipped", equip);
+		_animator.SetBool("Border Visible", equip);
+
+		if (!equip) {
+			_animator.SetBool("Border Flashing", false);
 		}
 	}
 }

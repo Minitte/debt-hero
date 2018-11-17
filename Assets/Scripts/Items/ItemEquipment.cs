@@ -33,35 +33,28 @@ public class ItemEquipment : ItemBase {
     public int magDefence;
 
     /// <summary>
+    /// equip flag
+    /// </summary>
+    public bool equiped { get { return _equipped; }}
+
+    /// <summary>
+    /// equip flag
+    /// </summary>
+    private bool _equipped;
+
+    /// <summary>
     /// Awake is called when the script instance is being loaded.
     /// </summary>
     void Awake() {
-        OnUse += Equip;
+        OnUse += ToggleEquip;
 
         properties.description = FormattedDescription();
     }
 
     /// <summary>
-    /// This function is called when the MonoBehaviour will be destroyed.
-    /// </summary>
-    void OnDestroy() {
-        CharacterEquipment ce = null;
-
-        if (owner != null) {
-            ce = owner.characterEquipment;
-        }
-
-        if (ce == null) {
-            return;
-        }
-
-        ce.Unequip(this);
-    }
-
-    /// <summary>
     /// Equip the equipment if able to
     /// </summary>
-    public void Equip() {
+    public void ToggleEquip() {
         CharacterEquipment ce = owner.characterEquipment;
 
         // counter act the default qty consumption
@@ -71,13 +64,37 @@ public class ItemEquipment : ItemBase {
             return;
         }
 
-        ce.Equip(this);
+        if (_equipped) {
+            Unequip();
+        } else {
+            Equip();
+        }
+    }
+
+    /// <summary>
+    /// Equip to the owner
+    /// </summary>
+    public void Equip() {
+        owner.characterEquipment.Equip(this);
+    }
+
+    /// <summary>
+    /// Unequip to the owner
+    /// </summary>
+    public void Unequip() {
+        owner.characterEquipment.Unequip(this);
     }
 
     /// <summary>
     /// Adds bonus stats to the owner
     /// </summary>
     public void AddBonusStats() {
+        if (_equipped == true) {
+            Debug.Log("possibly equiping something twice? (double stats)");
+        }
+
+        _equipped = true;
+
         owner.characterStats.maxHp += maxHealth;
         owner.characterStats.maxMp += maxMana;
 
@@ -92,6 +109,12 @@ public class ItemEquipment : ItemBase {
     /// Removes bonus stats from the owners
     /// </summary>
     public void RemoveBonusStats() {
+        if (_equipped == false) {
+            Debug.Log("possibly unequiping something twice? (double negative stats)");
+        }
+
+        _equipped = false;
+
         owner.characterStats.maxHp -= maxHealth;
         owner.characterStats.maxMp -= maxMana;
         
