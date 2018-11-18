@@ -40,7 +40,7 @@ public class MoveCaster : SkillBehaviour {
         while (startTime < endTime && caster != null) {
             caster.agent.nextPosition = caster.transform.position + (direction * step * Time.deltaTime);
             startTime += Time.deltaTime;
-            yield return null;
+            yield return new WaitForEndOfFrame();
         }
 
         // Check for null in case character has dashed into the next level

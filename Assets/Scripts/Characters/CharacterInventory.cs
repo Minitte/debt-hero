@@ -199,6 +199,8 @@ public class CharacterInventory : MonoBehaviour {
 			if (item.properties.stackable && item.Equals(itemToAdd)) {
 				item.properties.quantity++;
 				
+				Destroy(itemToAdd.gameObject);
+
 				return true;
 			}
 		}

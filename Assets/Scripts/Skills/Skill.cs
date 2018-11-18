@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 /// <summary>
 /// This is a scriptable class for skills.
 /// </summary>
@@ -62,6 +61,11 @@ public class Skill : ScriptableObject {
     public GameObject damagePrefab;
 
     /// <summary>
+    /// Prefab of the damage effect.
+    /// </summary>
+    public GameObject damageFX;
+
+    /// <summary>
     /// Multiplier for physical damage.
     /// </summary>
     public float physicalMultiplier = 1f;
@@ -94,9 +98,17 @@ public class Skill : ScriptableObject {
     /// </summary>
     private void Awake() {
         skillBehaviours = new List<SkillBehaviour>();
-        
-        // Reload subassets
+        /*
         Object[] assets = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(this));
+        foreach (Object o in assets) {
+            if (o is SkillBehaviour) {
+                skillBehaviours.Add(o as SkillBehaviour);
+            }
+        }
+        */
+
+        // Reload subassets
+        Object[] assets = Resources.LoadAll("Skills/" + name);
         foreach (Object o in assets) {
             if (o is SkillBehaviour) {
                 skillBehaviours.Add(o as SkillBehaviour);
@@ -112,9 +124,22 @@ public class Skill : ScriptableObject {
         // Activate the damage prefab if it exists
         if (damagePrefab != null) {
             GameObject damage = Instantiate(damagePrefab, caster.transform);
+
             switch (skillType) {
                 case SkillType.Melee:
+                    Melee melee = damage.GetComponent<Melee>();
+                    // Set the damage effect if it exists
+                    if (damageFX != null) {
+                        ParticleSystem damagePS = Instantiate(damageFX, damage.transform).GetComponent<ParticleSystem>();
+                        ParticleSystem.MainModule module = damagePS.main;
+                        module.startSize = module.startSize.constant * rangeMultiplier; // Multiply particle width by range
+                        melee.DamageFX = damagePS;
+                    }
+                    
+                    // Activate the damage hitbox
                     damage.GetComponent<Melee>().Activate(caster.transform, this);
+
+                    // Play sound effect
                     if(soundFX != null) {
                         SoundManager.instance.PlaySound(GameObject.FindGameObjectWithTag("PlayerWeapon").GetComponent<AudioSource>(), soundFX);
                     }

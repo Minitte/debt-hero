@@ -33,7 +33,19 @@ public class Melee : MonoBehaviour {
     /// <summary>
     /// Flag for if this behaviour is ready to begin.
     /// </summary>
-    private bool ready;
+    private bool _ready;
+
+    /// <summary>
+    /// The damage effect to show during the damage window.
+    /// </summary>
+    private ParticleSystem _damageFX;
+
+    /// <summary>
+    /// Property variable for damage effect.
+    /// </summary>
+    public ParticleSystem DamageFX {
+        set { _damageFX = value; }
+    }
 
     // Use this for initialization
     private void Start () {
@@ -43,10 +55,13 @@ public class Melee : MonoBehaviour {
 
     // Update is called once per frame
     private void Update() {
-        if (ready) {
+        if (_ready) {
             // Only deal damage within the damage window of the animation
             if (_animatorStatus.canDealDamage) {
                 _collider.enabled = true;
+                if (_damageFX != null) {
+                    _damageFX.Emit(1); // Emit a damage effect particle
+                }
             } else {
                 // Check if the damage window is over
                 if (_collider.enabled && !_animatorStatus.canDealDamage) {
@@ -81,10 +96,14 @@ public class Melee : MonoBehaviour {
 
         // Setup melee range
         transform.localScale *= skill.rangeMultiplier;
-        transform.localPosition = new Vector3(0f, transform.localScale.y, transform.localScale.z) * 1.5f;
+        transform.localPosition = new Vector3(0f, transform.localScale.y, transform.localScale.z * 1.5f);
         
         // Start the melee attack
         caster.GetComponent<BaseCharacter>().animator.SetTrigger("Attack"); // Play attack animation
-        ready = true;
+        _ready = true;
+    }
+
+    public void Die() {
+        Destroy(gameObject);
     }
 }

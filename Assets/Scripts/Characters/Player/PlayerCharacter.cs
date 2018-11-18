@@ -38,11 +38,13 @@ public class PlayerCharacter : BaseCharacter {
         // Don't accept input if the character is casting something
         if (!animatorStatus.isCasting && _canMove) {
             // Handle player input
-            HandleMouseInput();
-            HandleKeyboardInput();
-
+            if (!controllerPluggedIn) {
+                HandleMouseInput();
+                HandleKeyboardInput();
+            }
+            
             // Handle controller input if plugged in
-            if (controllerPluggedIn) {
+            else {
                 HandleControllerInput();
             }
         }    
@@ -121,11 +123,11 @@ public class PlayerCharacter : BaseCharacter {
         bool castedSomething = false;
 
         HandleControllerMovement(); // Movement with left joystick
+        HandleControllerDashing();
 
         // Check if the player pressed or is holding the controller attack key
         if (Input.GetButtonDown("Basic Attack")) {
             if (skillCaster.Cast(0)) {
-                agent.ResetPath();
                 castedSomething = true;
             }
         }
@@ -172,7 +174,9 @@ public class PlayerCharacter : BaseCharacter {
         // Check if the player is moving the left joystick
         if (leftHorizontal != 0f || leftVertical != 0f) {
             // Move in the direction of the left joystick
-            agent.destination = gameObject.transform.position + new Vector3(leftHorizontal, 0f, leftVertical).normalized;
+            Vector3 goal = gameObject.transform.position + new Vector3(leftHorizontal, 0f, leftVertical).normalized;
+            agent.transform.LookAt(goal);
+            agent.destination = goal;
         }
     }
 
@@ -182,7 +186,7 @@ public class PlayerCharacter : BaseCharacter {
         float rightVertical = Input.GetAxis("Dash Vertical");
 
         // Check for skill casts
-        if (rightHorizontal != 0f || rightVertical != 0f && Input.GetButtonDown("Dash")) {
+        if ((rightHorizontal != 0f || rightVertical != 0f)) {
             if (skillCaster.Cast(1)) {
                 transform.LookAt(transform.position + new Vector3(rightHorizontal, 0f, rightVertical).normalized);
                 agent.ResetPath();
