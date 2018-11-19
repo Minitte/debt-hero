@@ -43,7 +43,7 @@ public class FloorTeleportMenuController : MonoBehaviour {
 	/// </summary>
 	public void ChangeSceneToTower(int floor) {
 		GameState.currentFloor = floor;
-		SceneManager.LoadScene("Tower");
+		SceneManager.LoadScene("The Tower");
 	}
 	
 	/// <summary>
@@ -51,6 +51,6 @@ public class FloorTeleportMenuController : MonoBehaviour {
 	/// </summary>
 	public void ChangeSceneToTown() {
 		GameState.currentFloor = 0;
-		SceneManager.LoadScene("Town");
+		SceneManager.LoadScene("TownScene");
 	}
 }
