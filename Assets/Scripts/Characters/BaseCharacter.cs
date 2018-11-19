@@ -28,4 +28,10 @@ public abstract class BaseCharacter : MonoBehaviour {
     /// character's animator status component
     /// </summary>
     public AnimatorStatus animatorStatus;
+
+    [Header("Optional")]
+    /// <summary>
+    /// Character's equipment component
+    /// </summary>
+    public CharacterEquipment characterEquipment;
 }

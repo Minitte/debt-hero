@@ -268,10 +268,14 @@ public class InventoryPanel : MonoBehaviour {
 		ItemBase item = _inventory.GetItem(slot);
 
 		if (item != null) {
+			// ensure the player is set as the owner
+			item.owner = PlayerManager.instance.localPlayer.GetComponent<BaseCharacter>();
+			
 			item.Use();
 		}
 
-		UpdateItemSlot(slot);
+		// UpdateItemSlot(slot);
+		UpdateAllItemSlots();
 	}
 
 	/// <summary>
@@ -372,7 +376,8 @@ public class InventoryPanel : MonoBehaviour {
 			UpdateItemSlot(_currentMoveSlot);
 			UpdateItemSlot(slot);
 
-			GetGridSlot(_currentMoveSlot).SetBorderVisiblity(false);
+			GetGridSlot(_currentMoveSlot).SetBorderFlash(false);
+			GetGridSlot(slot).SetBorderFlash(false);
 
 			_currentMoveSlot = null;
 
@@ -398,6 +403,11 @@ public class InventoryPanel : MonoBehaviour {
 
 		ItemUI itemUI = _items[slot.row, slot.col];
 
+		if (item == null) {
+			GetGridSlot(slot).SetBorderVisiblity(false);
+			GetGridSlot(slot).SetBorderEquip(false);
+		}
+
 		// no item in slot but ui exist... remove ui
 		if (item == null && itemUI != null) {
 			Destroy(itemUI.gameObject);
@@ -417,6 +427,13 @@ public class InventoryPanel : MonoBehaviour {
 		// item and ui exist... update ui
 		else if (item != null && itemUI != null) {
 			itemUI.stackText.text = item.properties.quantity + "";
+		}
+
+		// special case for equipment
+		if (item != null && item.properties.IsTypeEquipment()) {
+			ItemEquipment equip = (ItemEquipment)item;
+
+			GetGridSlot(slot).SetBorderEquip(equip.equiped);
 		}
 	}
 
