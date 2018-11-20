@@ -30,9 +30,9 @@ public abstract class SkillHitbox : MonoBehaviour {
     protected Skill _skill;
 
     /// <summary>
-    /// Flag for if this behaviour is ready to begin.
+    /// Flag for if this hitbox is active.
     /// </summary>
-    protected bool _ready;
+    protected bool _active;
 
     /// <summary>
     /// The damage effect to show during the damage window.
@@ -50,24 +50,6 @@ public abstract class SkillHitbox : MonoBehaviour {
     protected void Start() {
         _animatorStatus = transform.parent.GetComponent<BaseCharacter>().animatorStatus;
         _collider = GetComponent<Collider>();
-    }
-
-    // Update is called once per frame
-    protected void Update() {
-        if (_ready) {
-            // Only deal damage within the damage window of the animation
-            if (_animatorStatus.canDealDamage) {
-                _collider.enabled = true;
-                if (_damageFX != null) {
-                    _damageFX.Emit(1); // Emit a damage effect particle
-                }
-            } else {
-                // Check if the damage window is over
-                if (_collider.enabled && !_animatorStatus.canDealDamage) {
-                    Destroy(gameObject);
-                }
-            }
-        }
     }
 
     /// <summary>

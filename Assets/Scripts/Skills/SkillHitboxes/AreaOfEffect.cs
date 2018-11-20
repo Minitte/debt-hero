@@ -1,9 +1,20 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// This is a skill behaviour that deals damage in an arc infront of the player.
+/// This is a skill behaviour that deals damage in an area around the player.
 /// </summary>
 public class AreaOfEffect : SkillHitbox {
+
+    private void Update() {
+        if (_active) {
+            _collider.enabled = true;
+            Destroy(gameObject, 1f);
+            if (_damageFX != null) {
+                _damageFX.Emit(1); // Emit a damage effect particle
+            }
+            _active = false;
+        }
+    }
 
     /// <summary>
     /// Starts the melee attack.
@@ -15,10 +26,10 @@ public class AreaOfEffect : SkillHitbox {
         _skill = skill;
 
         // Setup area of effect
-        transform.localScale *= skill.areaMultiplier;
+        GetComponent<SphereCollider>().radius *= _skill.areaMultiplier;
         
         // Start the attack
-        caster.GetComponent<BaseCharacter>().animator.SetTrigger("Attack"); // Play attack animation
-        _ready = true;
+        caster.GetComponent<BaseCharacter>().animator.SetTrigger("TakeDamage"); // Play attack animation
+        _active = true;
     }
 }
