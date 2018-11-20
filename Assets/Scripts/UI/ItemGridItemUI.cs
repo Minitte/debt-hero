@@ -43,20 +43,6 @@ public class ItemGridItemUI : MonoBehaviour, IPointerClickHandler, IPointerEnter
 	private Animator _animator;
 
 	/// <summary>
-	/// Awake is called when the script instance is being loaded.
-	/// </summary>
-	void Awake() {
-		_animator = GetComponent<Animator>();
-	}
-
-	/// <summary>
-	/// This function is called when the object becomes enabled and active.
-	/// </summary>
-	void OnEnable() {
-		_animator = GetComponent<Animator>();
-	}
-
-	/// <summary>
 	/// Click event
 	/// </summary>
 	/// <param name="eventData"></param>
@@ -100,6 +86,10 @@ public class ItemGridItemUI : MonoBehaviour, IPointerClickHandler, IPointerEnter
 	/// Shows or hides the border
 	/// </summary>
 	public void SetBorderVisiblity(bool show) {
+		if (_animator == null) {
+			_animator = GetComponent<Animator>();
+		}
+
 		_animator.SetBool("Border Visible", show);
 
 		// if (!show) {
@@ -112,6 +102,10 @@ public class ItemGridItemUI : MonoBehaviour, IPointerClickHandler, IPointerEnter
 	/// </summary>
 	/// <param name="flash"></param>
 	public void SetBorderFlash(bool flash) {
+		if (_animator == null) {
+			_animator = GetComponent<Animator>();
+		}
+
 		_animator.SetBool("Border Flashing", flash);
 	
 		if (flash) {
@@ -124,6 +118,10 @@ public class ItemGridItemUI : MonoBehaviour, IPointerClickHandler, IPointerEnter
 	/// </summary>
 	/// <param name="equip"></param>
 	public void SetBorderEquip(bool equip) {
+		if (_animator == null) {
+			_animator = GetComponent<Animator>();
+		}
+
 		_animator.SetBool("Border Equipped", equip);
 		_animator.SetBool("Border Visible", equip);
 
