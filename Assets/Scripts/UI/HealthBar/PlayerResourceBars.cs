@@ -125,6 +125,12 @@ public class PlayerResourceBars : MonoBehaviour {
     /// </summary>
     /// <param name="hide"></param>
     private void HideBars(bool hide) {
-        this.gameObject.SetActive(!hide);
+        //this.gameObject.SetActive(!hide);
+    }
+
+    private void OnDestroy() {
+        // Unsubscribe from events when this object is destroyed
+        PlayerManager.instance.GetComponent<CharacterStats>().OnHealthChanged -= UpdateHealth;
+        PlayerManager.instance.GetComponent<CharacterStats>().OnExpChanged -= UpdateExp;
     }
 }

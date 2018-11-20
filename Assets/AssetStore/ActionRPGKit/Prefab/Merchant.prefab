@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3300000}
   - component: {fileID: 6500000}
   - component: {fileID: 2300000}
-  - component: {fileID: 11400000}
   m_Layer: 0
   m_Name: Merchant
   m_TagString: Untagged
@@ -238,21 +237,6 @@ TextMesh:
   m_Color:
     serializedVersion: 2
     rgba: 4294967295
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a8051dcc45fb9743a377f9deb02f319, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemShopSlot: 0100000002000000030000000400000005000000060000000700000008000000
-  equipmentShopSlot: 0100000002000000030000000400000005000000060000000700000000000000
-  button: {fileID: 2800000, guid: 89fe4f5db4b0bec4190792cd13548ed5, type: 3}
-  database: {fileID: 100000, guid: b9bb10c534dcad040993b37c24f9eb23, type: 2}
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1

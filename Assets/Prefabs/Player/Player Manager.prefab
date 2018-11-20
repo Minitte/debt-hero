@@ -22,6 +22,8 @@ GameObject:
   - component: {fileID: 114568958093691200}
   - component: {fileID: 114376485471381028}
   - component: {fileID: 114039807332758792}
+  - component: {fileID: 114907085829211038}
+  - component: {fileID: 114855771409217310}
   m_Layer: 0
   m_Name: Player Manager
   m_TagString: Player
@@ -35,8 +37,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1199779139512408}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.457344, y: 2.3278275, z: -0.2872467}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -128,3 +130,50 @@ MonoBehaviour:
     type: 2}
   healthbar: {fileID: 1672549307374518, guid: cce16d427d1abe84db53dfd023e4dc8c, type: 2}
   localPlayer: {fileID: 0}
+--- !u!114 &114855771409217310
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1199779139512408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 163d27716de72b94181344819651860d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  classID: 0
+  bonusHP: 0
+  bonusMP: 0
+  bonusPhysAtt: 0
+  bonusMagAtt: 0
+  bonusPhysDef: 0
+  bonusMagDef: 0
+  bonusCrit: 0
+  bonusCritDmg: 0
+  perLevelHP: 0
+  perLevelMP: 0
+  perLevelPhysAtt: 0
+  perLevelMagAtt: 0
+  perLevelPhysDef: 0
+  perLevelMagDef: 0
+  perLevelCrit: 0
+  perLevelCritDmg: 0
+  skill1: 0
+  skill2: 0
+  skill3: 0
+  skill4: 0
+--- !u!114 &114907085829211038
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1199779139512408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf52821099dbc084aa46396316166ba1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentLevelExp: 0
+  remainingExp: 0
+  LevelEffect: {fileID: 198195649455954556, guid: ed6552b907013cc4c982d84b89e9f08f,
+    type: 2}

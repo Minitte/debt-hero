@@ -28,7 +28,6 @@ GameObject:
   - component: {fileID: 3300000}
   - component: {fileID: 6500000}
   - component: {fileID: 2300002}
-  - component: {fileID: 11400000}
   m_Layer: 0
   m_Name: CraftingNPC
   m_TagString: Untagged
@@ -238,22 +237,6 @@ TextMesh:
   m_Color:
     serializedVersion: 2
     rgba: 4294967295
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100004}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e958a5938faa8e458728391832e3637, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  craftingListId: 0000000001000000020000000300000004000000
-  itemDatabase: {fileID: 100000, guid: b9bb10c534dcad040993b37c24f9eb23, type: 2}
-  craftingDatabase: {fileID: 100000, guid: 5d911a400f4773f49a7bfc41bc268987, type: 2}
-  uiSkin: {fileID: 0}
-  button: {fileID: 2800000, guid: 89fe4f5db4b0bec4190792cd13548ed5, type: 3}
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1

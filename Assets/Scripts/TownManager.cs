@@ -19,5 +19,7 @@ public class TownManager : MonoBehaviour {
 
         playerManager.localPlayer.transform.localScale = new Vector3(0.5f,0.5f,0.5f);
 
+        SoundManager.instance.PlayMusic(3);
+
 	}
 }
