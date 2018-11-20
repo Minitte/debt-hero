@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
+using UnityEngine.SceneManagement;
 public class JournalPanel : MonoBehaviour {
 
     [Header("Text")]
@@ -87,7 +88,7 @@ public class JournalPanel : MonoBehaviour {
         TimeManager timeManager = time.GetComponent<TimeManager>();
         
         //Setting the text for day, time and gold due.
-        dayText.text = "Day:\n" + timeManager.dayNumber;
+        dayText.text = "Day:\n" + timeManager.days;
         timeText.text = "Time:\n" + timeManager.currentTime;
         goldText.text = "Gold due:\n" + inventory.gold + "g";
     }
@@ -106,9 +107,10 @@ public class JournalPanel : MonoBehaviour {
         }
 
         if(select && Input.GetButtonDown("Menu Confirm") == true) {
-            GameObject.Find("Menu").SetActive(true);
-        }else if(!select && Input.GetButtonDown("Menu Confirm") == true) {
+            SceneManager.LoadScene("LandingMenu");
+        } else if(!select && Input.GetButtonDown("Menu Confirm") == true) {
             GameObject.Find("SaveSlotPanel").SetActive(true);
+            this.gameObject.SetActive(false);
         }
         
     }
@@ -119,6 +121,10 @@ public class JournalPanel : MonoBehaviour {
     public void OpenSaveSlotPanel() {
         saveSlotPanel.SetActive(true);
         this.gameObject.SetActive(false);
+    }
+
+    public void OpenMainMenu() {
+        SceneManager.LoadScene("LandingMenu");
     }
 
 }
