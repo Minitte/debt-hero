@@ -31,7 +31,7 @@ public class Knockback : DebuffBehaviour {
     public IEnumerator ApplyKnockback(BaseCharacter victim, Vector3 direction) {
         // Stop player movement
         victim.agent.ResetPath();
-        victim.animator.SetBool("Stop", true);
+        //victim.animator.SetBool("Stop", true);
 
         // Move the victim backwards
         Vector3 step = direction * magnitude * Time.deltaTime;
@@ -40,6 +40,6 @@ public class Knockback : DebuffBehaviour {
             yield return null;
         }
 
-        victim.animator.SetBool("Stop", false); // Resume player movement
+        //victim.animator.SetBool("Stop", false); // Resume player movement
     }
 }

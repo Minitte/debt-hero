@@ -11,8 +11,7 @@ public class Skill : ScriptableObject {
     /// </summary>
     public enum SkillType {
         Melee,
-        Ranged,
-        Magic
+        AoE
     }
 
     #region General
@@ -79,7 +78,7 @@ public class Skill : ScriptableObject {
     /// Multiplier for the damage range.
     /// Used for melee attacks.
     /// </summary>
-    public float rangeMultiplier = 1f;
+    public float meleeRangeMultiplier = 1f;
 
     /// <summary>
     /// Multiplier for the damage area.
@@ -108,10 +107,12 @@ public class Skill : ScriptableObject {
         */
 
         // Reload subassets
-        Object[] assets = Resources.LoadAll("Skills/" + name);
-        foreach (Object o in assets) {
-            if (o is SkillBehaviour) {
-                skillBehaviours.Add(o as SkillBehaviour);
+        if (name != "") {
+            Object[] assets = Resources.LoadAll("Skills/" + name);
+            foreach (Object o in assets) {
+                if (o is SkillBehaviour) {
+                    skillBehaviours.Add(o as SkillBehaviour);
+                }
             }
         }
     }
@@ -125,25 +126,32 @@ public class Skill : ScriptableObject {
         if (damagePrefab != null) {
             GameObject damage = Instantiate(damagePrefab, caster.transform);
 
-            switch (skillType) {
-                case SkillType.Melee:
-                    Melee melee = damage.GetComponent<Melee>();
-                    // Set the damage effect if it exists
-                    if (damageFX != null) {
-                        ParticleSystem damagePS = Instantiate(damageFX, damage.transform).GetComponent<ParticleSystem>();
-                        ParticleSystem.MainModule module = damagePS.main;
-                        module.startSize = module.startSize.constant * rangeMultiplier; // Multiply particle width by range
-                        melee.DamageFX = damagePS;
-                    }
-                    
-                    // Activate the damage hitbox
-                    damage.GetComponent<Melee>().Activate(caster.transform, this);
+            SkillHitbox hitbox = damage.GetComponent<SkillHitbox>();
+            // Set the damage effect if it exists
+            if (damageFX != null) {
+                ParticleSystem damagePS = Instantiate(damageFX, damage.transform).GetComponent<ParticleSystem>();
+                ParticleSystem.MainModule module = damagePS.main;
+                hitbox.DamageFX = damagePS;
 
-                    // Play sound effect
-                    if(soundFX != null) {
-                        SoundManager.instance.PlaySound(GameObject.FindGameObjectWithTag("PlayerWeapon").GetComponent<AudioSource>(), soundFX);
-                    }
-                    break;
+                // Modify particle size
+                switch (skillType) {
+                    case SkillType.Melee:
+                        module.startSize = module.startSize.constant * meleeRangeMultiplier; // Multiply particle width by range
+                        break;
+                    case SkillType.AoE:
+                        module.startSize = module.startSize.constant * areaMultiplier; // Multiply particle width by area
+                        break;
+                }
+            }
+
+            
+                    
+            // Activate the damage hitbox
+            damage.GetComponent<SkillHitbox>().Activate(caster.transform, this);
+
+            // Play sound effect
+            if(soundFX != null) {
+                SoundManager.instance.PlaySound(GameObject.FindGameObjectWithTag("PlayerWeapon").GetComponent<AudioSource>(), soundFX);
             }
         }
         // Activate all the skill behaviours
