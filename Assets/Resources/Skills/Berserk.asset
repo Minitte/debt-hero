@@ -9,25 +9,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8fa77f3dc8991b64e8ebf19f624ed133, type: 3}
-  m_Name: Battle Cry
+  m_Name: Berserk
   m_EditorClassIdentifier: 
-  skillName: Battle Cry
-  skillIcon: {fileID: 21300000, guid: 28f4a64773b2ef141bc72c59d67db866, type: 3}
-  skillDescription: Deals damage and knocks nearby enemies back.
-  skillType: 1
+  skillName: Berserk
+  skillIcon: {fileID: 21300000, guid: ce7ce35077fa2bb42b7ae82999bb67e7, type: 3}
+  skillDescription: Go berserk, increasing physical damage dealt.
+  skillType: 0
   soundFX: {fileID: 0}
-  cooldown: 5
+  cooldown: 20
   manaCost: 10
-  damagePrefab: {fileID: 1436571910292492, guid: d9ab01f13fda85e479f16f2af33d6571,
-    type: 2}
-  damageFX: {fileID: 111418, guid: 92d6c4d6c2d820f4c9f33d112f90afbb, type: 2}
+  damagePrefab: {fileID: 0}
+  damageFX: {fileID: 0}
   physicalMultiplier: 1
   magicMultiplier: 1
   meleeRangeMultiplier: 1
-  areaMultiplier: 2.5
+  areaMultiplier: 1
   skillBehaviours:
-  - {fileID: 114040568386022134}
---- !u!114 &114040568386022134
+  - {fileID: 114682373208341020}
+--- !u!114 &114682373208341020
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -35,7 +34,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c789ea910588cb64b8f5c1ad181099e4, type: 3}
+  m_Script: {fileID: 11500000, guid: ad26761ddebec38468f3a7b349b9431e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  magnitude: 5
+  statType: 5
+  amount: 15
+  duration: 10
+  buffFX: {fileID: 198464, guid: 1debc9f7f2a9d2e4b84574855c6aeb2e, type: 2}

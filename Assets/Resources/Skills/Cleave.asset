@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: Cleave
   skillIcon: {fileID: 21300000, guid: 6fbedbf7cc84c8b4bbf33808d2f423a7, type: 3}
-  skillDescription: big damage
+  skillDescription: Powerful slash that applies a bleed debuff.
   skillType: 0
   soundFX: {fileID: 0}
   cooldown: 5

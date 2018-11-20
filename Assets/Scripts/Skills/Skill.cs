@@ -107,10 +107,12 @@ public class Skill : ScriptableObject {
         */
 
         // Reload subassets
-        Object[] assets = Resources.LoadAll("Skills/" + name);
-        foreach (Object o in assets) {
-            if (o is SkillBehaviour) {
-                skillBehaviours.Add(o as SkillBehaviour);
+        if (name != "") {
+            Object[] assets = Resources.LoadAll("Skills/" + name);
+            foreach (Object o in assets) {
+                if (o is SkillBehaviour) {
+                    skillBehaviours.Add(o as SkillBehaviour);
+                }
             }
         }
     }
