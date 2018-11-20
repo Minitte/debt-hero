@@ -122,6 +122,12 @@ public class CharacterInventory : MonoBehaviour {
 			return null;
 		}
 
+		// unequiping from owner
+		if (item.properties.IsTypeEquipment()) {
+			ItemEquipment equip = (ItemEquipment)item;
+			equip.Unequip();
+		}
+
 		// remove owner reference
 		item.owner = null;
 
@@ -151,6 +157,12 @@ public class CharacterInventory : MonoBehaviour {
 		// did not find the item
 		if (slot == null) {
 			return false;
+		}
+
+		// unequiping from owner
+		if (itemToRemove.properties.IsTypeEquipment()) {
+			ItemEquipment equip = (ItemEquipment)itemToRemove;
+			equip.Unequip();
 		}
 
 		// remove owner reference
