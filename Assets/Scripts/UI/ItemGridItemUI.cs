@@ -50,6 +50,13 @@ public class ItemGridItemUI : MonoBehaviour, IPointerClickHandler, IPointerEnter
 	}
 
 	/// <summary>
+	/// This function is called when the object becomes enabled and active.
+	/// </summary>
+	void OnEnable() {
+		_animator = GetComponent<Animator>();
+	}
+
+	/// <summary>
 	/// Click event
 	/// </summary>
 	/// <param name="eventData"></param>

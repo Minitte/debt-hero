@@ -24,6 +24,15 @@ public class ItemSlot {
         this.col = col;
     }
 
+    /// <summary>
+    /// Copy constructor
+    /// </summary>
+    /// <param name="other"></param>
+    public ItemSlot(ItemSlot other) {
+        this.row = other.row;
+        this.col = other.col;
+    }
+
     // override object.GetHashCode
     public override int GetHashCode() {
         string s = "r:" + row + "c:" + col;

@@ -5823,6 +5823,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9de01461c5039743ad14ce5f0df7729, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buyer: {fileID: 114256709286424102}
+  seller: {fileID: 114068796370249822}
 --- !u!114 &114222218495515404
 MonoBehaviour:
   m_ObjectHideFlags: 1
