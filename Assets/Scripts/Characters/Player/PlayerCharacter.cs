@@ -28,6 +28,8 @@ public class PlayerCharacter : BaseCharacter {
         _canMove = true;
         characterStats = PlayerManager.instance.GetComponent<CharacterStats>();
         characterStats.OnDeath += Die;
+
+        characterEquipment = PlayerManager.instance.GetComponent<CharacterEquipment>();
     }
 
     // Update is called once per frame

@@ -6,7 +6,7 @@ public class ItemProperties {
     public enum Type {
         MISC,
         CONSUMABLE,
-        EQUIPMENT,
+        EQUIPMENT_WEAPON,
         QUEST
     }
 
@@ -59,4 +59,12 @@ public class ItemProperties {
     /// Item quantity
     /// </summary>
     public int quantity = 1;
+
+    /// <summary>
+    /// Checks if the item is a piece of equipment
+    /// </summary>
+    /// <returns></returns>
+    public bool IsTypeEquipment() {
+        return type == Type.EQUIPMENT_WEAPON;
+    }
 }
