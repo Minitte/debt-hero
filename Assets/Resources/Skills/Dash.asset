@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: Dash
   m_EditorClassIdentifier: 
   skillName: Dash
-  skillIcon: {fileID: 21300000, guid: ac1a9a577408d76429c30c67d510cdea, type: 3}
+  skillIcon: {fileID: 21300000, guid: 38a4e93ac4095f74180e683be2700832, type: 3}
   skillDescription: A basic dash.
   skillType: 0
   soundFX: {fileID: 0}

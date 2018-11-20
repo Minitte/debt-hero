@@ -15,7 +15,7 @@ MonoBehaviour:
   skillIcon: {fileID: 0}
   skillDescription: A basic melee attack.
   skillType: 0
-  soundFX: {fileID: 8300000, guid: 02b2f2f4d1236484980020973b731db1, type: 3}
+  soundFX: {fileID: 8300000, guid: b115574a1234ead40a938f66c2c6c317, type: 3}
   cooldown: 0.25
   manaCost: 0
   damagePrefab: {fileID: 1102072977288342, guid: cc127540eb7d36346b2d6dbcb5074c19,

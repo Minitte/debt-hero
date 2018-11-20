@@ -47,7 +47,7 @@ public class ButtonNavUI : MonoBehaviour {
 	/// Update loop section for navigation
 	/// </summary>
 	private void ButtonNavigationUpdate() {
-		float vert = Input.GetAxis("Menu Nav Vertical");
+		float vert = Input.GetAxis("Menu Vertical");
 		
 		if (Mathf.Abs(vert) > 0.1) {
 			vert = Mathf.Sign(vert);
@@ -82,7 +82,7 @@ public class ButtonNavUI : MonoBehaviour {
 	/// Update loop section for submit
 	/// </summary>
 	private void ButtonConfirmUpdate() {
-		float submit = Input.GetAxis("Submit");
+		float submit = Input.GetAxis("Menu Confirm");
 
 		if (submit != 0) {
 			buttons[_currentIndex].onClick.Invoke();

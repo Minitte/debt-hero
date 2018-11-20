@@ -41,6 +41,7 @@ public class LevelSystem : MonoBehaviour
     //Used when the player levels up
     void LevelUp()
     {
+        LevelEffect = PlayerManager.instance.localPlayer.transform.Find("LevelUp").GetComponent<ParticleSystem>();
         LevelEffect.Play();
         player.GetComponent<CharacterStats>().LevelUp();
         player.GetComponent<CharacterStats>().maxExp = ExpCurve(player.GetComponent<CharacterStats>().level + 1);

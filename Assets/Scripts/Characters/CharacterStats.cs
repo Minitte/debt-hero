@@ -199,7 +199,11 @@ public class CharacterStats : MonoBehaviour {
     //Levels up the player
     public void LevelUp() {
         level++;
-        OnLevel();
+        exp = 0;
+        OnExpChanged();
+        if(OnLevel != null) {
+            OnLevel();
+        }
     }
 
     /// <summary>

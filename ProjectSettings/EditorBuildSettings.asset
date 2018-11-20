@@ -5,18 +5,18 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/LandingMenu/LandingMenu.unity
     guid: 1d1813d715fee83448c995455bf447cf
+  - enabled: 1
+    path: Assets/Scenes/Town/TownScene.unity
+    guid: d0f43e1230c9a154896944315e51b835
+  - enabled: 1
+    path: Assets/Scenes/Tower/The Tower.unity
+    guid: 8c87120c5bc621644bf94773f2783f50
   - enabled: 0
     path: Assets/Scenes/Town/Town.unity
     guid: fa797810caaf0a445843a94f304c1a47
   - enabled: 0
     path: Assets/Scenes/Tower/Tower.unity
     guid: a42a8c3e0deee23439d751d06cec1b18
-  - enabled: 0
-    path: Assets/Scenes/Tower/The Tower.unity
-    guid: 8c87120c5bc621644bf94773f2783f50
-  - enabled: 1
-    path: Assets/Scenes/The Shop.unity
-    guid: 53700397a06fb0944a31c567540f8c75

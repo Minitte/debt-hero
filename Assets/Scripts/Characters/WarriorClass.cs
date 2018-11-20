@@ -12,11 +12,11 @@ public class WarriorClass : BaseClass {
         /// <summary>
         /// Base bonus stat for Warrior
         /// </summary>
-        bonusHP = 100;
+        bonusHP = 0;
         bonusMP = 0;
-        bonusPhysAtt = 10;
+        bonusPhysAtt = 0;
         bonusMagAtt = 0;
-        bonusPhysDef = 10;
+        bonusPhysDef = 0;
         bonusMagDef = 0;
         bonusCrit = 0;
         bonusCritDmg = 0;
