@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class SaveSlotPanel : MonoBehaviour {
 
@@ -11,6 +13,15 @@ public class SaveSlotPanel : MonoBehaviour {
 
 	public SaveSlotUI[] saveSlots;
 
+    public int index;
+
+    /// <summary>
+    /// Cool down flag
+    /// </summary>
+    private bool _cooldown;
+
+    private float _time;
+
 	/// <summary>
 	/// Update is called every frame, if the MonoBehaviour is enabled.
 	/// </summary>
@@ -18,7 +29,20 @@ public class SaveSlotPanel : MonoBehaviour {
 		float cancel = Input.GetAxis("Menu Cancel");
 		float sysMenu = Input.GetAxis("System Menu Open");
 
-		if (cancel != 0 || sysMenu != 0) {
+        if (_cooldown) {
+            _time += Time.deltaTime;
+
+            if (_time >= 0.15f) {
+                _cooldown = false;
+                _time = 0f;
+            }
+
+            return;
+        }
+
+        SaveSlotPanelControls();
+
+        if (cancel != 0 || sysMenu != 0) {
 			ExitSaveSlotPanel();
 		}
 	}
@@ -27,8 +51,11 @@ public class SaveSlotPanel : MonoBehaviour {
 	/// This function is called when the object becomes enabled and active.
 	/// </summary>
 	void OnEnable() {
-		StartCoroutine(UpdateAllSlotCoroutine());
-	}
+        StartCoroutine(UpdateAllSlotCoroutine());
+        index = 0;
+        saveSlots[index].GetComponent<Button>().Select();
+        _cooldown = true;
+    }
 
 	/// <summary>
 	/// Exits the save slot panel and returns to the journal panel
@@ -49,6 +76,11 @@ public class SaveSlotPanel : MonoBehaviour {
 
 		ExitSaveSlotPanel();
 	}
+
+    public void LoadSlot(int slot) {
+        SaveLoadManager.instance.LoadGameData(slot);
+        SceneManager.LoadScene("The Tower");
+    }
 
 	/// <summary>
 	/// Updates all save slots ui objects.
@@ -106,4 +138,29 @@ public class SaveSlotPanel : MonoBehaviour {
 		}
 	}
 
+    public void SaveSlotPanelControls() {
+
+        float vert = Input.GetAxis("Menu Vertical");
+
+        if (vert < 0) {
+            if (index >= 0 && index < 4) {
+                index++;
+                _cooldown = true;
+                return;
+            }
+
+        } else if (vert > 0) {
+            if (index <= 4 && index > 0) {
+                index--;
+                _cooldown = true;
+                return;
+            }
+        }
+
+        saveSlots[index].GetComponent<Button>().Select();
+
+        if (Input.GetAxis("Menu Confirm") != 0) {
+            SaveToSlot(index);
+        }
+    }
 }

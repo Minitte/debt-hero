@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
+using UnityEngine.SceneManagement;
 public class JournalPanel : MonoBehaviour {
 
     [Header("Text")]
@@ -53,6 +54,11 @@ public class JournalPanel : MonoBehaviour {
     private PlayerManager _playerManager;
 
     /// <summary>
+    /// SElected menu
+    /// </summary>
+    private int _selected;
+
+    /// <summary>
     /// Start is called on the frame when a script is enabled just before
     /// any of the Update methods is called the first time.
     /// </summary>
@@ -65,6 +71,8 @@ public class JournalPanel : MonoBehaviour {
     /// </summary>
     void OnEnable() {
         SetJournalPanel();
+
+        _selected = 0;
     }
     
     /// <summary>
@@ -85,30 +93,33 @@ public class JournalPanel : MonoBehaviour {
 
         //Getting a reference to the Time in-game.
         TimeManager timeManager = time.GetComponent<TimeManager>();
-        
+
+        EventManager eventManager = GameObject.Find("Event Manager").GetComponent<EventManager>();
         //Setting the text for day, time and gold due.
-        dayText.text = "Day:\n" + timeManager.dayNumber;
+        dayText.text = "Day:\n" + timeManager.days;
         timeText.text = "Time:\n" + timeManager.currentTime;
-        goldText.text = "Gold due:\n" + inventory.gold + "g";
+        goldText.text = "Gold due:\n" + eventManager.DebtCurve(timeManager.days + 3) + "g";
     }
 
-    private void JournalPanelControls() {
-        bool select = false;
+    private void JournalPanelControls() { 
         float vert = Input.GetAxis("Menu Vertical");
 
         if(vert < 0) {
             saveButton.Select();
-            select = !select;
+            _selected = 1;
 
-        }else if(vert > 0) {
+        } else if(vert > 0) {
             menuButton.Select();
-            select = !select;
+            _selected = 2;
         }
 
-        if(select && Input.GetButtonDown("Menu Confirm") == true) {
-            GameObject.Find("Menu").SetActive(true);
-        }else if(!select && Input.GetButtonDown("Menu Confirm") == true) {
-            GameObject.Find("SaveSlotPanel").SetActive(true);
+        if(_selected == 2 && Input.GetAxis("Menu Confirm")!=0) {
+            Debug.Log("MenuSelect");
+            SceneManager.LoadScene("LandingMenu");
+        } else if(_selected == 1 && Input.GetAxis("Menu Confirm")!=0) {
+            Debug.Log("SaveSelect");
+            saveSlotPanel.SetActive(true);
+            this.gameObject.SetActive(false);
         }
         
     }
@@ -119,6 +130,10 @@ public class JournalPanel : MonoBehaviour {
     public void OpenSaveSlotPanel() {
         saveSlotPanel.SetActive(true);
         this.gameObject.SetActive(false);
+    }
+
+    public void OpenMainMenu() {
+        SceneManager.LoadScene("LandingMenu");
     }
 
 }
