@@ -1,44 +1,43 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-/// <summary>
-/// This is a skill behaviour that deals damage in an arc infront of the player.
-/// </summary>
-public class Melee : MonoBehaviour {
+public abstract class SkillHitbox : MonoBehaviour {
 
     /// <summary>
     /// The physical attack damage of the user.
     /// </summary>
-    private float _physAtkdamage;
+    protected float _physAtkdamage;
 
     /// <summary>
     /// The magical attack damage of the user.
     /// </summary>
-    private float _magicAtkdamage;
+    protected float _magicAtkdamage;
 
     /// <summary>
     /// Reference to the animator status.
     /// </summary>
-    private AnimatorStatus _animatorStatus;
+    protected AnimatorStatus _animatorStatus;
 
     /// <summary>
     /// Reference to this gameobject's Collider component.
     /// </summary>
-    private Collider _collider;
+    protected Collider _collider;
 
     /// <summary>
     /// Reference to the skill that called this attack.
     /// </summary>
-    private Skill _skill;
+    protected Skill _skill;
 
     /// <summary>
     /// Flag for if this behaviour is ready to begin.
     /// </summary>
-    private bool _ready;
+    protected bool _ready;
 
     /// <summary>
     /// The damage effect to show during the damage window.
     /// </summary>
-    private ParticleSystem _damageFX;
+    protected ParticleSystem _damageFX;
 
     /// <summary>
     /// Property variable for damage effect.
@@ -48,13 +47,13 @@ public class Melee : MonoBehaviour {
     }
 
     // Use this for initialization
-    private void Start () {
+    protected void Start() {
         _animatorStatus = transform.parent.GetComponent<BaseCharacter>().animatorStatus;
         _collider = GetComponent<Collider>();
     }
 
     // Update is called once per frame
-    private void Update() {
+    protected void Update() {
         if (_ready) {
             // Only deal damage within the damage window of the animation
             if (_animatorStatus.canDealDamage) {
@@ -80,30 +79,15 @@ public class Melee : MonoBehaviour {
         if ((other.CompareTag("AI") || other.CompareTag("Player")) && !other.CompareTag(transform.parent.tag)) {
 
             // Apply damage to the other character
-            _skill.DealDamage(transform.parent.GetComponent<BaseCharacter>(), 
+            _skill.DealDamage(transform.parent.GetComponent<BaseCharacter>(),
                 other.GetComponent<BaseCharacter>(), _physAtkdamage, _magicAtkdamage);
         }
     }
 
     /// <summary>
-    /// Starts the melee attack.
+    /// Enables the skill hitbox.
     /// </summary>
-    public void Activate(Transform caster, Skill skill) {
-        // Setup melee properties
-        _physAtkdamage = caster.GetComponent<BaseCharacter>().characterStats.physAtk * skill.physicalMultiplier;
-        _magicAtkdamage = caster.GetComponent<BaseCharacter>().characterStats.magicAtk * skill.magicMultiplier;
-        _skill = skill;
-
-        // Setup melee range
-        transform.localScale *= skill.rangeMultiplier;
-        transform.localPosition = new Vector3(0f, transform.localScale.y, transform.localScale.z * 1.5f);
-        
-        // Start the melee attack
-        caster.GetComponent<BaseCharacter>().animator.SetTrigger("Attack"); // Play attack animation
-        _ready = true;
-    }
-
-    public void Die() {
-        Destroy(gameObject);
-    }
+    /// <param name="caster">The caster of the skill</param>
+    /// <param name="skill">The skill used</param>
+    public abstract void Activate(Transform caster, Skill skill);
 }
