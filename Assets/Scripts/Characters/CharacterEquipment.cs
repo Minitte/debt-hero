@@ -39,7 +39,7 @@ public class CharacterEquipment : MonoBehaviour {
 		switch (equipment.properties.type) {
 			case ItemProperties.Type.EQUIPMENT_WEAPON:
 				// if that equipment is actually equiped
-				if (weapon.Equals(equipment)) {
+				if (weapon != null && weapon.Equals(equipment)) {
 					UnequipWeapon();
 				}
 				break;

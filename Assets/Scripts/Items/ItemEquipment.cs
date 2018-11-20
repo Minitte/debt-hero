@@ -75,6 +75,10 @@ public class ItemEquipment : ItemBase {
     /// Equip to the owner
     /// </summary>
     public void Equip() {
+        if (owner.characterEquipment == null) {
+            CharacterEquipment ce = owner.characterEquipment;
+        }
+
         owner.characterEquipment.Equip(this);
     }
 
@@ -82,6 +86,10 @@ public class ItemEquipment : ItemBase {
     /// Unequip to the owner
     /// </summary>
     public void Unequip() {
+        if (owner.characterEquipment == null) {
+            CharacterEquipment ce = owner.characterEquipment;
+        }
+
         owner.characterEquipment.Unequip(this);
     }
 

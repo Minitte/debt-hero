@@ -22,6 +22,8 @@ public class SellPanel : InventoryPanel {
         // grant player gold based on value
         _inventory.gold += item.properties.value;
 
+        item.owner = PlayerManager.instance.localPlayer.GetComponent<BaseCharacter>();
+
         // desotry if zero qty of item
         if (item.properties.quantity <= 0) {
             _inventory.RemoveItemAt(slot);

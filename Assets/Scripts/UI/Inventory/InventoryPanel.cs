@@ -95,6 +95,11 @@ public class InventoryPanel : MonoBehaviour {
 	private bool _onCooldown;
 
 	/// <summary>
+	/// Flag for moving items
+	/// </summary>
+	private bool _moving;
+
+	/// <summary>
 	/// Start is called on the frame when a script is enabled just before
 	/// any of the Update methods is called the first time.
 	/// </summary>
@@ -169,6 +174,8 @@ public class InventoryPanel : MonoBehaviour {
 		float vert = Input.GetAxis("Menu Vertical");
 		float horz = Input.GetAxis("Menu Horizontal");
 
+		ResetItemDetails();
+
 		GetGridSlot(_currentSelectSlot).SetBorderVisiblity(false);
 
 		// row
@@ -193,7 +200,11 @@ public class InventoryPanel : MonoBehaviour {
 			}
 		}
 
+		ShowItemDetails(_currentSelectSlot);
+
 		GetGridSlot(_currentSelectSlot).SetBorderVisiblity(true);
+
+		ActionControls();
 	}
 
 	/// <summary>
@@ -231,6 +242,9 @@ public class InventoryPanel : MonoBehaviour {
 		UpdateAllItemSlots();
 
 		_currentSelectSlot = new ItemSlot(0, 0);
+	
+		ResetItemDetails(null);
+		ShowItemDetails(_currentSelectSlot);
 	}
 
 	/// <summary>
@@ -244,6 +258,8 @@ public class InventoryPanel : MonoBehaviour {
 		_mouseItemIcon = null;
 
 		ResetItemDetails(null);
+
+		HideAllBorders();
 	}
 
 	/// <summary>
@@ -256,6 +272,24 @@ public class InventoryPanel : MonoBehaviour {
 				ItemSlot slot = new ItemSlot(row, col);
 
 				UpdateItemSlot(slot);
+			}
+		}
+	}
+
+	/// <summary>
+	/// hides all borders
+	/// </summary>
+	private void HideAllBorders() {
+		for (int row = 0; row < itemRows.Length; row++) {
+			for (int col = 0; col < itemRows[0].items.Length; col++) {
+
+				ItemSlot slot = new ItemSlot(row, col);
+
+				ItemGridItemUI igiu = GetGridSlot(slot);
+
+				igiu.SetBorderEquip(false);
+				igiu.SetBorderVisiblity(false);
+				igiu.SetBorderFlash(false);
 			}
 		}
 	}
@@ -343,12 +377,14 @@ public class InventoryPanel : MonoBehaviour {
 	/// <param name="slot"></param>
 	protected virtual void SelectSlot(ItemSlot slot) {
 		// begin item movement
-		if (_currentMoveSlot == null) {
+		if (!_moving) {
 			ItemBase item = _inventory.GetItem(slot);
 
 			// Drag icon and stuff if there is actually an item
 			if (item != null) {
-				_currentMoveSlot = slot;
+				_moving = true;
+				
+				_currentMoveSlot = new ItemSlot(slot);
 
 				ItemUI iUI = Instantiate(item.itemUIPrefab).GetComponent<ItemUI>();
 
@@ -370,15 +406,15 @@ public class InventoryPanel : MonoBehaviour {
 		}
 
 		// end item movement
-		else if (_currentMoveSlot != null) {
+		else if (_moving) {
 			_inventory.SwapItems(_currentMoveSlot, slot);
 
-			UpdateItemSlot(_currentMoveSlot);
-			UpdateItemSlot(slot);
+			UpdateAllItemSlots();
 
 			GetGridSlot(_currentMoveSlot).SetBorderFlash(false);
 			GetGridSlot(slot).SetBorderFlash(false);
 
+			_moving = false;
 			_currentMoveSlot = null;
 
 			Destroy(_mouseItemIcon);
@@ -409,23 +445,19 @@ public class InventoryPanel : MonoBehaviour {
 		}
 
 		// no item in slot but ui exist... remove ui
-		if (item == null && itemUI != null) {
+		if (itemUI != null) {
 			Destroy(itemUI.gameObject);
+			itemUI = null;
 		}
 
 		// item exist in slot but no ui... create ui
-		else if (item != null && itemUI == null) {
+		if (item != null && itemUI == null) {
 			itemUI = Instantiate(item.itemUIPrefab).GetComponent<ItemUI>();
 
 			itemUI.transform.SetParent(GetGridSlot(slot).transform, false);
 
 			_items[slot.row, slot.col] = itemUI;
 
-			itemUI.stackText.text = item.properties.quantity + "";
-		}
-
-		// item and ui exist... update ui
-		else if (item != null && itemUI != null) {
 			itemUI.stackText.text = item.properties.quantity + "";
 		}
 

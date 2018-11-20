@@ -5,6 +5,16 @@ using UnityEngine;
 public class ShopController : MonoBehaviour {
 
 	/// <summary>
+	/// buyer panel
+	/// </summary>
+	public InventoryPanel buyer; 
+
+	/// <summary>
+	/// seller panel
+	/// </summary>
+	public InventoryPanel seller;
+
+	/// <summary>
 	/// Update is called every frame, if the MonoBehaviour is enabled.
 	/// </summary>
 	void Update() {
@@ -21,5 +31,7 @@ public class ShopController : MonoBehaviour {
 	/// </summary>
 	void OnEnable() {
 		GameState.SetState(GameState.MENU_SHOP);
+		buyer.enabled = false;
+		seller.enabled = true;
 	}
 }
