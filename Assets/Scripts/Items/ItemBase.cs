@@ -47,8 +47,8 @@ public abstract class ItemBase : MonoBehaviour {
     /// Uses the item aslong the quantity is above 0 and is usable
     /// </summary>
     public void Use() {
-        // check qty
-        if (properties.quantity <= 0 || !properties.usable || owner == null) {
+        // check if usable
+        if (!properties.usable) {
             return;
         }
 
@@ -89,7 +89,7 @@ public abstract class ItemBase : MonoBehaviour {
     // override object.GetHashCode
     public override int GetHashCode() {
         string s =  properties.name + "/" + 
-            properties.description + "/" + 
+            properties.itemID + "/" + 
             properties.type;
 
         return s.GetHashCode();
