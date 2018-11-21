@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4032602127309256}
   - component: {fileID: 114058547389561858}
   m_Layer: 0
-  m_Name: Tooth Item
+  m_Name: Carrot Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

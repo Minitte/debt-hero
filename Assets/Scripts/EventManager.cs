@@ -40,7 +40,7 @@ public class EventManager : MonoBehaviour {
     }
 
     // Calculates the money needed to be paid back (Linear)
-    private int DebtCurve(int days) {
+    public int DebtCurve(int days) {
         return (Mathf.RoundToInt((Mathf.Pow((days - 1), 2) + days - 1) / 2 * 100));
     }
 }

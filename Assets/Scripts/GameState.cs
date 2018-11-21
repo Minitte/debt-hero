@@ -73,8 +73,6 @@ public class GameState {
     /// <param name="state"></param>
     public static void SetState(int state) {
 
-        Debug.Log("Game state changed to " + state);
-
         _currentState = state;
 
         if (OnStateChanged != null) {
