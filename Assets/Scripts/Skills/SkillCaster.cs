@@ -90,7 +90,7 @@ public class SkillCaster : MonoBehaviour {
                 return true;
             } else {
                 if (CompareTag("Player")) {
-                    FloatingTextController.instance.CreateFloatingText("Out of mana!", gameObject);
+                    FloatingTextController.instance.CreateFloatingText("Out of mana!", Color.yellow, gameObject);
                 }
             }
         }

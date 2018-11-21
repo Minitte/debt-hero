@@ -67,6 +67,7 @@ public class PlayerManager : MonoBehaviour {
 		DontDestroyOnLoad(this.gameObject);
 
         _stats.OnHealthChanged += playerResources.UpdateHealth;
+        _stats.OnManaChanged += playerResources.UpdateMana;
         _stats.OnExpChanged += playerResources.UpdateExp;
 
         /*// Instantiate player's health and mana bars

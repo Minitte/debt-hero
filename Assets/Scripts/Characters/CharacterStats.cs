@@ -2,6 +2,8 @@
 
 public class CharacterStats : MonoBehaviour {
 
+    #region Delegate templates
+
     /// <summary>
     /// Death event template.
     /// </summary>
@@ -13,6 +15,25 @@ public class CharacterStats : MonoBehaviour {
     public delegate void HealthChangedEvent();
 
     /// <summary>
+    /// Mana changed event template.
+    /// </summary>
+    public delegate void ManaChangedEvent();
+
+    /// <summary>
+    /// Level up event template.
+    /// </summary>
+    public delegate void LevelEvent();
+
+    /// <summary>
+    /// Exp changed event template.
+    /// </summary>
+    public delegate void ExpChangedEvent();
+
+    #endregion
+
+    #region Events
+
+    /// <summary>
     /// This death event is called when the character dies.
     /// </summary>
     public event DeathEvent OnDeath;
@@ -22,6 +43,22 @@ public class CharacterStats : MonoBehaviour {
     /// </summary>
     public event HealthChangedEvent OnHealthChanged;
 
+    /// <summary>
+    /// This event is called when the player recovers or spends mana.
+    /// </summary>
+    public event ManaChangedEvent OnManaChanged;
+
+    /// <summary>
+    /// This event is called when the player levels up.
+    /// </summary>
+    public event LevelEvent OnLevel;
+
+    /// <summary>
+    /// This event is called when the player gains Exp.
+    /// </summary>
+    public event ExpChangedEvent OnExpChanged;
+
+    #endregion
 
     /// <summary>
     /// Enum for all stat types.
@@ -104,19 +141,6 @@ public class CharacterStats : MonoBehaviour {
     /// </summary>
     public bool isAlive;
 
-    public delegate void LevelEvent();
-    public event LevelEvent OnLevel;
-
-    /// <summary>
-    /// Exp changed event template.
-    /// </summary>
-    public delegate void ExpChangedEvent();
-
-    /// <summary>
-    /// This event is called when the player gains Exp.
-    /// </summary>
-    public event ExpChangedEvent OnExpChanged;
-
     /// <summary>
     /// Called when this character takes healing.
     /// </summary>
@@ -138,9 +162,33 @@ public class CharacterStats : MonoBehaviour {
             if (OnHealthChanged != null) {
                 OnHealthChanged();
             }
+            ShowFloatingText(netHealingTaken, Color.green); // Show healing numbers
+        }
+    }
+
+    /// <summary>
+    /// Recovers mana up to the max
+    /// </summary>
+    /// <param name="amt">fixed amount to recover</param>
+    public void RecoverMana(float amt) {
+        float netManaRecovered = 0f;
+
+        // Calculate mana recovery
+        if (currentMp + amt > maxMp) {
+            netManaRecovered = maxMp - currentMp;
+            currentMp = maxMp;
+        } else {
+            currentMp += amt;
+            netManaRecovered = amt;
         }
 
-        ShowFloatingText(netHealingTaken, false); // Show healing numbers
+        // If mana was recovered, trigger mana changed event
+        if (netManaRecovered > 0f) {
+            if (OnManaChanged != null) {
+                OnManaChanged();
+            }
+            ShowFloatingText(netManaRecovered, Color.blue); // Show mana recovery numbers
+        }
     }
 
     /// <summary>
@@ -150,7 +198,7 @@ public class CharacterStats : MonoBehaviour {
     /// <param name="magicAtkDamage">The amount of magical damage to take.</param>
     public void TakeDamage(float physAtkDamage, float magicAtkDamage) {
         float netDamageTaken = 0f;
-        
+
         // Calculate damage taken
         if (physDef < physAtkDamage) {
             currentHp = currentHp - (physAtkDamage - physDef);
@@ -175,19 +223,7 @@ public class CharacterStats : MonoBehaviour {
                 OnHealthChanged();
             }
         }
-        ShowFloatingText(netDamageTaken, true); // Show damage numbers
-    }
-
-    /// <summary>
-    /// Recovers mana up to the max
-    /// </summary>
-    /// <param name="amt">fixed amount to recover</param>
-    public void RecoverMana(float amt) {
-        currentMp += amt;
-
-        if (currentMp > maxMp) {
-            currentMp = maxMp;
-        }
+        ShowFloatingText(netDamageTaken, Color.red); // Show damage numbers
     }
 
     //Adds Exp to the player
@@ -201,7 +237,7 @@ public class CharacterStats : MonoBehaviour {
         level++;
         exp = 0;
         OnExpChanged();
-        if(OnLevel != null) {
+        if (OnLevel != null) {
             OnLevel();
         }
     }
@@ -220,31 +256,31 @@ public class CharacterStats : MonoBehaviour {
             case StatType.MAX_HP:
                 maxHp += amt;
                 break;
-                
+
             case StatType.CURRENT_MP:
                 currentMp += amt;
                 break;
-                
+
             case StatType.MAX_MP:
                 maxMp += amt;
                 break;
-                
+
             case StatType.PHY_ATK:
                 physAtk += amt;
                 break;
-                
+
             case StatType.MAG_ATK:
                 magicAtk += amt;
                 break;
-                
+
             case StatType.PHY_DEF:
                 physDef += amt;
                 break;
-                
+
             case StatType.MAG_DEF:
                 magicDef += amt;
                 break;
-                
+
             case StatType.EXP:
                 exp += amt;
                 break;
@@ -263,12 +299,12 @@ public class CharacterStats : MonoBehaviour {
     /// </summary>
     /// <param name="value">The amount of damage or healing taken</param>
     /// <param name="isDamage">Whether it's a damage or healing value</param>
-    private void ShowFloatingText(float value, bool isDamage) {
-        if (tag == "AI") {
-            FloatingTextController.instance.CreateCombatNumber(value, isDamage, gameObject);
-        }  else {
-            FloatingTextController.instance.CreateCombatNumber(value, isDamage, PlayerManager.instance.localPlayer);
+    private void ShowFloatingText(float value, Color color) {
+        if (CompareTag("Player")) {
+            FloatingTextController.instance.CreateFloatingText(value.ToString(), color, PlayerManager.instance.localPlayer);
+        } else {
+            FloatingTextController.instance.CreateFloatingText(value.ToString(), color, gameObject);
         }
-
+        
     }
 }
