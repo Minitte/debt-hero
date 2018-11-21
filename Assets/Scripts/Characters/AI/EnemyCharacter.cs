@@ -25,14 +25,19 @@ public class EnemyCharacter : BaseCharacter {
     public float aggroRadius = 25f;
 
     /// <summary>
+    /// Reference to the AI's health bar.
+    /// </summary>
+    private HealthBar _healthBar;
+
+    /// <summary>
     /// A queue of actions for the AI.
     /// </summary>
     private Queue<AIAction> _actionQueue;
 
     /// <summary>
-    /// Reference to the AI's health bar.
+    /// Collider array used for storing results of physics overlap spheres.
     /// </summary>
-    private HealthBar _healthBar;
+    private Collider[] _withinAggroColliders;
 
     /// <summary>
     /// Property variable for the action queue.
@@ -44,19 +49,23 @@ public class EnemyCharacter : BaseCharacter {
     // Use this for initialization
     private void Start() {
         _actionQueue = new Queue<AIAction>();
+        _withinAggroColliders = new Collider[1];
         characterStats.OnHealthChanged += DrawHealthBar;
         characterStats.OnDeath += Die;
+
+        // Check for aggro five times per second
+        InvokeRepeating("CheckAggro", 0f, 0.2f);
     }
 
     // Update is called once per frame
-    private void FixedUpdate() {
+    private void Update() {
         animator.SetFloat("Speed", agent.velocity.magnitude); // Run animation
 
         // Don't do anything if already attacking
         if (!animatorStatus.isCasting) {
 
             // If there is a player in aggro radius, it will be assigned to target
-            if (CheckAggro()) {
+            if (target != null) {
                 agent.destination = target.position; // Move to the target
 
                 // Keep facing the target
@@ -77,11 +86,11 @@ public class EnemyCharacter : BaseCharacter {
     /// <returns>Whether a player is within the aggro radius</returns>
     private bool CheckAggro() {
         // Check all colliders within the aggro radius that match the player mask
-        Collider[] withinAggroColliders = Physics.OverlapSphere(transform.position, aggroRadius, PLAYER_MASK);
+        int hits = Physics.OverlapSphereNonAlloc(transform.position, aggroRadius, _withinAggroColliders, PLAYER_MASK);
 
         // Array length greater than zero means at least one player is within the aggro radius
-        if (withinAggroColliders.Length > 0) {
-            Transform aggroedTarget = withinAggroColliders[0].transform; // Target is the player's transform
+        if (hits > 0) {
+            Transform aggroedTarget = _withinAggroColliders[0].transform; // Target is the player's transform
 
             // Check if the target is behind a wall
             RaycastHit hit;

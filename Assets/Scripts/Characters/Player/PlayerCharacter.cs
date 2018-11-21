@@ -22,6 +22,11 @@ public class PlayerCharacter : BaseCharacter {
     /// </summary>
     private bool _canMove;
 
+    /// <summary>
+    /// Flag for if playing on a PS4.
+    /// </summary>
+    private bool _onPS4;
+
     // Use this for initialization
     private void Start() {
         _path = new NavMeshPath();
@@ -30,26 +35,30 @@ public class PlayerCharacter : BaseCharacter {
         characterStats.OnDeath += Die;
 
         characterEquipment = PlayerManager.instance.GetComponent<CharacterEquipment>();
+
+        // Check if on PS4
+        if (Application.platform == RuntimePlatform.PS4 || Input.GetJoystickNames().Length > 0) {
+            _onPS4 = true;
+        }
     }
 
     // Update is called once per frame
     private void Update() {
         animator.SetFloat("Speed", agent.velocity.magnitude); // Run animation
-        bool controllerPluggedIn = Input.GetJoystickNames().Length > 0;
 
         // Don't accept input if the character is casting something
         if (!animatorStatus.isCasting && _canMove && GameState.currentState == GameState.PLAYING) {
             // Handle player input
-            if (!controllerPluggedIn) {
+            if (!_onPS4) {
                 HandleMouseInput();
                 HandleKeyboardInput();
             }
             
-            // Handle controller input if plugged in
+            // Handle controller input
             else {
                 HandleControllerInput();
             }
-        }    
+        }
 
         // Force model position and rotation to stay the same
         transform.GetChild(0).position = transform.position;
@@ -60,11 +69,12 @@ public class PlayerCharacter : BaseCharacter {
     /// Handles all mouse input from the player.
     /// </summary>
     private void HandleMouseInput() {
+        
         // Check if the player pressed or is holding the move key
         if (Input.GetMouseButton(0)) {
             if (GetMousePosition(out _mousePosition)) {
                 transform.LookAt(new Vector3(_mousePosition.x, transform.position.y, _mousePosition.z));
-                
+
                 // Get the closest nav mesh position
                 NavMeshHit navHitPosition;
                 NavMesh.SamplePosition(_mousePosition, out navHitPosition, 20f, NavMesh.AllAreas);
