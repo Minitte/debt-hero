@@ -14,9 +14,9 @@ public class PlayerManager : MonoBehaviour {
 	public GameObject playerPrefab;
 
     /// <summary>
-    /// Health bar prefab.
+    /// Player resource bars.
     /// </summary>
-    public GameObject healthbar;
+    public PlayerResources playerResources;
 
     /// <summary>
     /// The current local player gameobject instance
@@ -117,7 +117,15 @@ public class PlayerManager : MonoBehaviour {
 			localPlayer = Instantiate(playerPrefab);
 			Camera.main.GetComponent<CopyTargetPosition>().target = localPlayer.transform;
 
+            CharacterStats stats = GetComponent<CharacterStats>();
+            stats.OnHealthChanged += playerResources.UpdateHealth;
+            stats.OnExpChanged += playerResources.UpdateMana;
+            localPlayer.GetComponent<SkillCaster>().OnSkillCasted += playerResources.UpdateExp;
+            
+
+            /*
             GameObject hp = Instantiate(healthbar, GameObject.Find("Canvas").transform);
+            hp.transform.SetAsFirstSibling(); // Ensure that it doesn't cover other UI elements
 
             // Load player's health bar
             if (hp != null) {
@@ -126,6 +134,7 @@ public class PlayerManager : MonoBehaviour {
                 localPlayer.GetComponent<BaseCharacter>().skillCaster.OnSkillCasted += hp.GetComponent<PlayerResourceBars>().UpdateMana;
                 GetComponent<CharacterStats>().OnExpChanged += hp.GetComponent<PlayerResourceBars>().UpdateExp;
             }
+            */
         }
     }
 

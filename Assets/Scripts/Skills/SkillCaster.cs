@@ -48,7 +48,7 @@ public class SkillCaster : MonoBehaviour {
         }
 
         if (CompareTag("Player")) {
-            OnSkillCasted += GameObject.Find("Canvas").transform.GetComponentInChildren<PlayerResourceBars>().UpdateMana;
+            //OnSkillCasted += GameObject.Find("Canvas").transform.GetComponentInChildren<PlayerResource>().UpdateMana;
 
             // Update skill icons
             SkillManager.instance.UpdateSkills(this);
