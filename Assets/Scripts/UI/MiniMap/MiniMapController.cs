@@ -46,8 +46,6 @@ public class MiniMapController : MonoBehaviour {
 		FloorGenerator.OnFloorGenerated += GenerateMapObjects;
 		
 		FloorGenerator.OnBeginGeneration += ClearMapObjects;
-
-		InGameMenuController.OnMenuShown += HideMap;
 	}
 
 	/// <summary>
@@ -105,12 +103,4 @@ public class MiniMapController : MonoBehaviour {
 
 		mapObjects.Clear();
 	}
-
-	/// <summary>
-    /// Hides or shows the map
-    /// </summary>
-    /// <param name="hide"></param>
-    private void HideMap(bool hide) {
-        this.gameObject.SetActive(!hide);
-    }
 }

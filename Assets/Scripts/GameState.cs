@@ -39,16 +39,6 @@ public class GameState {
     #endregion
 
     /// <summary>
-    /// highest floor reached
-    /// </summary>
-    public static int floorReached;
-
-    /// <summary>
-    /// Current floor
-    /// </summary>
-    public static int currentFloor;
-
-    /// <summary>
     /// Current game state. 
     /// </summary>
     public static int currentState { 
@@ -82,8 +72,6 @@ public class GameState {
     /// </summary>
     /// <param name="state"></param>
     public static void SetState(int state) {
-
-        Debug.Log("Game state changed to " + state);
 
         _currentState = state;
 

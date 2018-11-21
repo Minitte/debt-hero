@@ -44,6 +44,11 @@ public class ItemDatabase : MonoBehaviour {
 		_itemDict = new Dictionary<int, ItemBase>();
 
 		foreach (ItemBase entry in initalEntries) {
+
+			if (entry == null) {
+				continue;
+			}
+
 			ItemProperties props = entry.properties;
 
 			// test for duplicates

@@ -24,15 +24,20 @@ public class SaveLoadManager : MonoBehaviour {
     /// </summary>
     public ItemDatabase itemDatabase;
 
+    public delegate void SaveLoadEvent();
+
+    public static event SaveLoadEvent OnReady;
+
     /// <summary>
     /// Setting up the saveLoadManager variable.
     /// </summary>
     public void Awake() {
-        if(instance == null) {
-            DontDestroyOnLoad(gameObject);
-            instance = this;
-        }else {
-            Destroy(gameObject);
+        instance = this;
+    }
+
+    public void Update() {
+        if(OnReady != null) {
+            OnReady();
         }
     }
 
@@ -78,10 +83,10 @@ public class SaveLoadManager : MonoBehaviour {
         gameData.currentHour = time.currentHour;
         gameData.currentMinute =time.currentMinute;
         gameData.days = time.days;
-        gameData.floorReached = GameState.floorReached;
+        gameData.floorReached = PlayerProgress.floorReached;
 
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream fs = new FileStream(Application.persistentDataPath + "/save" + slot + ".dat", FileMode.OpenOrCreate);
+        FileStream fs = new FileStream(Application.dataPath + "/save" + slot + ".dat", FileMode.OpenOrCreate);
 
         bf.Serialize(fs, gameData);
         fs.Close();
@@ -121,7 +126,7 @@ public class SaveLoadManager : MonoBehaviour {
         time.currentHour = gameData.currentHour;
         time.currentMinute = gameData.currentMinute;
         time.days = gameData.days;
-        GameState.floorReached = gameData.floorReached;
+        PlayerProgress.floorReached = gameData.floorReached;
 
         foreach (ItemSafeFormat item in gameData.items) {
             ItemSlot itemSlot = item.slot;
@@ -137,9 +142,9 @@ public class SaveLoadManager : MonoBehaviour {
     /// <param name="slot"></param>
     /// <returns></returns>
     public GameData LoadGameData(int slot) {
-        if (File.Exists(Application.persistentDataPath + "/save" + slot + ".dat")) {
+        if (File.Exists(Application.dataPath + "/save" + slot + ".dat")) {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream fs = File.Open(Application.persistentDataPath + "/save" + slot + ".dat", FileMode.Open, FileAccess.Read);
+            FileStream fs = File.Open(Application.dataPath + "/save" + slot + ".dat", FileMode.Open, FileAccess.Read);
 
             GameData data = (GameData)bf.Deserialize(fs);
             fs.Close();

@@ -144,6 +144,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224007958373302740}
+  - component: {fileID: 114557908324464852}
   m_Layer: 5
   m_Name: Skill Icons
   m_TagString: Untagged
@@ -1019,6 +1020,17 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: K
+--- !u!114 &114557908324464852
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1333937902090494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dd32b00f26bfed408953e46935395cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114579637543286500
 MonoBehaviour:
   m_ObjectHideFlags: 1

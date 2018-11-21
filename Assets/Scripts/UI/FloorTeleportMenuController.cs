@@ -34,7 +34,7 @@ public class FloorTeleportMenuController : MonoBehaviour {
 	/// </summary>
 	private void UpdateButtons() {
 		for (int i = 0; i < floorButtons.Length; i++) {
-			floorButtons[i].interactable = floorDestinations[i] <= GameState.floorReached;
+			floorButtons[i].interactable = floorDestinations[i] <= PlayerProgress.floorReached;
 		}
 	}
 
@@ -42,7 +42,7 @@ public class FloorTeleportMenuController : MonoBehaviour {
 	/// Changes the scene to tower
 	/// </summary>
 	public void ChangeSceneToTower(int floor) {
-		GameState.currentFloor = floor;
+		PlayerProgress.currentFloor = floor;
 		SceneManager.LoadScene("The Tower");
 	}
 	
@@ -50,7 +50,7 @@ public class FloorTeleportMenuController : MonoBehaviour {
 	/// Changes the scene to town
 	/// </summary>
 	public void ChangeSceneToTown() {
-		GameState.currentFloor = 0;
+		PlayerProgress.currentFloor = 0;
 		SceneManager.LoadScene("TownScene");
 	}
 }
