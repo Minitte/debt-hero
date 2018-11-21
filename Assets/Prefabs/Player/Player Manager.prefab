@@ -128,7 +128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 1980193266817564, guid: daf9f9039f9cb2543bf28d88b21900c6,
     type: 2}
-  healthbar: {fileID: 1672549307374518, guid: cce16d427d1abe84db53dfd023e4dc8c, type: 2}
+  playerResources: {fileID: 0}
   localPlayer: {fileID: 0}
 --- !u!114 &114855771409217310
 MonoBehaviour:

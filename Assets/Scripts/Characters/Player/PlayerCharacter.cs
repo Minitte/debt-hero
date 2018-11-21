@@ -38,7 +38,7 @@ public class PlayerCharacter : BaseCharacter {
         bool controllerPluggedIn = Input.GetJoystickNames().Length > 0;
 
         // Don't accept input if the character is casting something
-        if (!animatorStatus.isCasting && _canMove) {
+        if (!animatorStatus.isCasting && _canMove && GameState.currentState == GameState.PLAYING) {
             // Handle player input
             if (!controllerPluggedIn) {
                 HandleMouseInput();
