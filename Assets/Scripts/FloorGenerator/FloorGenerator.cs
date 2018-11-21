@@ -115,13 +115,13 @@ public class FloorGenerator : MonoBehaviour {
 	/// Increments the floor number and generates a new floor
 	/// </summary>
 	public void NextFloor() {
-		GameState.currentFloor++;
+		PlayerProgress.currentFloor++;
 
-		if (GameState.currentFloor > GameState.floorReached) {
-			GameState.floorReached = GameState.currentFloor;
+		if (PlayerProgress.currentFloor > PlayerProgress.floorReached) {
+			PlayerProgress.floorReached = PlayerProgress.currentFloor;
 		}
 
-		if (GameState.currentFloor % 3 == 0) {
+		if (PlayerProgress.currentFloor % 3 == 0) {
 			StartCoroutine(GenerateSafeZone());
 		} else {
 			GenerateNewFloor(true);
@@ -138,7 +138,7 @@ public class FloorGenerator : MonoBehaviour {
 			}
 
 		currentFloorParent = Instantiate(floorParentPrefab.gameObject).GetComponent<Floor>();
-		currentFloorParent.floorNumber = GameState.currentFloor;
+		currentFloorParent.floorNumber = PlayerProgress.currentFloor;
 
 		if (OnBeginGeneration != null) {
 			OnBeginGeneration(currentFloorParent, _rand);
@@ -168,7 +168,7 @@ public class FloorGenerator : MonoBehaviour {
     /// <param name="floorSeedNumber"></param>
     /// <param name="destoryOldFloor">flag to destory the old floor</param>
     private void GenerateNewFloor(bool destoryOldFloor) {
-		_rand = new System.Random(GenerateSeedNumber(floorSeed, GameState.currentFloor));
+		_rand = new System.Random(GenerateSeedNumber(floorSeed, PlayerProgress.currentFloor));
 
 		if (destoryOldFloor) {
 			if (currentFloorParent != null) {
@@ -187,7 +187,7 @@ public class FloorGenerator : MonoBehaviour {
 	private IEnumerator CoroutineGenerateFloor() {
 		currentFloorParent = Instantiate(floorParentPrefab.gameObject).GetComponent<Floor>();
 
-		currentFloorParent.floorNumber = GameState.currentFloor;
+		currentFloorParent.floorNumber = PlayerProgress.currentFloor;
 
 		if (OnBeginGeneration != null) {
 			OnBeginGeneration(currentFloorParent, _rand);
@@ -531,7 +531,7 @@ public class FloorGenerator : MonoBehaviour {
 	/// </summary>
 	/// <returns></returns>
 	private FloorPieceSet GetCurrentSet() {
-		int index = GameState.currentFloor / 3;
+		int index = PlayerProgress.currentFloor / 3;
 		index = index >= pieceSets.Length ? pieceSets.Length - 1 : index;
 		return pieceSets[index];
 	}

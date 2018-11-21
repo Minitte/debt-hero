@@ -78,7 +78,7 @@ public class SaveLoadManager : MonoBehaviour {
         gameData.currentHour = time.currentHour;
         gameData.currentMinute =time.currentMinute;
         gameData.days = time.days;
-        gameData.floorReached = GameState.floorReached;
+        gameData.floorReached = PlayerProgress.floorReached;
 
         BinaryFormatter bf = new BinaryFormatter();
         FileStream fs = new FileStream(Application.persistentDataPath + "/save" + slot + ".dat", FileMode.OpenOrCreate);
@@ -121,7 +121,7 @@ public class SaveLoadManager : MonoBehaviour {
         time.currentHour = gameData.currentHour;
         time.currentMinute = gameData.currentMinute;
         time.days = gameData.days;
-        GameState.floorReached = gameData.floorReached;
+        PlayerProgress.floorReached = gameData.floorReached;
 
         foreach (ItemSafeFormat item in gameData.items) {
             ItemSlot itemSlot = item.slot;

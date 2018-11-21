@@ -39,16 +39,6 @@ public class GameState {
     #endregion
 
     /// <summary>
-    /// highest floor reached
-    /// </summary>
-    public static int floorReached;
-
-    /// <summary>
-    /// Current floor
-    /// </summary>
-    public static int currentFloor;
-
-    /// <summary>
     /// Current game state. 
     /// </summary>
     public static int currentState { 
