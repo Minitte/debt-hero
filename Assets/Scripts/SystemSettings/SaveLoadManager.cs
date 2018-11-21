@@ -24,15 +24,20 @@ public class SaveLoadManager : MonoBehaviour {
     /// </summary>
     public ItemDatabase itemDatabase;
 
+    public delegate void SaveLoadEvent();
+
+    public static event SaveLoadEvent OnReady;
+
     /// <summary>
     /// Setting up the saveLoadManager variable.
     /// </summary>
     public void Awake() {
-        if(instance == null) {
-            DontDestroyOnLoad(gameObject);
-            instance = this;
-        }else {
-            Destroy(gameObject);
+        instance = this;
+    }
+
+    public void Update() {
+        if(OnReady != null) {
+            OnReady();
         }
     }
 

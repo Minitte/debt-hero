@@ -56,7 +56,7 @@ public class TimeManager : MonoBehaviour {
         currentTime += (Time.deltaTime / secondsPerDay) * timeScale;
         currentHour = Mathf.RoundToInt(24 * currentTime);
         currentMinute = Mathf.RoundToInt(60 * (24 * currentTime - Mathf.Floor(24 * currentTime)));
-        updateTime();
+        //updateTime();
 
         // When the current time is greater than 1 (24*1), one day has passed, so reset time to 0 and increment days
         if (currentTime >= 1) {

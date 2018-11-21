@@ -78,8 +78,8 @@ public class SaveSlotPanel : MonoBehaviour {
 	}
 
     public void LoadSlot(int slot) {
+		SceneManager.LoadScene("The Tower");
         SaveLoadManager.instance.LoadGameData(slot);
-        SceneManager.LoadScene("The Tower");
     }
 
 	/// <summary>
@@ -89,9 +89,7 @@ public class SaveSlotPanel : MonoBehaviour {
 	/// <returns></returns>
 	public IEnumerator UpdateAllSlotCoroutine() {
 		yield return new WaitForEndOfFrame();
-
 		UpdateAllSlots();
-
 		yield return new WaitForEndOfFrame();
 	}
 
@@ -100,7 +98,6 @@ public class SaveSlotPanel : MonoBehaviour {
 	/// </summary>
 	public void UpdateAllSlots() {
 		SaveLoadManager saveManager = SaveLoadManager.instance;
-
 		for (int i = 0; i < saveSlots.Length; i++) {
 			UpdateSlot(i);
 		}
