@@ -5,13 +5,6 @@ using UnityEngine.UI;
 /// This is a class for the player's resource bars.
 /// </summary>
 public class PlayerResources : MonoBehaviour {
-
-    [Header("Player stats")]
-    /// <summary>
-    /// Reference to the player's character stats.
-    /// </summary>
-    public CharacterStats characterStats;
-
     [Header("Resource texts")]
     /// <summary>
     /// Health text value.
@@ -44,12 +37,24 @@ public class PlayerResources : MonoBehaviour {
     /// </summary>
     public Slider expSlider;
 
+    /// <summary>
+    /// Reference to the player's character stats.
+    /// </summary>
+    private CharacterStats _playerStats;
+
     // Use this for initialization
     private void Start() {
+        _playerStats = PlayerManager.instance.GetComponent<CharacterStats>();
+
         // Initial update for the bars
         UpdateHealth();
         UpdateMana();
         UpdateExp();
+
+        // Setup events
+        _playerStats.OnHealthChanged += UpdateHealth;
+        _playerStats.OnManaChanged += UpdateMana;
+        _playerStats.OnExpChanged += UpdateExp;
     }
 
     /// <summary>
@@ -57,12 +62,12 @@ public class PlayerResources : MonoBehaviour {
     /// </summary>
     public void UpdateHealth() {
         // Calculate health percentage
-        float percentage = characterStats.currentHp
-            / characterStats.maxHp * 100f;
+        float percentage = _playerStats.currentHp
+            / _playerStats.maxHp * 100f;
 
         // Update health information
         healthSlider.value = percentage;
-        healthValue.text = "HP:" + characterStats.currentHp + "/" + characterStats.maxHp;
+        healthValue.text = "HP:" + _playerStats.currentHp + "/" + _playerStats.maxHp;
     }
 
     /// <summary>
@@ -70,12 +75,12 @@ public class PlayerResources : MonoBehaviour {
     /// </summary>
     public void UpdateMana() {
         // Calculate mana percentage
-        float percentage = characterStats.currentMp
-            / characterStats.maxMp * 100f;
+        float percentage = _playerStats.currentMp
+            / _playerStats.maxMp * 100f;
 
         // Update mana information
         manaSlider.value = percentage;
-        manaValue.text = "MP:" + characterStats.currentMp + "/" + characterStats.maxMp;
+        manaValue.text = "MP:" + _playerStats.currentMp + "/" + _playerStats.maxMp;
     }
 
     /// <summary>
@@ -83,17 +88,21 @@ public class PlayerResources : MonoBehaviour {
     /// </summary>
     public void UpdateExp() {
         // Calculate exp percentage
-        float percentage = characterStats.exp
-            / characterStats.maxExp * 100f;
+        float percentage = _playerStats.exp
+            / _playerStats.maxExp * 100f;
 
         // Update experience information
         expSlider.value = percentage; // Update Exp bar
-        expValue.text = "EXP:" + characterStats.exp + "/" + characterStats.maxExp;
+        expValue.text = "EXP:" + _playerStats.exp + "/" + _playerStats.maxExp;
     }
 
+    /// <summary>
+    /// Additional stuff to do when this object is destroyed.
+    /// </summary>
     private void OnDestroy() {
-        // Unsubscribe from events when this object is destroyed
-        //PlayerManager.instance.GetComponent<CharacterStats>().OnHealthChanged -= UpdateHealth;
-        //PlayerManager.instance.GetComponent<CharacterStats>().OnExpChanged -= UpdateExp;
+        // Unsubscribe from events
+        _playerStats.OnHealthChanged -= UpdateHealth;
+        _playerStats.OnManaChanged -= UpdateMana;
+        _playerStats.OnExpChanged -= UpdateExp;
     }
 }

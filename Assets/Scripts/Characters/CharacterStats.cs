@@ -144,7 +144,7 @@ public class CharacterStats : MonoBehaviour {
     /// <summary>
     /// Called when this character takes healing.
     /// </summary>
-    /// <param name="healingAmount"></param>
+    /// <param name="manaAmount"></param>
     public void TakeHealing(float healingAmount) {
         float netHealingTaken = 0f;
 
@@ -224,6 +224,19 @@ public class CharacterStats : MonoBehaviour {
             }
         }
         ShowFloatingText(netDamageTaken, Color.red); // Show damage numbers
+    }
+
+    /// <summary>
+    /// Called when this character spends mana.
+    /// </summary>
+    /// <param name="manaAmount">The amount of mana spent</param>
+    public void SpendMana(float manaAmount) {
+        if (currentMp >= manaAmount) {
+            currentMp -= manaAmount;
+            if (OnManaChanged != null) {
+                OnManaChanged();
+            }
+        }
     }
 
     //Adds Exp to the player

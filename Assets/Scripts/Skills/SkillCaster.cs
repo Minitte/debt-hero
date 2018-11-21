@@ -7,16 +7,6 @@
 public class SkillCaster : MonoBehaviour {
 
     /// <summary>
-    /// Skill cast event template.
-    /// </summary>
-    public delegate void SkillCastedEvent();
-
-    /// <summary>
-    /// This event is called when the character casts a skill.
-    /// </summary>
-    public event SkillCastedEvent OnSkillCasted;
-
-    /// <summary>
     /// List of skills.
     /// </summary>
     public Skill[] skills;
@@ -74,7 +64,7 @@ public class SkillCaster : MonoBehaviour {
         if (skillNum < skills.Length && skills[skillNum] != null && _canCasts[skillNum] == true) { // Validation
             if (_characterStats.currentMp >= skills[skillNum].manaCost) { // Check if enough mana to cast
                 skills[skillNum].Cast(GetComponent<BaseCharacter>()); // Cast the skill
-                _characterStats.currentMp -= skills[skillNum].manaCost;
+                _characterStats.SpendMana(skills[skillNum].manaCost);
 
                 // Put skill on cooldown
                 _timestamps[skillNum] = Time.time + skills[skillNum].cooldown;
@@ -84,9 +74,6 @@ public class SkillCaster : MonoBehaviour {
                     SkillManager.instance.StartCooldown(skillNum, _timestamps[skillNum]);
                 }
 
-                if (OnSkillCasted != null) {
-                    OnSkillCasted(); // Fire the skill casted event
-                }
                 return true;
             } else {
                 if (CompareTag("Player")) {
