@@ -66,6 +66,9 @@ public class PlayerManager : MonoBehaviour {
 
 		DontDestroyOnLoad(this.gameObject);
 
+        _stats.OnHealthChanged += playerResources.UpdateHealth;
+        _stats.OnExpChanged += playerResources.UpdateExp;
+
         /*// Instantiate player's health and mana bars
         GameObject hp = Instantiate(healthbar, GameObject.Find("Canvas").transform);
         hp.GetComponent<PlayerResourceBars>().CharacterStats = GetComponent<CharacterStats>();
@@ -117,10 +120,7 @@ public class PlayerManager : MonoBehaviour {
 			localPlayer = Instantiate(playerPrefab);
 			Camera.main.GetComponent<CopyTargetPosition>().target = localPlayer.transform;
 
-            CharacterStats stats = GetComponent<CharacterStats>();
-            stats.OnHealthChanged += playerResources.UpdateHealth;
-            stats.OnExpChanged += playerResources.UpdateMana;
-            localPlayer.GetComponent<SkillCaster>().OnSkillCasted += playerResources.UpdateExp;
+            localPlayer.GetComponent<SkillCaster>().OnSkillCasted += playerResources.UpdateMana;
             
 
             /*
