@@ -54,8 +54,6 @@ public class PlayerResourceBars : MonoBehaviour {
         UpdateHealth();
         UpdateMana();
         UpdateExp();
-
-        InGameMenuController.OnMenuShown += HideBars;
     }
 
     // Update is called once per frame
@@ -120,12 +118,6 @@ public class PlayerResourceBars : MonoBehaviour {
         float percentage = _characterStats.exp
             / _characterStats.maxExp * 100f;
         transform.Find("EXP").GetComponent<Slider>().value = percentage; // Update Exp bar
-    }
-    /// Hides or shows the bars
-    /// </summary>
-    /// <param name="hide"></param>
-    private void HideBars(bool hide) {
-        //this.gameObject.SetActive(!hide);
     }
 
     private void OnDestroy() {
