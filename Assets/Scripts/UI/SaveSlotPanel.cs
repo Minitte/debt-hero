@@ -61,7 +61,9 @@ public class SaveSlotPanel : MonoBehaviour {
 	/// Exits the save slot panel and returns to the journal panel
 	/// </summary>
 	public void ExitSaveSlotPanel() {
-		journalPanel.SetActive(true);
+        if (journalPanel != null) {
+            journalPanel.SetActive(true);
+        }
 		this.gameObject.SetActive(false);
 	}
 
