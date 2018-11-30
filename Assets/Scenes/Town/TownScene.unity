@@ -13040,6 +13040,46 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 224858177933465864, guid: 9715ebb0421383341b3ce93ebc0bd81b,
+        type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224858177933465864, guid: 9715ebb0421383341b3ce93ebc0bd81b,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224727558191116948, guid: 9715ebb0421383341b3ce93ebc0bd81b,
+        type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224727558191116948, guid: 9715ebb0421383341b3ce93ebc0bd81b,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224910885615992900, guid: 9715ebb0421383341b3ce93ebc0bd81b,
+        type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224910885615992900, guid: 9715ebb0421383341b3ce93ebc0bd81b,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224430017374149140, guid: 9715ebb0421383341b3ce93ebc0bd81b,
+        type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224430017374149140, guid: 9715ebb0421383341b3ce93ebc0bd81b,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9715ebb0421383341b3ce93ebc0bd81b, type: 2}
   m_IsPrefabParent: 0
@@ -23732,6 +23772,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1176934163}
     m_Modifications:
+    - target: {fileID: 114828953561290182, guid: ebf91a53c5309ce44ae1df8496c83395,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 224228342456742888, guid: ebf91a53c5309ce44ae1df8496c83395,
         type: 2}
       propertyPath: m_LocalPosition.x
@@ -25106,9 +25151,40 @@ Prefab:
       propertyPath: m_SizeDelta.y
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 114828953561290182, guid: ebf91a53c5309ce44ae1df8496c83395,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114828953561290182, guid: ebf91a53c5309ce44ae1df8496c83395,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114828953561290182, guid: ebf91a53c5309ce44ae1df8496c83395,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1784500323}
+    - target: {fileID: 114828953561290182, guid: ebf91a53c5309ce44ae1df8496c83395,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OpenMainMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 114828953561290182, guid: ebf91a53c5309ce44ae1df8496c83395,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ebf91a53c5309ce44ae1df8496c83395, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &1784500323 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114847117142712948, guid: ebf91a53c5309ce44ae1df8496c83395,
+    type: 2}
+  m_PrefabInternal: {fileID: 1784500322}
+  m_Script: {fileID: 11500000, guid: 8b8e560421c5f2a4db754557df522c8a, type: 3}
 --- !u!1 &1784651795
 GameObject:
   m_ObjectHideFlags: 0

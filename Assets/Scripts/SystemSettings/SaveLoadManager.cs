@@ -85,11 +85,9 @@ public class SaveLoadManager : MonoBehaviour {
         gameData.days = time.days;
         gameData.floorReached = PlayerProgress.floorReached;
 
-        BinaryFormatter bf = new BinaryFormatter();
-        FileStream fs = new FileStream(Application.dataPath + "/save" + slot + ".dat", FileMode.OpenOrCreate);
+		PlayerPrefs.SetString("Slot" + slot, JsonUtility.ToJson(gameData));
+        PlayerPrefs.Save();
 
-        bf.Serialize(fs, gameData);
-        fs.Close();
     }
 
     /// <summary>
@@ -142,17 +140,10 @@ public class SaveLoadManager : MonoBehaviour {
     /// <param name="slot"></param>
     /// <returns></returns>
     public GameData LoadGameData(int slot) {
-        if (File.Exists(Application.dataPath + "/save" + slot + ".dat")) {
-            BinaryFormatter bf = new BinaryFormatter();
-            FileStream fs = File.Open(Application.dataPath + "/save" + slot + ".dat", FileMode.Open, FileAccess.Read);
+        string saveData = PlayerPrefs.GetString("Slot" + slot);
+        GameData gameData = (saveData.Length > 0) ? JsonUtility.FromJson<GameData>(saveData) : null;
 
-            GameData data = (GameData)bf.Deserialize(fs);
-            fs.Close();
-
-            return data;
-        }
-
-        return null;
+        return gameData;
     }
 	
 }
