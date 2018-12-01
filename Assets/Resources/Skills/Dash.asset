@@ -22,7 +22,7 @@ MonoBehaviour:
   damageFX: {fileID: 0}
   physicalMultiplier: 1
   magicMultiplier: 1
-  rangeMultiplier: 1
+  meleeRangeMultiplier: 1
   areaMultiplier: 1
   skillBehaviours:
   - {fileID: 114536180865481668}
@@ -37,5 +37,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4073aff822afb347922c98bb7a85405, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 0.25
+  duration: 0.5
   distance: 10
+  animationLength: 1.633

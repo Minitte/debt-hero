@@ -29,7 +29,7 @@ public class AreaOfEffect : SkillHitbox {
         GetComponent<SphereCollider>().radius *= _skill.areaMultiplier;
         
         // Start the attack
-        caster.GetComponent<BaseCharacter>().animator.SetTrigger("TakeDamage"); // Play attack animation
+        caster.GetComponent<BaseCharacter>().animator.SetTrigger("Take Damage"); // Play attack animation
         _active = true;
     }
 }
