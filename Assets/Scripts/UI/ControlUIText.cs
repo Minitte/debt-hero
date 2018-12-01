@@ -4,8 +4,23 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ControlUIText : MonoBehaviour {
+    /// <summary>
+    /// List of strings to set text
+    /// //Size 2
+    /// Index 1 represents Movement Controls
+    /// Index 2 represents Combat Controls
+    /// Changes depending on platform e.g PC/PS4
+    /// </summary>
     public List<string> controls;
+
+    /// <summary>
+    /// controlUI is just a text that displays information.
+    /// </summary>
     public Text controlUI;
+
+    /// <summary>
+    /// Used to navigate between the array of strings.
+    /// </summary>
     public int index;
    
 
@@ -20,6 +35,9 @@ public class ControlUIText : MonoBehaviour {
 		
 	}
 
+    /// <summary>
+    /// Sets text depending on platform.
+    /// </summary>
     void SetControls() {
         if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor) {
              controls[0] = "Menu Controls \n"
