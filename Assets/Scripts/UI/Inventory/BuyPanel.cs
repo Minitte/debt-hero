@@ -6,12 +6,16 @@ public class BuyPanel : InventoryPanel {
 
     public CharacterInventory sellerInventory;
 
+    private CharacterInventory _buyerInventory;
+
     /// <summary>
     /// Start is called on the frame when a script is enabled just before
     /// any of the Update methods is called the first time.
     /// </summary>
     new void Start() {
         _inventory = sellerInventory;
+
+        _buyerInventory = PlayerManager.instance.GetComponent<CharacterInventory>();
 
         base.Start();
     }
@@ -33,19 +37,19 @@ public class BuyPanel : InventoryPanel {
         int cost = item.properties.value * 2;
 
         // check gold
-        if (_inventory.gold < cost) {
+        if (_buyerInventory.gold < cost) {
             return;
         }
 
         // deduct cost from player
-        _inventory.gold -= cost;
+        _buyerInventory.gold -= cost;
 
         // create item
         ItemDatabase itemDB = GameDatabase.instance.GetComponent<ItemDatabase>();
         ItemBase boughtItem = itemDB.GetNewItem(item.properties.itemID, 1);
 
         // give item to player
-        PlayerManager.instance.GetComponent<CharacterInventory>().AddItem(boughtItem);
+        _buyerInventory.AddItem(boughtItem);
 
         // update gold display
         UpdateGoldText();
@@ -77,4 +81,12 @@ public class BuyPanel : InventoryPanel {
 			}
 		}
 	}
+
+    /// <summary>
+	/// Updates gold text
+	/// </summary>
+	public override void UpdateGoldText() {
+		goldText.text = _buyerInventory.gold + "g";
+	}
+
 }

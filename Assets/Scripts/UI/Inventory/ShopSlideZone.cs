@@ -5,11 +5,7 @@ using UnityEngine.EventSystems;
 
 public class ShopSlideZone : MonoBehaviour, IPointerEnterHandler {
 
-	public InventoryPanel itemPanel;
-
-	public InventoryPanel oppositePane;
-
-	public Animator animator;
+	public ShopController shopController;
 
 	public bool sellerSide;
 
@@ -18,9 +14,11 @@ public class ShopSlideZone : MonoBehaviour, IPointerEnterHandler {
 	/// </summary>
 	/// <param name="eventData"></param>
 	public void OnPointerEnter(PointerEventData eventData) {
-		animator.SetBool("Seller", sellerSide);
-		itemPanel.enabled = true;
-		oppositePane.enabled = false;
+		if (sellerSide) {
+			shopController.ShowSeller();
+		} else {
+			shopController.ShowBuyer();
+		}
 	}
 
 	/// <summary>
@@ -31,21 +29,11 @@ public class ShopSlideZone : MonoBehaviour, IPointerEnterHandler {
 
 		if (sellerSide) {
 			if (lrswitch > 0) {
-				animator.SetBool("Seller", sellerSide);
-				itemPanel.enabled = true;
-				oppositePane.enabled = false;
-			} else if (lrswitch < 0) {
-				itemPanel.enabled = false;
-				oppositePane.enabled = true;
+				shopController.ShowSeller();
 			}
 		} else {
 			if (lrswitch < 0) {
-				animator.SetBool("Seller", sellerSide);
-				itemPanel.enabled = true;
-				oppositePane.enabled = false;
-			} else if (lrswitch > 0) {
-				itemPanel.enabled = false;
-				oppositePane.enabled = true;
+				shopController.ShowBuyer();
 			}
 		}
 	}
