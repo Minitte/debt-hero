@@ -3393,9 +3393,25 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: 1.0000156
       objectReference: {fileID: 0}
+    - target: {fileID: 114526786731006788, guid: 70c65f68b1e56c448944cd08537212ad,
+        type: 2}
+      propertyPath: shopController
+      value: 
+      objectReference: {fileID: 137625701}
+    - target: {fileID: 114096961598116894, guid: 70c65f68b1e56c448944cd08537212ad,
+        type: 2}
+      propertyPath: shopController
+      value: 
+      objectReference: {fileID: 137625701}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 70c65f68b1e56c448944cd08537212ad, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &137625701 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114222057016108082, guid: 70c65f68b1e56c448944cd08537212ad,
+    type: 2}
+  m_PrefabInternal: {fileID: 137625700}
+  m_Script: {fileID: 11500000, guid: e9de01461c5039743ad14ce5f0df7729, type: 3}
 --- !u!1 &142007079
 GameObject:
   m_ObjectHideFlags: 0
