@@ -90,13 +90,19 @@ public class Skill : ScriptableObject {
     /// <summary>
     /// List of skill behaviours.
     /// </summary>
-    public List<SkillBehaviour> skillBehaviours;
+    public List<InstantBehaviour> instantBehaviours;
+
+    /// <summary>
+    /// List of on damage behaviours.
+    /// </summary>
+    public List<DamageBehaviour> damageBehaviours;
 
     /// <summary>
     /// Used for initialization.
     /// </summary>
     private void Awake() {
-        skillBehaviours = new List<SkillBehaviour>();
+        instantBehaviours = new List<InstantBehaviour>();
+        damageBehaviours = new List<DamageBehaviour>();
         /*
         Object[] assets = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(this));
         foreach (Object o in assets) {
@@ -110,8 +116,10 @@ public class Skill : ScriptableObject {
         if (name != "") {
             Object[] assets = Resources.LoadAll("Skills/" + name);
             foreach (Object o in assets) {
-                if (o is SkillBehaviour) {
-                    skillBehaviours.Add(o as SkillBehaviour);
+                if (o is InstantBehaviour) {
+                    instantBehaviours.Add(o as InstantBehaviour);
+                } else if (o is DamageBehaviour) {
+                    damageBehaviours.Add(o as DamageBehaviour);
                 }
             }
         }
@@ -155,7 +163,7 @@ public class Skill : ScriptableObject {
             }
         }
         // Activate all the skill behaviours
-        foreach (SkillBehaviour behaviour in skillBehaviours) {
+        foreach (InstantBehaviour behaviour in instantBehaviours) {
             behaviour.Activate(caster);
         }
     }
@@ -172,7 +180,7 @@ public class Skill : ScriptableObject {
 
         if (victim.characterStats.isAlive) {
             // Activate all the debuff behaviours
-            foreach (DebuffBehaviour behaviour in skillBehaviours) {
+            foreach (DamageBehaviour behaviour in damageBehaviours) {
                 behaviour.OnDamageActivate(dealer, victim);
             }
         }
