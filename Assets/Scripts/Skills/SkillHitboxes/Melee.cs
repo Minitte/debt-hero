@@ -34,7 +34,7 @@ public class Melee : SkillHitbox {
         _skill = skill;
 
         // Setup melee range
-        transform.localScale *= skill.meleeRangeMultiplier;
+        transform.localScale = Vector3.Scale(transform.localScale, skill.hitboxScale);
         transform.localPosition = new Vector3(0f, transform.localScale.y, transform.localScale.z * 1.5f);
         
         // Start the melee attack

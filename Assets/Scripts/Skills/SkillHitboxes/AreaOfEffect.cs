@@ -26,8 +26,9 @@ public class AreaOfEffect : SkillHitbox {
         _skill = skill;
 
         // Setup area of effect
-        GetComponent<SphereCollider>().radius *= _skill.areaMultiplier;
-        
+        float maxMultiplierValue = Mathf.Max(Mathf.Max(_skill.hitboxScale.x, _skill.hitboxScale.y), _skill.hitboxScale.z);
+        GetComponent<SphereCollider>().radius *= maxMultiplierValue;
+
         // Start the attack
         caster.GetComponent<BaseCharacter>().animator.SetTrigger("TakeDamage"); // Play attack animation
         _active = true;

@@ -57,7 +57,7 @@ public class Skill : ScriptableObject {
     /// <summary>
     /// Prefab of the damage hitbox.
     /// </summary>
-    public GameObject damagePrefab;
+    public GameObject damageHitbox;
 
     /// <summary>
     /// Prefab of the damage effect.
@@ -75,16 +75,9 @@ public class Skill : ScriptableObject {
     public float magicMultiplier = 1f;
 
     /// <summary>
-    /// Multiplier for the damage range.
-    /// Used for melee attacks.
+    /// Multiplier for the hitbox range.
     /// </summary>
-    public float meleeRangeMultiplier = 1f;
-
-    /// <summary>
-    /// Multiplier for the damage area.
-    /// Used for AoE skills.
-    /// </summary>
-    public float areaMultiplier = 1f;
+    public Vector3 hitboxScale = new Vector3(1f, 1f, 1f);
     #endregion
 
     /// <summary>
@@ -131,8 +124,8 @@ public class Skill : ScriptableObject {
     /// <param name="caster">The transform of the caster</param>
     public void Cast(BaseCharacter caster) {
         // Activate the damage prefab if it exists
-        if (damagePrefab != null) {
-            GameObject damage = Instantiate(damagePrefab, caster.transform);
+        if (damageHitbox != null) {
+            GameObject damage = Instantiate(damageHitbox, caster.transform);
 
             SkillHitbox hitbox = damage.GetComponent<SkillHitbox>();
             // Set the damage effect if it exists
@@ -140,7 +133,12 @@ public class Skill : ScriptableObject {
                 ParticleSystem damagePS = Instantiate(damageFX, damage.transform).GetComponent<ParticleSystem>();
                 ParticleSystem.MainModule module = damagePS.main;
                 hitbox.DamageFX = damagePS;
+                
+                // Modify damage effect size accordingly to hitbox multiplier
+                float maxMultiplierValue = Mathf.Max(Mathf.Max(hitboxScale.x, hitboxScale.y), hitboxScale.z);
+                module.startSize = module.startSize.constant * maxMultiplierValue;
 
+                /*
                 // Modify particle size
                 switch (skillType) {
                     case SkillType.Melee:
@@ -150,10 +148,9 @@ public class Skill : ScriptableObject {
                         module.startSize = module.startSize.constant * areaMultiplier; // Multiply particle width by area
                         break;
                 }
+                */
             }
-
-            
-                    
+      
             // Activate the damage hitbox
             damage.GetComponent<SkillHitbox>().Activate(caster.transform, this);
 
@@ -179,7 +176,7 @@ public class Skill : ScriptableObject {
         victim.characterStats.TakeDamage(physDamage, magicDamage);
 
         if (victim.characterStats.isAlive) {
-            // Activate all the debuff behaviours
+            // Activate all the damage behaviours
             foreach (DamageBehaviour behaviour in damageBehaviours) {
                 behaviour.OnDamageActivate(dealer, victim);
             }

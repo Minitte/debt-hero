@@ -18,14 +18,14 @@ MonoBehaviour:
   soundFX: {fileID: 0}
   cooldown: 5
   manaCost: 10
-  damagePrefab: {fileID: 1102072977288342, guid: cc127540eb7d36346b2d6dbcb5074c19,
+  damageHitbox: {fileID: 1102072977288342, guid: cc127540eb7d36346b2d6dbcb5074c19,
     type: 2}
   damageFX: {fileID: 149006, guid: 06e44d6da6bc07f4391e987d16382f57, type: 2}
   physicalMultiplier: 2
   magicMultiplier: 1
-  meleeRangeMultiplier: 2
-  areaMultiplier: 1
-  skillBehaviours:
+  hitboxScale: {x: 2, y: 2, z: 2}
+  instantBehaviours: []
+  damageBehaviours:
   - {fileID: 114163970898685364}
   - {fileID: 114880675268095966}
 --- !u!114 &114163970898685364
