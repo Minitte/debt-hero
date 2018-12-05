@@ -1021,7 +1021,7 @@ MonoBehaviour:
     safeZonePrefabs:
     - {fileID: 1893807296134602, guid: 0279f3440e1b72b439bc8d8ff45c60ce, type: 2}
   roomSize: 24.9
-  maxFloorRadius: 5
+  maxFloorRadius: 4
   numberOfNodes: 4
   floorSeed: remember to watch the movie on wednesday or else
   roomEntryPrefab: {fileID: 114350198372911636, guid: 34bafd6a96fe28c488a782f8eec8bd4c,
