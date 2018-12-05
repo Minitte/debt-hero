@@ -24,14 +24,8 @@ public class Projectile : SkillHitbox {
             _skill.DealDamage(_caster, other.GetComponent<BaseCharacter>(), _physAtkdamage, _magicAtkdamage);
             Destroy(transform.parent.gameObject); // Destroy the projectile
         }
-    }
 
-    /// <summary>
-    /// For detecting collisions.
-    /// </summary>
-    /// <param name="other">The collision object collided with</param>
-    private void OnCollisionEnter(Collision collision) {
-        if (collision.collider.CompareTag("Wall")) {
+        if (other.CompareTag("Wall")) {
             Destroy(transform.parent.gameObject); // Destroy the projectile
         }
     }
