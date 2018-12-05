@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class MoveCaster : SkillBehaviour {
+public class MoveCaster : InstantBehaviour {
 
     /// <summary>
     /// Movement duration.
