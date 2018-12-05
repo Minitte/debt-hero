@@ -123,9 +123,18 @@ public class Skill : ScriptableObject {
     /// </summary>
     /// <param name="caster">The transform of the caster</param>
     public void Cast(BaseCharacter caster) {
+        // Face mouse position if applicable
+        if (caster is PlayerCharacter && !PlayerCharacter.OnPS4) {
+            ((PlayerCharacter)caster).FaceMousePosition(); 
+        }
+
         // Activate the damage prefab if it exists
         if (damageHitbox != null) {
-            GameObject damage = Instantiate(damageHitbox, caster.transform);
+            GameObject empty = new GameObject(skillName);
+            empty.transform.position = caster.transform.position;
+            empty.transform.rotation = caster.transform.rotation;
+            GameObject damage = Instantiate(damageHitbox, empty.transform);
+            
 
             SkillHitbox hitbox = damage.GetComponent<SkillHitbox>();
             // Set the damage effect if it exists
@@ -152,7 +161,7 @@ public class Skill : ScriptableObject {
             }
       
             // Activate the damage hitbox
-            damage.GetComponent<SkillHitbox>().Activate(caster.transform, this);
+            damage.GetComponent<SkillHitbox>().Activate(caster, this);
 
             // Play sound effect
             if(soundFX != null) {

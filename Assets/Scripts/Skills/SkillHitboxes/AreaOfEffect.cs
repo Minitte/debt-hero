@@ -8,7 +8,7 @@ public class AreaOfEffect : SkillHitbox {
     private void Update() {
         if (_active) {
             _collider.enabled = true;
-            Destroy(gameObject, 1f);
+            Destroy(transform.parent.gameObject, 1f);
             if (_damageFX != null) {
                 _damageFX.Emit(1); // Emit a damage effect particle
             }
@@ -19,10 +19,12 @@ public class AreaOfEffect : SkillHitbox {
     /// <summary>
     /// Starts the melee attack.
     /// </summary>
-    public override void Activate(Transform caster, Skill skill) {
+    public override void Activate(BaseCharacter caster, Skill skill) {
         // Setup melee properties
-        _physAtkdamage = caster.GetComponent<BaseCharacter>().characterStats.physAtk * skill.physicalMultiplier;
-        _magicAtkdamage = caster.GetComponent<BaseCharacter>().characterStats.magicAtk * skill.magicMultiplier;
+        _physAtkdamage = caster.characterStats.physAtk * skill.physicalMultiplier;
+        _magicAtkdamage = caster.characterStats.magicAtk * skill.magicMultiplier;
+        _animatorStatus = caster.animatorStatus;
+        _caster = caster;
         _skill = skill;
 
         // Setup area of effect
@@ -30,7 +32,7 @@ public class AreaOfEffect : SkillHitbox {
         GetComponent<SphereCollider>().radius *= maxMultiplierValue;
 
         // Start the attack
-        caster.GetComponent<BaseCharacter>().animator.SetTrigger("TakeDamage"); // Play attack animation
+        caster.animator.SetTrigger("TakeDamage"); // Play attack animation
         _active = true;
     }
 }

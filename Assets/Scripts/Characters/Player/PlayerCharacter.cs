@@ -8,6 +8,11 @@ using UnityEngine.AI;
 public class PlayerCharacter : BaseCharacter {
 
     /// <summary>
+    /// Flag for if playing on a PS4.
+    /// </summary>
+    public static bool OnPS4;
+
+    /// <summary>
     /// Used for inputs that involve the mouse position
     /// </summary>
     private Vector3 _mousePosition;
@@ -22,11 +27,6 @@ public class PlayerCharacter : BaseCharacter {
     /// </summary>
     private bool _canMove;
 
-    /// <summary>
-    /// Flag for if playing on a PS4.
-    /// </summary>
-    private bool _onPS4;
-
     // Use this for initialization
     private void Start() {
         _path = new NavMeshPath();
@@ -38,7 +38,7 @@ public class PlayerCharacter : BaseCharacter {
 
         // Check if on PS4
         if (Application.platform == RuntimePlatform.PS4 || Input.GetJoystickNames().Length > 0) {
-            _onPS4 = true;
+            OnPS4 = true;
         }
     }
 
@@ -49,7 +49,7 @@ public class PlayerCharacter : BaseCharacter {
         // Don't accept input if the character is casting something
         if (!animatorStatus.isCasting && _canMove && GameState.currentState == GameState.PLAYING) {
             // Handle player input
-            if (!_onPS4) {
+            if (!OnPS4) {
                 HandleMouseInput();
                 HandleKeyboardInput();
             }
@@ -88,7 +88,7 @@ public class PlayerCharacter : BaseCharacter {
         // Additional procedures after casting a skill
         if (Input.GetButtonDown("Basic Attack") && GetMousePosition(out _mousePosition)) {
             if (skillCaster.Cast(0)) { // Attempt to attack
-                FaceMousePosition();
+                //FaceMousePosition();
                 _canMove = false;
                 StartCoroutine(ResumeMovement(0.25f));
             }
@@ -122,7 +122,7 @@ public class PlayerCharacter : BaseCharacter {
 
         // Additional procedures after casting a skill
         if (castedSomething) {
-            FaceMousePosition();
+            //FaceMousePosition();
             _canMove = false;
             StartCoroutine(ResumeMovement(0.25f));
         }
@@ -170,7 +170,7 @@ public class PlayerCharacter : BaseCharacter {
     /// Makes the player face the mouse position.
     /// Also resets the navmash agent's path.
     /// </summary>
-    private void FaceMousePosition() {
+    public void FaceMousePosition() {
         transform.LookAt(new Vector3(_mousePosition.x, transform.position.y, _mousePosition.z));
         agent.ResetPath();
     }

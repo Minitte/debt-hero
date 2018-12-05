@@ -19,8 +19,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4105079729686572}
-  - component: {fileID: 114213712025729786}
   - component: {fileID: 135830126758805726}
+  - component: {fileID: 114213712025729786}
   - component: {fileID: 54997019256196962}
   m_Layer: 0
   m_Name: AreaOfEffect
