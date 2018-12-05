@@ -19,7 +19,7 @@ public class Melee : SkillHitbox {
         } else {
             // Check if the damage window is over
             if (_collider.enabled) {
-                Destroy(gameObject);
+                Destroy(transform.parent.gameObject);
             }
         }
     }
@@ -27,18 +27,20 @@ public class Melee : SkillHitbox {
     /// <summary>
     /// Starts the melee attack.
     /// </summary>
-    public override void Activate(Transform caster, Skill skill) {
+    public override void Activate(BaseCharacter caster, Skill skill) {
         // Setup melee properties
-        _physAtkdamage = caster.GetComponent<BaseCharacter>().characterStats.physAtk * skill.physicalMultiplier;
-        _magicAtkdamage = caster.GetComponent<BaseCharacter>().characterStats.magicAtk * skill.magicMultiplier;
+        _physAtkdamage = caster.characterStats.physAtk * skill.physicalMultiplier;
+        _magicAtkdamage = caster.characterStats.magicAtk * skill.magicMultiplier;
+        _animatorStatus = caster.animatorStatus;
+        _caster = caster;
         _skill = skill;
 
         // Setup melee range
-        transform.localScale *= skill.meleeRangeMultiplier;
+        transform.localScale = Vector3.Scale(transform.localScale, skill.hitboxScale);
         transform.localPosition = new Vector3(0f, transform.localScale.y, transform.localScale.z * 1.5f);
         
         // Start the melee attack
-        caster.GetComponent<BaseCharacter>().animator.SetTrigger("Attack"); // Play attack animation
+        caster.animator.SetTrigger("Attack"); // Play attack animation
         _active = true;
     }
 }

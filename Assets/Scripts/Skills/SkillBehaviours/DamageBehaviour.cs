@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 
-public abstract class DebuffBehaviour : SkillBehaviour {
+/// <summary>
+/// This is a class for skill behaviours that activate when damage is dealt.
+/// </summary>
+public abstract class DamageBehaviour : ScriptableObject {
 
     /// <summary>
     /// Represents one second of waiting time.

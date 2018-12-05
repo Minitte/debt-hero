@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// This is a skill behaviour for buffs.
 /// </summary>
-public class BuffBehaviour : SkillBehaviour {
+public class BuffStat : InstantBehaviour {
 
     /// <summary>
     /// Which stat to buff.

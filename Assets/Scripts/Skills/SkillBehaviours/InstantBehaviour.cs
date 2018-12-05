@@ -1,10 +1,9 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
-/// This is an abstract class for skill behaviours.
+/// This is an abstract class for instant behaviours.
 /// </summary>
-public abstract class SkillBehaviour : ScriptableObject {
+public abstract class InstantBehaviour : ScriptableObject {
 
     /// <summary>
     /// Activates the skill behaviour.

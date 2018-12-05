@@ -2,16 +2,12 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Knockback : DebuffBehaviour {
+public class Knockback : DamageBehaviour {
 
     /// <summary>
     /// The magnitude of the knockback.
     /// </summary>
     public float magnitude;
-
-    public override void Activate(BaseCharacter caster) {
-        // Do nothing
-    }
 
     /// <summary>
     /// Knocks the victim back.

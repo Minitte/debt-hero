@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// This is a skill behaviour that deals damage over time.
 /// </summary>
-public class DamageOverTime : DebuffBehaviour {
+public class DamageOverTime : DamageBehaviour {
 
     /// <summary>
     /// The duration of the damage over time effect.
@@ -21,10 +21,6 @@ public class DamageOverTime : DebuffBehaviour {
     /// The total amount of magical damage to deal.
     /// </summary>
     public float magicDamage;
-
-    public override void Activate(BaseCharacter caster) {
-        // Do nothing
-    }
 
     /// <summary>
     /// Starts the damage over time effect.
