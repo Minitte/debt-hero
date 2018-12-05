@@ -278,7 +278,7 @@ public class FloorGenerator : MonoBehaviour {
 
 		// create nodes
 		for (int i = 0; i < nodes.Length; i++) {
-			nodes[i] = GenerateRandomCord(XZCoordinate.zero, 3, maxDistance);
+			nodes[i] = GenerateRandomCord(XZCoordinate.zero, 2, maxDistance);
 
 			// nodes[0] = new Vector2(5, 3);
 
