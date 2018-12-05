@@ -15,6 +15,18 @@ public class ShopController : MonoBehaviour {
 	public InventoryPanel seller;
 
 	/// <summary>
+	/// Shop UI animator
+	/// </summary>
+	private Animator _animator;
+
+	/// <summary>
+	/// Awake is called when the script instance is being loaded.
+	/// </summary>
+	void Awake() {
+		_animator = GetComponent<Animator>();
+	}
+
+	/// <summary>
 	/// Update is called every frame, if the MonoBehaviour is enabled.
 	/// </summary>
 	void Update() {
@@ -33,5 +45,25 @@ public class ShopController : MonoBehaviour {
 		GameState.SetState(GameState.MENU_SHOP);
 		buyer.enabled = false;
 		seller.enabled = true;
+	}
+
+	/// <summary>
+	/// Shows the sellers side
+	/// </summary>
+	public void ShowSeller() {
+		buyer.enabled = false;
+		seller.enabled = true;
+
+		_animator.SetBool("Seller", true);
+	}
+
+	/// <summary>
+	/// Shows the buyer side
+	/// </summary>
+	public void ShowBuyer() {
+		buyer.enabled = true;
+		seller.enabled = false;
+
+		_animator.SetBool("Seller", false);
 	}
 }
