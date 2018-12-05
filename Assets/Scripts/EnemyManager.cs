@@ -129,7 +129,7 @@ public class EnemyManager : MonoBehaviour {
     /// <param name="rand"></param>
     /// <returns></returns>
     public Vector3 RandomRoomPos(Vector3 roomPos, System.Random rand) {
-        return new Vector3(roomPos.x + rand.Next(-15, 15), roomPos.y, roomPos.z + rand.Next(-15, 15));
+        return new Vector3(roomPos.x + rand.Next(-13, 13), roomPos.y, roomPos.z + rand.Next(-13, 13));
         // return roomPos;
     }
 }
