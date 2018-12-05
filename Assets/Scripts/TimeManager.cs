@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class TimeManager : MonoBehaviour {
 
+    public static TimeManager instance;
+
     // The directional light that represents the sun
     public Light sun;
 
@@ -43,6 +45,11 @@ public class TimeManager : MonoBehaviour {
     public delegate void OnHourChangeEvent();
     public event OnHourChangeEvent HourChange;
 
+    private void Awake() {
+        if (instance == null) {
+            instance = this;
+        }
+    }
 
     // Use this for initialization
     void Start() {
@@ -56,7 +63,7 @@ public class TimeManager : MonoBehaviour {
         currentTime += (Time.deltaTime / secondsPerDay) * timeScale;
         currentHour = Mathf.RoundToInt(24 * currentTime);
         currentMinute = Mathf.RoundToInt(60 * (24 * currentTime - Mathf.Floor(24 * currentTime)));
-        //updateTime();
+        updateTime();
 
         // When the current time is greater than 1 (24*1), one day has passed, so reset time to 0 and increment days
         if (currentTime >= 1) {

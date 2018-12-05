@@ -17,7 +17,7 @@ public class SaveLoadManager : MonoBehaviour {
     /// <summary>
     /// eventManager to get the Time manager to pull the tiem from
     /// </summary>
-    public EventManager eventManager;
+    private EventManager _eventManager;
 
     /// <summary>
     /// Item database
@@ -33,6 +33,7 @@ public class SaveLoadManager : MonoBehaviour {
     /// </summary>
     public void Awake() {
         instance = this;
+        _eventManager = EventManager.instance;
     }
 
     public void Update() {
@@ -48,7 +49,7 @@ public class SaveLoadManager : MonoBehaviour {
     public void Save(int slot) {
         CharacterStats stats = PlayerManager.instance.GetComponent<CharacterStats>();
         CharacterInventory inv = PlayerManager.instance.GetComponent<CharacterInventory>();
-        TimeManager time = eventManager.timeManager;
+        TimeManager time = _eventManager.timeManager;
 
         GameData gameData = new GameData();
 
@@ -64,6 +65,8 @@ public class SaveLoadManager : MonoBehaviour {
         gameData.playerExp = stats.exp;
         gameData.playerLevel = stats.level;
         gameData.playerGold = inv.gold;
+        gameData.debtOwed = _eventManager.debtOwed;
+        gameData.debtPaid = _eventManager.debtPaid;
        
         gameData.items = new List<ItemSafeFormat>();
 
@@ -104,7 +107,7 @@ public class SaveLoadManager : MonoBehaviour {
 
         CharacterStats stats = PlayerManager.instance.GetComponent<CharacterStats>();
         CharacterInventory inv = PlayerManager.instance.GetComponent<CharacterInventory>();
-        TimeManager time = eventManager.timeManager;
+        TimeManager time = _eventManager.timeManager;
 
         stats.currentHp = gameData.playerCurrenthp;
         stats.maxHp = gameData.playerMaxhp;
@@ -124,6 +127,9 @@ public class SaveLoadManager : MonoBehaviour {
         time.currentHour = gameData.currentHour;
         time.currentMinute = gameData.currentMinute;
         time.days = gameData.days;
+
+        _eventManager.debtOwed = gameData.debtOwed;
+        _eventManager.debtPaid = gameData.debtPaid;
         PlayerProgress.floorReached = gameData.floorReached;
 
         foreach (ItemSafeFormat item in gameData.items) {
@@ -236,6 +242,16 @@ public class GameData {
     /// The Player's Gold.
     /// </summary>
     public int playerGold;
+
+    /// <summary>
+    /// The Player's Owed debt
+    /// </summary>
+    public int debtOwed;
+
+    /// <summary>
+    /// The Player's Paid Debt.
+    /// </summary>
+    public int debtPaid;
 
     /// <summary>
     /// The Player's Inventory Items.

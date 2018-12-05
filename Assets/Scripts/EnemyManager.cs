@@ -15,6 +15,9 @@ public class EnemyManager : MonoBehaviour {
 
     public List<GameObject> enemies;
 
+    // Debt collector enemy
+    public GameObject debtCollector;
+
     /// <summary>
     /// spawnScalar is a number used to scale amount of enemies.
     /// </summary>
@@ -103,6 +106,13 @@ public class EnemyManager : MonoBehaviour {
         else if (floor >= 8 && floor <= 11) {
             for (int i = 0; i < spawnScalar; i++) {
                 GameObject spawned = Instantiate(fireEnemyPrefabs[rand.Next(0, fireEnemyPrefabs.Length)], enemyPos, Quaternion.identity);
+                enemies.Add(spawned);
+            }
+        }
+
+        if (EventManager.instance.spawnDebtCollectors) {
+            for (int i = 0; i < spawnScalar; i++) {
+                GameObject spawned = Instantiate(debtCollector, enemyPos, Quaternion.identity);
                 enemies.Add(spawned);
             }
         }

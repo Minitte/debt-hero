@@ -276,6 +276,8 @@ MonoBehaviour:
   - {fileID: 1963224199353422, guid: 8f58fdba79fc3044faa7f81dcde993c5, type: 2}
   fireEnemyPrefabs: []
   enemies: []
+  debtCollector: {fileID: 1000013586557078, guid: 7db1e0c82de086f4abb5af6a6a3da561,
+    type: 2}
   spawnScalar: 0
 --- !u!4 &433109959
 Transform:
@@ -452,13 +454,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeManager: {fileID: 1299764527}
-  eventSpecs:
-  - chance: 100
-    recurring: 1
-    day: 7
-    dayOffset: 1
-    time: 0
-    eventID: 0
+  debtOwed: 0
+  debtPaid: 0
+  daysPerPayment: 7
+  daysToPay: 3
+  spawnDebtCollectors: 0
 --- !u!4 &569897893
 Transform:
   m_ObjectHideFlags: 0
