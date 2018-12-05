@@ -276,7 +276,8 @@ MonoBehaviour:
   - {fileID: 1963224199353422, guid: 8f58fdba79fc3044faa7f81dcde993c5, type: 2}
   fireEnemyPrefabs: []
   enemies: []
-  spawnScalar: 0
+  minGroupSize: 4
+  maxGroupSize: 7
 --- !u!4 &433109959
 Transform:
   m_ObjectHideFlags: 0
