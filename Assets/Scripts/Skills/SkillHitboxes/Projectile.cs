@@ -13,6 +13,30 @@ public class Projectile : SkillHitbox {
     }
 
     /// <summary>
+    /// For detecting collisions.
+    /// </summary>
+    /// <param name="other">The collision object collided with</param>
+    private void OnTriggerEnter(Collider other) {
+        // Only deal damage to Player or AI tags, and no friendly fire
+        if ((other.CompareTag("AI") || other.CompareTag("Player")) && !other.CompareTag(_caster.tag)) {
+
+            // Apply damage to the other character
+            _skill.DealDamage(_caster, other.GetComponent<BaseCharacter>(), _physAtkdamage, _magicAtkdamage);
+            Destroy(transform.parent.gameObject); // Destroy the projectile
+        }
+    }
+
+    /// <summary>
+    /// For detecting collisions.
+    /// </summary>
+    /// <param name="other">The collision object collided with</param>
+    private void OnCollisionEnter(Collision collision) {
+        if (collision.collider.CompareTag("Wall")) {
+            Destroy(transform.parent.gameObject); // Destroy the projectile
+        }
+    }
+
+    /// <summary>
     /// Starts the melee attack.
     /// </summary>
     public override void Activate(BaseCharacter caster, Skill skill) {
@@ -29,5 +53,6 @@ public class Projectile : SkillHitbox {
         // Start the projectile attack
         caster.GetComponent<BaseCharacter>().animator.SetTrigger("Attack"); // Play attack animation
         GetComponent<Collider>().enabled = true;
+        GetComponent<Rigidbody>().velocity = _caster.transform.forward * skill.projectileVelocity;
     }
 }

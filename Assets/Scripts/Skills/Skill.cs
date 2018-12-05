@@ -11,7 +11,8 @@ public class Skill : ScriptableObject {
     /// </summary>
     public enum SkillType {
         Melee,
-        AoE
+        Projectile,
+        AreaOfEffect
     }
 
     #region General
@@ -78,6 +79,11 @@ public class Skill : ScriptableObject {
     /// Multiplier for the hitbox range.
     /// </summary>
     public Vector3 hitboxScale = new Vector3(1f, 1f, 1f);
+
+    /// <summary>
+    /// Velocity of the projectile.
+    /// </summary>
+    public float projectileVelocity = 1f;
     #endregion
 
     /// <summary>
