@@ -61,7 +61,7 @@ public class TimeManager : MonoBehaviour {
     void Update() {
         UpdateSun();
         currentTime += (Time.deltaTime / secondsPerDay) * timeScale;
-        currentHour = Mathf.RoundToInt(24 * currentTime);
+        currentHour = Mathf.RoundToInt(Mathf.Floor(24 * currentTime));
         currentMinute = Mathf.RoundToInt(60 * (24 * currentTime - Mathf.Floor(24 * currentTime)));
         updateTime();
 
