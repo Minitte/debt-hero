@@ -136,13 +136,16 @@ public class Skill : ScriptableObject {
 
         // Activate the damage prefab if it exists
         if (damageHitbox != null) {
-            GameObject empty = new GameObject(skillName);
-            empty.transform.position = caster.transform.position;
-            empty.transform.rotation = caster.transform.rotation;
-            GameObject damage = Instantiate(damageHitbox, empty.transform);
-            
-
+            // Create the hitbox gameobjects
+            GameObject skillObject = new GameObject(skillName);
+            skillObject.transform.position = caster.transform.position;
+            skillObject.transform.rotation = caster.transform.rotation;
+            GameObject damage = Instantiate(damageHitbox, skillObject.transform);
             SkillHitbox hitbox = damage.GetComponent<SkillHitbox>();
+
+            // Register the skill gameobject in the caster's active skills list
+            caster.GetComponent<SkillCaster>().ActiveSkillObjects.Add(skillObject);
+
             // Set the damage effect if it exists
             if (damageFX != null) {
                 ParticleSystem damagePS = Instantiate(damageFX, damage.transform).GetComponent<ParticleSystem>();
@@ -152,22 +155,10 @@ public class Skill : ScriptableObject {
                 // Modify damage effect size accordingly to hitbox multiplier
                 float maxMultiplierValue = Mathf.Max(Mathf.Max(hitboxScale.x, hitboxScale.y), hitboxScale.z);
                 module.startSize = module.startSize.constant * maxMultiplierValue;
-
-                /*
-                // Modify particle size
-                switch (skillType) {
-                    case SkillType.Melee:
-                        module.startSize = module.startSize.constant * meleeRangeMultiplier; // Multiply particle width by range
-                        break;
-                    case SkillType.AoE:
-                        module.startSize = module.startSize.constant * areaMultiplier; // Multiply particle width by area
-                        break;
-                }
-                */
             }
-      
+
             // Activate the damage hitbox
-            damage.GetComponent<SkillHitbox>().Activate(caster, this);
+            hitbox.Activate(caster, this);
 
             // Play sound effect
             if(soundFX != null) {

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// For casting skills
@@ -22,14 +23,27 @@ public class SkillCaster : MonoBehaviour {
     private bool[] _canCasts;
 
     /// <summary>
+    /// List of skill objects that are currently running for this character.
+    /// </summary>
+    private List<GameObject> _activeSkillObjects;
+
+    /// <summary>
+    /// Property variable for active skill objects.
+    /// </summary>
+    public List<GameObject> ActiveSkillObjects {
+        get { return _activeSkillObjects; }
+    }
+
+    /// <summary>
     /// Reference to the character stats.
     /// </summary>
     private CharacterStats _characterStats;
 
     // Use this for initialization
-    void Start() {
+    private void Start() {
         _timestamps = new float[skills.Length];
         _canCasts = new bool[skills.Length];
+        _activeSkillObjects = new List<GameObject>();
         _characterStats = GetComponent<BaseCharacter>().characterStats;
 
         // Initialize timestamps
@@ -46,7 +60,7 @@ public class SkillCaster : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update() {
+    private void Update() {
         // Check if cooldowns are over
         for (int i = 0; i < _timestamps.Length; i++) {
             if (_timestamps[i] <= Time.time) {
@@ -82,5 +96,15 @@ public class SkillCaster : MonoBehaviour {
             }
         }
         return false;
+    }
+
+    /// <summary>
+    /// Clears the list of skill objects by destroying them.
+    /// </summary>
+    public void ClearSkillObjects() {
+        foreach (GameObject skillObject in _activeSkillObjects) {
+            Destroy(skillObject);
+        }
+        _activeSkillObjects.Clear();
     }
 }

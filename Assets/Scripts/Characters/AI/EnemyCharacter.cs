@@ -136,5 +136,7 @@ public class EnemyCharacter : BaseCharacter {
         if (_healthBar != null) {
             Destroy(_healthBar.gameObject); // Get rid of the health bar
         }
+
+        skillCaster.ClearSkillObjects(); // Remove all active skill objects
     }
 }
