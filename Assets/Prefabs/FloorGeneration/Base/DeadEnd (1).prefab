@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 95898585474825350}
   m_Layer: 0
   m_Name: wall_corner_inner_concrete
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 95310427339011706}
   m_Layer: 0
   m_Name: wall_straight_concrete
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

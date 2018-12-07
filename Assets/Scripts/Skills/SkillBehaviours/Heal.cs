@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// This is a skill behaviour that heals gameobjects in a radius around the user.
 /// </summary>
-public class Heal : SkillBehaviour {
+public class Heal : InstantBehaviour {
 
     /// <summary>
     /// Amount of healing to be done.

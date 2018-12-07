@@ -30,6 +30,11 @@ public abstract class SkillHitbox : MonoBehaviour {
     protected Skill _skill;
 
     /// <summary>
+    /// Reference to the caster of this attack.
+    /// </summary>
+    protected BaseCharacter _caster;
+
+    /// <summary>
     /// Flag for if this hitbox is active.
     /// </summary>
     protected bool _active;
@@ -48,7 +53,6 @@ public abstract class SkillHitbox : MonoBehaviour {
 
     // Use this for initialization
     protected void Start() {
-        _animatorStatus = transform.parent.GetComponent<BaseCharacter>().animatorStatus;
         _collider = GetComponent<Collider>();
     }
 
@@ -58,11 +62,10 @@ public abstract class SkillHitbox : MonoBehaviour {
     /// <param name="other">The collision object collided with</param>
     private void OnTriggerEnter(Collider other) {
         // Only deal damage to Player or AI tags, and no friendly fire
-        if ((other.CompareTag("AI") || other.CompareTag("Player")) && !other.CompareTag(transform.parent.tag)) {
+        if ((other.CompareTag("AI") || other.CompareTag("Player")) && !other.CompareTag(_caster.tag)) {
 
             // Apply damage to the other character
-            _skill.DealDamage(transform.parent.GetComponent<BaseCharacter>(),
-                other.GetComponent<BaseCharacter>(), _physAtkdamage, _magicAtkdamage);
+            _skill.DealDamage(_caster, other.GetComponent<BaseCharacter>(), _physAtkdamage, _magicAtkdamage);
         }
     }
 
@@ -71,5 +74,5 @@ public abstract class SkillHitbox : MonoBehaviour {
     /// </summary>
     /// <param name="caster">The caster of the skill</param>
     /// <param name="skill">The skill used</param>
-    public abstract void Activate(Transform caster, Skill skill);
+    public abstract void Activate(BaseCharacter caster, Skill skill);
 }
