@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameOverManager : MonoBehaviour {
     /// <summary>
@@ -20,10 +21,33 @@ public class GameOverManager : MonoBehaviour {
     /// </summary>
     public string message;
 
+    /// <summary>
+    /// Button used to continue/load game
+    /// </summary>
+    public Button continueGame;
+
+    /// <summary>
+    /// Button used to quit/return to menu
+    /// </summary>
+    public Button quitGame;
+
+    /// <summary>
+    /// Load Panel Used to load a save file.
+    /// </summary>
+    public GameObject LoadPanel;
+
 	// Use this for initialization
 	void Start () {
+        //Set Text to blank
         gameOver.text = "";
+        
+        //Used to show a char one by one.
         StartCoroutine(DelayText());
+
+        //Enabling the buttons.
+        continueGame.gameObject.SetActive(true);
+        quitGame.gameObject.SetActive(true);
+
 	}
 	
 	// Update is called once per frame
@@ -41,5 +65,15 @@ public class GameOverManager : MonoBehaviour {
             gameOver.text += c;
             yield return new WaitForSeconds(delay);
         }
+    }
+
+    public void QuitGame() {
+        SceneManager.LoadScene("LandingMenu");
+
+    }
+
+    public void ContinueGame() {
+        
+        LoadPanel.SetActive(true);
     }
 }

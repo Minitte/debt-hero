@@ -125,7 +125,8 @@ public class EnemyManager : MonoBehaviour {
         }
 
         if (EventManager.instance.spawnDebtCollectors) {
-            for (int i = 0; i < spawnScalar; i++) {
+            for (int i = 0; i < groupSize; i++) {
+                Vector3 enemyPos = RandomRoomPos(roomPos, rand);
                 GameObject spawned = Instantiate(debtCollector, enemyPos, Quaternion.identity);
                 enemies.Add(spawned);
             }

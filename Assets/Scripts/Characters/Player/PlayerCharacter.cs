@@ -244,7 +244,7 @@ public class PlayerCharacter : BaseCharacter {
     /// </summary>
     private void Die() {
         Destroy(gameObject);
-        Transform gameOver = GameObject.Find("Game Over").transform;
+        Transform gameOver = GameObject.Find("GameOver").transform;
         Transform gameOverMsg = gameOver.GetChild(0);
         gameOverMsg.gameObject.SetActive(true);
         gameOverMsg.GetChild(0).gameObject.SetActive(true);
