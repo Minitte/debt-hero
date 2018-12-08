@@ -1361,6 +1361,7 @@ MonoBehaviour:
   continueGame: {fileID: 114133694917059262}
   quitGame: {fileID: 114315794373020768}
   LoadPanel: {fileID: 1824502562965088}
+  _selected: 0
 --- !u!114 &114009114282836142
 MonoBehaviour:
   m_ObjectHideFlags: 1
