@@ -243,6 +243,7 @@ public class PlayerCharacter : BaseCharacter {
     /// Additional cleanup for when this gameobject dies.
     /// </summary>
     private void Die() {
+        skillCaster.ClearSkillObjects(); // Remove all active skill objects
         Destroy(gameObject);
         Transform gameOver = GameObject.Find("GameOver").transform;
         Transform gameOverMsg = gameOver.GetChild(0);
