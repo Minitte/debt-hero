@@ -36,6 +36,10 @@ public class GameOverManager : MonoBehaviour {
     /// </summary>
     public GameObject LoadPanel;
 
+    /// <summary>
+    /// Used to handle Ps4 Inputs.
+    /// </summary>
+    public int _selected;
 	// Use this for initialization
 	void Start () {
         //Set Text to blank
@@ -47,12 +51,13 @@ public class GameOverManager : MonoBehaviour {
         //Enabling the buttons.
         continueGame.gameObject.SetActive(true);
         quitGame.gameObject.SetActive(true);
+        _selected = 0;
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+        PS4Controls();
 	}
 
     /// <summary>
@@ -66,14 +71,36 @@ public class GameOverManager : MonoBehaviour {
             yield return new WaitForSeconds(delay);
         }
     }
-
+    
+    /// <summary>
+    /// Load to main menu
+    /// </summary>
     public void QuitGame() {
         SceneManager.LoadScene("LandingMenu");
 
     }
 
+    /// <summary>
+    /// Open Up LoadPanel.
+    /// </summary>
     public void ContinueGame() {
-        
         LoadPanel.SetActive(true);
+    }
+
+    public void PS4Controls() {
+        float hori = Input.GetAxis("Menu Horizontal");
+
+        if(hori < 0) {
+            continueGame.Select();
+            _selected = 1;
+        }else if(hori > 1) {
+            _selected = 2;
+        }
+
+        if(_selected == 1 && Input.GetAxis("Menu Confirm")!= 0) {
+            this.ContinueGame();
+        }else if(_selected == 2 && Input.GetAxis("Menu Confirm")!= 0) {
+            this.QuitGame();
+        }
     }
 }
