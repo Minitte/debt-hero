@@ -135,6 +135,8 @@ public class InventoryPanel : MonoBehaviour {
 
 		UpdateAllItemSlots();
 
+		UpdateGoldText();
+
 		ResetItemDetails(null);
 
 		_currentSelectSlot = new ItemSlot(0, 0);
@@ -259,7 +261,7 @@ public class InventoryPanel : MonoBehaviour {
 
 		ResetItemDetails(null);
 
-		HideAllBorders();
+		// HideAllBorders();
 	}
 
 	/// <summary>
@@ -426,7 +428,7 @@ public class InventoryPanel : MonoBehaviour {
 	/// <summary>
 	/// Updates gold text
 	/// </summary>
-	public void UpdateGoldText() {
+	public virtual void UpdateGoldText() {
 		goldText.text = _inventory.gold + "g";
 	}
 

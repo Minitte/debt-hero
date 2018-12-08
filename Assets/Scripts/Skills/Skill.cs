@@ -11,7 +11,8 @@ public class Skill : ScriptableObject {
     /// </summary>
     public enum SkillType {
         Melee,
-        AoE
+        Projectile,
+        AreaOfEffect
     }
 
     #region General
@@ -57,7 +58,7 @@ public class Skill : ScriptableObject {
     /// <summary>
     /// Prefab of the damage hitbox.
     /// </summary>
-    public GameObject damagePrefab;
+    public GameObject damageHitbox;
 
     /// <summary>
     /// Prefab of the damage effect.
@@ -75,28 +76,32 @@ public class Skill : ScriptableObject {
     public float magicMultiplier = 1f;
 
     /// <summary>
-    /// Multiplier for the damage range.
-    /// Used for melee attacks.
+    /// Multiplier for the hitbox range.
     /// </summary>
-    public float meleeRangeMultiplier = 1f;
+    public Vector3 hitboxScale = new Vector3(1f, 1f, 1f);
 
     /// <summary>
-    /// Multiplier for the damage area.
-    /// Used for AoE skills.
+    /// Velocity of the projectile.
     /// </summary>
-    public float areaMultiplier = 1f;
+    public float projectileVelocity = 1f;
     #endregion
 
     /// <summary>
     /// List of skill behaviours.
     /// </summary>
-    public List<SkillBehaviour> skillBehaviours;
+    public List<InstantBehaviour> instantBehaviours;
+
+    /// <summary>
+    /// List of on damage behaviours.
+    /// </summary>
+    public List<DamageBehaviour> damageBehaviours;
 
     /// <summary>
     /// Used for initialization.
     /// </summary>
     private void Awake() {
-        skillBehaviours = new List<SkillBehaviour>();
+        instantBehaviours = new List<InstantBehaviour>();
+        damageBehaviours = new List<DamageBehaviour>();
         /*
         Object[] assets = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(this));
         foreach (Object o in assets) {
@@ -110,8 +115,10 @@ public class Skill : ScriptableObject {
         if (name != "") {
             Object[] assets = Resources.LoadAll("Skills/" + name);
             foreach (Object o in assets) {
-                if (o is SkillBehaviour) {
-                    skillBehaviours.Add(o as SkillBehaviour);
+                if (o is InstantBehaviour) {
+                    instantBehaviours.Add(o as InstantBehaviour);
+                } else if (o is DamageBehaviour) {
+                    damageBehaviours.Add(o as DamageBehaviour);
                 }
             }
         }
@@ -122,32 +129,36 @@ public class Skill : ScriptableObject {
     /// </summary>
     /// <param name="caster">The transform of the caster</param>
     public void Cast(BaseCharacter caster) {
-        // Activate the damage prefab if it exists
-        if (damagePrefab != null) {
-            GameObject damage = Instantiate(damagePrefab, caster.transform);
+        // Face mouse position if applicable
+        if (caster is PlayerCharacter && !PlayerCharacter.OnPS4) {
+            ((PlayerCharacter)caster).FaceMousePosition(); 
+        }
 
+        // Activate the damage prefab if it exists
+        if (damageHitbox != null) {
+            // Create the hitbox gameobjects
+            GameObject skillObject = new GameObject(skillName);
+            skillObject.transform.position = caster.transform.position;
+            skillObject.transform.rotation = caster.transform.rotation;
+            GameObject damage = Instantiate(damageHitbox, skillObject.transform);
             SkillHitbox hitbox = damage.GetComponent<SkillHitbox>();
+
+            // Register the skill gameobject in the caster's active skills list
+            caster.GetComponent<SkillCaster>().ActiveSkillObjects.Add(skillObject);
+
             // Set the damage effect if it exists
             if (damageFX != null) {
                 ParticleSystem damagePS = Instantiate(damageFX, damage.transform).GetComponent<ParticleSystem>();
                 ParticleSystem.MainModule module = damagePS.main;
                 hitbox.DamageFX = damagePS;
-
-                // Modify particle size
-                switch (skillType) {
-                    case SkillType.Melee:
-                        module.startSize = module.startSize.constant * meleeRangeMultiplier; // Multiply particle width by range
-                        break;
-                    case SkillType.AoE:
-                        module.startSize = module.startSize.constant * areaMultiplier; // Multiply particle width by area
-                        break;
-                }
+                
+                // Modify damage effect size accordingly to hitbox multiplier
+                float maxMultiplierValue = Mathf.Max(Mathf.Max(hitboxScale.x, hitboxScale.y), hitboxScale.z);
+                module.startSize = module.startSize.constant * maxMultiplierValue;
             }
 
-            
-                    
             // Activate the damage hitbox
-            damage.GetComponent<SkillHitbox>().Activate(caster.transform, this);
+            hitbox.Activate(caster, this);
 
             // Play sound effect
             if(soundFX != null) {
@@ -155,7 +166,7 @@ public class Skill : ScriptableObject {
             }
         }
         // Activate all the skill behaviours
-        foreach (SkillBehaviour behaviour in skillBehaviours) {
+        foreach (InstantBehaviour behaviour in instantBehaviours) {
             behaviour.Activate(caster);
         }
     }
@@ -171,8 +182,8 @@ public class Skill : ScriptableObject {
         victim.characterStats.TakeDamage(physDamage, magicDamage);
 
         if (victim.characterStats.isAlive) {
-            // Activate all the debuff behaviours
-            foreach (DebuffBehaviour behaviour in skillBehaviours) {
+            // Activate all the damage behaviours
+            foreach (DamageBehaviour behaviour in damageBehaviours) {
                 behaviour.OnDamageActivate(dealer, victim);
             }
         }

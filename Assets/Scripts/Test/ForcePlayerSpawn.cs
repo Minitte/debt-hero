@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using UnityEngine.AI;
+
 public class ForcePlayerSpawn : MonoBehaviour {
 
 	/// <summary>
@@ -10,5 +12,7 @@ public class ForcePlayerSpawn : MonoBehaviour {
 	/// </summary>
 	void Start() {
 		PlayerManager.instance.CreatePlayer(true);
+
+		PlayerManager.instance.localPlayer.GetComponent<NavMeshAgent>().Warp(Vector3.zero);
 	}
 }

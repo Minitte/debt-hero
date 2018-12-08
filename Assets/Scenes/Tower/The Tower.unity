@@ -276,7 +276,8 @@ MonoBehaviour:
   - {fileID: 1963224199353422, guid: 8f58fdba79fc3044faa7f81dcde993c5, type: 2}
   fireEnemyPrefabs: []
   enemies: []
-  spawnScalar: 0
+  minGroupSize: 4
+  maxGroupSize: 7
 --- !u!4 &433109959
 Transform:
   m_ObjectHideFlags: 0
@@ -1021,7 +1022,7 @@ MonoBehaviour:
     safeZonePrefabs:
     - {fileID: 1893807296134602, guid: 0279f3440e1b72b439bc8d8ff45c60ce, type: 2}
   roomSize: 24.9
-  maxFloorRadius: 5
+  maxFloorRadius: 4
   numberOfNodes: 4
   floorSeed: remember to watch the movie on wednesday or else
   roomEntryPrefab: {fileID: 114350198372911636, guid: 34bafd6a96fe28c488a782f8eec8bd4c,

@@ -16,9 +16,14 @@ public class EnemyManager : MonoBehaviour {
     public List<GameObject> enemies;
 
     /// <summary>
-    /// spawnScalar is a number used to scale amount of enemies.
+    /// max number of enemies oer group
     /// </summary>
-    public int spawnScalar;
+    public int minGroupSize = 2;
+
+    /// <summary>
+    /// min number of enemies per group
+    /// </summary>
+    public int maxGroupSize = 4;
     
 
     // Use this for initialization
@@ -26,7 +31,6 @@ public class EnemyManager : MonoBehaviour {
         FloorGenerator.OnFloorGenerated += SpawnEnemies;
 
         FloorGenerator.OnBeginGeneration += DespawnEnemies;
-        spawnScalar = 2;
     }
 	
 	// Update is called once per frame
@@ -59,7 +63,7 @@ public class EnemyManager : MonoBehaviour {
     /// <param name="rand"> Random used to determine which room to use.</param>
     void SpawnEnemies(Floor currentFloor, System.Random rand) {
        
-        for (int i = 0; i <= rand.Next(5, 10); i++) {
+        for (int i = 0; i <= rand.Next(6, 10); i++) {
             int roomSize = currentFloor.roomList.Count;
 
             RoomEntry room = currentFloor.roomList[rand.Next(0, roomSize)];
@@ -80,12 +84,16 @@ public class EnemyManager : MonoBehaviour {
     /// Lots of code duplication unfortunately.
     /// </summary>
     /// <param name="floor">Current floor number.</param>
-    /// <param name="enemyPos">Vector to spawn enemy.</param>
+    /// <param name="roomPos">position of the room</param>
     /// <param name="rand">Random used to spawn randomly.</param>
-    void EnemyGroups(int floor, Vector3 enemyPos, System.Random rand) {
+    void EnemyGroups(int floor, Vector3 roomPos, System.Random rand) {
+        int groupSize = rand.Next(minGroupSize, maxGroupSize);
         //Cave
         if (floor >= 0 && floor <= 3) {
-            for (int i = 0; i < spawnScalar; i++) {
+            for (int i = 0; i < groupSize; i++) {
+
+                Vector3 enemyPos = RandomRoomPos(roomPos, rand);  
+
                 GameObject spawned = Instantiate(caveEnemyPrefabs[rand.Next(0, caveEnemyPrefabs.Length)], enemyPos, Quaternion.identity);
                 enemies.Add(spawned);
             }
@@ -93,7 +101,10 @@ public class EnemyManager : MonoBehaviour {
 
         // forest
         else if (floor >= 4 && floor <= 7) {
-            for (int i = 0; i < spawnScalar; i++) {
+            for (int i = 0; i < groupSize; i++) {
+
+                Vector3 enemyPos = RandomRoomPos(roomPos, rand);
+
                 GameObject spawned = Instantiate(forestEnemyPrefabs[rand.Next(0, forestEnemyPrefabs.Length)], enemyPos, Quaternion.identity);
                 enemies.Add(spawned);
             }
@@ -101,10 +112,30 @@ public class EnemyManager : MonoBehaviour {
 
         // fire
         else if (floor >= 8 && floor <= 11) {
-            for (int i = 0; i < spawnScalar; i++) {
+            for (int i = 0; i < groupSize; i++) {
+
+                Vector3 enemyPos = RandomRoomPos(roomPos, rand);
+
                 GameObject spawned = Instantiate(fireEnemyPrefabs[rand.Next(0, fireEnemyPrefabs.Length)], enemyPos, Quaternion.identity);
                 enemies.Add(spawned);
             }
         }
+    }
+
+    /// <summary>
+    /// Gerneates a random position on the given floor position
+    /// </summary>
+    /// <param name="roomPos"></param>
+    /// <param name="rand"></param>
+    /// <returns></returns>
+    public Vector3 RandomRoomPos(Vector3 roomPos, System.Random rand) {
+        int xVar = rand.Next(-13, 13);
+        xVar = xVar != 0 ? 2 : xVar;
+
+        int zVar = rand.Next(-13, 13);
+        zVar = zVar != 0 ? 2 : zVar;
+
+        return new Vector3(roomPos.x + xVar , roomPos.y, roomPos.z + zVar);
+        // return roomPos;
     }
 }

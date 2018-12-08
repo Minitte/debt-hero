@@ -206,7 +206,7 @@ public class CharacterStats : MonoBehaviour {
         }
         if (magicDef < magicAtkDamage) {
             currentHp = currentHp - (magicAtkDamage - magicDef);
-            netDamageTaken += magicAtk - magicDef;
+            netDamageTaken += magicAtkDamage - magicDef;
         }
 
         // Check if character is dead
