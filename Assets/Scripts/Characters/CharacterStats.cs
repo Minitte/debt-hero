@@ -227,11 +227,16 @@ public class CharacterStats : MonoBehaviour {
 
         // Play hurt animation if damage taken is greater than 20% of max hp
         if (netDamageTaken / maxHp > 0.2f && isAlive) {
+            BaseCharacter character = null;
+
             if (CompareTag("Player")) {
-                PlayerManager.instance.localPlayer.GetComponent<BaseCharacter>().animator.SetTrigger("Hurt");
+                character = PlayerManager.instance.localPlayer.GetComponent<BaseCharacter>();
             } else {
-                GetComponent<BaseCharacter>().animator.SetTrigger("Hurt");
+                character = GetComponent<BaseCharacter>();
             }
+
+            character.animator.SetTrigger("Hurt");
+            // TODO : Interrupt existing casts as well
         }
     }
 
