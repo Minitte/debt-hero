@@ -249,7 +249,7 @@ InputManager:
     m_Name: Menu Confirm
     descriptiveName: Menu Confirm
     descriptiveNegativeName: Menu Confirm Button
-    negativeButton: 
+    negativeButton: return
     positiveButton: enter
     altNegativeButton: 
     altPositiveButton: joystick button 1
