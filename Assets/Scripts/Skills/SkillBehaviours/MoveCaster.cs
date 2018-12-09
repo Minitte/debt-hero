@@ -13,6 +13,11 @@ public class MoveCaster : InstantBehaviour {
     /// </summary>
     public float distance;
 
+    /// <summary>
+    /// Length of the animation that will be played.
+    /// </summary>
+    public float animationLength;
+
     public override void Activate(BaseCharacter caster) {
         SkillManager.instance.StartCoroutine(Move(caster));
     }
@@ -23,8 +28,9 @@ public class MoveCaster : InstantBehaviour {
     /// <param name="caster">The character to move</param>
     private IEnumerator Move(BaseCharacter caster) {
         yield return new WaitForEndOfFrame(); // Give enough time for character to face the correct direction
-        caster.animator.SetBool("Dash", true);
-
+        caster.animator.SetFloat("Cast Speed", animationLength / duration); // Sync animation length and duration
+        caster.animator.SetTrigger("Dash");
+        
         Vector3 direction = caster.transform.forward;
 
         // Make sure that the character is looking in the correct direction
@@ -47,6 +53,7 @@ public class MoveCaster : InstantBehaviour {
         if (caster != null) {
             // Done moving
             caster.agent.ResetPath();
+            caster.animator.SetFloat("Cast Speed", 1.0f);
             caster.animator.SetBool("Dash", false);
         }
     }

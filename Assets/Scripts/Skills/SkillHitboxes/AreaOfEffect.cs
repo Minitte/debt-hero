@@ -32,7 +32,7 @@ public class AreaOfEffect : SkillHitbox {
         GetComponent<SphereCollider>().radius *= maxMultiplierValue;
 
         // Start the attack
-        caster.animator.SetTrigger("TakeDamage"); // Play attack animation
+        caster.animator.SetTrigger("Hurt"); // Play attack animation TODO
         _active = true;
     }
 }

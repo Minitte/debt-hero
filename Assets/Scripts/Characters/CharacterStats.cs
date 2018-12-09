@@ -224,6 +224,20 @@ public class CharacterStats : MonoBehaviour {
             }
         }
         ShowFloatingText(netDamageTaken, Color.red); // Show damage numbers
+
+        // Play hurt animation if damage taken is greater than 20% of max hp
+        if (netDamageTaken / maxHp > 0.2f && isAlive) {
+            BaseCharacter character = null;
+
+            if (CompareTag("Player")) {
+                character = PlayerManager.instance.localPlayer.GetComponent<BaseCharacter>();
+            } else {
+                character = GetComponent<BaseCharacter>();
+            }
+
+            character.animator.SetTrigger("Hurt");
+            // TODO : Interrupt existing casts as well
+        }
     }
 
     /// <summary>
