@@ -128,12 +128,12 @@ public class SaveSlotPanel : MonoBehaviour {
 			ssui.saveInfo.SetActive(true);
 
 			// set text
-			ssui.nameText.text = "Save File"; // TODO actual save name
+			ssui.nameText.text = data.name;
 			ssui.dayValue.text = data.days + "";
 			ssui.timeValue.text = data.currentHour + ":" + data.currentMinute;
 			ssui.goldValue.text = data.playerGold + "g";
 			ssui.levelValue.text = data.playerLevel + "";
-			ssui.classValue.text = "Warrior"; // TODO actual class
+			ssui.classValue.text = data.className;
 		}
 	}
 
