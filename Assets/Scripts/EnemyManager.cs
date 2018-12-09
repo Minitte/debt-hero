@@ -15,6 +15,9 @@ public class EnemyManager : MonoBehaviour {
 
     public List<GameObject> enemies;
 
+    // Debt collector enemy
+    public GameObject debtCollector;
+
     /// <summary>
     /// max number of enemies oer group
     /// </summary>
@@ -117,6 +120,14 @@ public class EnemyManager : MonoBehaviour {
                 Vector3 enemyPos = RandomRoomPos(roomPos, rand);
 
                 GameObject spawned = Instantiate(fireEnemyPrefabs[rand.Next(0, fireEnemyPrefabs.Length)], enemyPos, Quaternion.identity);
+                enemies.Add(spawned);
+            }
+        }
+
+        if (EventManager.instance.spawnDebtCollectors) {
+            for (int i = 0; i < groupSize; i++) {
+                Vector3 enemyPos = RandomRoomPos(roomPos, rand);
+                GameObject spawned = Instantiate(debtCollector, enemyPos, Quaternion.identity);
                 enemies.Add(spawned);
             }
         }

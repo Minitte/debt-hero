@@ -2003,6 +2003,10 @@ Prefab:
       propertyPath: m_AnchoredPosition.x
       value: 350
       objectReference: {fileID: 0}
+    - target: {fileID: 1908294865450080, guid: a31d654a4437f45498b26a9e45afb57c, type: 2}
+      propertyPath: m_Name
+      value: Load Slot Panel
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a31d654a4437f45498b26a9e45afb57c, type: 2}
   m_IsPrefabParent: 0

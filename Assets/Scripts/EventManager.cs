@@ -4,38 +4,54 @@ using UnityEngine;
 
 public class EventManager : MonoBehaviour {
 
+    public static EventManager instance;
+
+    // Time manager
     public TimeManager timeManager;
 
-    public EventSpec[] eventSpecs;
+    // Amount of debt owed
+    public int debtOwed = 0;
+
+    // Total debt paid. THIS IS THE SCORE
+    public int debtPaid = 0;
+
+    // How often should the debt update?
+    public int daysPerPayment = 7;
+
+    // How many days do they have to pay their debt before the 
+    // debt collectors show up? 
+    public int daysToPay = 3;
+
+    // Should we spawn debt collectors?
+    public bool spawnDebtCollectors = false;
+
+
+    // Set Event Manager instance
+    private void Awake() {
+        if (instance == null) {
+            instance = this;
+        }
+    }
 
     // Use this for initialization
-    void Start () {
-        timeManager.DayChange += CheckDayEvents;
+    void Start() {
+        timeManager.DayChange += CheckDebt;
+        timeManager = TimeManager.instance;
+    }
+
+    // Update is called once per frame
+    void Update() {
 
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
-    private void CheckDayEvents() {
-        foreach (EventSpec e in eventSpecs) {
-            if (e.recurring) {
-                if (timeManager.days % e.day == e.dayOffset && timeManager.days != 1) {
-                    StartEvent(e.eventID);
-                }
-            }
+    // Check debt
+    void CheckDebt() {
+        if (timeManager.days % daysPerPayment == 0 && timeManager.days != 1) {
+            debtOwed += DebtCurve(timeManager.days);
         }
 
-
-    }
-
-    private void StartEvent(int e) {
-        switch (e) {
-            case 0:
-                PlayerManager.instance.GetComponent<CharacterInventory>().gold -= DebtCurve(timeManager.days);
-                break;
+        if (timeManager.days % (daysPerPayment + daysToPay) == 0 && debtOwed != 0) {
+            spawnDebtCollectors = true;
         }
     }
 
@@ -43,19 +59,12 @@ public class EventManager : MonoBehaviour {
     public int DebtCurve(int days) {
         return (Mathf.RoundToInt((Mathf.Pow((days - 1), 2) + days - 1) / 2 * 100));
     }
-}
 
-[Serializable]
-public class EventSpec {
-    public float chance;
-
-    public bool recurring;
-
-    public int day;
-
-    public int dayOffset;
-
-    public int time;
-
-    public int eventID;
+    // Pay the debt
+    public void PayDebt() {
+        PlayerManager.instance.GetComponent<CharacterInventory>().gold -= debtOwed;
+        debtPaid += debtOwed;
+        debtOwed = 0;
+        spawnDebtCollectors = false;
+    }
 }

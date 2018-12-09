@@ -245,5 +245,9 @@ public class PlayerCharacter : BaseCharacter {
     private void Die() {
         skillCaster.ClearSkillObjects(); // Remove all active skill objects
         Destroy(gameObject);
+        Transform gameOver = GameObject.Find("GameOver").transform;
+        Transform gameOverMsg = gameOver.GetChild(0);
+        gameOverMsg.gameObject.SetActive(true);
+        gameOverMsg.GetChild(0).gameObject.SetActive(true);
     }
 }

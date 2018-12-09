@@ -52,6 +52,8 @@ public class JournalPanel : MonoBehaviour {
     /// </summary>
     private PlayerManager _playerManager;
 
+    private EventManager _eventManager;
+
     /// <summary>
     /// SElected menu
     /// </summary>
@@ -63,6 +65,7 @@ public class JournalPanel : MonoBehaviour {
     /// </summary>
     void Start() {
         _playerManager = PlayerManager.instance;
+        _eventManager = EventManager.instance;
     }
 
     /// <summary>
@@ -85,19 +88,19 @@ public class JournalPanel : MonoBehaviour {
     void SetJournalPanel() {
         if (_playerManager == null) {
             _playerManager = PlayerManager.instance;
+            _eventManager = EventManager.instance;
         }
 
         //Getting a reference to the player's inventory.
         CharacterInventory inventory = _playerManager.GetComponent<CharacterInventory>();
 
         //Getting a reference to the Time in-game.
-        TimeManager timeManager = time.GetComponent<TimeManager>();
+        TimeManager timeManager = TimeManager.instance;
 
-        EventManager eventManager = GameObject.Find("Event Manager").GetComponent<EventManager>();
         //Setting the text for day, time and gold due.
         dayText.text = "Day:\n" + timeManager.days;
         timeText.text = "Time:\n" + timeManager.currentTime;
-        goldText.text = "Gold due:\n" + eventManager.DebtCurve(timeManager.days + 3) + "g";
+        goldText.text = "Gold due:\n" + _eventManager.debtOwed + "g";
     }
 
     private void JournalPanelControls() { 

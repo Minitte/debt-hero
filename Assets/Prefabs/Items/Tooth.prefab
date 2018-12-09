@@ -105,5 +105,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5fd9eb0b8a1fe34f8d572caccb23111, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemPrefabToDrop: {fileID: 0}
-  qty: 0
+  itemPrefabToDrop: {fileID: 114058547389561858, guid: 96b4e6f41cf57d04eb8cfbe040e0ee04,
+    type: 2}
+  qty: 1

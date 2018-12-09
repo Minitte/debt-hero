@@ -159,7 +159,11 @@ public class SaveSlotPanel : MonoBehaviour {
         saveSlots[index].GetComponent<Button>().Select();
 
         if (Input.GetAxis("Menu Confirm") != 0) {
-            SaveToSlot(index);
+            if (gameObject.name.Equals("Load Slot Panel")) {
+                LoadSlot(index);
+            }else {
+                SaveToSlot(index);
+            }
         }
     }
 }
