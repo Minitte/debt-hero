@@ -5,7 +5,7 @@ AnimatorController:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: GoblinRangerController
+  m_Name: GoblinMageController
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Speed
@@ -13,19 +13,19 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Attack
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Hurt
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -207,7 +207,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: goblinranger_hurt
+  m_Name: goblinmage_hurt
   m_Speed: 2
   m_CycleOffset: 0
   m_Transitions:
@@ -220,7 +220,7 @@ AnimatorState:
   m_SpeedParameterActive: 0
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: b22e8f379389c2a409c6953822a43df8, type: 2}
+  m_Motion: {fileID: 7400000, guid: 587f5db60091bd449a246619990757b6, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -245,7 +245,7 @@ AnimatorState:
   m_SpeedParameterActive: 0
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 3967b1d709839094481c8b6a227d775e, type: 2}
+  m_Motion: {fileID: 7400000, guid: 7443f3d48432d674a873cc7e5a1a273d, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -256,8 +256,8 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: goblinranger_shoot
-  m_Speed: 1
+  m_Name: goblinmage_cast
+  m_Speed: 2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1101538695288430440}
@@ -269,7 +269,7 @@ AnimatorState:
   m_SpeedParameterActive: 0
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: e365d01bf586de34d961ad7d3144b1ea, type: 2}
+  m_Motion: {fileID: 7400000, guid: 0ae11e8f105b74d42bc16c7ea7c85b02, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -280,7 +280,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: goblinranger_run
+  m_Name: goblinmage_run
   m_Speed: 0.5
   m_CycleOffset: 0
   m_Transitions:
@@ -294,7 +294,7 @@ AnimatorState:
   m_SpeedParameterActive: 1
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: ed6a2861c8d8e4645aeae16d30bd4420, type: 2}
+  m_Motion: {fileID: 7400000, guid: fe5e0340bd87bb7469516f84f0a815ae, type: 2}
   m_Tag: 
   m_SpeedParameter: Speed
   m_MirrorParameter: 

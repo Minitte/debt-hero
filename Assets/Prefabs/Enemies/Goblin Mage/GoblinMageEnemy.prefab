@@ -283,7 +283,7 @@ GameObject:
   - component: {fileID: 114636130892230190}
   - component: {fileID: 114177221508567694}
   m_Layer: 12
-  m_Name: GoblinMangeEnemy
+  m_Name: GoblinMageEnemy
   m_TagString: AI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -781,7 +781,7 @@ GameObject:
   - component: {fileID: 95689416580923284}
   - component: {fileID: 114377799436677418}
   m_Layer: 0
-  m_Name: Goblin_Ranger_R3
+  m_Name: GoblinMageModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1135,7 +1135,7 @@ Transform:
   m_GameObject: {fileID: 1911610827011686}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4150989686773054}
   - {fileID: 4899674717541872}
@@ -1640,7 +1640,7 @@ Animator:
   m_GameObject: {fileID: 1911610827011686}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: d4bc72f331641e34d8051dd8bcef3109, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 34b6ceeb17e97db40bc700ea1399c0d7, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -1686,8 +1686,8 @@ MonoBehaviour:
   characterStats: {fileID: 114112177335044030}
   agent: {fileID: 195793343801087784}
   skillCaster: {fileID: 114709180903560018}
-  animator: {fileID: 0}
-  animatorStatus: {fileID: 0}
+  animator: {fileID: 95689416580923284}
+  animatorStatus: {fileID: 114377799436677418}
   characterEquipment: {fileID: 0}
   target: {fileID: 0}
   aggroRadius: 25
@@ -1771,7 +1771,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 0c3bc9f03ec3b1045bccd4caa5065412, type: 2}
+  - {fileID: 2100000, guid: 19012d2fb911deb4595473573679565f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
