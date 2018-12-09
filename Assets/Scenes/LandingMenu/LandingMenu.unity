@@ -329,9 +329,8 @@ MonoBehaviour:
   buttons:
   - {fileID: 1798794946}
   - {fileID: 1955367476}
-  - {fileID: 739154590}
-  - {fileID: 570625407}
   - {fileID: 1722778874}
+  - {fileID: 570625407}
   indicator: {fileID: 1538815060}
   delay: 0.15
 --- !u!1 &37911562

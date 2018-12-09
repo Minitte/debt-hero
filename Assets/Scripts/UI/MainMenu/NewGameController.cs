@@ -71,6 +71,13 @@ public class NewGameController : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// This function is called when the object becomes enabled and active.
+	/// </summary>
+	void OnEnable() {
+		_cooldown = true;
+	}
+
+	/// <summary>
 	/// Update is called every frame, if the MonoBehaviour is enabled.
 	/// </summary>
 	void Update() {
@@ -134,6 +141,8 @@ public class NewGameController : MonoBehaviour {
 					// clean up before leaving the category
 					if (_uiLevel == 1) {
 						classes[_uiIndex].HideBorder();
+					} else if (_uiLevel == 2) {
+						EventSystem.current.SetSelectedGameObject(null);
 					}
 
 					_uiLevel--;
@@ -229,6 +238,9 @@ public class NewGameController : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Handles button controls
+	/// </summary>
 	public void ButtonControls() {
 		float horz = Input.GetAxis("Menu Horizontal");
 		float confirm = Input.GetAxis("Menu Confirm");
@@ -269,7 +281,10 @@ public class NewGameController : MonoBehaviour {
 
 		return name;
 	}
-
+	
+	/// <summary>
+	/// Starts the game
+	/// </summary>
 	public void StartNewGame() {
 
 		PlayerProgress.name = AssembleName();
