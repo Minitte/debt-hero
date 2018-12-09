@@ -22,11 +22,11 @@ public class Projectile : SkillHitbox {
 
             // Apply damage to the other character
             _skill.DealDamage(_caster, other.GetComponent<BaseCharacter>(), _physAtkdamage, _magicAtkdamage);
-            Destroy(transform.parent.gameObject); // Destroy the projectile
+            Destroy(transform.parent.gameObject, 0.25f); // Destroy the projectile
         }
 
         if (other.CompareTag("Wall")) {
-            Destroy(transform.parent.gameObject); // Destroy the projectile
+            Destroy(transform.parent.gameObject, 0.25f); // Destroy the projectile
         }
     }
 
@@ -45,7 +45,7 @@ public class Projectile : SkillHitbox {
         transform.localPosition = new Vector3(0f, transform.localScale.y, transform.localScale.z * 1.5f);
         
         // Start the projectile attack
-        caster.GetComponent<BaseCharacter>().animator.SetTrigger("Attack"); // Play attack animation
+        //caster.GetComponent<BaseCharacter>().animator.SetTrigger("Attack"); // Play attack animation
         GetComponent<Collider>().enabled = true;
         GetComponent<Rigidbody>().velocity = _caster.transform.forward * skill.projectileVelocity;
     }

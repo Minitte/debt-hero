@@ -1665,7 +1665,7 @@ MonoBehaviour:
   maxMp: 0
   physAtk: 5
   magicAtk: 0
-  attackRange: 4
+  attackRange: 15
   physDef: 0
   magicDef: 0
   level: 0
@@ -1731,7 +1731,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skills:
-  - {fileID: 11400000, guid: 70a229b48fb662b4d9e1492e4a90c7c6, type: 2}
+  - {fileID: 11400000, guid: 9a492929e816f244ea8a551a457a3bf5, type: 2}
 --- !u!114 &114798278789080268
 MonoBehaviour:
   m_ObjectHideFlags: 1

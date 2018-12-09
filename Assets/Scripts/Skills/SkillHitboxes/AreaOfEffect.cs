@@ -17,10 +17,10 @@ public class AreaOfEffect : SkillHitbox {
     }
 
     /// <summary>
-    /// Starts the melee attack.
+    /// Starts the AoE attack.
     /// </summary>
     public override void Activate(BaseCharacter caster, Skill skill) {
-        // Setup melee properties
+        // Setup AoE properties
         _physAtkdamage = caster.characterStats.physAtk * skill.physicalMultiplier;
         _magicAtkdamage = caster.characterStats.magicAtk * skill.magicMultiplier;
         _animatorStatus = caster.animatorStatus;
@@ -32,7 +32,7 @@ public class AreaOfEffect : SkillHitbox {
         GetComponent<SphereCollider>().radius *= maxMultiplierValue;
 
         // Start the attack
-        caster.animator.SetTrigger("Hurt"); // Play attack animation TODO
+        //caster.animator.SetTrigger("Hurt"); // Play attack animation TODO
         _active = true;
     }
 }

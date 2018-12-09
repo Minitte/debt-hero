@@ -84,6 +84,11 @@ public class Skill : ScriptableObject {
     /// Velocity of the projectile.
     /// </summary>
     public float projectileVelocity = 1f;
+
+    /// <summary>
+    /// Whether the skill is delayed or not.
+    /// </summary>
+    public bool delayed;
     #endregion
 
     /// <summary>

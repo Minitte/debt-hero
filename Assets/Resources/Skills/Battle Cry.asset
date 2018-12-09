@@ -14,7 +14,7 @@ MonoBehaviour:
   skillName: Battle Cry
   skillIcon: {fileID: 21300000, guid: 28f4a64773b2ef141bc72c59d67db866, type: 3}
   skillDescription: Deals damage and knocks nearby enemies back.
-  skillType: 1
+  skillType: 2
   soundFX: {fileID: 0}
   cooldown: 5
   manaCost: 10
@@ -24,6 +24,8 @@ MonoBehaviour:
   physicalMultiplier: 1
   magicMultiplier: 1
   hitboxScale: {x: 2, y: 2, z: 2}
+  projectileVelocity: 1
+  delayed: 0
   instantBehaviours: []
   damageBehaviours:
   - {fileID: 114040568386022134}
