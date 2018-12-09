@@ -54,6 +54,7 @@ public class SaveLoadManager : MonoBehaviour {
         GameData gameData = new GameData();
 
         gameData.name = PlayerProgress.name;
+        gameData.className = PlayerProgress.className;
 
         gameData.playerCurrenthp = stats.currentHp;
         gameData.playerMaxhp = stats.maxHp;
@@ -112,6 +113,7 @@ public class SaveLoadManager : MonoBehaviour {
         TimeManager time = _eventManager.timeManager;
 
         PlayerProgress.name = gameData.name;
+        PlayerProgress.className = gameData.className;
 
         stats.currentHp = gameData.playerCurrenthp;
         stats.maxHp = gameData.playerMaxhp;
@@ -196,6 +198,11 @@ public class GameData {
     /// Slot/player's name
     /// </summary>
     public string name;
+
+    /// <summary>
+    /// Name of the class
+    /// </summary>
+    public string className;
 
     /// <summary>
     /// The Player's Current Heath.

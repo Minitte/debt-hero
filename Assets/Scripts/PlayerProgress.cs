@@ -7,6 +7,11 @@ public class PlayerProgress {
     public static string name;
 
     /// <summary>
+    /// Name of the class
+    /// </summary>
+    public static string className;
+
+    /// <summary>
     /// highest floor reached
     /// </summary>
     public static int floorReached;

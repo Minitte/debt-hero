@@ -288,6 +288,7 @@ public class NewGameController : MonoBehaviour {
 	public void StartNewGame() {
 
 		PlayerProgress.name = AssembleName();
+		PlayerProgress.className = classes[_selectedClassIndex].className;
 
 		SceneManager.LoadScene("TownScene");
 	}
