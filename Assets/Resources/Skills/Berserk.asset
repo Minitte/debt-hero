@@ -14,7 +14,7 @@ MonoBehaviour:
   skillName: Berserk
   skillIcon: {fileID: 21300000, guid: ce7ce35077fa2bb42b7ae82999bb67e7, type: 3}
   skillDescription: Go berserk, increasing physical damage dealt.
-  skillType: 0
+  skillType: 3
   soundFX: {fileID: 0}
   cooldown: 20
   manaCost: 10
@@ -22,7 +22,9 @@ MonoBehaviour:
   damageFX: {fileID: 0}
   physicalMultiplier: 1
   magicMultiplier: 1
-  hitboxMultiplier: {x: 1, y: 1, z: 1}
+  hitboxScale: {x: 1, y: 1, z: 1}
+  projectileVelocity: 1
+  delayed: 0
   instantBehaviours:
   - {fileID: 114682373208341020}
   damageBehaviours: []
