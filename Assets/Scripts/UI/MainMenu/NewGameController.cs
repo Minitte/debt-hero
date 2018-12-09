@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class NewGameController : MonoBehaviour {
 
@@ -267,5 +268,12 @@ public class NewGameController : MonoBehaviour {
 		}
 
 		return name;
+	}
+
+	public void StartNewGame() {
+
+		PlayerProgress.name = AssembleName();
+
+		SceneManager.LoadScene("TownScene");
 	}
 }
