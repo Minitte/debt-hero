@@ -281,7 +281,7 @@ public class NewGameController : MonoBehaviour {
 
 		return name;
 	}
-	
+
 	/// <summary>
 	/// Starts the game
 	/// </summary>
@@ -290,5 +290,17 @@ public class NewGameController : MonoBehaviour {
 		PlayerProgress.name = AssembleName();
 
 		SceneManager.LoadScene("TownScene");
+	}
+
+	/// <summary>
+	/// Sets the current class index
+	/// </summary>
+	/// <param name="index"></param>
+	public void SetClass(int index) {
+		classes[_selectedClassIndex].HideHighlight();
+		classes[index].ShowHighlight();
+		
+		_selectedClassIndex = index;
+
 	}
 }

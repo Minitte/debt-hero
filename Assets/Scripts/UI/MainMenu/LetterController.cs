@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 using UnityEngine.UI;
 
 using TMPro;
@@ -57,20 +56,6 @@ public class LetterController : MonoBehaviour {
 
 		enabled = false;
 
-		HideLetterButtons();
-	}
-
-	/// <summary>
-	/// Called when the mouse enters the GUIElement or Collider.
-	/// </summary>
-	void OnMouseEnter() {
-		ShowLetterButtons();
-	}
-
-	/// <summary>
-	/// Called when the mouse is not any longer over the GUIElement or Collider.
-	/// </summary>
-	void OnMouseExit() {
 		HideLetterButtons();
 	}
 
