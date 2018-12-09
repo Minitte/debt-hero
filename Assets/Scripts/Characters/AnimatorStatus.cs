@@ -15,4 +15,19 @@ public class AnimatorStatus : MonoBehaviour {
     /// Used to create damage windows.
     /// </summary>
     public bool canDealDamage;
+
+    /// <summary>
+    /// Triggers an attack. Used for skill outputs that depend on the animation.
+    /// </summary>
+    public void TriggerAttack() {
+        transform.parent.GetComponent<SkillCaster>().DelayedCast();
+    }
+
+    /// <summary>
+    /// Sets the casting flag to false.
+    /// Called via animation events by animations that use the casting flag.
+    /// </summary>
+    public void DoneCasting() {
+        isCasting = false;
+    }
 }

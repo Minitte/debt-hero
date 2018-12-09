@@ -10,9 +10,9 @@ public class AttackPlayer : AIAction {
     /// </summary>
     /// <returns>True if target is in range, false otherwise</returns>
     public override bool Precondition() {
-        // Check if in range to attack player (0.5f is temporary)
+        // Check if in range to attack player
         if (_AIControl.target != null 
-            && Vector3.Distance(_AIControl.target.position, transform.position) <= _agent.stoppingDistance + 0.5f) {
+            && Vector3.Distance(_AIControl.target.position, transform.position) <= _characterStats.attackRange) {
             return true;
         } else {
             return false;
@@ -25,5 +25,6 @@ public class AttackPlayer : AIAction {
     public override void Action() {
         // Basic melee attack
         _skillCaster.Cast(skillNum);
+        _AIControl.agent.ResetPath();
     }
 }

@@ -21,24 +21,10 @@ MonoBehaviour:
   damageHitbox: {fileID: 1999188985197610, guid: 3f6cdb240a1de464e9259032a1b05f17,
     type: 2}
   damageFX: {fileID: 120024, guid: 637cfe67415fd0e40bf77d855bffab09, type: 2}
-  physicalMultiplier: 1
+  physicalMultiplier: 0
   magicMultiplier: 1
   hitboxScale: {x: 1, y: 1, z: 1}
   projectileVelocity: 10
+  delayed: 1
   instantBehaviours: []
-  damageBehaviours:
-  - {fileID: 114239734832240208}
---- !u!114 &114239734832240208
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f0be7a2b47f40b4b98ba74659ea0709, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  duration: 5
-  physDamage: 0
-  magicDamage: 10
+  damageBehaviours: []

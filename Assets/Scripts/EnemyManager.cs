@@ -98,6 +98,7 @@ public class EnemyManager : MonoBehaviour {
                 Vector3 enemyPos = RandomRoomPos(roomPos, rand);  
 
                 GameObject spawned = Instantiate(caveEnemyPrefabs[rand.Next(0, caveEnemyPrefabs.Length)], enemyPos, Quaternion.identity);
+
                 enemies.Add(spawned);
             }
         }

@@ -35,6 +35,11 @@ public class SkillCaster : MonoBehaviour {
     }
 
     /// <summary>
+    /// List of skills that are currently being delayed for animation purposes.
+    /// </summary>
+    private Queue<Skill> _delayedSkills;
+
+    /// <summary>
     /// Reference to the character stats.
     /// </summary>
     private CharacterStats _characterStats;
@@ -44,6 +49,7 @@ public class SkillCaster : MonoBehaviour {
         _timestamps = new float[skills.Length];
         _canCasts = new bool[skills.Length];
         _activeSkillObjects = new List<GameObject>();
+        _delayedSkills = new Queue<Skill>();
         _characterStats = GetComponent<BaseCharacter>().characterStats;
 
         // Initialize timestamps
@@ -75,10 +81,32 @@ public class SkillCaster : MonoBehaviour {
     /// <param name="skillNum">The index of the skill to cast</param>
     /// <returns>True if successfully cast, else false</returns>
     public bool Cast(int skillNum) {
+        if (_delayedSkills.Count != 0) {
+            Debug.LogWarning(name + "tried to cast two skills at once.");
+        }
+
         if (skillNum < skills.Length && skills[skillNum] != null && _canCasts[skillNum] == true) { // Validation
             if (_characterStats.currentMp >= skills[skillNum].manaCost) { // Check if enough mana to cast
-                skills[skillNum].Cast(GetComponent<BaseCharacter>()); // Cast the skill
-                _characterStats.SpendMana(skills[skillNum].manaCost);
+                if (!skills[skillNum].delayed) {
+                    skills[skillNum].Cast(GetComponent<BaseCharacter>());
+                    _characterStats.SpendMana(skills[skillNum].manaCost);
+                } else {
+                    _delayedSkills.Enqueue(skills[skillNum]); // Add delayed skill to the queue
+                }
+                
+                // Play attack animation
+                Animator characterAnimator = GetComponent<BaseCharacter>().animator;
+                switch (skills[skillNum].skillType) {
+                    case Skill.SkillType.Melee:
+                        characterAnimator.SetTrigger("Attack");
+                        break;
+                    case Skill.SkillType.Projectile:
+                        characterAnimator.SetTrigger("Attack");
+                        break;
+                    case Skill.SkillType.AreaOfEffect:
+                        characterAnimator.SetTrigger("Hurt"); // Placeholder TODO
+                        break;
+                }
 
                 // Put skill on cooldown
                 _timestamps[skillNum] = Time.time + skills[skillNum].cooldown;
@@ -88,6 +116,8 @@ public class SkillCaster : MonoBehaviour {
                     SkillManager.instance.StartCooldown(skillNum, _timestamps[skillNum]);
                 }
 
+                GetComponent<BaseCharacter>().animatorStatus.isCasting = true; // Set casting flag
+
                 return true;
             } else {
                 if (CompareTag("Player")) {
@@ -96,6 +126,15 @@ public class SkillCaster : MonoBehaviour {
             }
         }
         return false;
+    }
+
+    /// <summary>
+    /// Dequeues a skill from the delayed skills queue, and casts it.
+    /// </summary>
+    public void DelayedCast() {
+        Skill skill = _delayedSkills.Dequeue();
+        skill.Cast(GetComponent<BaseCharacter>());
+        _characterStats.SpendMana(skill.manaCost);
     }
 
     /// <summary>

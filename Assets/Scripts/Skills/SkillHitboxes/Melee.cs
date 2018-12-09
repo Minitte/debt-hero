@@ -40,7 +40,7 @@ public class Melee : SkillHitbox {
         transform.localPosition = new Vector3(0f, transform.localScale.y, transform.localScale.z * 1.5f);
         
         // Start the melee attack
-        caster.animator.SetTrigger("Attack"); // Play attack animation
+        //caster.animator.SetTrigger("Attack"); // Play attack animation
         _active = true;
     }
 }
