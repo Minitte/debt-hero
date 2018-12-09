@@ -53,6 +53,9 @@ public class SaveLoadManager : MonoBehaviour {
 
         GameData gameData = new GameData();
 
+        gameData.name = PlayerProgress.name;
+        gameData.className = PlayerProgress.className;
+
         gameData.playerCurrenthp = stats.currentHp;
         gameData.playerMaxhp = stats.maxHp;
         gameData.playerCurrentmp = stats.currentMp;
@@ -108,6 +111,9 @@ public class SaveLoadManager : MonoBehaviour {
         CharacterStats stats = PlayerManager.instance.GetComponent<CharacterStats>();
         CharacterInventory inv = PlayerManager.instance.GetComponent<CharacterInventory>();
         TimeManager time = _eventManager.timeManager;
+
+        PlayerProgress.name = gameData.name;
+        PlayerProgress.className = gameData.className;
 
         stats.currentHp = gameData.playerCurrenthp;
         stats.maxHp = gameData.playerMaxhp;
@@ -187,6 +193,16 @@ public class ItemSafeFormat {
 /// </summary>
 [Serializable]
 public class GameData {
+
+    /// <summary>
+    /// Slot/player's name
+    /// </summary>
+    public string name;
+
+    /// <summary>
+    /// Name of the class
+    /// </summary>
+    public string className;
 
     /// <summary>
     /// The Player's Current Heath.

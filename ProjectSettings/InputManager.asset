@@ -249,7 +249,7 @@ InputManager:
     m_Name: Menu Confirm
     descriptiveName: Menu Confirm
     descriptiveNegativeName: Menu Confirm Button
-    negativeButton: 
+    negativeButton: return
     positiveButton: enter
     altNegativeButton: 
     altPositiveButton: joystick button 1
@@ -432,6 +432,38 @@ InputManager:
     gravity: 1000
     dead: 0
     sensitivity: 1000
+    snap: 1
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: Disable Vertical
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 1000
+    sensitivity: 0
+    snap: 1
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: Disable Horizontal
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: 1000
+    sensitivity: 0
     snap: 1
     invert: 0
     type: 0
