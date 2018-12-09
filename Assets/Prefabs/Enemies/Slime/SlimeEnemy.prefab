@@ -604,6 +604,7 @@ MonoBehaviour:
   skillCaster: {fileID: 114301512951441556}
   animator: {fileID: 95021426725218070}
   animatorStatus: {fileID: 114836390229793074}
+  characterEquipment: {fileID: 0}
   target: {fileID: 0}
   aggroRadius: 25
 --- !u!114 &114694547473771076
@@ -636,6 +637,7 @@ MonoBehaviour:
   maxMp: 0
   physAtk: 5
   magicAtk: 0
+  attackRange: 3
   physDef: 0
   magicDef: 0
   level: 0

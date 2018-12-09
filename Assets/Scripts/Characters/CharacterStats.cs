@@ -109,6 +109,11 @@ public class CharacterStats : MonoBehaviour {
     /// </summary>
     public float magicAtk;
 
+    /// <summary>
+    /// The character's attack range stat.
+    /// </summary>
+    public float attackRange;
+
     [Header("Defence")]
     /// <summary>
     /// The character's physical defense stat. 
@@ -236,7 +241,7 @@ public class CharacterStats : MonoBehaviour {
             }
 
             character.animator.SetTrigger("Hurt");
-            // TODO : Interrupt existing casts as well
+            character.skillCaster.ClearSkillObjects(); // Interrupt existing casts
         }
     }
 

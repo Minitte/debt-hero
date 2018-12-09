@@ -1799,6 +1799,7 @@ MonoBehaviour:
   maxMp: 0
   physAtk: 5
   magicAtk: 0
+  attackRange: 4
   physDef: 0
   magicDef: 0
   level: 0
