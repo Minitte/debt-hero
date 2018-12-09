@@ -77,6 +77,9 @@ public class EnemyCharacter : BaseCharacter {
                 _actionQueue.Dequeue().Action();
             }
         }
+
+        // Force model position to stay the same
+        transform.GetChild(0).position = transform.position;
     }
 
     /// <summary>
