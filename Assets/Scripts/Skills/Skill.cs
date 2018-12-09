@@ -12,7 +12,8 @@ public class Skill : ScriptableObject {
     public enum SkillType {
         Melee,
         Projectile,
-        AreaOfEffect
+        AreaOfEffect,
+        Movement
     }
 
     #region General
@@ -153,13 +154,19 @@ public class Skill : ScriptableObject {
 
             // Set the damage effect if it exists
             if (damageFX != null) {
-                ParticleSystem damagePS = Instantiate(damageFX, damage.transform).GetComponent<ParticleSystem>();
-                ParticleSystem.MainModule module = damagePS.main;
-                hitbox.DamageFX = damagePS;
-                
-                // Modify damage effect size accordingly to hitbox multiplier
-                float maxMultiplierValue = Mathf.Max(Mathf.Max(hitboxScale.x, hitboxScale.y), hitboxScale.z);
-                module.startSize = module.startSize.constant * maxMultiplierValue;
+                // Check if particle fx or regular model
+                if (damageFX.GetComponent<ParticleSystem>() != null) {
+                    ParticleSystem damagePS = Instantiate(damageFX, damage.transform).GetComponent<ParticleSystem>();
+                    ParticleSystem.MainModule module = damagePS.main;
+                    hitbox.DamageFX = damagePS;
+
+                    // Modify damage effect size accordingly to hitbox multiplier
+                    float maxMultiplierValue = Mathf.Max(Mathf.Max(hitboxScale.x, hitboxScale.y), hitboxScale.z);
+                    module.startSize = module.startSize.constant * maxMultiplierValue;
+                } else {
+                    Instantiate(damageFX, damage.transform);
+                }
+
             }
 
             // Activate the damage hitbox

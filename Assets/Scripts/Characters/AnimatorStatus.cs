@@ -23,6 +23,10 @@ public class AnimatorStatus : MonoBehaviour {
         transform.parent.GetComponent<SkillCaster>().DelayedCast();
     }
 
+    /// <summary>
+    /// Sets the casting flag to false.
+    /// Called via animation events by animations that use the casting flag.
+    /// </summary>
     public void DoneCasting() {
         isCasting = false;
     }

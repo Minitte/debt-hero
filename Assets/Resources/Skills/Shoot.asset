@@ -9,19 +9,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8fa77f3dc8991b64e8ebf19f624ed133, type: 3}
-  m_Name: Fireball
+  m_Name: Shoot
   m_EditorClassIdentifier: 
-  skillName: Fireball
-  skillIcon: {fileID: 21300000, guid: ac1a9a577408d76429c30c67d510cdea, type: 3}
-  skillDescription: A basic fireball.
+  skillName: Shoot
+  skillIcon: {fileID: 21300000, guid: 3f4d36d34ea4fda439351cec4904ec6f, type: 3}
+  skillDescription: Shoots an arrow.
   skillType: 1
   soundFX: {fileID: 0}
   cooldown: 0
   manaCost: 0
   damageHitbox: {fileID: 1999188985197610, guid: 3f6cdb240a1de464e9259032a1b05f17,
     type: 2}
-  damageFX: {fileID: 120024, guid: 637cfe67415fd0e40bf77d855bffab09, type: 2}
-  physicalMultiplier: 0
+  damageFX: {fileID: 1594949171640926, guid: e642b8e49a874d843afb0f105057cbf7, type: 2}
+  physicalMultiplier: 1
   magicMultiplier: 1
   hitboxScale: {x: 1, y: 1, z: 1}
   projectileVelocity: 10

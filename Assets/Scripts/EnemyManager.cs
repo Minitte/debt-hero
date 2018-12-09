@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyManager : MonoBehaviour {
 
@@ -98,6 +99,8 @@ public class EnemyManager : MonoBehaviour {
                 Vector3 enemyPos = RandomRoomPos(roomPos, rand);  
 
                 GameObject spawned = Instantiate(caveEnemyPrefabs[rand.Next(0, caveEnemyPrefabs.Length)], enemyPos, Quaternion.identity);
+
+                spawned.GetComponent<NavMeshAgent>().nextPosition = enemyPos + new Vector3(0.5f, 0f, 0.5f);
                 enemies.Add(spawned);
             }
         }
