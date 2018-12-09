@@ -100,8 +100,11 @@ public class SkillCaster : MonoBehaviour {
                     case Skill.SkillType.Melee:
                         characterAnimator.SetTrigger("Attack");
                         break;
+                    case Skill.SkillType.Projectile:
+                        characterAnimator.SetTrigger("Attack");
+                        break;
                     case Skill.SkillType.AreaOfEffect:
-                        characterAnimator.SetTrigger("Hurt"); // Placeholder animation
+                        characterAnimator.SetTrigger("Hurt"); // Placeholder TODO
                         break;
                 }
 

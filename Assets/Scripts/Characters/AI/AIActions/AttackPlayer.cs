@@ -25,5 +25,6 @@ public class AttackPlayer : AIAction {
     public override void Action() {
         // Basic melee attack
         _skillCaster.Cast(skillNum);
+        _AIControl.agent.ResetPath();
     }
 }
