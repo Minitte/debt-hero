@@ -16,9 +16,15 @@ public class SoundManager : MonoBehaviour {
     private AudioClip[] _soundFXList;
 
     private void Awake() {
-        if(instance == null) {
+        if (instance == null) {
             instance = this;
         }
+        else {
+            Debug.Log("Found two SoundManager Instances.. Destorying new one");
+            Destroy(this.gameObject);
+            return;
+        }
+        DontDestroyOnLoad(this.gameObject);
     }
     // Use this for initialization
     void Start () {

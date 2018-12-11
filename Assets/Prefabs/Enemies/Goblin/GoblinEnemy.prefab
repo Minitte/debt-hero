@@ -1754,7 +1754,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gold: 20
   exp: 10
-  DropList: []
+  DropList:
+  - {fileID: 1617528181619100, guid: d313708b44bd7f54bb2a2d507329993e, type: 2}
   goldItem: {fileID: 1178848656757472, guid: c7dc4d9587971494a8786ee14eac3fc9, type: 2}
 --- !u!114 &114683323410448120
 MonoBehaviour:

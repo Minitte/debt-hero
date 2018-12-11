@@ -52,9 +52,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   properties:
-    itemID: 18
-    name: Goblin Tooth
-    description: The tooth of a goblin
+    itemID: 19
+    name: Carrot
+    description: A carrot.
     type: 0
     stackable: 1
     destoryOnNone: 1
@@ -62,6 +62,6 @@ MonoBehaviour:
     usable: 0
     value: 10
     quantity: 1
-  itemUIPrefab: {fileID: 114431547519456466, guid: 68c361012953a3947a7b112531f54911,
+  itemUIPrefab: {fileID: 114431547519456466, guid: dbec9a8f7f95bbb4ea539a06e62facbe,
     type: 2}
   owner: {fileID: 0}
