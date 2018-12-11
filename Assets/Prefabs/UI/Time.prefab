@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 222951278190834708}
   - component: {fileID: 114477021803421846}
   m_Layer: 5
-  m_Name: Time
+  m_Name: TimeText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38,7 +38,6 @@ GameObject:
   - component: {fileID: 224450027607880922}
   - component: {fileID: 222280223790955076}
   - component: {fileID: 114991097921239176}
-  - component: {fileID: 114338176919080000}
   m_Layer: 5
   m_Name: Time
   m_TagString: Untagged
@@ -146,28 +145,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 00:00 AM
---- !u!114 &114338176919080000
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1870402992015682}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85dadc211431fd14b84efeff3a8c346a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sun: {fileID: 0}
-  timeScale: 2
-  secondsPerDay: 1800
-  sunInitialIntensity: 0
-  sunIntensityMultiplier: 0
-  timeCounter: {fileID: 114328756481558390}
-  dayNumber: {fileID: 114161877070439776}
-  currentTime: 0
-  currentHour: 0
-  currentMinute: 0
-  days: 1
 --- !u!114 &114477021803421846
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -270,8 +247,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -615, y: 525}
-  m_SizeDelta: {x: -1230, y: -1049}
+  m_AnchoredPosition: {x: -615, y: 369}
+  m_SizeDelta: {x: -1230, y: -737}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224542372925742398
 RectTransform:

@@ -31,6 +31,12 @@ public class EventManager : MonoBehaviour {
         if (instance == null) {
             instance = this;
         }
+        else {
+            Debug.Log("Found two EventManager Instances.. Destorying new one");
+            Destroy(this.gameObject);
+            return;
+        }
+        DontDestroyOnLoad(this.gameObject);
     }
 
     // Use this for initialization

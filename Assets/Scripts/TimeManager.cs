@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class TimeManager : MonoBehaviour {
 
@@ -49,12 +50,31 @@ public class TimeManager : MonoBehaviour {
         if (instance == null) {
             instance = this;
         }
+        else {
+            Debug.Log("Found two TimeManager Instances.. Destorying new one");
+            Destroy(this.gameObject);
+            return;
+        }
+        sun = GameObject.Find("Directional Light").GetComponent<Light>();
+        sunInitialIntensity = sun.intensity;
+        timeCounter = GameObject.Find("TimeCounter").GetComponent<Text>();
+        dayNumber = GameObject.Find("DayNumber").GetComponent<Text>();
+        DontDestroyOnLoad(this.gameObject);
     }
 
     // Use this for initialization
     void Start() {
-        currentTime = 0;
+    }
+
+    void OnEnable() {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        sun = GameObject.Find("Directional Light").GetComponent<Light>();
         sunInitialIntensity = sun.intensity;
+        timeCounter = GameObject.Find("TimeCounter").GetComponent<Text>();
+        dayNumber = GameObject.Find("DayNumber").GetComponent<Text>();
     }
 
     // Update is called once per frame

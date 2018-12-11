@@ -373,6 +373,7 @@ GameObject:
   - component: {fileID: 114821811633595800}
   - component: {fileID: 114959327255837256}
   - component: {fileID: 135140539760905674}
+  - component: {fileID: 114515907588433574}
   m_Layer: 0
   m_Name: RabbitEnemy
   m_TagString: AI
@@ -798,6 +799,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isCasting: 0
   canDealDamage: 0
+--- !u!114 &114515907588433574
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1963224199353422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98b855c227f7f0246a008b9a625257d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gold: 5
+  exp: 10
+  DropList:
+  - {fileID: 1988089425708004, guid: 56c528087578746499e2b0dec4ba78f9, type: 2}
+  goldItem: {fileID: 1178848656757472, guid: c7dc4d9587971494a8786ee14eac3fc9, type: 2}
 --- !u!114 &114549991949792532
 MonoBehaviour:
   m_ObjectHideFlags: 1
