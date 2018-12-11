@@ -952,7 +952,7 @@ MonoBehaviour:
     - {fileID: 1292249673674078, guid: 378971f5f9689094f9343f72b9ec1bbe, type: 2}
     safeZonePrefabs:
     - {fileID: 1893807296134602, guid: 0279f3440e1b72b439bc8d8ff45c60ce, type: 2}
-  roomSize: 24.9
+  roomSize: 24.85
   maxFloorRadius: 4
   numberOfNodes: 4
   floorSeed: remember to watch the movie on wednesday or else
