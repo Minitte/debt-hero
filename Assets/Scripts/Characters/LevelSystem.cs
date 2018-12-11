@@ -41,6 +41,10 @@ public class LevelSystem : MonoBehaviour
     //Used when the player levels up
     void LevelUp()
     {
+        if (PlayerManager.instance.localPlayer == null) {
+            return;
+        }
+
         LevelEffect = PlayerManager.instance.localPlayer.transform.Find("LevelUp").GetComponent<ParticleSystem>();
         LevelEffect.Play();
         player.GetComponent<CharacterStats>().LevelUp();

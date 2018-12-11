@@ -80,8 +80,9 @@ public class SaveSlotPanel : MonoBehaviour {
 	}
 
     public void LoadSlot(int slot) {
-        SaveLoadManager.instance.LoadGameData(slot);
-		SceneManager.LoadScene(SaveLoadManager.instance.LoadGameData(slot).lastScene);
+        // SaveLoadManager.instance.LoadGameData(slot);
+		// SceneManager.LoadScene(SaveLoadManager.instance.LoadGameData(slot).lastScene);
+		SaveLoadManager.instance.LoadGameState(slot);
     }
 
 	/// <summary>
