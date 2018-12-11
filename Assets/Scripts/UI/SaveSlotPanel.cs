@@ -80,7 +80,6 @@ public class SaveSlotPanel : MonoBehaviour {
 	}
 
     public void LoadSlot(int slot) {
-		
         SaveLoadManager.instance.LoadGameData(slot);
 		SceneManager.LoadScene(SaveLoadManager.instance.LoadGameData(slot).lastScene);
     }
@@ -160,10 +159,8 @@ public class SaveSlotPanel : MonoBehaviour {
         saveSlots[index].GetComponent<Button>().Select();
 
         if (Input.GetAxis("Menu Confirm") != 0) {
-            Debug.Log(gameObject.transform.parent.parent.parent.gameObject.name);
-			if (gameObject.transform.parent.parent.parent.gameObject.name.Equals("Load Slot Panel")) {
-				LoadSlot(index);
-				
+            if (gameObject.name.Equals("Load Slot Panel")) {
+                LoadSlot(index);
             }else {
                 SaveToSlot(index);
             }
