@@ -38,9 +38,28 @@ public class ButtonNavUI : MonoBehaviour {
 	/// Update is called every frame, if the MonoBehaviour is enabled.
 	/// </summary>
 	void Update() {
+		// menu cooldown
+		if (_menuBlocked) {
+			_time += Time.deltaTime;
+
+			if (_time > delay) {
+				_menuBlocked = false;
+				_time = 0;
+			}
+
+			return;
+		}
+
 		ButtonConfirmUpdate();
 
 		ButtonNavigationUpdate();
+	}
+
+	/// <summary>
+	/// On enable
+	/// </summary>
+	void OnEnable() {
+		_menuBlocked = true;
 	}
 
 	/// <summary>
@@ -57,22 +76,10 @@ public class ButtonNavUI : MonoBehaviour {
 			_time = 0;
 		}
 
-		// menu cooldown
-		if (_menuBlocked) {
-			_time += Time.deltaTime;
-
-			if (_time > delay) {
-				_menuBlocked = false;
-				_time = 0;
-			}
-
-			return;
-		}
-
-		if (vert == 1) {
+		if (vert == -1) {
 			_menuBlocked = true;
 			NextButton();
-		} else if (vert == -1) {
+		} else if (vert == 1) {
 			_menuBlocked = true;
 			PrevButton();
 		}
@@ -86,6 +93,7 @@ public class ButtonNavUI : MonoBehaviour {
 
 		if (submit != 0) {
 			buttons[_currentIndex].onClick.Invoke();
+			_menuBlocked = true;
 		}
 	}
 

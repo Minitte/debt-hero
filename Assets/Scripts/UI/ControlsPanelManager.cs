@@ -52,6 +52,10 @@ public class ControlsPanelManager : MonoBehaviour {
         PS4controls();
 	}
 
+    private void OnEnable() {
+        _cooldown = true;
+    }
+
     public void CloseControlPanel() {
         this.gameObject.SetActive(false);
     }
@@ -102,7 +106,7 @@ public class ControlsPanelManager : MonoBehaviour {
         //Pressing Button.
         if (Input.GetAxis("Menu Confirm") != 0) {
             if (index == 0) {
-                CloseControlPanel();
+                backButton.onClick.Invoke();
             } else if (index == 1) {
                 SetPage();
             }
