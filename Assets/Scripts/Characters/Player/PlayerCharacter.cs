@@ -22,15 +22,9 @@ public class PlayerCharacter : BaseCharacter {
     /// </summary>
     private NavMeshPath _path;
 
-    /// <summary>
-    /// Flag for if this character can move or not.
-    /// </summary>
-    private bool _canMove;
-
     // Use this for initialization
     private void Start() {
         _path = new NavMeshPath();
-        _canMove = true;
         characterStats = PlayerManager.instance.GetComponent<CharacterStats>();
         characterStats.OnDeath += Die;
 
@@ -53,12 +47,11 @@ public class PlayerCharacter : BaseCharacter {
     private void Update() {
         animator.SetFloat("Speed", agent.velocity.magnitude); // Run animation
 
-        // Don't accept input if the character is casting something
-        if (!animatorStatus.isCasting && _canMove && GameState.currentState == GameState.PLAYING) {
-            // Handle player input
+        // Don't accept input if the character is casting something or if in a menu screen
+        if (!animatorStatus.isCasting && GameState.currentState == GameState.PLAYING) {
+            // Handle mouse and keyboard input
             if (!OnPS4) {
-                HandleMouseInput();
-                HandleKeyboardInput();
+                HandleMouseKeyboardInput();
             }
             
             // Handle controller input
@@ -73,9 +66,9 @@ public class PlayerCharacter : BaseCharacter {
     }
 
     /// <summary>
-    /// Handles all mouse input from the player.
+    /// Handles all mouse and keybard input from the player.
     /// </summary>
-    private void HandleMouseInput() {
+    private void HandleMouseKeyboardInput() {
         
         // Check if the player pressed or is holding the move key
         if (Input.GetMouseButton(0)) {
@@ -92,46 +85,30 @@ public class PlayerCharacter : BaseCharacter {
             }
         }
 
-        // Additional procedures after casting a skill
+        // Check for basic attack
         if (Input.GetButtonDown("Basic Attack") && GetMousePosition(out _mousePosition)) {
             if (skillCaster.Cast(0)) { // Attempt to attack
-                //FaceMousePosition();
-                _canMove = false;
-                StartCoroutine(ResumeMovement(0.25f));
+                return;
             }
         }
-    }
 
-    /// <summary>
-    /// Handles keyboard input from the player.
-    /// </summary>
-    private void HandleKeyboardInput() {
-        bool castedSomething = false;
-
-        // Check for skill casts
+       // Check for skill casts
         if (Input.GetButtonDown("Dash") && GetMousePosition(out _mousePosition)) {
             if (skillCaster.Cast(1)) {
-                castedSomething = true;
+                return;
             }
         } else if (Input.GetButtonDown("First Skill") && GetMousePosition(out _mousePosition)) {
             if (skillCaster.Cast(2)) {
-                castedSomething = true;
+                return;
             }
         } else if (Input.GetButtonDown("Second Skill") && GetMousePosition(out _mousePosition)) {
             if (skillCaster.Cast(3)) {
-                castedSomething = true;
+                return;
             }
         } else if (Input.GetButtonDown("Third Skill") && GetMousePosition(out _mousePosition)) {
             if (skillCaster.Cast(4)) {
-                castedSomething = true;
+                return;
             }
-        }
-
-        // Additional procedures after casting a skill
-        if (castedSomething) {
-            //FaceMousePosition();
-            _canMove = false;
-            StartCoroutine(ResumeMovement(0.25f));
         }
     }
 
@@ -168,8 +145,6 @@ public class PlayerCharacter : BaseCharacter {
         // Additional procedures after casting a skill
         if (castedSomething) {
             agent.ResetPath();
-            _canMove = false;
-            StartCoroutine(ResumeMovement(0.25f));
         }
     }
 
@@ -209,19 +184,8 @@ public class PlayerCharacter : BaseCharacter {
             if (skillCaster.Cast(1)) {
                 transform.LookAt(transform.position + new Vector3(rightHorizontal, 0f, rightVertical).normalized);
                 agent.ResetPath();
-                _canMove = false;
-                StartCoroutine(ResumeMovement(0.25f));
             }
         }
-    }
-
-    /// <summary>
-    /// Enables the script for an input time.
-    /// </summary>
-    /// <param name="seconds">The time in seconds remain disabled</param>
-    private IEnumerator ResumeMovement(float seconds) {
-        yield return new WaitForSeconds(seconds);
-        _canMove = true;
     }
 
     /// <summary>
