@@ -279,6 +279,7 @@ MonoBehaviour:
   debtCollector: {fileID: 0}
   minGroupSize: 4
   maxGroupSize: 7
+  enemyPowerGrowth: 1.2
 --- !u!4 &433109959
 Transform:
   m_ObjectHideFlags: 0
