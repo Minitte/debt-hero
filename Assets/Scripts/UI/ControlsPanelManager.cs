@@ -14,7 +14,7 @@ public class ControlsPanelManager : MonoBehaviour {
     /// Because there is only two pages
     /// It will just toggle between Page 1 and 2
     /// </summary>
-    public Button setPage;
+    public Button setPageButton;
 
     /// <summary>
     /// Used To handle setting the text.
@@ -52,6 +52,10 @@ public class ControlsPanelManager : MonoBehaviour {
         PS4controls();
 	}
 
+    private void OnEnable() {
+        _cooldown = true;
+    }
+
     public void CloseControlPanel() {
         this.gameObject.SetActive(false);
     }
@@ -75,41 +79,39 @@ public class ControlsPanelManager : MonoBehaviour {
     /// Ps4 controls for Control Panel.
     /// </summary>
     public void PS4controls() {
-        // Only runs if its on the ps4.
-        if (Application.platform == RuntimePlatform.PS4) {
-            //Left and Right Controls.
-            float hori = Input.GetAxis("Menu Horizontal");
 
-            if(hori < 0) {
-                index = 0;
-                _cooldown = true;
-                return;
-            } else if(hori > 0) {
-                index = 1;
-                _cooldown = true;
-                return;
-            } else if(hori == 0) {
-                index = -1;
-                _cooldown = true;
-                return;
-            }
+        //Left and Right Controls.
+        float hori = Input.GetAxis("Menu Horizontal");
 
+        if(hori < 0) {
+            index = 0;
+            _cooldown = true;
+            // return;
+        } else if (hori > 0) {
+            index = 1;
+            _cooldown = true;
+            // return;
+        } else if (hori == 0) {
+            //index = -1;
+            //_cooldown = true;
+            // return;
+        }
+
+        if (index == 0) {
+            backButton.Select();
+        } else if (index == 1) {
+            setPageButton.Select();
+        }
+
+        //Pressing Button.
+        if (Input.GetAxis("Menu Confirm") != 0) {
             if (index == 0) {
-                backButton.Select();
-            }else if(index == 1) {
-                setPage.Select();
+                backButton.onClick.Invoke();
+            } else if (index == 1) {
+                SetPage();
             }
 
-            //Pressing Button.
-            if (Input.GetAxis("Menu Confirm") != 0) {
-                if(index == 0) {
-                    CloseControlPanel();
-                }else if(index == 1) {
-                    SetPage();
-                }
-            }
-
+            _cooldown = true;
         }
     }
-
 }

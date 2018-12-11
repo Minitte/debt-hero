@@ -13,6 +13,13 @@ public class DisableOnGameStateIsUI : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// This function is called when the MonoBehaviour will be destroyed.
+	/// </summary>
+	void OnDestroy() {
+		GameState.OnStateChanged -= HandleGameStateChange;
+	}
+
+	/// <summary>
 	/// Handles game state changed event
 	/// </summary>
 	private void HandleGameStateChange() {

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 
@@ -13,11 +14,6 @@ public class SaveLoadManager : MonoBehaviour {
     /// Using Singleton design pattern to ensure only 1 instance.
     /// </summary>
     public static SaveLoadManager instance;
-
-    /// <summary>
-    /// eventManager to get the Time manager to pull the tiem from
-    /// </summary>
-    private EventManager _eventManager;
 
     /// <summary>
     /// Item database
@@ -33,7 +29,6 @@ public class SaveLoadManager : MonoBehaviour {
     /// </summary>
     public void Awake() {
         instance = this;
-        _eventManager = EventManager.instance;
     }
 
     public void Update() {
@@ -49,7 +44,7 @@ public class SaveLoadManager : MonoBehaviour {
     public void Save(int slot) {
         CharacterStats stats = PlayerManager.instance.GetComponent<CharacterStats>();
         CharacterInventory inv = PlayerManager.instance.GetComponent<CharacterInventory>();
-        TimeManager time = _eventManager.timeManager;
+        TimeManager time = TimeManager.instance;
 
         GameData gameData = new GameData();
 
@@ -68,8 +63,9 @@ public class SaveLoadManager : MonoBehaviour {
         gameData.playerExp = stats.exp;
         gameData.playerLevel = stats.level;
         gameData.playerGold = inv.gold;
-        gameData.debtOwed = _eventManager.debtOwed;
-        gameData.debtPaid = _eventManager.debtPaid;
+        gameData.debtOwed = EventManager.instance.debtOwed;
+        gameData.debtPaid = EventManager.instance.debtPaid;
+        gameData.lastScene = SceneManager.GetActiveScene().name;
        
         gameData.items = new List<ItemSafeFormat>();
 
@@ -94,6 +90,7 @@ public class SaveLoadManager : MonoBehaviour {
 		PlayerPrefs.SetString("Slot" + slot, JsonUtility.ToJson(gameData));
         PlayerPrefs.Save();
 
+
     }
 
     /// <summary>
@@ -110,7 +107,7 @@ public class SaveLoadManager : MonoBehaviour {
 
         CharacterStats stats = PlayerManager.instance.GetComponent<CharacterStats>();
         CharacterInventory inv = PlayerManager.instance.GetComponent<CharacterInventory>();
-        TimeManager time = _eventManager.timeManager;
+        TimeManager time = TimeManager.instance;
 
         PlayerProgress.name = gameData.name;
         PlayerProgress.className = gameData.className;
@@ -134,15 +131,15 @@ public class SaveLoadManager : MonoBehaviour {
         time.currentMinute = gameData.currentMinute;
         time.days = gameData.days;
 
-        _eventManager.debtOwed = gameData.debtOwed;
-        _eventManager.debtPaid = gameData.debtPaid;
+        EventManager.instance.debtOwed = gameData.debtOwed;
+        EventManager.instance.debtPaid = gameData.debtPaid;
         PlayerProgress.floorReached = gameData.floorReached;
 
         foreach (ItemSafeFormat item in gameData.items) {
             ItemSlot itemSlot = item.slot;
             inv.itemRows[itemSlot.row].items[itemSlot.col] = itemDatabase.GetNewItem(item.id, item.qty);
         }
-
+        SceneManager.LoadScene(gameData.lastScene);
         return true;
     }
 
@@ -298,6 +295,11 @@ public class GameData {
     /// The Floor Reached.
     /// </summary>
     public int floorReached;
+    
+    /// <summary>
+    /// The last scene. 
+    /// </summary>
+    public string lastScene;
   
   
     
