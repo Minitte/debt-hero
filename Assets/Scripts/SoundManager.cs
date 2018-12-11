@@ -16,6 +16,7 @@ public class SoundManager : MonoBehaviour {
     private AudioClip[] _soundFXList;
 
     private void Awake() {
+        
         if (instance == null) {
             instance = this;
         }
@@ -25,10 +26,8 @@ public class SoundManager : MonoBehaviour {
             return;
         }
         DontDestroyOnLoad(this.gameObject);
-    }
-    // Use this for initialization
-    void Start () {
-        _levelAudio = transform.GetComponent<AudioSource>();
+
+        _levelAudio = GetComponent<AudioSource>();
 
         /// <summary>
         /// List of Game Music
@@ -41,19 +40,13 @@ public class SoundManager : MonoBehaviour {
                                         (AudioClip)Resources.Load("Sound/Music/area1"),
                                         (AudioClip)Resources.Load("Sound/Music/area2"),
                                         (AudioClip)Resources.Load("Sound/Music/town")};
-
+    
         /// <summary>
         /// List of Non-Skill Sound FX
         /// 0:  
         /// </summary>
         _soundFXList = new AudioClip[] {};
-
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
     // Plays sound on AudioSource
     public void PlaySound(AudioSource source) {
