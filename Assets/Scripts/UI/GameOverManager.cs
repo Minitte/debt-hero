@@ -94,6 +94,7 @@ public class GameOverManager : MonoBehaviour {
             continueGame.Select();
             _selected = 1;
         }else if(hori > 1) {
+            quitGame.Select();
             _selected = 2;
         }
 
