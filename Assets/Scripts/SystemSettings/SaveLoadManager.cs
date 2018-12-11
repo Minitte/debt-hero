@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 
@@ -64,6 +65,7 @@ public class SaveLoadManager : MonoBehaviour {
         gameData.playerGold = inv.gold;
         gameData.debtOwed = EventManager.instance.debtOwed;
         gameData.debtPaid = EventManager.instance.debtPaid;
+        gameData.lastScene = SceneManager.GetActiveScene().name;
        
         gameData.items = new List<ItemSafeFormat>();
 
@@ -87,6 +89,7 @@ public class SaveLoadManager : MonoBehaviour {
 
 		PlayerPrefs.SetString("Slot" + slot, JsonUtility.ToJson(gameData));
         PlayerPrefs.Save();
+
 
     }
 
@@ -136,7 +139,7 @@ public class SaveLoadManager : MonoBehaviour {
             ItemSlot itemSlot = item.slot;
             inv.itemRows[itemSlot.row].items[itemSlot.col] = itemDatabase.GetNewItem(item.id, item.qty);
         }
-
+        SceneManager.LoadScene(gameData.lastScene);
         return true;
     }
 
@@ -292,6 +295,11 @@ public class GameData {
     /// The Floor Reached.
     /// </summary>
     public int floorReached;
+    
+    /// <summary>
+    /// The last scene. 
+    /// </summary>
+    public string lastScene;
   
   
     
