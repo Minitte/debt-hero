@@ -73,8 +73,14 @@ public class TimeManager : MonoBehaviour {
     void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         sun = GameObject.Find("Directional Light").GetComponent<Light>();
         sunInitialIntensity = sun.intensity;
-        timeCounter = GameObject.Find("TimeCounter").GetComponent<Text>();
-        dayNumber = GameObject.Find("DayNumber").GetComponent<Text>();
+
+        GameObject timeCounterOBJ = GameObject.Find("TimeCounter");
+        GameObject dayNumberOBJ = GameObject.Find("DayNumber");
+
+        if (timeCounterOBJ != null && dayNumberOBJ != null) {
+            timeCounter = timeCounterOBJ.GetComponent<Text>();
+            dayNumber = dayNumberOBJ.GetComponent<Text>();
+        }
     }
 
     // Update is called once per frame
@@ -83,10 +89,13 @@ public class TimeManager : MonoBehaviour {
         currentTime += (Time.deltaTime / secondsPerDay) * timeScale;
         currentHour = Mathf.RoundToInt(Mathf.Floor(24 * currentTime));
         currentMinute = Mathf.RoundToInt(60 * (24 * currentTime - Mathf.Floor(24 * currentTime)));
-        updateTime();
+
+        if (timeCounter != null && dayNumber != null) {
+            updateTime();
+        }
 
         // When the current time is greater than 1 (24*1), one day has passed, so reset time to 0 and increment days
-        if (currentTime >= 1) {
+        if (currentTime >= 1 && dayNumber != null) {
             days += 1;
             currentTime = 0;
             dayNumber.text = "Day " + days;

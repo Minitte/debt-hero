@@ -6,19 +6,12 @@ using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
-
 public class SaveLoadManager : MonoBehaviour {
 
     /// <summary>
     /// Using Singleton design pattern to ensure only 1 instance.
     /// </summary>
     public static SaveLoadManager instance;
-
-    /// <summary>
-    /// Item database
-    /// </summary>
-    public ItemDatabase itemDatabase;
 
     public delegate void SaveLoadEvent();
 
@@ -102,11 +95,15 @@ public class SaveLoadManager : MonoBehaviour {
         GameData gameData = LoadGameData(slot);
 
         if (gameData == null) {
+            Debug.Log("Unable to load GameData!");
             return false;
         }        
 
+        Debug.Log("Successfully loaded GameData!");
+
         CharacterStats stats = PlayerManager.instance.GetComponent<CharacterStats>();
         CharacterInventory inv = PlayerManager.instance.GetComponent<CharacterInventory>();
+        ItemDatabase itemDB = GameDatabase.instance.GetComponent<ItemDatabase>();
         TimeManager time = TimeManager.instance;
 
         PlayerProgress.name = gameData.name;
@@ -137,9 +134,13 @@ public class SaveLoadManager : MonoBehaviour {
 
         foreach (ItemSafeFormat item in gameData.items) {
             ItemSlot itemSlot = item.slot;
-            inv.itemRows[itemSlot.row].items[itemSlot.col] = itemDatabase.GetNewItem(item.id, item.qty);
+            ItemBase loadedItem = itemDB.GetNewItem(item.id, item.qty);
+            inv.itemRows[itemSlot.row].items[itemSlot.col] = loadedItem;
+            loadedItem.transform.SetParent(inv.transform);
         }
+        
         SceneManager.LoadScene(gameData.lastScene);
+
         return true;
     }
 
