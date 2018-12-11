@@ -1275,7 +1275,7 @@ Prefab:
     - target: {fileID: 114133694917059262, guid: eb1a4ace4f80df3498f2f34729ef6d79,
         type: 2}
       propertyPath: m_Colors.m_HighlightedColor.g
-      value: 0.83448267
+      value: 0.70980394
       objectReference: {fileID: 0}
     - target: {fileID: 114133694917059262, guid: eb1a4ace4f80df3498f2f34729ef6d79,
         type: 2}
@@ -1290,7 +1290,7 @@ Prefab:
     - target: {fileID: 114315794373020768, guid: eb1a4ace4f80df3498f2f34729ef6d79,
         type: 2}
       propertyPath: m_Colors.m_HighlightedColor.g
-      value: 0.8352941
+      value: 0.70980394
       objectReference: {fileID: 0}
     - target: {fileID: 114315794373020768, guid: eb1a4ace4f80df3498f2f34729ef6d79,
         type: 2}
@@ -1808,6 +1808,36 @@ Prefab:
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 114693217453583516, guid: ebf91a53c5309ce44ae1df8496c83395,
+        type: 2}
+      propertyPath: m_Colors.m_HighlightedColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114693217453583516, guid: ebf91a53c5309ce44ae1df8496c83395,
+        type: 2}
+      propertyPath: m_Colors.m_HighlightedColor.g
+      value: 0.70980394
+      objectReference: {fileID: 0}
+    - target: {fileID: 114693217453583516, guid: ebf91a53c5309ce44ae1df8496c83395,
+        type: 2}
+      propertyPath: m_Colors.m_HighlightedColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114828953561290182, guid: ebf91a53c5309ce44ae1df8496c83395,
+        type: 2}
+      propertyPath: m_Colors.m_HighlightedColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114828953561290182, guid: ebf91a53c5309ce44ae1df8496c83395,
+        type: 2}
+      propertyPath: m_Colors.m_HighlightedColor.g
+      value: 0.70980394
+      objectReference: {fileID: 0}
+    - target: {fileID: 114828953561290182, guid: ebf91a53c5309ce44ae1df8496c83395,
+        type: 2}
+      propertyPath: m_Colors.m_HighlightedColor.b
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ebf91a53c5309ce44ae1df8496c83395, type: 2}
