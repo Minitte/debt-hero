@@ -42,6 +42,13 @@ public class PlayerCharacter : BaseCharacter {
         }
     }
 
+    /// <summary>
+    /// When the gameobject gets destoryed
+    /// </summary>
+    private void OnDestroy() {
+        characterStats.OnDeath -= Die;
+    }
+
     // Update is called once per frame
     private void Update() {
         animator.SetFloat("Speed", agent.velocity.magnitude); // Run animation
