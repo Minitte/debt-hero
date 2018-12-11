@@ -27,7 +27,12 @@ public class EnemyManager : MonoBehaviour {
     /// min number of enemies per group
     /// </summary>
     public int maxGroupSize = 4;
-    
+
+    /// <summary>
+    /// Base scalar for the enemy stats based on floor level.
+    /// e.g. 1.2 means the enemies become 20% stronger each floor.
+    /// </summary>
+    public float enemyPowerGrowth = 1.2f;
 
     // Use this for initialization
     void Start () {
@@ -91,39 +96,28 @@ public class EnemyManager : MonoBehaviour {
     /// <param name="rand">Random used to spawn randomly.</param>
     void EnemyGroups(int floor, Vector3 roomPos, System.Random rand) {
         int groupSize = rand.Next(minGroupSize, maxGroupSize);
-        //Cave
+        GameObject[] enemyPrefabs = null;
+
+        // Select enemy prefab list based on floor level
         if (floor >= 0 && floor <= 3) {
-            for (int i = 0; i < groupSize; i++) {
+            enemyPrefabs = caveEnemyPrefabs; // Cave
+        } else if (floor >= 4 && floor <= 7) {
+            enemyPrefabs = forestEnemyPrefabs; // Forest
+        } else if (floor >= 8 && floor <= 11) {
+            enemyPrefabs = fireEnemyPrefabs; // Fire
+        }
 
+        // Spawn enemies
+        for (int i = 0; i < groupSize; i++) {
                 Vector3 enemyPos = RandomRoomPos(roomPos, rand);  
+                GameObject spawned = Instantiate(enemyPrefabs[rand.Next(0, enemyPrefabs.Length)], enemyPos, Quaternion.identity);
 
-                GameObject spawned = Instantiate(caveEnemyPrefabs[rand.Next(0, caveEnemyPrefabs.Length)], enemyPos, Quaternion.identity);
-
+                // Scale the enemy stats based on floor level
+                if (floor > 1) {
+                    ScaleEnemy(spawned, floor);
+                }
                 enemies.Add(spawned);
             }
-        }
-
-        // forest
-        else if (floor >= 4 && floor <= 7) {
-            for (int i = 0; i < groupSize; i++) {
-
-                Vector3 enemyPos = RandomRoomPos(roomPos, rand);
-
-                GameObject spawned = Instantiate(forestEnemyPrefabs[rand.Next(0, forestEnemyPrefabs.Length)], enemyPos, Quaternion.identity);
-                enemies.Add(spawned);
-            }
-        }
-
-        // fire
-        else if (floor >= 8 && floor <= 11) {
-            for (int i = 0; i < groupSize; i++) {
-
-                Vector3 enemyPos = RandomRoomPos(roomPos, rand);
-
-                GameObject spawned = Instantiate(fireEnemyPrefabs[rand.Next(0, fireEnemyPrefabs.Length)], enemyPos, Quaternion.identity);
-                enemies.Add(spawned);
-            }
-        }
 
         if (EventManager.instance.spawnDebtCollectors) {
             for (int i = 0; i < groupSize; i++) {
@@ -133,6 +127,24 @@ public class EnemyManager : MonoBehaviour {
             }
         }
     }
+
+    /// <summary>
+    /// Scale an enemy's stats based on floor level.
+    /// </summary>
+    /// <param name="enemy">The enemy to scale</param>
+    /// <param name="floor">The floor level</param>
+    private void ScaleEnemy(GameObject enemy, int floor) {
+        CharacterStats stats = enemy.GetComponent<CharacterStats>();
+
+        // Scalar = base ^ floor level - 1
+        float scalar = Mathf.Pow(enemyPowerGrowth, floor - 1);
+
+        // Scale the stats
+        stats.maxHp = Mathf.Round(stats.maxHp * scalar);
+        stats.currentHp = stats.maxHp;
+        stats.physAtk = Mathf.Round(stats.physAtk * scalar);
+        stats.magicAtk = Mathf.Round(stats.magicAtk * scalar);
+    } 
 
     /// <summary>
     /// Gerneates a random position on the given floor position
