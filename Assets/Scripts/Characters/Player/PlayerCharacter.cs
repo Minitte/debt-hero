@@ -221,5 +221,9 @@ public class PlayerCharacter : BaseCharacter {
         Transform gameOver = GameObject.Find("GameOver").transform;
         Transform gameOverMsg = gameOver.GetChild(0);
         gameOverMsg.gameObject.SetActive(true);
+
+        // close the menu
+        GameObject.Find("Menu").SetActive(false);
+
     }
 }
