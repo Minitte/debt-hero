@@ -11,8 +11,19 @@ public class SaveSlotPanel : MonoBehaviour {
 	/// </summary>
 	public GameObject journalPanel;
 
+	/// <summary>
+	/// Back button for the save slot panel
+	/// </summary>
+	public Button backButton;
+
+	/// <summary>
+	/// List of save lsots
+	/// </summary>
 	public SaveSlotUI[] saveSlots;
 
+	/// <summary>
+	/// Current index
+	/// </summary>
     public int index;
 
     /// <summary>
@@ -43,7 +54,11 @@ public class SaveSlotPanel : MonoBehaviour {
         SaveSlotPanelControls();
 
         if (cancel != 0 || sysMenu != 0) {
-			ExitSaveSlotPanel();
+			if (backButton == null) {
+				ExitSaveSlotPanel();
+			} else {
+				backButton.onClick.Invoke();
+			}
 		}
 	}
 
@@ -76,7 +91,11 @@ public class SaveSlotPanel : MonoBehaviour {
 
 		UpdateSlot(slot);
 
-		ExitSaveSlotPanel();
+		if (backButton == null) {
+			ExitSaveSlotPanel();
+		} else {
+			backButton.onClick.Invoke();
+		}
 	}
 
     public void LoadSlot(int slot) {

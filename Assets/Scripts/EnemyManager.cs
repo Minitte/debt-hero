@@ -71,11 +71,20 @@ public class EnemyManager : MonoBehaviour {
     /// <param name="rand"> Random used to determine which room to use.</param>
     void SpawnEnemies(Floor currentFloor, System.Random rand) {
        
-        for (int i = 0; i <= rand.Next(6, 10); i++) {
+        int numGroups = rand.Next(6, 10);
+
+        for (int i = 0; i <= numGroups; i++) {
             int roomSize = currentFloor.roomList.Count;
 
             RoomEntry room = currentFloor.roomList[rand.Next(0, roomSize)];
-             if (room.type == RoomEntry.RoomType.SAFE) {
+
+            if (room.type == RoomEntry.RoomType.SAFE) {
+                continue;
+            }
+
+            // don't spawn ontop of player or entrance
+            if (room.type == RoomEntry.RoomType.ENTRANCE || room.type == RoomEntry.RoomType.EXIT) {
+                i--;
                 continue;
             }
             
