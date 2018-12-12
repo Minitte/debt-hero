@@ -170,7 +170,7 @@ public class EnemyManager : MonoBehaviour {
     /// <param name="rand"></param>
     /// <returns></returns>
     public Vector3 RandomRoomPos(Vector3 roomPos, System.Random rand) {
-        int xVar = rand.Next(-13, 13);
+        int xVar = rand.Next(-9, 9);
         xVar = xVar == 0 ? 2 : xVar;
 
         int zVar = rand.Next(-13, 13);
