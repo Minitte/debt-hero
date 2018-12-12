@@ -190,7 +190,7 @@ public class FloorGenerator : MonoBehaviour {
 	private IEnumerator CoroutineGenerateFloor() {
 		currentFloorParent = Instantiate(floorParentPrefab.gameObject).GetComponent<Floor>();
 
-		//currentFloorParent.floorNumber = PlayerProgress.currentFloor;
+		currentFloorParent.floorNumber = PlayerProgress.currentFloor;
 
 		if (OnBeginGeneration != null) {
 			OnBeginGeneration(currentFloorParent, _rand);
