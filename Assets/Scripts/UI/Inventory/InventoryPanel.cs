@@ -145,6 +145,13 @@ public class InventoryPanel : MonoBehaviour {
 			Debug.Log("itemWorthText is missing/null! Updates will ignore itemWorthText.");
 		}
 	}
+
+	/// <summary>
+	/// This function is called when the MonoBehaviour will be destroyed.
+	/// </summary>
+	void OnDestroy() {
+		_inventory.OnItemAdded -= UpdateItemSlot;
+	}
 	
 	/// <summary>
 	/// Update is called every frame, if the MonoBehaviour is enabled.

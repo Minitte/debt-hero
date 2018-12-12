@@ -131,7 +131,7 @@ public class EnemyCharacter : BaseCharacter {
     /// <summary>
     /// Additional cleanup for when this gameobject dies.
     /// </summary>
-    private void Die() {
+    public void Die() {
         // Delay removal of gameobject
         gameObject.SetActive(false);
         Destroy(gameObject, 2f);
