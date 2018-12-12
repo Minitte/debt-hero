@@ -320,7 +320,8 @@ MonoBehaviour:
   - {fileID: 1361119177040308, guid: 05d58babc5cc9654f87b7235913bce9f, type: 2}
   - {fileID: 1314923482293314, guid: 39a5a954a8b951147bd41063aee16499, type: 2}
   enemies: []
-  debtCollector: {fileID: 0}
+  debtCollector: {fileID: 1000013586557078, guid: 7db1e0c82de086f4abb5af6a6a3da561,
+    type: 2}
   minGroupSize: 4
   maxGroupSize: 7
   enemyPowerGrowth: 1.2
