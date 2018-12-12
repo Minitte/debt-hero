@@ -40,6 +40,15 @@ public class EnemyManager : MonoBehaviour {
 
         FloorGenerator.OnBeginGeneration += DespawnEnemies;
     }
+
+    /// <summary>
+    /// This function is called when the MonoBehaviour will be destroyed.
+    /// </summary>
+    void OnDestroy() {
+        FloorGenerator.OnFloorGenerated -= SpawnEnemies;
+
+        FloorGenerator.OnBeginGeneration -= DespawnEnemies;
+    }
 	
 	// Update is called once per frame
 	void Update () {
