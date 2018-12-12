@@ -15,6 +15,15 @@ public class ItemDrop : MonoBehaviour {
     public int qty;
 
     /// <summary>
+    /// Update is called every frame, if the MonoBehaviour is enabled.
+    /// </summary>
+    void Update() {
+        if (this.transform.position.y < -50) {
+            Destroy(this.gameObject);
+        }
+    }
+
+    /// <summary>
     /// OnTriggerEnter is called when the Collider other enters the trigger.
     /// </summary>
     /// <param name="other">The other Collider involved in this collision.</param>

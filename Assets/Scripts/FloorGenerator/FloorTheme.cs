@@ -24,8 +24,6 @@ public class FloorTheme {
     public static FloorTheme.Type GetCurrentTheme() {
         int floor = PlayerProgress.currentFloor;
 
-        Debug.Log(floor);
-
         int floorTheme = (int)(floor / 4);
 
         if ((floor + 1) % 4 == 0 && floor != 0) {

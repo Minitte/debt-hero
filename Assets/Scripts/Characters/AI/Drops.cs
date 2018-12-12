@@ -11,11 +11,6 @@ public class Drops : MonoBehaviour {
 	void Start () {
         gameObject.GetComponent<CharacterStats>().OnDeath += Drop;
     }
-	
-	// Update is called once per frame
-	void Update () {
-        
-    }
 
     public void Drop()
     {

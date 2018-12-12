@@ -24,12 +24,12 @@ public class WarriorClass : BaseClass {
         /// <summary>
         /// Stat increases per level for Warrior
         /// </summary>
-        perLevelHP = 10;
-        perLevelMP = 5;
-        perLevelPhysAtt = 0;
-        perLevelMagAtt = 0;
-        perLevelPhysDef = 5;
-        perLevelMagDef = 0;
+        perLevelHP = 30;
+        perLevelMP = 15;
+        perLevelPhysAtt = 6;
+        perLevelMagAtt = 2;
+        perLevelPhysDef = 3;
+        perLevelMagDef = 1;
         perLevelCrit = 0;
         perLevelCritDmg = 0;
 
