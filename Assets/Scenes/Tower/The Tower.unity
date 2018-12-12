@@ -917,6 +917,12 @@ Prefab:
       propertyPath: m_ShowMaskGraphic
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114853510551234432, guid: 64da580856e4af444b6f883f976d2410,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 1e71efd4f6b032c4aaeefb321fc71839,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 64da580856e4af444b6f883f976d2410, type: 2}
   m_IsPrefabParent: 0
