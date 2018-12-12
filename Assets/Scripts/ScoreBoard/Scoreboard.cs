@@ -25,7 +25,7 @@ public class Scoreboard {
 
         scores.Add(entry);
 
-        scores.Sort();
+        scores.Sort(delegate(ScoreEntry e1, ScoreEntry e2) { return e1.score.CompareTo(e2.score); });
 
         SaveScore(scores);
     } 
