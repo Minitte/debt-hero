@@ -41,6 +41,19 @@ public class GameOverManager : MonoBehaviour {
     /// </summary>
     public int _selected;
 	// Use this for initialization
+
+    [Header("Score Stuff")]
+
+    /// <summary>
+    /// Text representing 1st, 2nd... etc
+    /// </summary>
+    public Text placeText;
+
+    /// <summary>
+    /// Text representing score
+    /// </summary>
+    public Text scoreText;
+
 	void Start () {
         //Set Text to blank
         gameOver.text = "";
@@ -53,6 +66,18 @@ public class GameOverManager : MonoBehaviour {
         quitGame.gameObject.SetActive(true);
         _selected = 0;
 
+        List<ScoreEntry> scores = Scoreboard.GetScores();
+
+        for (int i = 0; i < scores.Count; i++) {
+            if (scores[i].name.Equals(PlayerProgress.name)) {
+                
+                placeText.text = "#" + (i + 1);
+
+                scoreText.text = scores[i].score.ToString("n0") + "g";
+
+                break;
+            }
+        }
 	}
 	
 	// Update is called once per frame

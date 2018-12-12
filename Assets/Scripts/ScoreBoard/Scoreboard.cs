@@ -75,7 +75,7 @@ public class Scoreboard {
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
-    private static ScoreEntry FindEntry(List<ScoreEntry> scores, string name) {
+    public static ScoreEntry FindEntry(List<ScoreEntry> scores, string name) {
         foreach (ScoreEntry e in scores) {
             if (e.name.Equals(name)) {
                 return e;
