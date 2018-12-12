@@ -72,5 +72,11 @@ public class EventManager : MonoBehaviour {
         debtPaid += debtOwed;
         debtOwed = 0;
         spawnDebtCollectors = false;
+
+        // check name in case testing in editor
+        string name = PlayerProgress.name == null ? "???" : PlayerProgress.name;
+
+        //register score
+        Scoreboard.RegisterScore(name, debtPaid);
     }
 }
