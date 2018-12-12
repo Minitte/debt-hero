@@ -35,7 +35,8 @@ public class FloorTeleportMenuController : MonoBehaviour {
 	private void UpdateButtons() {
 		for (int i = 0; i < floorButtons.Length; i++) {
 			floorButtons[i].interactable = floorDestinations[i] <= PlayerProgress.floorReached;
-		}
+            floorButtons[i].onClick.AddListener(delegate { SoundManager.instance.PlayUISound(0); });
+        }
 	}
 
 	/// <summary>

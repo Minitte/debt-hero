@@ -215,14 +215,14 @@ public class FloorGenerator : MonoBehaviour {
 
 		currentFloorParent.GetComponent<NavMeshSurface>().BuildNavMesh();
 
-        if(PlayerProgress.currentFloor < 3) {
-            SoundManager.instance.PlayMusic(1);
-        }
-        else if (PlayerProgress.currentFloor < 6) {
+        if(PlayerProgress.currentFloor < 4) {
             SoundManager.instance.PlayMusic(2);
         }
+        else if (PlayerProgress.currentFloor < 8) {
+            SoundManager.instance.PlayMusic(3);
+        }
         else {
-            SoundManager.instance.PlayMusic(1);
+            SoundManager.instance.PlayMusic(4);
         }
 
 		// trigger event if anything is listening to it
