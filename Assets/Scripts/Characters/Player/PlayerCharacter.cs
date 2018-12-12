@@ -223,7 +223,10 @@ public class PlayerCharacter : BaseCharacter {
         gameOverMsg.gameObject.SetActive(true);
 
         // close the menu
-        GameObject.Find("Menu").SetActive(false);
+        GameObject menu = GameObject.Find("Menu");
+        if (menu != null) {
+        menu.SetActive(false);
+        }
 
     }
 }
