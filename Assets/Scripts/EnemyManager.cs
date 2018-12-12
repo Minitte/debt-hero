@@ -153,6 +153,14 @@ public class EnemyManager : MonoBehaviour {
         stats.currentHp = stats.maxHp;
         stats.physAtk = Mathf.Round(stats.physAtk * scalar);
         stats.magicAtk = Mathf.Round(stats.magicAtk * scalar);
+
+        // scale exp and gold
+        Drops drop = enemy.GetComponent<Drops>();
+
+        float dropScale = Mathf.Pow(enemyPowerGrowth * 0.5f, floor - 1);
+
+        drop.exp = drop.exp * dropScale;
+        drop.gold = (int) (drop.gold * dropScale);
     } 
 
     /// <summary>
