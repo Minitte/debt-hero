@@ -51,7 +51,7 @@ public class EnemyManager : MonoBehaviour {
     /// </summary>
     public void DestoryAllEnemies() {
         foreach (GameObject e in enemies) {
-            Destroy(e);
+            e.GetComponent<EnemyCharacter>().Die();
         }
     }
 
