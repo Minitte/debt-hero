@@ -76,6 +76,13 @@ public class GameOverManager : MonoBehaviour {
     /// Load to main menu
     /// </summary>
     public void QuitGame() {
+        DestroyImmediate(PlayerManager.instance.gameObject);
+        DestroyImmediate(EventManager.instance.gameObject);
+        DestroyImmediate(GameDatabase.instance.gameObject);
+        PlayerManager.instance = null;
+        EventManager.instance = null;
+        TimeManager.instance = null;
+        GameDatabase.instance = null;
         SceneManager.LoadScene("LandingMenu");
 
     }

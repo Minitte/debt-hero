@@ -63,6 +63,16 @@ public class PlayerManager : MonoBehaviour {
     }
 
 	/// <summary>
+	/// This function is called when the MonoBehaviour will be destroyed.
+	/// </summary>
+	void OnDestroy() {
+		FloorGenerator.OnFloorGenerated -= MovePlayerToEntrance;
+		FloorGenerator.OnFloorGenerated -= RebindItemReferences;
+
+		FloorGenerator.OnBeginGeneration -= RemovePlayerOnNewFloor;
+	}
+
+	/// <summary>
 	/// Resets the owner of items
 	/// </summary>
 	/// <param name="currentFloor">Unused, delegate requirements</param>

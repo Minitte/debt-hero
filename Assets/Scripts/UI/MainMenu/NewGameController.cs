@@ -289,8 +289,21 @@ public class NewGameController : MonoBehaviour {
 
 		PlayerProgress.name = AssembleName();
 		PlayerProgress.className = classes[_selectedClassIndex].className;
+        /*DestroyImmediate(PlayerManager.instance.gameObject);
+        DestroyImmediate(EventManager.instance.gameObject);
+        DestroyImmediate(GameDatabase.instance.gameObject);
+       
+        PlayerManager.instance = null;
+        EventManager.instance = null;
+        TimeManager.instance = null;
+        GameDatabase.instance = null;
+        */
 
-		SceneManager.LoadScene("TownScene");
+		PlayerProgress.currentFloor = 0;
+
+		PlayerProgress.floorReached = 0;
+
+        SceneManager.LoadScene("TownScene");
 	}
 
 	/// <summary>
