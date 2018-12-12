@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fa77f3dc8991b64e8ebf19f624ed133, type: 3}
+  m_Name: Cleave
+  m_EditorClassIdentifier: 
+  skillName: Cleave
+  skillIcon: {fileID: 21300000, guid: 6fbedbf7cc84c8b4bbf33808d2f423a7, type: 3}
+  skillDescription: Powerful slash that applies a bleed debuff.
+  skillType: 0
+  soundFX: {fileID: 0}
+  cooldown: 5
+  manaCost: 10
+  damageHitbox: {fileID: 1102072977288342, guid: cc127540eb7d36346b2d6dbcb5074c19,
+    type: 2}
+  damageFX: {fileID: 149006, guid: 06e44d6da6bc07f4391e987d16382f57, type: 2}
+  physicalMultiplier: 2
+  magicMultiplier: 1
+  hitboxScale: {x: 2, y: 2, z: 2}
+  instantBehaviours: []
+  damageBehaviours:
+  - {fileID: 114163970898685364}
+  - {fileID: 114880675268095966}
+--- !u!114 &114163970898685364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f0be7a2b47f40b4b98ba74659ea0709, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 5
+  physDamage: 10
+  magicDamage: 0
+--- !u!114 &114880675268095966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c789ea910588cb64b8f5c1ad181099e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  magnitude: 1

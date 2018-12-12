@@ -1,0 +1,60 @@
+﻿using UnityEngine;
+using UnityEngine.UI;
+
+/// <summary>
+/// Class for handling damage numbers.
+/// </summary>
+public class FloatingTextController : MonoBehaviour {
+
+    /// <summary>
+    /// Singleton object for FloatingTextController.
+    /// </summary>
+    public static FloatingTextController instance;
+
+    /// <summary>
+    /// Reference to the health bar prefab.
+    /// </summary>
+    public GameObject healthBar;
+
+    /// <summary>
+    /// Reference to the damage text prefab.
+    /// </summary>
+    public GameObject textPrefab;
+
+    // Use this for initialization
+    private void Awake() {
+        instance = this;
+    }
+
+    /// <summary>
+    /// Creates a text object on the canvas.
+    /// </summary>
+    /// <param name="text">The text to show</param>
+    /// <param name="origin">The gameobject to follow</param>
+    public void CreateFloatingText(string text, Color color, GameObject origin) {
+        // Create the text object and move it onto the canvas
+        GameObject textObject = Instantiate(textPrefab, transform);
+        textObject.transform.Find("FloatingText").GetComponent<FloatingText>().Owner = origin.transform;
+        textObject.transform.position = origin.transform.position;
+
+        // Get the actual text field
+        Text textField = textObject.transform.Find("FloatingText").GetComponent<Text>();
+        textField.text = text; // Change text
+        textField.color = color; // Change color
+    }
+
+    /// <summary>
+    /// Creates a health bar on the canvas for the input gameobject.
+    /// </summary>
+    /// <param name="owner">The owner of the health bar</param>
+    public HealthBar CreateHealthBar(GameObject owner) {
+        // Create the health bar object as a child
+        GameObject hpObject = Instantiate(healthBar, transform);
+        hpObject.GetComponent<HealthBar>().owner = owner;
+
+        // Have it respond to health change event
+        owner.GetComponent<BaseCharacter>().characterStats.OnHealthChanged += hpObject.GetComponent<HealthBar>().UpdateHealth;
+        hpObject.GetComponent<HealthBar>().UpdateHealth(); // Initial health update
+        return hpObject.GetComponent<HealthBar>();
+    }
+}

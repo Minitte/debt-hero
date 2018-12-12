@@ -1,0 +1,179 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1199779139512408}
+  m_IsPrefabParent: 1
+--- !u!1 &1199779139512408
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4570539028265248}
+  - component: {fileID: 114568958093691200}
+  - component: {fileID: 114376485471381028}
+  - component: {fileID: 114039807332758792}
+  - component: {fileID: 114907085829211038}
+  - component: {fileID: 114855771409217310}
+  m_Layer: 0
+  m_Name: Player Manager
+  m_TagString: Player
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4570539028265248
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1199779139512408}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114039807332758792
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1199779139512408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e097142fa03d324e92a0cb4d16cef52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemRows:
+  - items:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+  - items:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+  - items:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+  - items:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+  - items:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+  gold: 0
+--- !u!114 &114376485471381028
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1199779139512408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cfda1169d1a4b94c8fcbcdf0bc04e75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentHp: 100
+  maxHp: 100
+  currentMp: 50
+  maxMp: 50
+  physAtk: 10
+  magicAtk: 0
+  physDef: 0
+  magicDef: 0
+  level: 0
+  exp: 0
+  maxExp: 0
+  isAlive: 1
+--- !u!114 &114568958093691200
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1199779139512408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c00ddbb42d2c55a4d8179bc0d7f0c442, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 1980193266817564, guid: daf9f9039f9cb2543bf28d88b21900c6,
+    type: 2}
+  playerResources: {fileID: 0}
+  localPlayer: {fileID: 0}
+--- !u!114 &114855771409217310
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1199779139512408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 163d27716de72b94181344819651860d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  classID: 0
+  bonusHP: 0
+  bonusMP: 0
+  bonusPhysAtt: 0
+  bonusMagAtt: 0
+  bonusPhysDef: 0
+  bonusMagDef: 0
+  bonusCrit: 0
+  bonusCritDmg: 0
+  perLevelHP: 0
+  perLevelMP: 0
+  perLevelPhysAtt: 0
+  perLevelMagAtt: 0
+  perLevelPhysDef: 0
+  perLevelMagDef: 0
+  perLevelCrit: 0
+  perLevelCritDmg: 0
+  skill1: 0
+  skill2: 0
+  skill3: 0
+  skill4: 0
+--- !u!114 &114907085829211038
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1199779139512408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf52821099dbc084aa46396316166ba1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentLevelExp: 0
+  remainingExp: 0
+  LevelEffect: {fileID: 198195649455954556, guid: ed6552b907013cc4c982d84b89e9f08f,
+    type: 2}
