@@ -108,11 +108,11 @@ public class EnemyManager : MonoBehaviour {
         GameObject[] enemyPrefabs = null;
 
         // Select enemy prefab list based on floor level
-        if (floor >= 0 && floor <= 3) {
+        if (FloorTheme.IsCurrentlyCave()) {
             enemyPrefabs = caveEnemyPrefabs; // Cave
-        } else if (floor >= 4 && floor <= 7) {
+        } else if (FloorTheme.IsCurrentlyForest()) {
             enemyPrefabs = forestEnemyPrefabs; // Forest
-        } else if (floor >= 8 && floor <= 11) {
+        } else if (FloorTheme.IsCurrentlyFire()) {
             enemyPrefabs = fireEnemyPrefabs; // Fire
         }
 

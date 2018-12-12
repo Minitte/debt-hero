@@ -121,9 +121,11 @@ public class FloorGenerator : MonoBehaviour {
 			PlayerProgress.floorReached = PlayerProgress.currentFloor;
 		}
 
-		if (PlayerProgress.currentFloor % 3 == 0) {
+		if (FloorTheme.IsCurrentlySafeZone()) {
+			Debug.Log("Generating Safe at floor " + PlayerProgress.currentFloor);
 			StartCoroutine(GenerateSafeZone());
 		} else {
+			Debug.Log("Generating normal at floor " + PlayerProgress.currentFloor);
 			GenerateNewFloor(true);
 		}
 	}
@@ -215,10 +217,10 @@ public class FloorGenerator : MonoBehaviour {
 
 		currentFloorParent.GetComponent<NavMeshSurface>().BuildNavMesh();
 
-        if(PlayerProgress.currentFloor < 3) {
+        if(FloorTheme.IsCurrentlyCave()) {
             SoundManager.instance.PlayMusic(1);
         }
-        else if (PlayerProgress.currentFloor < 6) {
+        else if (FloorTheme.IsCurrentlyForest()) {
             SoundManager.instance.PlayMusic(2);
         }
         else {
@@ -539,9 +541,21 @@ public class FloorGenerator : MonoBehaviour {
 	/// </summary>
 	/// <returns></returns>
 	private FloorPieceSet GetCurrentSet() {
-		int index = PlayerProgress.currentFloor / 3;
-		index = index >= pieceSets.Length ? pieceSets.Length - 1 : index;
-		return pieceSets[index];
+		FloorTheme.Type theme = FloorTheme.GetCurrentTheme();
+
+		switch (theme) {
+			case FloorTheme.Type.CAVE :
+			return pieceSets[0];
+
+			case FloorTheme.Type.FOREST :
+			return pieceSets[1];
+
+			case FloorTheme.Type.FIRE :
+			return pieceSets[2];
+
+			default :
+			return pieceSets[2];
+		}
 	}
 
 	/// <summary>
