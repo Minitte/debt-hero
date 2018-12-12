@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 114658288407951086}
   - component: {fileID: 114885269527269644}
   m_Layer: 5
-  m_Name: Floor 12
+  m_Name: Floor 15
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -143,7 +143,7 @@ GameObject:
   - component: {fileID: 114417237513332892}
   - component: {fileID: 114554320299224474}
   m_Layer: 5
-  m_Name: Floor 6
+  m_Name: Floor 8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -213,7 +213,7 @@ GameObject:
   - component: {fileID: 114530696711004540}
   - component: {fileID: 114445915659210864}
   m_Layer: 5
-  m_Name: Floor 3
+  m_Name: Floor 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -282,7 +282,7 @@ GameObject:
   - component: {fileID: 114430483573245574}
   - component: {fileID: 114867686898907280}
   m_Layer: 5
-  m_Name: Floor 9
+  m_Name: Floor 11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -320,7 +320,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Floor 6
+  m_Text: Floor 8
 --- !u!114 &114120570214753442
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -459,7 +459,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Floor 12
+  m_Text: Floor 15
 --- !u!114 &114230077470229992
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -479,7 +479,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 1
-  m_CellSize: {x: 100, y: 40}
+  m_CellSize: {x: 110, y: 40}
   m_Spacing: {x: 10, y: 10}
   m_Constraint: 0
   m_ConstraintCount: 2
@@ -600,7 +600,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Floor 3
+  m_Text: Floor 4
 --- !u!114 &114417237513332892
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -646,7 +646,7 @@ MonoBehaviour:
   - {fileID: 114554320299224474}
   - {fileID: 114867686898907280}
   - {fileID: 114885269527269644}
-  floorDestinations: 00000000000000000300000006000000090000000c000000
+  floorDestinations: 000000000000000004000000070000000b0000000f000000
 --- !u!114 &114430483573245574
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -719,7 +719,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 3
+          m_IntArgument: 4
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -798,7 +798,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 6
+          m_IntArgument: 8
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -911,7 +911,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Floor 9
+  m_Text: Floor 11
 --- !u!114 &114802426424737508
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1017,7 +1017,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 9
+          m_IntArgument: 11
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1069,7 +1069,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 12
+          m_IntArgument: 15
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
