@@ -121,9 +121,11 @@ public class FloorGenerator : MonoBehaviour {
 			PlayerProgress.floorReached = PlayerProgress.currentFloor;
 		}
 
-		if (PlayerProgress.currentFloor % 3 == 0) {
+		if (FloorTheme.IsCurrentlySafeZone()) {
+			Debug.Log("Generating Safe at floor " + PlayerProgress.currentFloor);
 			StartCoroutine(GenerateSafeZone());
 		} else {
+			Debug.Log("Generating normal at floor " + PlayerProgress.currentFloor);
 			GenerateNewFloor(true);
 		}
 	}
@@ -137,7 +139,8 @@ public class FloorGenerator : MonoBehaviour {
 				currentFloorParent = null;
 			}
 
-		currentFloorParent = Instantiate(floorParentPrefab.gameObject).GetComponent<Floor>();
+        SoundManager.instance.PlayMusic(2);
+        currentFloorParent = Instantiate(floorParentPrefab.gameObject).GetComponent<Floor>();
 		currentFloorParent.floorNumber = PlayerProgress.currentFloor;
 
 		if (OnBeginGeneration != null) {
@@ -215,14 +218,17 @@ public class FloorGenerator : MonoBehaviour {
 
 		currentFloorParent.GetComponent<NavMeshSurface>().BuildNavMesh();
 
-        if(PlayerProgress.currentFloor < 4) {
-            SoundManager.instance.PlayMusic(2);
-        }
-        else if (PlayerProgress.currentFloor < 8) {
+        if (FloorTheme.IsCurrentlyCave()) {
             SoundManager.instance.PlayMusic(3);
         }
-        else {
+        else if (FloorTheme.IsCurrentlyForest()) {
             SoundManager.instance.PlayMusic(4);
+        }
+        else if (FloorTheme.IsCurrentlyFire()) {
+            SoundManager.instance.PlayMusic(5);
+        }
+        else {
+            SoundManager.instance.PlayMusic(3);
         }
 
 		// trigger event if anything is listening to it
@@ -539,9 +545,21 @@ public class FloorGenerator : MonoBehaviour {
 	/// </summary>
 	/// <returns></returns>
 	private FloorPieceSet GetCurrentSet() {
-		int index = PlayerProgress.currentFloor / 3;
-		index = index >= pieceSets.Length ? pieceSets.Length - 1 : index;
-		return pieceSets[index];
+		FloorTheme.Type theme = FloorTheme.GetCurrentTheme();
+
+		switch (theme) {
+			case FloorTheme.Type.CAVE :
+			return pieceSets[0];
+
+			case FloorTheme.Type.FOREST :
+			return pieceSets[1];
+
+			case FloorTheme.Type.FIRE :
+			return pieceSets[2];
+
+			default :
+			return pieceSets[2];
+		}
 	}
 
 	/// <summary>

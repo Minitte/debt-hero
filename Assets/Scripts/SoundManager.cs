@@ -37,12 +37,15 @@ public class SoundManager : MonoBehaviour {
         /// <summary>
         /// List of Game Music
         /// 0:  Main menu music
-        /// 1:  Area 1 music
-        /// 2:  Area 2 music
-        /// 3:  Town music
+        /// 1:  Town music
+        /// 2:  Safe Zone music
+        /// 3:  Area 1 music
+        /// 4:  Area 2 music
+        /// 5:  Area 3 music
         /// </summary>
         _musicList = new AudioClip[] {(AudioClip)Resources.Load("Sound/Music/mainmenu"),
                                         (AudioClip)Resources.Load("Sound/Music/town"),
+                                        (AudioClip)Resources.Load("Sound/Music/safe"),
                                         (AudioClip)Resources.Load("Sound/Music/area1"),
                                         (AudioClip)Resources.Load("Sound/Music/area2"),
                                         (AudioClip)Resources.Load("Sound/Music/area3")};
@@ -91,11 +94,13 @@ public class SoundManager : MonoBehaviour {
 
     // Plays musicID on main AudioSource
     public void PlayMusic(int musicID) {
-        _levelAudio.Stop();
-        _levelAudio.volume = (volume / 100) * (musicVolume / 100);
-        _levelAudio.loop = true;
-        _levelAudio.clip = _musicList[musicID];
-        _levelAudio.Play();
+        if(_levelAudio.clip != _musicList[musicID] || !_levelAudio.isPlaying) {
+            _levelAudio.Stop();
+            _levelAudio.volume = (volume / 100) * (musicVolume / 100);
+            _levelAudio.loop = true;
+            _levelAudio.clip = _musicList[musicID];
+            _levelAudio.Play();
+        }
     }
 
 
