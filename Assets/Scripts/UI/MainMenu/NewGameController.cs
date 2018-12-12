@@ -303,6 +303,11 @@ public class NewGameController : MonoBehaviour {
 
 		PlayerProgress.floorReached = 0;
 
+		TimeManager.instance.currentHour = 0;
+		TimeManager.instance.currentMinute = 0;
+		TimeManager.instance.currentTime = 0;
+		TimeManager.instance.days = 0;
+
         SceneManager.LoadScene("TownScene");
 	}
 
