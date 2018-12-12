@@ -952,10 +952,23 @@ MonoBehaviour:
     - {fileID: 1292249673674078, guid: 378971f5f9689094f9343f72b9ec1bbe, type: 2}
     safeZonePrefabs:
     - {fileID: 1893807296134602, guid: 0279f3440e1b72b439bc8d8ff45c60ce, type: 2}
+  - name: Fire
+    fourWayPrefabs:
+    - {fileID: 1678524746100388, guid: aede2b989aa503448b6f8f36cf76fc4d, type: 2}
+    threeWayPrefabs:
+    - {fileID: 1420115324887936, guid: e234717a046060843b9e5fd01b112e90, type: 2}
+    hallWayPrefabs:
+    - {fileID: 1567897619667864, guid: 1fae5e6f82756364ebeb980d050d7631, type: 2}
+    cornerPrefabs:
+    - {fileID: 1327235428113198, guid: 3a37091f1ba0e7a44a5e7bbacad36284, type: 2}
+    deadEndPrefabs:
+    - {fileID: 1241317513224708, guid: 151a2a95b01c8f94a8f3276be15755a3, type: 2}
+    safeZonePrefabs:
+    - {fileID: 1893807296134602, guid: 0279f3440e1b72b439bc8d8ff45c60ce, type: 2}
   roomSize: 24.85
   maxFloorRadius: 4
   numberOfNodes: 4
-  floorSeed: remember to watch the movie on wednesday or else
+  floorSeed: BLAH
   roomEntryPrefab: {fileID: 114350198372911636, guid: 34bafd6a96fe28c488a782f8eec8bd4c,
     type: 2}
   floorParentPrefab: {fileID: 114256903838050090, guid: 1be64d5fb8c52fb47bd5c78abaed7eca,
