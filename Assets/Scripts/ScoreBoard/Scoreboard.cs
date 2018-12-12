@@ -17,15 +17,23 @@ public class Scoreboard {
     public static void RegisterScore(string playerName, int score) {
         List<ScoreEntry> scores = GetScores();
 
-        ScoreEntry entry = new ScoreEntry();
+        // find entry
+        ScoreEntry entry = FindEntry(scores, playerName);
 
-        entry.name = playerName;
-    
+        // make a new entry if none
+        if (entry == null) {
+            entry = new ScoreEntry();
+
+            entry.name = playerName;
+
+            scores.Add(entry);
+        }
+
+        // set score
         entry.score = score;
 
-        scores.Add(entry);
-
-        scores.Sort(delegate(ScoreEntry e1, ScoreEntry e2) { return e1.score.CompareTo(e2.score); });
+        // sort by score
+        scores.Sort(delegate(ScoreEntry e1, ScoreEntry e2) { return e2.score.CompareTo(e1.score); });
 
         SaveScore(scores);
     } 
@@ -60,6 +68,21 @@ public class Scoreboard {
         string json = JsonUtility.ToJson(scoreList);
         
         PlayerPrefs.SetString(SCORE_KEY, json);
+    }
+
+    /// <summary>
+    /// Searches for the entry
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    private static ScoreEntry FindEntry(List<ScoreEntry> scores, string name) {
+        foreach (ScoreEntry e in scores) {
+            if (e.name.Equals(name)) {
+                return e;
+            }
+        }
+
+        return null;
     }
 }
 
