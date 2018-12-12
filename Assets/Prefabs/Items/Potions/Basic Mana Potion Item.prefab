@@ -56,7 +56,7 @@ MonoBehaviour:
     name: Basic Mana Potion
     description: A basic potion that recovers 25 mana
     type: 1
-    stackable: 0
+    stackable: 1
     destoryOnNone: 1
     disposable: 1
     usable: 1
