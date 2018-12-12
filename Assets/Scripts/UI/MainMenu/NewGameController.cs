@@ -298,6 +298,11 @@ public class NewGameController : MonoBehaviour {
         TimeManager.instance = null;
         GameDatabase.instance = null;
         */
+
+		PlayerProgress.currentFloor = 0;
+
+		PlayerProgress.floorReached = 0;
+
         SceneManager.LoadScene("TownScene");
 	}
 
