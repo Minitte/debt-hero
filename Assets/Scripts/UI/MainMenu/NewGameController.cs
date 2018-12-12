@@ -289,7 +289,7 @@ public class NewGameController : MonoBehaviour {
 
 		PlayerProgress.name = AssembleName();
 		PlayerProgress.className = classes[_selectedClassIndex].className;
-        DestroyImmediate(PlayerManager.instance.gameObject);
+        /*DestroyImmediate(PlayerManager.instance.gameObject);
         DestroyImmediate(EventManager.instance.gameObject);
         DestroyImmediate(GameDatabase.instance.gameObject);
        
@@ -297,7 +297,7 @@ public class NewGameController : MonoBehaviour {
         EventManager.instance = null;
         TimeManager.instance = null;
         GameDatabase.instance = null;
-
+        */
         SceneManager.LoadScene("TownScene");
 	}
 
