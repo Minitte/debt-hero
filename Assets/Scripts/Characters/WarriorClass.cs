@@ -26,8 +26,8 @@ public class WarriorClass : BaseClass {
         /// </summary>
         perLevelHP = 30;
         perLevelMP = 15;
-        perLevelPhysAtt = 4;
-        perLevelMagAtt = 1;
+        perLevelPhysAtt = 6;
+        perLevelMagAtt = 2;
         perLevelPhysDef = 3;
         perLevelMagDef = 1;
         perLevelCrit = 0;
