@@ -139,7 +139,8 @@ public class FloorGenerator : MonoBehaviour {
 				currentFloorParent = null;
 			}
 
-		currentFloorParent = Instantiate(floorParentPrefab.gameObject).GetComponent<Floor>();
+        SoundManager.instance.PlayMusic(2);
+        currentFloorParent = Instantiate(floorParentPrefab.gameObject).GetComponent<Floor>();
 		currentFloorParent.floorNumber = PlayerProgress.currentFloor;
 
 		if (OnBeginGeneration != null) {
@@ -217,14 +218,17 @@ public class FloorGenerator : MonoBehaviour {
 
 		currentFloorParent.GetComponent<NavMeshSurface>().BuildNavMesh();
 
-        if(FloorTheme.IsCurrentlyCave()) {
-            SoundManager.instance.PlayMusic(1);
+        if (FloorTheme.IsCurrentlyCave()) {
+            SoundManager.instance.PlayMusic(3);
         }
         else if (FloorTheme.IsCurrentlyForest()) {
-            SoundManager.instance.PlayMusic(2);
+            SoundManager.instance.PlayMusic(4);
+        }
+        else if (FloorTheme.IsCurrentlyFire()) {
+            SoundManager.instance.PlayMusic(5);
         }
         else {
-            SoundManager.instance.PlayMusic(1);
+            SoundManager.instance.PlayMusic(3);
         }
 
 		// trigger event if anything is listening to it
