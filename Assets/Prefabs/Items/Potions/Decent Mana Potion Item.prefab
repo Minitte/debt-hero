@@ -56,11 +56,11 @@ MonoBehaviour:
     name: Decent Mana Potion
     description: A decent potion that recovers 40 mana
     type: 1
-    stackable: 1
+    stackable: 0
     destoryOnNone: 1
     disposable: 1
     usable: 1
-    value: 1500
+    value: 500
     quantity: 1
   itemUIPrefab: {fileID: 114029763280564886, guid: 6aa3e3fe2281ede4688428551773a13a,
     type: 2}

@@ -56,11 +56,11 @@ MonoBehaviour:
     name: Basic Potion
     description: A basic potion that heals for 30 HP
     type: 1
-    stackable: 1
+    stackable: 0
     destoryOnNone: 1
     disposable: 1
     usable: 1
-    value: 500
+    value: 166
     quantity: 1
   itemUIPrefab: {fileID: 114778420795754186, guid: 5e0e4f946765d2240a5e733dff299f2e,
     type: 2}

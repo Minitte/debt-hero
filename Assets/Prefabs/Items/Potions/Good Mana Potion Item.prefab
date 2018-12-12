@@ -56,11 +56,11 @@ MonoBehaviour:
     name: Good Mana Potion
     description: A good potion that recovers 75 mana
     type: 1
-    stackable: 1
+    stackable: 0
     destoryOnNone: 1
     disposable: 1
     usable: 1
-    value: 3400
+    value: 1133
     quantity: 1
   itemUIPrefab: {fileID: 114877138664260926, guid: 8995be120e6eebb4cb78446d5d370c2a,
     type: 2}

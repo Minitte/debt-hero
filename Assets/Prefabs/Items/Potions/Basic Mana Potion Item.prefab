@@ -56,11 +56,11 @@ MonoBehaviour:
     name: Basic Mana Potion
     description: A basic potion that recovers 25 mana
     type: 1
-    stackable: 1
+    stackable: 0
     destoryOnNone: 1
     disposable: 1
     usable: 1
-    value: 600
+    value: 200
     quantity: 1
   itemUIPrefab: {fileID: 114162513559713446, guid: c38686c9954ff9b49beaf531e439788a,
     type: 2}
