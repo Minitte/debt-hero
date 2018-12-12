@@ -122,6 +122,7 @@ public class TimeManager : MonoBehaviour {
 
     // Updates the text fields to display time
     void updateTime() {
+        dayNumber.text = "Day " + days;
         if (currentHour >= 13) {
             if (currentHour - 12 < 10) {
                 timeCounter.text = "0" + (currentHour - 12) + ":";
