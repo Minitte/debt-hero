@@ -153,6 +153,14 @@ public class EnemyManager : MonoBehaviour {
         stats.currentHp = stats.maxHp;
         stats.physAtk = Mathf.Round(stats.physAtk * scalar);
         stats.magicAtk = Mathf.Round(stats.magicAtk * scalar);
+
+        // scale exp and gold
+        Drops drop = enemy.GetComponent<Drops>();
+
+        float dropScale = Mathf.Pow(enemyPowerGrowth * 0.5f, floor - 1);
+
+        drop.exp = drop.exp * dropScale;
+        drop.gold = (int) (drop.gold * dropScale);
     } 
 
     /// <summary>
@@ -163,10 +171,10 @@ public class EnemyManager : MonoBehaviour {
     /// <returns></returns>
     public Vector3 RandomRoomPos(Vector3 roomPos, System.Random rand) {
         int xVar = rand.Next(-13, 13);
-        xVar = xVar != 0 ? 2 : xVar;
+        xVar = xVar == 0 ? 2 : xVar;
 
         int zVar = rand.Next(-13, 13);
-        zVar = zVar != 0 ? 2 : zVar;
+        zVar = zVar == 0 ? 2 : zVar;
 
         return new Vector3(roomPos.x + xVar , roomPos.y, roomPos.z + zVar);
         // return roomPos;

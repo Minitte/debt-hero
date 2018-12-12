@@ -6,9 +6,13 @@ public class Gold : MonoBehaviour
 {
     public int gold;
 
-    private void Start()
-    {
-        
+    /// <summary>
+    /// Update is called every frame, if the MonoBehaviour is enabled.
+    /// </summary>
+    void Update() {
+        if (this.transform.position.y < -50) {
+            Destroy(this.gameObject);
+        }
     }
 
     private void OnTriggerEnter(Collider other)

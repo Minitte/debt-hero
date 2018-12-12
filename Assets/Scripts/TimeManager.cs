@@ -16,7 +16,7 @@ public class TimeManager : MonoBehaviour {
     /// (i.e. 60f means 60x faster than real life
     /// so 1 hour in game is 1 minute in real life
     /// </summary>
-    public float timeScale = 60f;
+    public float timeScale = 600f;
 
     // Seconds in a day, currently set to real life seconds
     public float secondsPerDay = 86400f;
