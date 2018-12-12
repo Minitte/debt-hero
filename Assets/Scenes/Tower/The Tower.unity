@@ -436,7 +436,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1281147647607238, guid: eb1a4ace4f80df3498f2f34729ef6d79, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224119963858003306, guid: eb1a4ace4f80df3498f2f34729ef6d79,
         type: 2}
@@ -1799,6 +1799,11 @@ Prefab:
       propertyPath: m_Name
       value: Event Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 114856154931183522, guid: f4c10e2275f348d42859f50a4d29bffc,
+        type: 2}
+      propertyPath: timeScale
+      value: 360
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f4c10e2275f348d42859f50a4d29bffc, type: 2}
   m_IsPrefabParent: 0
@@ -1958,6 +1963,21 @@ Prefab:
         type: 2}
       propertyPath: m_Colors.m_HighlightedColor.b
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224967046363798346, guid: ebf91a53c5309ce44ae1df8496c83395,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 224117820241640780, guid: ebf91a53c5309ce44ae1df8496c83395,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 224112551313554288, guid: ebf91a53c5309ce44ae1df8496c83395,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ebf91a53c5309ce44ae1df8496c83395, type: 2}
