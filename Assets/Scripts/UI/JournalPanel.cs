@@ -99,7 +99,7 @@ public class JournalPanel : MonoBehaviour {
 
         //Setting the text for day, time and gold due.
         dayText.text = "Day:\n" + timeManager.days;
-        timeText.text = "Time:\n" + timeManager.currentTime;
+        timeText.text = "Time:\n" + timeManager.timeCounter.text;
         goldText.text = "Gold due:\n" + _eventManager.debtOwed + "g";
     }
 
